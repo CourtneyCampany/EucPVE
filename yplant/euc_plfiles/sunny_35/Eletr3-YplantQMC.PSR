@@ -1,0 +1,40 @@
+Simulation summary for plant constructed from files:
+   P file: yplant/euc_plfiles/Eletr3.p
+   L file: yplant/euc_plfiles/Elelf3.l
+----------------------------------------------------
+
+Total photosynthesis      (mol day-1)  : 1.319
+Total absorbed PAR (APAR) (mol day-1)  : 102.416
+Total Diffuse APAR        (mol day-1)  : 34.68
+Total Direct APAR         (mol day-1)  : 67.737
+----------------------------------------------------
+
+Variables by timestep:
+(Some may not be included)
+timeofday   - Time of day (hours) of timestep.
+PAR0        - Incident PAR above canopy (mu mol m-2 s-1)
+PARinc      - Incident PAR below canopy (mu mol m-2 s-1)
+PARleaf     - Absorbed total PAR (mu mol m-2 s-1)
+PARdir      - Absorbed direct PAR (mu mol m-2 s-1)
+PARdiff     - Absorbed diffuse PAR (mu mol m-2 s-1)
+A           - CO2 assimilation rate (mu mol m-2 s-1)
+A0          - A by horizontal leaf above canopy (mu mol m-2 s-1)
+E           - Transpiration rate (mmol m-2 s-1)
+timestep    - Length of timestep (seconds)
+LAplant     - Total plant leaf area (m2)
+LAproj      - Total projected leaf area (m2) ('NA' if diffuse PAR only).
+LAsunlit    - Total displayed (sunlit) leaf area (m2) ('NA' if diffuse PAR only).
+
+timeofday	PAR0	PARinc	PARleaf	PARdir	PARdiff	A	E	A0	timestep	LAplant	LAproj	LAsunlit
+6.076125	116.829512	116.829512	55.69948	0	55.69948	3.022703	0.418197	5.611731	4064.118951	2.221799	NA	NA
+7.205047	1249.979629	1249.979629	912.711478	729.760562	182.950917	13.486488	2.005109	15.463518	4064.118951	2.221799	1.333262	0.726063
+8.333968	2592.651598	2592.651598	1215.96036	914.736874	301.223486	15.109557	2.934137	17.454612	4064.118951	2.221799	1.198493	0.661488
+9.46289	3782.728262	3782.728262	1253.477886	853.212589	400.265297	15.183135	3.61258	16.819631	4064.118951	2.221799	1.012501	0.546451
+10.591812	4655.312503	4655.312503	1213.07762	741.598729	471.478892	14.649846	4.073135	15.650991	4064.118951	2.221799	0.800826	0.449317
+11.720734	5114.940804	5114.940804	1142.071826	633.371958	508.699868	14.027018	4.356475	14.676075	4064.118951	2.221799	0.647163	0.375214
+12.849656	5114.940804	5114.940804	1072.471768	563.7719	508.699868	13.465366	4.466504	14.101064	4064.118951	2.221799	0.653549	0.334052
+13.978578	4655.312503	4655.312503	1155.389341	683.91045	471.478892	13.39301	4.489698	14.00201	4064.118951	2.221799	0.800968	0.414176
+15.1075	3782.728262	3782.728262	1225.533215	825.267918	400.265297	13.603115	4.379853	14.388209	4064.118951	2.221799	0.99187	0.528886
+16.236422	2592.651598	2592.651598	1163.869151	862.645665	301.223486	13.914063	4.106411	15.206955	4064.118951	2.221799	1.167868	0.624149
+17.365344	1249.979629	1249.979629	876.258016	693.307099	182.950917	13.570795	3.550462	16.094824	4064.118951	2.221799	1.29878	0.689693
+18.494266	116.829512	116.829512	55.69948	0	55.69948	2.687911	1.18609	5.263015	4064.118951	2.221799	NA	NA

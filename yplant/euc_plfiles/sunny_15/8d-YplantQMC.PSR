@@ -1,0 +1,40 @@
+Simulation summary for plant constructed from files:
+   P file: yplant/euc_plfiles/8d.p
+   L file: yplant/euc_plfiles/8d_leaf.l
+----------------------------------------------------
+
+Total photosynthesis      (mol day-1)  : 1.522
+Total absorbed PAR (APAR) (mol day-1)  : 116.219
+Total Diffuse APAR        (mol day-1)  : 38.011
+Total Direct APAR         (mol day-1)  : 78.208
+----------------------------------------------------
+
+Variables by timestep:
+(Some may not be included)
+timeofday   - Time of day (hours) of timestep.
+PAR0        - Incident PAR above canopy (mu mol m-2 s-1)
+PARinc      - Incident PAR below canopy (mu mol m-2 s-1)
+PARleaf     - Absorbed total PAR (mu mol m-2 s-1)
+PARdir      - Absorbed direct PAR (mu mol m-2 s-1)
+PARdiff     - Absorbed diffuse PAR (mu mol m-2 s-1)
+A           - CO2 assimilation rate (mu mol m-2 s-1)
+A0          - A by horizontal leaf above canopy (mu mol m-2 s-1)
+E           - Transpiration rate (mmol m-2 s-1)
+timestep    - Length of timestep (seconds)
+LAplant     - Total plant leaf area (m2)
+LAproj      - Total projected leaf area (m2) ('NA' if diffuse PAR only).
+LAsunlit    - Total displayed (sunlit) leaf area (m2) ('NA' if diffuse PAR only).
+
+timeofday	PAR0	PARinc	PARleaf	PARdir	PARdiff	A	E	A0	timestep	LAplant	LAproj	LAsunlit
+6.076125	116.829512	116.829512	55.887555	0	55.887555	3.042313	0.472245	5.660567	4064.118951	2.427014	NA	NA
+7.205047	1249.979629	1249.979629	823.819823	640.251155	183.568668	13.332149	2.331341	15.873307	4064.118951	2.427014	1.37926	0.690488
+8.333968	2592.651598	2592.651598	1153.939885	851.699289	302.240596	15.363674	3.477696	18.251498	4064.118951	2.427014	1.250534	0.666516
+9.46289	3782.728262	3782.728262	1275.117479	873.500648	401.616831	15.987542	4.376484	18.115398	4064.118951	2.427014	1.064291	0.604986
+10.591812	4655.312503	4655.312503	1295.243044	822.172159	473.070885	15.802457	4.992613	17.008531	4064.118951	2.427014	0.855158	0.537637
+11.720734	5114.940804	5114.940804	1255.607966	745.190425	510.417542	15.239572	5.335059	16.012592	4064.118951	2.427014	0.707111	0.47587
+12.849656	5114.940804	5114.940804	1254.077042	743.6595	510.417542	14.841998	5.503013	15.407489	4064.118951	2.427014	0.705356	0.47452
+13.978578	4655.312503	4655.312503	1290.335334	817.264449	473.070885	14.650473	5.496684	15.301908	4064.118951	2.427014	0.834978	0.534449
+15.1075	3782.728262	3782.728262	1303.233564	901.616733	401.616831	14.783544	5.349547	15.709792	4064.118951	2.427014	1.030888	0.624664
+16.236422	2592.651598	2592.651598	1173.24591	871.005315	302.240596	14.726446	4.9393	16.552604	4064.118951	2.427014	1.226966	0.682103
+17.365344	1249.979629	1249.979629	846.097209	662.528541	183.568668	13.86895	4.173005	17.142337	4064.118951	2.427014	1.381171	0.713521
+18.494266	116.829512	116.829512	55.887555	0	55.887555	2.708427	1.285235	5.325854	4064.118951	2.427014	NA	NA
