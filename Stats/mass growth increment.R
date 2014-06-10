@@ -31,10 +31,12 @@ finaldate <- function(H, D){
 }
 
 allom <- finaldate(height, diameter)
+
 #merge with leaf num and tree mass
 allomvar <- merge(allom, leafnum)
 allomvar <- merge(allomvar, treemass)
 allomvar$d2h <- with(allomvar, (diameter^2)*height)
+
 #re work labels for volume
 allomvar$volume <- gsub("1000", "free", allomvar$volume)
 allomvar$volume <- gsub("^5", "05", allomvar$volume)
@@ -146,11 +148,34 @@ points(treemass~diameter, data=subset(mass_predict, volume=="5"), col="red", pch
 plot(treemass2~diameter, data=mass_predict)
 
 
-
-
 #back transformations...additive(log) vs multiplicative(raw) error???
 #consider the power model (if logxy).... power model Y = aXb
 
+
+#apply model over dates
+
+mass_predict$treemass2 <- exp(intcptD)*(mass_predict$diameter^slopeDcf)
+
+mass_date <- diameter
+mass_date$predmass <-  exp(intcptD)*(mass_date$diameter^slopeDcf)
+mass_date$volume<- as.factor(mass_date$volume)
+mass_date$Date<- as.Date(mass_date$Date)
+
+
+
+plot(predmass~Date, data=mass_date, col=volume, pch=pchs[volume])
+
+mass_date_agg <- summaryBy(predmass+diameter~Date+volume, data=mass_date, FUN=mean, keep.names=TRUE)
+real_mass_agg <- summaryBy(totalmass+diameter~Date+volume, data=allomvar, FUN=mean, keep.names=TRUE)
+
+plot(predmass~Date, data=mass_date_agg, col=volume, pch=pchs[volume], ylim=c(0,225))
+points(totalmass~Date, data=real_mass_agg, col=volume, pch=5, cex=1.4)
+
+#need to have mass at each time interval to look at treatment effects throug time
+
+pred_mass_sp <- dlply(mass_date, .(Date))
+
+fit <- lm(pred_mass_sp[predmass][[1]] ~ pred_mass_sp[volume][[1]])
 
 
 
