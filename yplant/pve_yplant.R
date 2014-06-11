@@ -1,4 +1,5 @@
 source("functions and packages/load model packages.R")
+install_bitbucket("yplantqmc","remkoduursma")
 
 #First need to run the sample trees through construct plant and get summary for each to use with raw data
 #use readplantlist and summary.plant3d
@@ -6,11 +7,11 @@ source("functions and packages/load model packages.R")
 #use the csv file to create the correct list of files and add the path so that readplant can use them
 euckey <- read.csv("yplant/euc_plfiles/euc_key.csv")
 euckey <- as.data.frame(euckey)
-euckey$pfile <- paste("yplant/euc_plfiles/", euckey$pfile, sep = "")
-euckey$lfile <- paste("yplant/euc_plfiles/", euckey$lfile, sep = "")
+euckey$pfile <- paste("yplant/euc_plfiles/P_file/", euckey$pfile, sep = "")
+euckey$lfile <- paste("yplant/euc_plfiles/L_file/", euckey$lfile, sep = "")
 
 #test
-test <- constructplant(pfile="yplant/euc_plfiles/Eletr5.p", lfile="yplant/euc_plfiles/Elelf5.l")
+test <- constructplant(pfile="yplant/euc_plfiles/P_file/Eletr5.p", lfile="yplant/euc_plfiles/L_file/Elelf5.l")
 summary(test)
 
 #use readplant list in order to construct multiple plants, complete my species 
@@ -33,46 +34,57 @@ richmond <- setLocation(lat=-33.6, long=150.75, tzlong=150)
 weather <- read.csv("calculated data/eucpve_met.csv")
 weather$DateTime15 <- ymd_hms(weather$DateTime15)
 weather$Date <- as.Date(weather$DateTime15)
-weather$time <- format(weather$DateTime15, format='%H:%M:%S')
+weather$time <- format(weather$DateTime15, format='%H:%M')
 
 #search for some sunny days
 sunmax <- subset(weather, PPFD_Avg.mean >= 1800)
 unique(sunmax$Date)
 #search for some cloudy days
 sunmin <- subset(weather,  weather$time== "12:00:00" & weather$PPFD_Avg.mean <= 1000)
-#run something like this if I want to choose a random day
-#a<- sample(1:nrow(sunmin), 1)
 
 #subset one sunny day
 metday <- subset(weather, Date=="2013-02-07")
-plot(PPFD_Avg.mean~DateTime15, data=metday)
+plot(PPFD_Avg.mean~DateTime15, data=metday, ylim=c(0,2250))
+metday$timeofday <- as.numeric(gsub(":", ".", metday$time))
+
 #calculate total par
-metday$par15 <- metday$PPFD_Avg.mean*15*60
-plot(par15~DateTime15, data=metday)
-daypar <- (sum(metday$par15)/1000000) #molsm2d
+metday$par15_mol <- metday$PPFD_Avg.mean/1000000
+plot(par15_mol~DateTime15, data=metday)
+metday$par15_mol_s <- metday$par15_mol*15*60
+daypar <- sum(metday$par15_mol_s)#molsm2d
+daypar_mj <- daypar/(4.57/2)
+
 
 #subset one cloudy day
-metday2 <- subset(weather, Date=="2013-03-14")
-#calculate total par
-metday2$par15 <- metday2$PPFD_Avg.mean*15*60
-plot(par15~DateTime15, data=metday2)
-day2par <- (sum(metday2$par15)/1000000) #molsm2d
+# metday2 <- subset(weather, Date=="2013-03-14")
+# plot(PPFD_Avg.mean~DateTime15, data=metday2, ylim=c(0,2000))
+# #calculate total par
+# metday2$par15 <- metday2$PPFD_Avg.mean*15*60
+# plot(par15~DateTime15, data=metday2)
+# day2par <- sum(metday2$par15)/1000000 #molsm2d
 
 
 #object with weather data from chosen date
-sunnyday <- setMet(richmond, month=2, day=07, nsteps=12, Tmin=14.83, Tmax=31.25, PARday=daypar)
+sunnyday <- setMet(richmond, month=2, day=07, year=2013, nsteps=12, Tmin=14.83, Tmax=31.25, PARday=daypar_mj)
 plot(sunnyday)
 
-cloudyday <- setMet(richmond, month=3, day=14, nsteps=12, Tmin=16.73, Tmax=26.04, PARday=day2par)
-plot(cloudyday)
+parpred <- as.data.frame(sunnyday[1][[1]])
+#compare PAR from weather station and from setMET
+plot(PAR~timeofday, data=parpred, ylim=c(0,2500), xlim=c(0,24))
+  points(PPFD_Avg.mean~timeofday, data=metday, pch=16)
+
+# cloudyday <- setMet(richmond, month=3, day=14, nsteps=12, year=2013,Tmin=16.73, Tmax=26.04, PARday=day2par)
+# plot(cloudyday)
+
 
 # Test direct vs. diffuse--------------------------------------------------------------------
-sunny_fbeam0 <- setMet(richmond, month=2, day=16, nsteps=12, Tmin=14.44, Tmax=25.83, PARday=daypar,
-                     fbeam=0, fbeammethod="constant")
-plot(sunny_fbeam0)
-sunny_fbeam1 <- setMet(richmond, month=2, day=16, nsteps=12, Tmin=14.44, Tmax=25.83, PARday=daypar,
-                     fbeam=1, fbeammethod="constant")
-plot(sunny_fbeam1)
+# sunny_fbeam0 <- setMet(richmond, month=2, day=16, nsteps=12, Tmin=14.44, Tmax=25.83, PARday=daypar,
+#                      fbeam=0, fbeammethod="constant")
+# plot(sunny_fbeam0)
+# sunny_fbeam1 <- setMet(richmond, month=2, day=16, nsteps=12, Tmin=14.44, Tmax=25.83, PARday=daypar,
+#                      fbeam=1, fbeammethod="constant")
+# plot(sunny_fbeam1)
+
 #------------------------------------------------------------------------------------------------
 #3. measured and predicted photosynthetic parameters (from my data)
 phys <- read.csv("calculated data/jmax_vcmax.csv")
@@ -91,7 +103,7 @@ names(rd_agg)[2]<- "respdark"
 Aparam <- merge(rd_agg[,1:2], g1_agg)
 Aparam <- merge(Aparam, phys_agg)
 
-#for now just use free seedling
+#A parameters for each volume
 A_free <- subset(Aparam, volume=="1000")
 A_5 <- subset(Aparam, volume=="5")
 A_10 <- subset(Aparam, volume=="10")
@@ -101,20 +113,24 @@ A_25 <- subset(Aparam, volume=="25")
 A_35 <- subset(Aparam, volume=="35")
 
 #5.setPhy = Constructs an object of class 'ypphy', which calculates A and E from weather data and PAR.
+eucphy_free <- setPhy("Farquhar",leafpars=list(Vcmax=A_free[1,5], Jmax=A_free[1,4], G1=A_free[1,3], Rd0=-(A_free[1,2])))
 eucphy5 <- setPhy("Farquhar",leafpars=list(Vcmax=A_5[1,5], Jmax=A_5[1,4], G1=A_5[1,3], Rd0=-(A_5[1,2])))
 eucphy10 <- setPhy("Farquhar",leafpars=list(Vcmax=A_10[1,5], Jmax=A_10[1,4], G1=A_10[1,3], Rd0=-(A_10[1,2])))
 eucphy15 <- setPhy("Farquhar",leafpars=list(Vcmax=A_15[1,5], Jmax=A_15[1,4], G1=A_15[1,3], Rd0=-(A_15[1,2])))
 eucphy20 <- setPhy("Farquhar",leafpars=list(Vcmax=A_20[1,5], Jmax=A_20[1,4], G1=A_20[1,3], Rd0=-(A_20[1,2])))
 eucphy25 <- setPhy("Farquhar",leafpars=list(Vcmax=A_25[1,5], Jmax=A_25[1,4], G1=A_25[1,3], Rd0=-(A_25[1,2])))
 eucphy35 <- setPhy("Farquhar",leafpars=list(Vcmax=A_35[1,5], Jmax=A_35[1,4], G1=A_35[1,3], Rd0=-(A_35[1,2])))
-#------------------------------------------------------------------------------------------
-#test one plant (sunny vs cloudy)
 
-#sun
-testday <- YplantDay(test, phy=eucphy, met=sunnyday)
-testday20 <- YplantDay(test, phy=eucphy20, met=sunnyday)
-plot(testday20)
+
+#test one plant
+testday <- YplantDay(test, phy=eucphy_free, met=sunnyday)
+plot(testday)
 testdata<-psrdata(testday)
+
+#cloudy
+# testday2 <- YplantDay(test, phy=eucphy, met=cloudyday)
+# plot(testday2)
+# test2data <- psrdata(testday)
 
 # #direct v. diffuse
 # run2 <- YplantDay(plant, phy=eucphy, met=sunny_fbeam0)
@@ -123,28 +139,45 @@ testdata<-psrdata(testday)
 # with(psrdata(run2), plot(timeofday, A/A0, type='l'))
 # with(psrdata(run3), points(timeofday, A/A0, type='l', col="red"))
 
-#cloudy
-testday2 <- YplantDay(test, phy=eucphy, met=cloudyday)
-plot(testday2)
-test2data <- psrdata(testday)
 
-#diurnal simulation of all euc plants---------------------------------------------------------
 
-#from summary of these plants i can get variables in which to correlate to self shading multiplier
-#only uses mean photosynthesis parameters from the free plants (at the moment)
+####diurnal simulation of all euc plants---------------------------------------------------------
+#from summary of these plants  get variables in which to correlate to self shading multiplier
 
-#sunny day
-eucs_all<- YplantDay(euc3d, phy=eucphy, met=sunnyday)
-eucs_5<- YplantDay(euc3d, phy=eucphy5, met=sunnyday)
-eucs_10<- YplantDay(euc3d, phy=eucphy10, met=sunnyday)
-eucs_15<- YplantDay(euc3d, phy=eucphy15, met=sunnyday)
-eucs_20<- YplantDay(euc3d, phy=eucphy20, met=sunnyday)
-eucs_25<- YplantDay(euc3d, phy=eucphy25, met=sunnyday)
-eucs_35<- YplantDay(euc3d, phy=eucphy35, met=sunnyday)
+#create list of setPhy objects
+eucphyList <- list(eucphy_free = eucphy_free, 
+                   eucs5 = eucphy5, 
+                   eucs10 = eucphy10, 
+                   eucs15 = eucphy15, 
+                   eucs20 = eucphy20,
+                   eucs25 = eucphy25, 
+                   eucs35 = eucphy35)
 
-plot(eucs_all)
-plot(eucs_all[[14]])
-plot(eucs_5[[14]])
+#run yplantday on the eucphylist, with richmond sunnday, and euc3d plants (61) 
+euc_test <- lapply(list(eucphyList[[1]], eucphyList[[2]]), function(x) YplantDay(test, phy = x, met = sunnyday))
+testtree <- summary(euc_list[2])
+
+euc_list <- lapply(eucphyList, function(x) YplantDay(euc3d, phy = x, met = sunnyday, PSRsuffix=names(x)))
+
+
+euc_list <- lapply(names(eucphyList), 
+                   function(x) YplantDay(euc3d, phy = eucphyList[[x]], met = sunnyday, PSRsuffix=x))
+
+names(eucphyList)
+YplantDay(plant, etc, PSRsuffix="some label")
+
+# eucs_free<- YplantDay(euc3d, phy=eucphy_free, met=sunnyday)
+# eucs_5<- YplantDay(euc3d, phy=eucphy5, met=sunnyday)
+# eucs_10<- YplantDay(euc3d, phy=eucphy10, met=sunnyday)
+# eucs_15<- YplantDay(euc3d, phy=eucphy15, met=sunnyday)
+# eucs_20<- YplantDay(euc3d, phy=eucphy20, met=sunnyday)
+# eucs_25<- YplantDay(euc3d, phy=eucphy25, met=sunnyday)
+# eucs_35<- YplantDay(euc3d, phy=eucphy35, met=sunnyday)
+
+
+
+plot(eucs_free[[14]])
+plot(euc_list[[2]])
 
 
 # add summary variables:
