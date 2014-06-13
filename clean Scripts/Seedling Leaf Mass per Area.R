@@ -1,5 +1,5 @@
-source("functions and packages/load packages")
 
+source("functions and packages/load packages.R")
 #read leaf data from surveys
 source("read data scripts/survey read data.R")
 
@@ -8,8 +8,9 @@ lma <- subset(lma, !is.na(area))
 lma <- merge(lma, plotsumm, by ="ID")
 lma$volume <- as.factor(lma$volume)
 lma$massperarea <- with(lma, mass/area)
+
 #average lma per pot
-lma_avg <- aggregate(massperarea ~ Date + ID, data = lma, FUN = mean)
+lma_avg <- summaryBy(massperarea ~ Date + ID, data = lma, FUN = mean, keep.names=TRUE)
 #treatment means
 lma_agg <- aggregate(cbind(area , massperarea) ~ Date + volume, data = lma, FUN = mean)
 

@@ -14,14 +14,11 @@ leafharvest$totalcount <- with(leafharvest, leaf_count + newleaf_count)
 leafharvest <- merge(leafharvest, plotsumm, by = c("pot", "plot", "ID"))
 leafharvest$volume <- as.factor(leafharvest$volume)
 
-
 #treatment means for total area and count
 leafharvest_agg <- aggregate(cbind(totalarea, totalcount) ~ volume , data = leafharvest, FUN = mean)
 
-
 #calculate leaf area trough time
 leafindex <- subset(leafharvest, select = c("ID", "areaperleaf", "volume"))
-
 
 #format leaf count data
 leafcount$X1.21.2013   <- as.integer(leafcount$X1.21.2013)
@@ -86,8 +83,7 @@ d_ply(leaftime_agg, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,
 legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), col=palette(), bty='n')
 #dev.copy2pdf(file= "output/canopyleafarea.pdf")
 #no free
-plot(canopysqm.mean ~ Date, data=leaf2, xlab="", ylab=leaf,
-      ylim=c(0,.2))
+plot(canopysqm.mean ~ Date, data=leaf2, xlab="", ylab=leaf,ylim=c(0,.2))
 for(i in 1:7){
   dat <- subset(leaf2, volume==levels(volume)[i])
   with(dat, arrows(Date, canopysqm.mean, Date, canopysqm.mean+SE, angle=90, length=0.03, col=palette()[i], lwd=2))
@@ -100,5 +96,26 @@ legend("topleft", legend, leglab1, pch=16,text.font=3, inset=0.02,
 
 #dev.copy2pdf(file= "output/canopyleafareapots.pdf")
 dev.copy2pdf(file= "output/leafarea_2panel.pdf")
+dev.off()
+
+
+#regular plot---------------------------------------------------------------------------
+
+ypos <- c(2.25,1,0)
+
+#windows(11,8)
+png(filename = "output/png/leafarea.png", width = 11, height = 8, units = "in", res= 400)
+par(cex.axis=1.5,  cex.lab=1.5)
+#png(filename = "output/png/leafarea.png", width = 8, height = 11.5, units = "in", res= 400)
+#windows()
+plot(canopysqm.mean ~ Date, data=leaftime_agg,xlab="", ylab="", ylim=c(0,.6), type='n')
+title(ylab=leaf, mgp=ypos)
+with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean+SE, angle=90, col=palette(),length=0.03))
+with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean-SE, angle=90, col=palette(),length=0.03))
+d_ply(leaftime_agg, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
+                                                  col=x$volume, type="b", pch = pchs[x$volume], cex=1.3,))
+legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)),
+       col=palette(),cex=1.5, bty='n')
+#dev.copy2pdf(file= "output/canopyleafarea.pdf")
 dev.off()
 
