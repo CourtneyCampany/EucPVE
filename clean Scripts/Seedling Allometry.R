@@ -102,8 +102,9 @@ leafno_allpot_agg$SE <- with(leafno_allpot_agg, count.sd/sqrt(count.length))
 
 
 #PLOT
-windows(8,12)
-par(cex.axis=1.2, cex.lab=1.8,
+png(filename = "output/png/allometry.png", width = 8, height = 11.5, units = "in", res= 400)
+#windows()
+par(cex.axis=1.5, cex.lab=1.5,
     mfrow=c(3,1),  # rows and columns of plots
     omi=c(1,0,0.1,0.1),  # outer margin (inches)
     mar=c(0,7,0,0))   # margin around plots (they are tight together)   
@@ -114,11 +115,11 @@ plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),
     axis.Date(1, at=xAT, labels=FALSE) #axis needs no labels
     axis(2, labels=TRUE)  # Y axis
     #mtext("Height (cm)", side=2, outer=TRUE, line=3, cex=1.3, at=.85)
-    legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.02, title=expression(Pot~volume~(l)), col=palette(), bty='n')
+    legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
+           cex=1.5, col=palette(), bty='n')
     
   with(height_agg, arrows(Date, height.mean, Date, height.mean+SE, angle=90, col=palette(),length=0.03))
   with(height_agg, arrows(Date, height.mean, Date, height.mean-SE, angle=90, col=palette(),length=0.03))
-
     points(height.mean ~ Date, data=height_agg,pch=c(rep(16,6),17)[volume], cex=PTcex, col = volume)      
     box()
 
@@ -132,7 +133,6 @@ plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm
 
 with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean+SE, angle=90, col=palette(),length=0.03))
 with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-SE, angle=90, col=palette(),length=0.03))
-
     points(diameter.mean ~ Date, data=diam_agg, pch=c(rep(16,6),17)[volume],cex=PTcex,col = volume)
      box()
             
@@ -146,14 +146,13 @@ plot(count.mean ~ Date, data=leafno_agg,
 
   with(leafno_agg, arrows(Date, count.mean, Date, count.mean+SE, angle=90, col=palette(),length=0.03))
   with(leafno_agg, arrows(Date, count.mean, Date, count.mean-SE, angle=90, col=palette(),length=0.03))
-
      points(count.mean ~ Date, data=leafno_agg,  pch=c(rep(16,6),17)[volume], cex=PTcex,col = volume)
      box()
-
 # Axis titles
   #mtext("Date", side=1, outer=TRUE, line=3, cex=1.3)
 
-dev.copy2pdf(file= "output/allometry.pdf")
+#dev.copy2pdf(file= "output/allometry.pdf")
+dev.off()
 
 
 #stats----------------------------------------------------------------------------------------------
@@ -183,9 +182,9 @@ getP(leafno_potsize)
 
 #------------------------------------------------------------------------------------------#
 #PLOT with no FREE plant
-
-windows(8,12)
-par(cex.axis=0.9,  cex.lab=1.3,mfrow=c(3,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
+png(filename = "output/png/allom_nofree.png", width = 8, height = 11, units = "in", res= 400)
+#windows()
+par(cex.axis=1.5,  cex.lab=1.5,mfrow=c(3,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
 
 # First Panel
 plot(height.mean ~ Date, data=height_allpot_agg,
@@ -193,7 +192,8 @@ plot(height.mean ~ Date, data=height_allpot_agg,
 
 axis.Date(1, at=xAT, labels=FALSE) 
 axis(2, labels=TRUE)  
-legend("topleft", leglab2, pch=16, text.font=3, inset=0.02, title=expression(Pot~volume~(l)), col=palette(), bty='n')
+legend("topleft", leglab2, pch=16, text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
+       cex=1.5,col=palette(), bty='n')
 
 with(height_allpot_agg, arrows(Date, height.mean, Date, height.mean+SE, angle=90, col=volume,length=0.03))
 with(height_allpot_agg, arrows(Date, height.mean, Date, height.mean-SE, angle=90, col=volume,length=0.03))
@@ -230,5 +230,5 @@ box()
 
 #mtext("Date", side=1, outer=TRUE, line=3, cex=1.3)
 
-dev.copy2pdf(file= "output/allometrypots.pdf")
+#dev.copy2pdf(file= "output/allometrypots.pdf")
 dev.off()
