@@ -1,5 +1,8 @@
 source("functions and packages/load model packages.R")
-install_bitbucket("yplantqmc","remkoduursma")
+
+install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
+
+require(YplantQMC)
 
 #First need to run the sample trees through construct plant and get summary for each to use with raw data
 #use readplantlist and summary.plant3d
@@ -7,17 +10,17 @@ install_bitbucket("yplantqmc","remkoduursma")
 #use the csv file to create the correct list of files and add the path so that readplant can use them
 euckey <- read.csv("yplant/euc_plfiles/euc_key.csv")
 euckey <- as.data.frame(euckey)
-euckey$pfile <- paste("yplant/euc_plfiles/P_file/", euckey$pfile, sep = "")
-euckey$lfile <- paste("yplant/euc_plfiles/L_file/", euckey$lfile, sep = "")
+euckey$pfile <- paste("yplant/euc_plfiles/", euckey$pfile, sep = "")
+euckey$lfile <- paste("yplant/euc_plfiles/", euckey$lfile, sep = "")
 
 #test
-test <- constructplant(pfile="yplant/euc_plfiles/P_file/Eletr5.p", lfile="yplant/euc_plfiles/L_file/Elelf5.l")
+test <- constructplant(pfile="yplant/euc_plfiles/Eletr5.p", lfile="yplant/euc_plfiles/Elelf5.l")
 summary(test)
 
 #use readplant list in order to construct multiple plants, complete my species 
 euc3d <- readplantlist(pfile=euckey$pfile, lfiles=euckey$lfile)
 #look at one random tree
-plot(euc3d[[14]])
+plot(euc3d[[4]])
 
 #summarise
 summary(euc3d, writefile=TRUE)
