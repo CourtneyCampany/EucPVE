@@ -1,6 +1,6 @@
 source("functions and packages/load model packages.R")
 
-install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
+#install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
 
 require(YplantQMC)
 
@@ -14,13 +14,14 @@ euckey$pfile <- paste("yplant/euc_plfiles/", euckey$pfile, sep = "")
 euckey$lfile <- paste("yplant/euc_plfiles/", euckey$lfile, sep = "")
 
 #test
-test <- constructplant(pfile="yplant/euc_plfiles/Eletr5.p", lfile="yplant/euc_plfiles/Elelf5.l")
+test <- constructplant("yplant/euc_plfiles/Eletr5.p", "yplant/euc_plfiles/Elelf5.l")
 summary(test)
+plot(test)
 
 #use readplant list in order to construct multiple plants, complete my species 
-euc3d <- readplantlist(pfile=euckey$pfile, lfiles=euckey$lfile)
+euc3d <- readplantlist(pfiles=euckey$pfile, lfiles=euckey$lfile)
 #look at one random tree
-plot(euc3d[[4]])
+plot(euc3d[[15]])
 
 #summarise
 summary(euc3d, writefile=TRUE)
@@ -126,7 +127,7 @@ eucphy35 <- setPhy("Farquhar",leafpars=list(Vcmax=A_35[1,5], Jmax=A_35[1,4], G1=
 
 
 #test one plant
-testday <- YplantDay(test, phy=eucphy_free, met=sunnyday)
+testday <- YplantDay(test, phy=eucphy20, met=sunnyday)
 plot(testday)
 testdata<-psrdata(testday)
 
@@ -158,16 +159,23 @@ eucphyList <- list(eucphy_free = eucphy_free,
 
 #run yplantday on the eucphylist, with richmond sunnday, and euc3d plants (61) 
 euc_test <- lapply(list(eucphyList[[1]], eucphyList[[2]]), function(x) YplantDay(test, phy = x, met = sunnyday))
-testtree <- summary(euc_list[2])
+summary(euc_test[1])
+plot(euc_test[[2]])
 
 euc_list <- lapply(eucphyList, function(x) YplantDay(euc3d, phy = x, met = sunnyday, PSRsuffix=names(x)))
 
+euc_list <- list()
+for(i in 1:length(eucphyList)){
+  euc_list[[i]] <- YplantDay(euc3d, phy = eucphyList[[i]], met = sunnyday, PSRsuffix=names(eucphyList)[i])
+}
 
-euc_list <- lapply(names(eucphyList), 
-                   function(x) YplantDay(euc3d, phy = eucphyList[[x]], met = sunnyday, PSRsuffix=x))
 
-names(eucphyList)
-YplantDay(plant, etc, PSRsuffix="some label")
+
+
+
+#euc_list <- lapply(names(eucphyList), function(x) YplantDay(euc3d, phy = eucphyList[[x]], met = sunnyday, PSRsuffix=x))
+
+
 
 # eucs_free<- YplantDay(euc3d, phy=eucphy_free, met=sunnyday)
 # eucs_5<- YplantDay(euc3d, phy=eucphy5, met=sunnyday)

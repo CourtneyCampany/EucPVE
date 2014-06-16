@@ -103,12 +103,13 @@ plot(totalmass~diameter, data=allomvar,log="xy", col=volume, pch=pchs[volume])
 
 #diameter
 logD_mod <- lm(log(totalmass)~I(log(diameter)),data=allomvar)
-m<- logD_mod <- lm(log(totalmass)~I(log(diameter)),data=allomvar)
 summary(logD_mod)
 coefD <-as.data.frame(coef(logD_mod))
 predict(logD_mod)
 #The model is therefore:log(totalmass) = −1.768846+2.588310log(diameter)
 plot(logD_mod,which=1:2)
+library(visreg)
+visreg(logD_mod)
 
 # #d2h
 # logDH_mod <- lm(log(totalmass)~I(log(d2h)),data=allomvar)
@@ -132,6 +133,7 @@ mass_predict <- diameter
 mass_predict$treemass <- exp(intcptD)*(mass_predict$diameter^slopeD)
 
 plot(treemass~diameter, data=subset(mass_predict, volume=="5"), col="red", pch=16)
+  points(totalmass~diameter, data=allomvar,col=volume, pch=1)
 
 # recalculate with the correction factor (Spruegel 1983)
 #use Residual standard error for correction factor
@@ -140,43 +142,22 @@ slopeDcf<- cf*slopeD
 #equation becomes:
 mass_predict$treemass2 <- exp(intcptD)*(mass_predict$diameter^slopeDcf)
 
-plot(treemass2~diameter, data=subset(mass_predict, volume=="5"), col="red", pch=16)
-points(treemass~diameter, data=subset(mass_predict, volume=="5"), col="red", pch=1)
-
-#plot each volume seperately using plyr
-
-plot(treemass2~diameter, data=mass_predict)
-
+plot(treemass2~diameter, data=subset(mass_predict, volume=="5"), col="black", pch=16)
+  points(treemass~diameter, data=subset(mass_predict, volume=="5"), col="black", pch=1)
+  points(totalmass~diameter, data=allomvar,col=volume, pch=16)
 
 #back transformations...additive(log) vs multiplicative(raw) error???
 #consider the power model (if logxy).... power model Y = aXb
 
-
-#apply model over dates
-
-mass_predict$treemass2 <- exp(intcptD)*(mass_predict$diameter^slopeDcf)
+####ues model over all dates to predict seedling mass----------------------------------------------------
 
 mass_date <- diameter
 mass_date$predmass <-  exp(intcptD)*(mass_date$diameter^slopeDcf)
 mass_date$volume<- as.factor(mass_date$volume)
 mass_date$Date<- as.Date(mass_date$Date)
 
-
-
-plot(predmass~Date, data=mass_date, col=volume, pch=pchs[volume])
-
-mass_date_agg <- summaryBy(predmass+diameter~Date+volume, data=mass_date, FUN=mean, keep.names=TRUE)
-real_mass_agg <- summaryBy(totalmass+diameter~Date+volume, data=allomvar, FUN=mean, keep.names=TRUE)
-
-plot(predmass~Date, data=mass_date_agg, col=volume, pch=pchs[volume], ylim=c(0,225))
-points(totalmass~Date, data=real_mass_agg, col=volume, pch=5, cex=1.4)
-
-#need to have mass at each time interval to look at treatment effects throug time
-
-pred_mass_sp <- dlply(mass_date, .(Date))
-
-fit <- lm(pred_mass_sp[predmass][[1]] ~ pred_mass_sp[volume][[1]])
-
+#predicted mass thorugh time with choosen model
+write.csv(mass_date, "calculated data/mass_predicted.csv", row.names=FALSE)
 
 
 
