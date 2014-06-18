@@ -1,0 +1,40 @@
+Simulation summary for plant constructed from files:
+   P file: yplant/euc_plfiles/47nd.p
+   L file: yplant/euc_plfiles/47nd_leaf.l
+----------------------------------------------------
+
+Total photosynthesis      (mol day-1)  : 1.315
+Total absorbed PAR (APAR) (mol day-1)  : 63.619
+Total Diffuse APAR        (mol day-1)  : 28.921
+Total Direct APAR         (mol day-1)  : 34.698
+----------------------------------------------------
+
+Variables by timestep:
+(Some may not be included)
+timeofday   - Time of day (hours) of timestep.
+PAR0        - Incident PAR above canopy (mu mol m-2 s-1)
+PARinc      - Incident PAR below canopy (mu mol m-2 s-1)
+PARleaf     - Absorbed total PAR (mu mol m-2 s-1)
+PARdir      - Absorbed direct PAR (mu mol m-2 s-1)
+PARdiff     - Absorbed diffuse PAR (mu mol m-2 s-1)
+A           - CO2 assimilation rate (mu mol m-2 s-1)
+A0          - A by horizontal leaf above canopy (mu mol m-2 s-1)
+E           - Transpiration rate (mmol m-2 s-1)
+timestep    - Length of timestep (seconds)
+LAplant     - Total plant leaf area (m2)
+LAproj      - Total projected leaf area (m2) ('NA' if diffuse PAR only).
+LAsunlit    - Total displayed (sunlit) leaf area (m2) ('NA' if diffuse PAR only).
+
+timeofday	PAR0	PARinc	PARleaf	PARdir	PARdiff	A	E	A0	timestep	LAplant	LAproj	LAsunlit
+6.087343	77.549573	77.549573	42.421192	0	42.421192	2.394269	0.357905	4.144074	4057.152637	2.439155	NA	NA
+7.21433	575.503602	575.503602	402.836825	263.555037	139.281788	11.26021	1.66712	13.882682	4057.152637	2.439155	1.339536	0.788248
+8.341317	1145.278247	1145.278247	587.616319	358.361699	229.25462	13.37837	2.561775	16.971869	4057.152637	2.439155	1.224013	0.779475
+9.468304	1646.559021	1646.559021	686.40504	381.837715	304.567325	14.06223	3.275595	16.652151	4057.152637	2.439155	1.087943	0.735307
+10.59529	2013.151464	2013.151464	729.606869	370.902508	358.704361	13.85782	3.762985	15.477374	4057.152637	2.439155	0.974793	0.675315
+11.722277	2206.046632	2206.046632	745.76125	358.765483	386.995767	13.437069	4.070534	14.505303	4057.152637	2.439155	0.924164	0.638141
+12.849264	2206.046632	2206.046632	757.226581	370.230814	386.995767	13.071381	4.21741	13.935742	4057.152637	2.439155	0.9307	0.658397
+13.976251	2013.151464	2013.151464	736.051903	377.347542	358.704361	12.837545	4.205182	13.836718	4057.152637	2.439155	0.993634	0.686335
+15.103238	1646.559021	1646.559021	692.413277	387.845952	304.567325	12.788366	4.046189	14.214167	4057.152637	2.439155	1.097004	0.746213
+16.230225	1145.278247	1145.278247	592.91119	363.656571	229.25462	12.533954	3.678068	15.000011	4057.152637	2.439155	1.21629	0.790854
+17.357211	575.503602	575.503602	413.058678	273.77689	139.281788	11.185046	2.987159	14.100404	4057.152637	2.439155	1.318144	0.819017
+18.484198	77.549573	77.549573	42.421192	0	42.421192	2.097314	1.071276	3.765619	4057.152637	2.439155	NA	NA
