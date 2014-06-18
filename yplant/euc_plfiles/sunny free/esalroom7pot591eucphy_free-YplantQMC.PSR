@@ -1,0 +1,40 @@
+Simulation summary for plant constructed from files:
+   P file: yplant/euc_plfiles/esalroom7pot591.p
+   L file: yplant/euc_plfiles/leafpot591_true.lf
+----------------------------------------------------
+
+Total photosynthesis      (mol day-1)  : 0.36
+Total absorbed PAR (APAR) (mol day-1)  : 16.514
+Total Diffuse APAR        (mol day-1)  : 7.383
+Total Direct APAR         (mol day-1)  : 9.131
+----------------------------------------------------
+
+Variables by timestep:
+(Some may not be included)
+timeofday   - Time of day (hours) of timestep.
+PAR0        - Incident PAR above canopy (mu mol m-2 s-1)
+PARinc      - Incident PAR below canopy (mu mol m-2 s-1)
+PARleaf     - Absorbed total PAR (mu mol m-2 s-1)
+PARdir      - Absorbed direct PAR (mu mol m-2 s-1)
+PARdiff     - Absorbed diffuse PAR (mu mol m-2 s-1)
+A           - CO2 assimilation rate (mu mol m-2 s-1)
+A0          - A by horizontal leaf above canopy (mu mol m-2 s-1)
+E           - Transpiration rate (mmol m-2 s-1)
+timestep    - Length of timestep (seconds)
+LAplant     - Total plant leaf area (m2)
+LAproj      - Total projected leaf area (m2) ('NA' if diffuse PAR only).
+LAsunlit    - Total displayed (sunlit) leaf area (m2) ('NA' if diffuse PAR only).
+
+timeofday	PAR0	PARinc	PARleaf	PARdir	PARdiff	A	E	A0	timestep	LAplant	LAproj	LAsunlit
+6.087343	77.549573	77.549573	49.613364	0	49.613364	2.767864	0.404745	4.236399	4057.152637	0.532435	NA	NA
+7.21433	575.503602	575.503602	487.415756	324.519862	162.895894	14.378335	2.164199	16.42058	4057.152637	0.532435	0.277784	0.216652
+8.341317	1145.278247	1145.278247	712.852684	444.729789	268.122895	17.238368	3.337165	20.99228	4057.152637	0.532435	0.290432	0.21616
+9.468304	1646.559021	1646.559021	835.129724	478.925461	356.204263	18.033328	4.221421	21.429805	4057.152637	0.532435	0.298169	0.206544
+10.59529	2013.151464	2013.151464	903.139741	483.619944	419.519797	17.712164	4.797284	19.858345	4057.152637	0.532435	0.297967	0.197487
+11.722277	2206.046632	2206.046632	938.825412	486.217629	452.607783	16.930602	5.098203	18.506539	4057.152637	0.532435	0.283643	0.193971
+12.849264	2206.046632	2206.046632	921.673882	469.066099	452.607783	16.323784	5.224446	17.709814	4057.152637	0.532435	0.262047	0.187049
+13.976251	2013.151464	2013.151464	875.640956	456.12116	419.519797	16.021691	5.198479	17.570037	4057.152637	0.532435	0.241033	0.186039
+15.103238	1646.559021	1646.559021	782.15702	425.952757	356.204263	15.918413	4.999944	18.092946	4057.152637	0.532435	0.231265	0.183571
+16.230225	1145.278247	1145.278247	644.667611	376.544716	268.122895	15.516912	4.538986	19.120352	4057.152637	0.532435	0.234089	0.183389
+17.357211	575.503602	575.503602	444.220667	281.324773	162.895894	13.458724	3.607641	16.271795	4057.152637	0.532435	0.243946	0.187953
+18.484198	77.549573	77.549573	49.613364	0	49.613364	2.358027	1.144219	3.733369	4057.152637	0.532435	NA	NA
