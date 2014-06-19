@@ -1,63 +1,45 @@
+require(plyr)
+require(doBy)
+
 #use simulations from sunny day and A parameters for each pot volume to calc M
 #M = Aplant/Aobs
 
-#read data from each run
-sun5 <- read.csv("yplant/euc_plfiles/sunny_5/sunny_stats.csv")
-sun10 <- read.csv("yplant/euc_plfiles/sunny_10/sun10_stats.csv")
-sun15 <- read.csv("yplant/euc_plfiles/sunny_15/sun15_stats.csv")
-sun20 <- read.csv("yplant/euc_plfiles/sunny_20/sun20_stats.csv")
-sun25<- read.csv("yplant/euc_plfiles/sunny_25/sun25_stats.csv")
-sun35 <- read.csv("yplant/euc_plfiles/sunny_35/sun35_stats.csv")
-sun_free <- read.csv("yplant/euc_plfiles/sunny_5/sunny_stats.csv")
+#read in summary files for all volumes into a list
+eucs_summs <- list.files(path = "yplant/simulation_summary/", pattern="*.csv", full.names = TRUE)
+eucs_list <- lapply(eucs_summs, function(x) read.csv(x))
 
+#name list elements
+listnames <- c("10", "15", "20", "25", "35", "5", "free")
+names(eucs_list) <- listnames
 
-sun5_sum<- summary()
-
-#function to calculate M
-Mcalc <- function(dfr){
+#function to calculate M (twp arguments:1st is dfr, 2nd is the name of each list element)
+Mcalc <- function(dfr, vol){
 dfr$plant_id <- gsub("yplant/euc_plfiles/", "", dfr$pfile)
 dfr$plant_id <- gsub(".p", "", dfr$plant_id)
 dfr$M <- dfr$totA/dfr$totA0
 M_dfr <- subset(dfr, select = c("plant_id", "M", "totPARleaf"))
+M_dfr$volume <- as.factor(vol)
 return(M_dfr)
 }
 
-#M dfrs for each volume on sunny day
-M5 <- Mcalc(sun5)
-M5$volume <- 5 
-M10 <- Mcalc(sun10)
-M10$volume <- 10 
-M15 <- Mcalc(sun15)
-M15$volume <- 15 
-M20 <- Mcalc(sun20)
-M20$volume <- 20
-M25 <- Mcalc(sun25)
-M25$volume <- 25 
-M35 <- Mcalc(sun35)
-M35$volume <- 35 
-M_free <- Mcalc(sun_free)
-M_free$volume <- "free" 
+#run the function on each element of the list 
+#call the names of the list into plyr, run the function on each element (eucs_list[[x]]) where vol argument = names
+M_eucs <- ldply(names(eucs_list), function(x) Mcalc(dfr = eucs_list[[x]], vol = x))
+write.csv(M_eucs, "calculated data/M_eucs.csv", row.names=FALSE)
+#means
+M_agg <- summaryBy(M ~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
 
-#create master dfr with all volumes
-M_eucs <- rbind(M5, M10)
-M_eucs <- rbind(M_eucs, M15)
-M_eucs <- rbind(M_eucs, M20)
-M_eucs <- rbind(M_eucs, M25)
-M_eucs <- rbind(M_eucs, M35)
-M_eucs <- rbind(M_eucs, M_free)
-M_eucs$volume<- as.factor(M_eucs$volume)
-
-#colors
+#plot bits
 gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
-require(doBy)
+pchs = c(rep(16,6),17)
 
 #plot
-plot(M~totPARleaf, pch=16, col=volume, data=M_eucs)
+plot(M~totPARleaf, pch=pchs[volume], col=volume, data=M_agg)
 
-write.csv(M_eucs, "calculated data/M_eucs.csv", row.names=FALSE)
 
-M_agg <- summaryBy(M ~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
+
+
 
 
 #plot M against leaf#-----------------------------------------------------------------------------

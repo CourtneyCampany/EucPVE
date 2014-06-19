@@ -158,63 +158,33 @@ eucphyList <- list(eucphy_free = eucphy_free,
                    eucs35 = eucphy35)
 
 #run yplantday on the eucphylist, with richmond sunnday, and euc3d plants (61) 
-euc_test <- lapply(list(eucphyList[[1]], eucphyList[[2]]), function(x) YplantDay(test, phy = x, met = sunnyday))
-summary(euc_test[1])
-plot(euc_test[[2]])
+# euc_test <- lapply(list(eucphyList[[1]], eucphyList[[2]]), function(x) YplantDay(test, phy = x, met = sunnyday))
+# summary(euc_test[1])
+# plot(euc_test[[2]])
 
-euc_list <- lapply(eucphyList, function(x) YplantDay(euc3d, phy = x, met = sunnyday, PSRsuffix=names(x)))
-
+#run simulatiojn, make empty list, run each phy=volume, and output psr files for each tree, then lapply for summary
 euc_list <- list()
 for(i in 1:length(eucphyList)){
   euc_list[[i]] <- YplantDay(euc3d, phy = eucphyList[[i]], met = sunnyday, PSRsuffix=names(eucphyList)[i])
 }
 
+saveRDS(euc_list, "yplant/euc_sim.rds")
+#euc_list <- readRDS("somefilename.rds")
+eucsumm <- lapply(euc_list, summary)
+#need to add names the list by their volume
+listnames <- c("eucs_5", "eucs_10", "eucs_15", "eucs_20", "eucs_25", "eucs_35", "eucs_free")
+names(eucsumm) <- listnames
 
+#save each list as a dfr with the name (##use names of list for apply function, see use of [[x]] for func arg)
 
-
-
-#euc_list <- lapply(names(eucphyList), function(x) YplantDay(euc3d, phy = eucphyList[[x]], met = sunnyday, PSRsuffix=x))
-
-
-
-# eucs_free<- YplantDay(euc3d, phy=eucphy_free, met=sunnyday)
-# eucs_5<- YplantDay(euc3d, phy=eucphy5, met=sunnyday)
-# eucs_10<- YplantDay(euc3d, phy=eucphy10, met=sunnyday)
-# eucs_15<- YplantDay(euc3d, phy=eucphy15, met=sunnyday)
-# eucs_20<- YplantDay(euc3d, phy=eucphy20, met=sunnyday)
-# eucs_25<- YplantDay(euc3d, phy=eucphy25, met=sunnyday)
-# eucs_35<- YplantDay(euc3d, phy=eucphy35, met=sunnyday)
-
-
-
-plot(eucs_free[[14]])
-plot(euc_list[[2]])
-
-
-# add summary variables:
-sunny_summ <- summary(eucs_all)  
-sun5_summ <- summary(eucs_5)
-sun10_summ <- summary(eucs_10)
-sun15_summ <- summary(eucs_15)
-sun20_summ <- summary(eucs_20)
-sun25_summ <- summary(eucs_25)
-sun35_summ <- summary(eucs_35)
-
-write.csv(sunny_summ, "yplant/euc_plfiles/sunny free/sunny_stats.csv", row.names=FALSE)
-write.csv(sun5_summ, "yplant/euc_plfiles/sunny_5/sunny_stats.csv", row.names=FALSE)
-write.csv(sun10_summ, "yplant/euc_plfiles/sunny_10/sun10_stats.csv", row.names=FALSE)
-write.csv(sun15_summ, "yplant/euc_plfiles/sunny_15/sun15_stats.csv", row.names=FALSE)
-write.csv(sun20_summ, "yplant/euc_plfiles/sunny_20/sun20_stats.csv", row.names=FALSE)
-write.csv(sun25_summ, "yplant/euc_plfiles/sunny_25/sun25_stats.csv", row.names=FALSE)
-write.csv(sun35_summ, "yplant/euc_plfiles/sunny_35/sun35_stats.csv", row.names=FALSE)
-
+#lapply(names(eucsumm), function(x) write.csv(eucsumm[[x]], file = paste(x, ".csv", sep = "")))
+l_ply(names(eucsumm), function(x) write.csv(eucsumm[[x]], file = paste("yplant/simulation_summary/", x, ".csv", sep = "")))
 
 #run on a cloudy day
 # eucs_cloud <- YplantDay(euc3d, phy=eucphy, met=cloudyday)
 # plot(eucs_cloud)
 # # add summary variables:
 # cloudy_summary <- summary(eucs_cloud) 
-
 
 
 
