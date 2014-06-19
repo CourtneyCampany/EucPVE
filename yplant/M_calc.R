@@ -25,17 +25,25 @@ return(M_dfr)
 #run the function on each element of the list 
 #call the names of the list into plyr, run the function on each element (eucs_list[[x]]) where vol argument = names
 M_eucs <- ldply(names(eucs_list), function(x) Mcalc(dfr = eucs_list[[x]], vol = x))
+M_eucs$plant_id <- as.factor(M_eucs$plant_id)
 write.csv(M_eucs, "calculated data/M_eucs.csv", row.names=FALSE)
 #means
-M_agg <- summaryBy(M ~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
+M_agg <- summaryBy(M+totPARleaf~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
 
 #plot bits
 gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 pchs = c(rep(16,6),17)
+pchs3 <- c(16,17,18,15,5,6,7)
 
 #plot
-plot(M~totPARleaf, pch=pchs[volume], col=volume, data=M_agg)
+plot(M~totPARleaf, pch=pchs[volume], col=volume, data=M_eucs)
+
+
+n<- as.numeric(length(unique(M_eucs$plant_id)))
+col2 <- rainbow(n)
+
+plot(M~totPARleaf, pch=pchs3[volume], col=col2[plant_id], data=M_eucs)
 
 
 
