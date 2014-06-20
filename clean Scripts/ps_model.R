@@ -5,19 +5,25 @@
 ###made change
 source("functions and packages/load packages.R")
 source("functions and packages/functions.R")
+library(plantecophys)
 
 #READ DATA, calculated data for A parameters, met data, and leaf area
 
 #generated jmax and vcmax
-jmax_vcmax <- read.csv("calculated data/aci_parameters,csv")
+jmax_vcmax <- read.csv("calculated data/aci_parameters.csv")
 
 #site weather data, rename variables, format date stuff
 eucpve_met <- read.csv("calculated data/eucpve_met.csv")
 names(eucpve_met)[2:5] <- c("record", "PPFD", "temp", "RH")
-eucpve_met$DateTime15 <- as.Date(ymd_hms(eucpve_met$DateTime15))
-eucpve_met$Date <- as.Date(ymd(eucpve_met$DateTime15))
+eucpve_met$Date <- as.Date(eucpve_met$DateTime15)
+
+#need to turn the datetime 15 into hms
+eucpve_met$DateTime15 <- ymd_hms(eucpve_met$DateTime15)
+eucpve_met$time15 <- format(eucpve_met$DateTime15, format='%H:%M:%S')
+
+
 #subset by Date range of experiment
-eucpve_met1 <- subset(eucpve_met, DateTime15  >= "2013-01-21" & DateTime15  <= "2013-05-21")
+eucpve_met1 <- subset(eucpve_met[,3:7], Date  >= "2013-01-21" & Date  <= "2013-05-21")
 
 #plot summary
 plotsumm <- read.csv("raw data/plot_summary.csv")
@@ -74,40 +80,47 @@ with(A_model, plot(temp,Rd_pred2, col=volume))
 #------------------------------------------------------------------------------------------------------
 #input parameters from optimal conductance model (using nls)
 
-
-
-
+g1 <- read.csv("calculated data/g1_pred.csv")
+#can implement g1 from medlyn model but havent yet
 
 #-------------------------------------------------------------------------------------------------
-#now run the model (includes pred Rdark from crouseq10, and gs parameters modelled form spot measurements)
+#now run the model (includes pred Rdark from crouseq10, and gs parameters modelled from spot measurements)
 
 #convert RH to VPD
 A_model$VPD <- RHtoVPD(A_model$RH, A_model$temp, Pa=101)
 
-#model, should return the aleaf for every 15 minutes.
+#model, should return the aleaf for every 15 minutes. (will retrun Aleaf at 15min interval)
 A_pred <- Photosyn(VPD=A_model$VPD,Ca=400, PPFD=A_model$PPFD, Tleaf=A_model$temp, 
                             Jmax=A_model$Jmax, Vcmax=A_model$Vcmax, Rd=A_model$Rd_pred2)
 
 #new variable ,net A, with aleaf - RD
 A_pred$Anet <- with(A_pred, ALEAF-Rd)
 
+#need a new dfr with Aleaf and Anet across the day
+Aleaf <- A_pred[,c(1:4, 8:9, 11:12)]
+Aleaf_15min <- cbind(Aleaf, A_model[,c(1, 5:6)])
+write.csv(Aleaf_15min, "calculated data/Aleaf_pred_15min.csv")
+
 #umols CO2 to mols CO2 to g C
 A_pred$Cpred <- with(A_pred, (Anet/1000000)*12)
 
 #turns rate of net A (umols m2s)into units of every 15 min
 A_pred$Cpred_15 <- with(A_pred, Cpred*15*60)
+#also A rate (umols m2s) into every 15 min
+A_pred$A_15 <- with(A_pred, Cpred*15*60)
 
 #sum, but need Date metrics
 A_pred <- cbind((subset(A_model, select = c("Date", "volume"))),
                 A_pred)
 
 #unit conversion to gc per day per m2
-Aday_pred <- summaryBy(Cpred_15 ~ volume + Date, data= A_pred, FUN=sum)
+Aday_pred <- summaryBy(ALEAF, Anet, Cpred_15 ~ volume + Date, data= A_pred, FUN=sum)
 Aday_pred$volume <- as.factor(Aday_pred$volume)
 names(Aday_pred)[3] <- "Cday"
 
 #plot 
-with(Aday_pred, plot(Date, Cday, col=palette(), pch=pchs, type="p", ylim=c(0, 12)))
+with(Aday_pred, plot(Date, Cday, col=volume, pch=pchs[volume], type="p", ylim=c(0, 12)))
+with(Aday_pred, plot(Date, Anet, col=volume, pch=pchs[volume], type="p", ylim=c(0, 20)))
 
 #------------------------------------------------------------------------------------
 #new dataframe with calculated Aleaf and experiment metrics
@@ -119,7 +132,7 @@ treeC_pred <- merge(Aday_pred, LA,  by=c("Date", "volume"))
 #make sure that LA is in m2
 treeC_pred$Cday_plant <- with(treeC_pred, LA_pred*Cday)
 
-with(treeC_pred, plot(Date, Cday_plant, col=palette(), pch=pchs, type="p", ylim=c(0, 6)))
+with(treeC_pred, plot(Date, Cday_plant, col=volume, pch=pchs[volume], type="p", ylim=c(0, 6)))
 
 
 #treatment means
