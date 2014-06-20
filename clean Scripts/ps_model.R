@@ -99,7 +99,7 @@ A_pred$Anet <- with(A_pred, ALEAF-Rd)
 #need a new dfr with Aleaf and Anet across the day
 Aleaf <- A_pred[,c(1:4, 8:9, 11:12)]
 Aleaf_15min <- cbind(Aleaf, A_model[,c(1, 5:6)])
-write.csv(Aleaf_15min, "calculated data/Aleaf_pred_15min.csv")
+write.csv(Aleaf_15min, "calculated data/Aleaf_pred_15min.csv", row.names=FALSE)
 
 #umols CO2 to mols CO2 to g C
 A_pred$Cpred <- with(A_pred, (Anet/1000000)*12)

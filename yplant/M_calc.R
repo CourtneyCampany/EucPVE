@@ -45,6 +45,12 @@ col2 <- rainbow(n)
 
 plot(M~totPARleaf, pch=pchs3[volume], col=col2[plant_id], data=M_eucs)
 
+#should I pull out plants that have a similar height, leaf area, etc?
+#there is significant variation in the range of M, not all values may be suitable for my seedlings
+
+
+
+
 
 
 
