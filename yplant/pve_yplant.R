@@ -24,7 +24,8 @@ euc3d <- readplantlist(pfiles=euckey$pfile, lfiles=euckey$lfile)
 plot(euc3d[[15]])
 
 #summarise
-summary(euc3d, writefile=TRUE)
+eucs3d <- summary(euc3d, writefile=TRUE)
+write.csv(eucs3d, "yplant/eucs_constructplant.csv", row.names=FALSE)
 
 
 #--------------------------------------------------------------------------------------------------------
