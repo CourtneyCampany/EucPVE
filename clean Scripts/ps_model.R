@@ -5,6 +5,7 @@
 ###made change
 source("functions and packages/load packages.R")
 source("functions and packages/functions.R")
+source("functions and packages/plot objects.R")
 library(plantecophys)
 
 #READ DATA, calculated data for A parameters, met data, and leaf area
@@ -41,12 +42,6 @@ Asat_obs$Date <- as.Date(Asat_obs$Date)
 
 #Rdark Q10 equations by volume
 rdarkq10 <- read.csv("calculated data/rdarkq10.csv")
-
-
-#plot bits
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs <- c(rep(16,6),17)
 
 
 #---------------------------------------------------------------------------------------------
