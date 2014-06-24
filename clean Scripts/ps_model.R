@@ -76,7 +76,10 @@ with(A_model, plot(temp,Rd_pred2, col=volume))
 #input parameters from optimal conductance model (using nls)
 
 g1 <- read.csv("calculated data/g1_pred.csv")
-#can implement g1 from medlyn model but havent yet
+g1_mean <- mean(g1$g1_date)
+g1_agg <- summaryBy(g1_vol ~ volume, data=g1, keep.names=TRUE)
+
+A_model <- merge(A_model, g1_agg, by="volume")
 
 #-------------------------------------------------------------------------------------------------
 #now run the model (includes pred Rdark from crouseq10, and gs parameters modelled from spot measurements)
@@ -86,7 +89,7 @@ A_model$VPD <- RHtoVPD(A_model$RH, A_model$temp, Pa=101)
 
 #model, should return the aleaf for every 15 minutes. (will retrun Aleaf at 15min interval)
 A_pred <- Photosyn(VPD=A_model$VPD,Ca=400, PPFD=A_model$PPFD, Tleaf=A_model$temp, 
-                            Jmax=A_model$Jmax, Vcmax=A_model$Vcmax, Rd=A_model$Rd_pred2)
+                            Jmax=A_model$Jmax, Vcmax=A_model$Vcmax, Rd=A_model$Rd_pred2, g1=A_model$g1_vol)
 
 #new variable ,net A, with aleaf - RD
 A_pred$Anet <- with(A_pred, ALEAF-Rd)
@@ -95,6 +98,8 @@ A_pred$Anet <- with(A_pred, ALEAF-Rd)
 Aleaf <- A_pred[,c(1:4, 8:9, 11:12)]
 Aleaf_15min <- cbind(Aleaf, A_model[,c(1, 5:6)])
 write.csv(Aleaf_15min, "calculated data/Aleaf_pred_15min.csv", row.names=FALSE)
+
+####stops here for now------------------------
 
 #umols CO2 to mols CO2 to g C
 A_pred$Cpred <- with(A_pred, (Anet/1000000)*12)
@@ -105,8 +110,7 @@ A_pred$Cpred_15 <- with(A_pred, Cpred*15*60)
 A_pred$A_15 <- with(A_pred, Cpred*15*60)
 
 #sum, but need Date metrics
-A_pred <- cbind((subset(A_model, select = c("Date", "volume"))),
-                A_pred)
+A_pred <- cbind((subset(A_model, select = c("Date", "volume"))),A_pred)
 
 #unit conversion to gc per day per m2
 Aday_pred <- summaryBy(ALEAF, Anet, Cpred_15 ~ volume + Date, data= A_pred, FUN=sum)
