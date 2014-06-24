@@ -32,6 +32,7 @@ treelab<- "Seedling Mass (g)"
 leaflab <-expression(Leaf~Area~~(cm^-2))
 condlab <- expression(g[s]~~(mu*mol~m^-2~s^-1))
 Amasslab <- expression(A[max]~~(n*mol~g^-1~s^-1))
+cdaylab <- expression(Carbon~gain~~(g~d^-1))
 
 #labels for mtext
 raw <- "Raw Data"
