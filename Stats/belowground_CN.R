@@ -24,6 +24,7 @@ root_chem$rootmass <- with(root_chem, Croot+fineroot)
 root_chem$volume <- gsub("1000", "free", root_chem$volume)
 root_chem$volume <- gsub("^5", "05", root_chem$volume)
 root_chem$volume <- as.factor(root_chem$volume)
+write.csv(root_chem, "calculated data/root_chem.csv", row.names=FALSE)
 
 #roots no free
 root_pot <- subset(root_chem, volume != "1000")

@@ -107,6 +107,7 @@ names(rd_agg)[2]<- "respdark"
 
 Aparam <- merge(rd_agg[,1:2], g1_agg)
 Aparam <- merge(Aparam, phys_agg)
+write.csv(Aparam, "calculated data/A_parameters.csv", row.names=FALSE)
 
 #A parameters for each volume
 A_free <- subset(Aparam, volume=="1000")

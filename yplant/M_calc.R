@@ -4,7 +4,9 @@
 
 require(plyr)
 require(doBy)
+require(plotrix)
 source("functions and packages/functions.R")
+source("functions and packages/plot objects.R")
 
 #read eucs3d summary from construct plant
 eucs3d <- read.csv("yplant/eucs_constructplant.csv")
@@ -36,7 +38,7 @@ M_eucs$plant_id <- as.factor(M_eucs$plant_id)
 #means
 M_agg <- summaryBy(M+totPARleaf~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
 
-#####no regress M for each plant against leaf 
+#####now regress M for each plant against leaf 
 eucs3d$plant_id <- gsub("yplant/euc_plfiles/", "", eucs3d$pfile)
 eucs3d$plant_id <- gsub(".p", "", eucs3d$plant_id)
 eucs_allom <- subset(eucs3d, select = 
@@ -45,17 +47,22 @@ eucs_allom <- subset(eucs3d, select =
 #merge 3d with M
 M_eucs3d <- merge(M_eucs, eucs_allom, by="plant_id")
 
-plot(M~LA, data=M_eucs3d, col=volume, pch=pchs[volume], ylim=c(0.5,1), xlim=c(0,5), 
+write.csv(M_eucs3d, "calculated data/M_eucs3d.csv", row.names=FALSE)
+
+windows()
+plot(M~LA, data=M_eucs3d, col=volume, pch=pchs[volume], ylim=c(0.6,1), xlim=c(0,5), 
      xlab=(expression(Leaf~Area~~(m^2))))
       d_ply(M_eucs3d, .(volume), function(x) add_trend_line("LA", "M", x))
+      legend("topright", leglab, inset=.01,     
+       bty="n",pch=pchs, col=palette(), title=vollab)
 
-plot(M~nleavesp, data=M_eucs3d, col=volume, pch=pchs[volume], ylim=c(0.6,1), xlim=c(0,1500))
+windows()
+plot(M~nleavesp, data=M_eucs3d, col=volume, pch=pchs[volume], ylim=c(0.6,1), xlim=c(0,1500), 
+     xlab=("Leaves (#)"))
   d_ply(M_eucs3d, .(volume), function(x) add_trend_line("nleavesp", "M", x))
+    legend("topright", leglab, inset=.01,     
+       bty="n",pch=pchs, col=palette(), title=vollab)
 
-#plot bits
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs = c(rep(16,6),17)
 
 
 #run model

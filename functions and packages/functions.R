@@ -150,4 +150,14 @@ summarytodfr <- function(x) {
   }
 }
 
-
+#------------------------------------------------------------------------
+#function to get N pool size in g for pots
+npool_func <- function(x){
+  #bulk density (g/m3)
+  bd<-1.7
+  #determin soil mass from bd and volume, then determine N pool size in g
+  x$soilmass <- bd*x$volume
+  x$soilN <- with(x, soilmass*n_perc)
+  return(x)
+}
+#------------------------------------------------------------------------
