@@ -171,4 +171,18 @@ extract_func <- function(mod){
 }
 
 #------------------------------------------------------------------------
+#function to interpolate a variable with approxfun..can make even more generic 
+leafpred_func <- function(dfr, var) {
+  dfr_sp <- split(dfr, dfr$ID)
+  #interpolate
+  dfr_sp <- lapply(dfr_sp, function(z){
+    
+    apfun_var <- approxfun(x=z$Date, y=z[,var])
+    z$var_pred <- apfun_var(z$Date)
+    names(z)[4] <- paste(var, "_pred", sep="")
+    return(z)
+  })
+}
+#------------------------------------------------------------------------
 
+#------------------------------------------------------------------------
