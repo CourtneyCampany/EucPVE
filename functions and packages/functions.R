@@ -161,3 +161,14 @@ npool_func <- function(x){
   return(x)
 }
 #------------------------------------------------------------------------
+#linear model extraction
+extract_func <- function(mod){
+  data.frame(
+    r2=summary(mod)$r.squared, 
+    intercept=coef(mod)[[1]],
+    b=coef(mod)[[2]], 
+    p=anova(mod)[1,"Pr(>F)"])
+}
+
+#------------------------------------------------------------------------
+

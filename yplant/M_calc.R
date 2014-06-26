@@ -67,9 +67,7 @@ plot(M~nleavesp, data=M_eucs3d, col=volume, pch=pchs[volume], ylim=c(0.6,1), xli
 
 #run model
 M_mod <- dlply(M_eucs3d, .(volume), function(x) lm(M~nleavesp, data=x))
-M_pval <- as.data.frame(lapply(M_mod, function(x) getP(x)))
-
-
-
-
+#useextract function to get model results
+M_regress <- ldply(M_mod, extract_func)
+write.csv(M_regress, "stats output/M_leaf#_model.csv", row.names=FALSE)
 
