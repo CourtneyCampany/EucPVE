@@ -1,4 +1,5 @@
 #calculate Aplant for the entire day and then multiply by the leaf area
+#use A from farquhar model and met data, M from yplant, and leaf area to calculate carbon gain for seedlings
 #convert to C gain
 
 source("functions and packages/load packages.R")
@@ -9,56 +10,90 @@ source("functions and packages/plot objects.R")
 plotsumm <- read.csv("raw data/plot_summary.csv")
 plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 
-#use A from farquhar model and met data, M from yplant, and leaf area to calculate carbon gain for seedlings
+#read M model slope and intercept
+Mmodel <- read.csv("stats output/M_leaf#_model.csv")
+Mmodel$volume <-gsub("free", 1000, Mmodel$volume )
+
+#interpolated leaf count by pot
+leafcount <- read.csv("calculated data/L#pred.csv")
+leafcount$Date <- as.Date(ymd(leafcount$Date))
+leafcount <- merge(leafcount, plotsumm[, 3:4])
+leafcount$volume <- as.factor(leafcount$volume)
+plot(count_pred~Date, data=leafcount, pch=pchs[volume],col=volume)
+
+M_predict <- merge(leafcount, Mmodel[,c(1, 3:4)], by="volume")
+M_predict$M <- with(M_predict, (b*count_pred)+intercept)
+plot(M~Date, data=M_predict, pch=pchs[volume],col=volume)
 
 #read in predicted Aleaf form model (15min rate umols m2s)
 Aleaf <- read.csv("calculated data/Aleaf_pred_15min.csv")
 
-####write now there are big dips in C day on certain days resulting from Aleaf model
-
-#M from yplant sim Aplant/Aleaf
-M <- read.csv("calculated data/M_eucs.csv")
-M_agg <- summaryBy(M ~ volume, data=M, FUN=mean, keep.names=TRUE)
-M_agg$volume <- gsub("free","1000", M_agg$volume)
-M_agg$volume <- as.factor(M_agg$volume)
-
 #interpolated leaf area in m2 by pot
-leafpred <- read.csv("calculated data/LApredbypot.csv")
-leafpred$Date <- as.Date(ymd(leafpred$Date))
-leafpred <- merge(leafpred, plotsumm[, 3:4])
-leafpred$volume <- as.factor(leafpred$volume)
-
+leafarea <- read.csv("calculated data/LApred.csv")
+leafarea$Date <- as.Date(ymd(leafarea$Date))
+leafarea <- merge(leafarea, plotsumm[, 3:4])
+leafarea$volume <- as.factor(leafarea$volume)
 
 ##MODELED A---------------------------------------------------------------------
+#assume that totA and totAo are total mols of CO2day?
+#convert Aleaf to day sum then apply M 
+
+#convert aleaf and anet to mols co2 day
+Aleaf$Aleaf_mols <- Aleaf$ALEAF/1000000 #mols co2 s for every 15 min
+Aleaf$Anet_mols <- Aleaf$Anet/1000000
+
+#turns rate of A (mols m2s)into units of every 15 min
+Aleaf$Aleaf_15 <- with(Aleaf, Aleaf_mols*15*60)
+Aleaf$Ane_15 <- with(Aleaf, Anet_mols*15*60)
+
+A_day <- summaryBy(Aleaf_15+Ane_15~Date+volume, data=Aleaf, FUN=sum, keep.names=TRUE )
+names(A_day)[3:4] <- c("Aleaf_day", "Anet_day")
+
 #calculate leaf A with self shading
-Aadj <- merge(Aleaf, M_agg)
-Aadj$Aleaf_ss <- with(Aadj, ALEAF*M)
-Aadj$Anet_ss <- with(Aadj, Anet*M)
-#multiple the adjusted rate by the leaf area, covert to g C and sum to day
-Aplant <- Aadj[, c(1, 10:11, 13:14)]
-Aplant$Date <- as.Date(Aplant$Date)
+Aadj <- merge(M_predict[,c(1:4,7)],A_day, by=c("volume", "Date"))
 
-Amodel_pve <- merge(leafpred, Aplant, by=c("volume", "Date"))
+#adjusted total photo with M and multiplt by 12 for gC
+Aadj$Aleaf_adj <- with(Aadj, (Aleaf_day*M)*12)
+Aadj$Anet_adj <- with(Aadj, (Anet_day*M)*12)
 
-#umols CO2 to mols CO2 to g C
-Amodel_pve$Cpred <- with(Amodel_pve, (Aleaf_ss/1000000)*12)
-#turns rate of A (umols m2s)into units of every 15 min
-Amodel_pve$Cpred_15 <- with(Amodel_pve, Cpred*15*60)
+#merge with leaf area
+Aplant <- merge(Aadj, leafarea)
+#calculate total C by mulipling by leaf area
+Aplant$netC_day <- with(Aplant, Aleaf_day*canopysqm_pred)
+Aplant$C_day<-  with(Aplant, Anet_day*canopysqm_pred)
 
-#calculate Anet and do the same
-Amodel_pve$Cpred_net <- with(Amodel_pve, (Anet_ss/1000000)*12)
-Amodel_pve$Cpred_net_15 <- with(Amodel_pve, Cpred_net*15*60)
+#volume means
+Aplant_agg <- summaryBy(netC_day+C_day~ volume+Date, data=Aplant, FUN=mean, keep.names=TRUE)
 
-#carbon gain from leaf area and Cnet
-Amodel_pve$Cgain_15 <- with(Amodel_pve, Cpred_net_15*LA_pred)
+#ploting of C day
+plot(C_day~Date, data=Aplant, col=volume, ylim=c(0, 1),pch=pchs[volume])
+plot(netC_day~Date, data=Aplant_agg, col=volume, ylim=c(0, 1),pch=pchs[volume])
 
-A15 <- subset(Amodel_pve, volume=="15")
+# #multiple the adjusted rate by the leaf area, covert to g C and sum to day
+# Aplant <- Aadj[, c(1, 10:11, 13:14)]
+# Aplant$Date <- as.Date(Aplant$Date)
+# 
+# Amodel_pve <- merge(leafpred, Aplant, by=c("volume", "Date"))
 
-#day total
-Amodel_day <- summaryBy(Cgain_15 ~ ID + Date, data= Amodel_pve, FUN=sum, keep.names=TRUE)
-Amodel_day <- merge(Amodel_day, plotsumm[,3:4])
-Amodel_day$volume <- as.factor(Amodel_day$volume)
-names(Amodel_day)[3] <- "C_day"
+# #umols CO2 to mols CO2 to g C
+# Amodel_pve$Cpred <- with(Amodel_pve, (Aleaf_ss/1000000)*12)
+# #turns rate of A (umols m2s)into units of every 15 min
+# Amodel_pve$Cpred_15 <- with(Amodel_pve, Cpred*15*60)
+
+# #calculate Anet and do the same
+# Amodel_pve$Cpred_net <- with(Amodel_pve, (Anet_ss/1000000)*12)
+# Amodel_pve$Cpred_net_15 <- with(Amodel_pve, Cpred_net*15*60)
+
+# #carbon gain from leaf area and Cnet
+# Amodel_pve$Cgain_15 <- with(Amodel_pve, Cpred_net_15*LA_pred)
+# 
+# A15 <- subset(Amodel_pve, volume=="15")
+# 
+# #day total
+# Amodel_day <- summaryBy(Cgain_15 ~ ID + Date, data= Amodel_pve, FUN=sum, keep.names=TRUE)
+# Amodel_day <- merge(Amodel_day, plotsumm[,3:4])
+# Amodel_day$volume <- as.factor(Amodel_day$volume)
+# names(Amodel_day)[3] <- "C_day"
 
 #volume means
 Amodel_agg <- summaryBy(C_day~ volume+Date, data=Amodel_day, FUN=mean, keep.names=TRUE)
