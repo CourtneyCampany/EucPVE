@@ -10,8 +10,8 @@ mass_pred <- mass[,3:7]
 dateorder<-order(mass_pred$volume, by=mass_pred$Date)
 mass_pred <- mass_pred[dateorder,]
 mass_pred$Date <- as.Date(mass_pred$Date)
-
 row.names(mass_pred) <- NULL
+
 
 #need a dfr of unique dates, order and find diff between survey dates
 allomdate <- as.data.frame(unique(mass_pred$Date))
@@ -62,10 +62,8 @@ qqnorm(bgi_mod2, ~ resid(.)|ID)
 qqnorm(residuals.lm(bgi_mod2))
 qqline(residuals.lm(bgi_mod2))
 
+#try full model
 
-
-
-?visreg
 
 
 

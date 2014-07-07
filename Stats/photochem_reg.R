@@ -2,12 +2,10 @@
 source("functions and packages/functions.R")
 source("functions and packages/stats packages.R")
 source("functions and packages/plot objects.R")
-photo_chem <- read.csv("calculated data/Amax_chem.csv")
 
-#re work labels for volume
-photo_chem$volume <- gsub("free", "1000", photo_chem$volume)
-photo_chem$volume <- gsub("^5", "05", photo_chem$volume)
-photo_chem$volume <- as.factor(photo_chem$volume)
+photo_chem <- read.csv("calculated data/Amax_chem.csv")
+#run volume format func
+photo_chem<- vollab_func(photo_chem)
 
 #--------------------------------------------------------------------------------------
 #calculate overall means and means for each date
@@ -25,19 +23,28 @@ photo_chem_agg<-photo_chem_agg[volumeorder,]
 
 #simple model mass based--------------------------------------------------------------------
 
-#simple models first
+#simple models first, #visulaise with visreg/effects pacakges
 #model3 (adds campaign as fixed effect)
 Amass_simple <- lm(A_mass~ starch*Nmass_notnc, data=photo_chem)
 anova(Amass_simple)
 summary(Amass_simple)
+visreg(Amass_simple)
+
 
 AmassN <- lm(A_mass~ Nmass_notnc, data=photo_chem)
 anova(AmassN)
 summary(AmassN)
+visreg(AmassN)
+AmassN2 <- lm(A_mass~ Nmass_notnc*volume, data=photo_chem)
+visreg(AmassN2, xvar="Nmass_notnc", by="volume", overlay=TRUE)
 
 AmassS <- lm(A_mass~ starch, data=photo_chem)
 anova(AmassS)
 summary(AmassS)
+visreg(AmassS)
+AmassS2 <- lm(A_mass~ starch*volume, data=photo_chem)
+visreg(AmassS2, xvar="starch", by="volume", overlay=TRUE)
+
 #-----------------------------------------------------------------------------------------
 #visualise effects in 3d
 windows()
@@ -104,10 +111,10 @@ nitromid <- c(0.00125, 0.00375, 0.00625, 0.00875, 0.0125)
 
 #create models and extract coefs
 #use two fits so the equations and stay the same for pred, y=b+b1*x1+b2*x2
-lmfit <- lm(A_mass ~ Nmass_notnc * starch, data=photo_chem)
-p <- coef(lmfit)
-lmfit2 <- lm(A_mass ~ starch*Nmass_notnc, data=photo_chem)
-p2 <- coef(lmfit2)
+Afit <- lm(A_mass ~ Nmass_notnc * starch, data=photo_chem)
+p <- coef(Afit)
+Afit2 <- lm(A_mass ~ starch*Nmass_notnc, data=photo_chem)
+p2 <- coef(Afit2)
 #set bins in raw dfr
 photo_chem$starchbin <- cut(photo_chem$starch, breaks = starchbin)
 photo_chem$nitrobin <- cut(photo_chem$Nmass_notnc, breaks = nitrobin)
@@ -228,6 +235,25 @@ for(i in 1:length(nitrobin3)){
  }
  legend("topright", binlab, pch=15, text.font=1, inset=0.02, col=coln,title=nfree , bty='n')
  title(main="Free")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -6,7 +6,8 @@ library(effects)
 library(doBy)
 library(plyr)
 library(plotrix)
-
+require(visreg)
+require(effects)
 #special plotting
 library(scatterplot3d)
 library(rgl)

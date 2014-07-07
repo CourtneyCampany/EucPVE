@@ -184,5 +184,12 @@ leafpred_func <- function(dfr, var) {
   })
 }
 #------------------------------------------------------------------------
+#replaces "free" with 1000 and adds 0 to single digit volumes
+vollab_func <- function(x){
+x$volume <- gsub("free", "1000", x$volume)
+x$volume <- gsub("^5", "05", x$volume)
+x$volume <- as.factor(x$volume)
+return(x)
+}
 
 #------------------------------------------------------------------------
