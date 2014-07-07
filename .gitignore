@@ -13,3 +13,7 @@
 *.png
 *.psr
 *.zip
+
+*/non csv data
+*/R compile notebooks
+*/unused scripts
