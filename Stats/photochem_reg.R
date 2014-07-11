@@ -4,8 +4,8 @@ source("functions and packages/stats packages.R")
 source("functions and packages/plot objects.R")
 
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
-#run volume format func
-photo_chem<- vollab_func(photo_chem)
+  #run volume format func
+  photo_chem<- vollab_func(photo_chem)
 
 #--------------------------------------------------------------------------------------
 #calculate overall means and means for each date
@@ -14,8 +14,8 @@ photo_chem<- vollab_func(photo_chem)
 photo_chem_agg <- summaryBy(A_mass+starch+Nmass_notnc ~ volume, FUN=c(mean, se), 
                             data=photo_chem)
 
-volumeorder <- order(photo_chem_agg$A_mass.mean, by=photo_chem_agg$volume)
-photo_chem_agg<-photo_chem_agg[volumeorder,]
+  volumeorder <- order(photo_chem_agg$A_mass.mean, by=photo_chem_agg$volume)
+  photo_chem_agg<-photo_chem_agg[volumeorder,]
 
 # #means(campaign)
 # photo_chem_campaign <- summaryBy(A_mass+starch+Nmass_notnc ~ campaign + volume, FUN=c(mean, se), 
@@ -24,29 +24,29 @@ photo_chem_agg<-photo_chem_agg[volumeorder,]
 #simple model mass based--------------------------------------------------------------------
 
 #simple models first, #visulaise with visreg/effects pacakges
-#model3 (adds campaign as fixed effect)
 Amass_simple <- lm(A_mass~ starch*Nmass_notnc, data=photo_chem)
-anova(Amass_simple)
-summary(Amass_simple)
-visreg(Amass_simple)
-
+  anova(Amass_simple)
+  summary(Amass_simple)
+  visreg(Amass_simple)
 
 AmassN <- lm(A_mass~ Nmass_notnc, data=photo_chem)
-anova(AmassN)
-summary(AmassN)
-visreg(AmassN)
+  anova(AmassN)
+  summary(AmassN)
+  visreg(AmassN)
+
 AmassN2 <- lm(A_mass~ Nmass_notnc*volume, data=photo_chem)
-visreg(AmassN2, xvar="Nmass_notnc", by="volume", overlay=TRUE)
+  visreg(AmassN2, xvar="Nmass_notnc", by="volume", overlay=TRUE)
 
 AmassS <- lm(A_mass~ starch, data=photo_chem)
-anova(AmassS)
-summary(AmassS)
-visreg(AmassS)
-AmassS2 <- lm(A_mass~ starch*volume, data=photo_chem)
-visreg(AmassS2, xvar="starch", by="volume", overlay=TRUE)
+  anova(AmassS)
+  summary(AmassS)
+  visreg(AmassS)
 
-#-----------------------------------------------------------------------------------------
-#visualise effects in 3d
+AmassS2 <- lm(A_mass~ starch*volume, data=photo_chem)
+  visreg(AmassS2, xvar="starch", by="volume", overlay=TRUE)
+
+#visualise effects in 3d--------------------------------------------------------------------------
+
 windows()
 with(photo_chem, {
   scatterplot3d(Nmass_notnc,   # x axis
@@ -62,16 +62,16 @@ with(photo_chem, {
 dev.copy2pdf(file= "output/stats_plots/photo_chem3d.pdf")
 dev.off()
 #means plot
-windows()
-with(photo_chem_campaign, {
-  s3d <- scatterplot3d(Nmass_notnc.mean, starch.mean, A_mass.mean,   
-                type="h", lty.hplot=2, pch=pchs[volume], color=volume,
-                main="Photosynthesis vs N and TNC",xlab=nfree, ylab=starchlab, zlab=Amasslab)
-  s3d.coords <- s3d$xyz.convert(Nmass_notnc.mean, starch.mean,  A_mass.mean)
-  text(s3d.coords$x, s3d.coords$y,labels=campaign,cex=.75, pos=4) 
-  legend("right", leglab, inset=.1,     
-         bty="n", text.font=2,pch=pchs, col=palette(), title=vollab) 
-})
+# windows()
+# with(photo_chem_campaign, {
+#   s3d <- scatterplot3d(Nmass_notnc.mean, starch.mean, A_mass.mean,   
+#                 type="h", lty.hplot=2, pch=pchs[volume], color=volume,
+#                 main="Photosynthesis vs N and TNC",xlab=nfree, ylab=starchlab, zlab=Amasslab)
+#   s3d.coords <- s3d$xyz.convert(Nmass_notnc.mean, starch.mean,  A_mass.mean)
+#   text(s3d.coords$x, s3d.coords$y,labels=campaign,cex=.75, pos=4) 
+#   legend("right", leglab, inset=.1,     
+#          bty="n", text.font=2,pch=pchs, col=palette(), title=vollab) 
+# })
 
 #full 3d plotting
 photo5 <- subset(photo_chem, volume=="05")
@@ -99,8 +99,7 @@ scatter3d(A_mass~Nmass_notnc+starch, data=subset(photo_chem, volume=="35",fit="s
 
 with(photo_chem, scatter3d(Nmass_notnc, starch,A_mass, fit="linear"))
 
-#-----------------------------------------------------------------------------------------
-#plot predicted and observed in bins
+#plot predicted and observed in bins------------------------------------------------------
 
 #make bin levels and mid points for both starch and nitrogen
 starchbin <- c(0, 0.04, 0.08, 0.12, 0.16, 100)
@@ -110,7 +109,7 @@ nitrobin <- c(0, 0.0025, 0.005, 0.0075, 0.01, 100)
 nitromid <- c(0.00125, 0.00375, 0.00625, 0.00875, 0.0125)
 
 #create models and extract coefs
-#use two fits so the equations and stay the same for pred, y=b+b1*x1+b2*x2
+#use two fits so the equations stay the same for pred, y=b+b1*x1+b2*x2
 Afit <- lm(A_mass ~ Nmass_notnc * starch, data=photo_chem)
 p <- coef(Afit)
 Afit2 <- lm(A_mass ~ starch*Nmass_notnc, data=photo_chem)
@@ -137,7 +136,7 @@ for(i in 1:length(starchbin)){
   y <- p[[1]] + p[[2]]*x + p[[3]]*starchmid[i] + p[[4]]*starchmid[i]*x
   lines(x,y, col=cols[i], lwd=2)
 }
-legend("topleft", binlab, pch=15, text.font=1, inset=0.02, col=cols,title=starchlab , bty='n')
+legend("topleft", binlab, pch=15, text.font=1, inset=0.01, col=cols,title=starchlab , bty='n')
 
 #Amass vs starch
 windows()
@@ -148,7 +147,7 @@ for(i in 1:length(nitrobin)){
   y <- p2[[1]] + p2[[2]]*x + p2[[3]]*nitromid[i] + p2[[4]]*nitromid[i]*x
   lines(x,y, col=coln[i], lwd=2)
 }
-legend("topright", binlab, pch=15, text.font=1, inset=0.02, col=coln,title=nfree , bty='n')
+legend("topright", binlab, pch=15, text.font=1, inset=0.01, col=coln,title=nfree , bty='n')
 
 #--------------------------------------------------------------------
 photo_chem2 <- subset(photo_chem, volume !="1000")
@@ -191,8 +190,9 @@ for(i in 1:length(nitrobin)){
 }
 legend("topright", binlab, pch=15, text.font=1, inset=0.02, col=coln,title=nfree , bty='n')
 title(main="Within Pots")
+
 #only free-----------------------------------------------------------------------------------
-# 
+
 photo_chem3 <- subset(photo_chem, volume =="1000")
 coln3 <- c("darkviolet", "blue2", "cyan4", "green2")
 
