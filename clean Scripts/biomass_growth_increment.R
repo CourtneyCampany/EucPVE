@@ -15,32 +15,34 @@ row.names(mass_pred) <- NULL
 
 #need a dfr of unique dates, order and find diff between survey dates
 allomdate <- as.data.frame(unique(mass_pred$Date))
-names(allomdate)[1] <- "Date"
-allomdate$Date <- as.Date(allomdate$Date)
+  names(allomdate)[1] <- "Date"
+  allomdate$Date <- as.Date(allomdate$Date)
+
 num_days <- as.data.frame(as.numeric(diff(allomdate$Date)))
-names(num_days)[1] <- "daysbetween"
-days <- c(1, num_days$daysbetween)
+  names(num_days)[1] <- "daysbetween"
+  days <- c(1, num_days$daysbetween)
 daydiff <- cbind(allomdate, days)
 
 #now merge the days between the mass_pred dfr by Date
 BGI <- merge(mass_pred, daydiff, by="Date")
-BGI$volume <- as.factor(BGI$volume)
-
-#calculate 
-BGI$massincrement <- BGI$predmass / BGI$days
+  BGI$volume <- as.factor(BGI$volume)
+  #calculate 
+  BGI$massincrement <- BGI$predmass / BGI$days
 
 
 #simple plot of all seedlings
 plot(massincrement~Date, data=BGI, col=volume, pch=pchs[volume])
+  legend("topleft", leglab, bty="n",pch=pchs, col=palette(), title=vollab)
 
-#means dfrs
+#means dfrs and plotting
 BGI_agg <- summaryBy(massincrement+predmass+diameter~Date+volume, data=BGI, FUN=mean, keep.names=TRUE)
+
 plot(massincrement~Date, data=BGI_agg, col=volume, pch=pchs[volume])
 plot(predmass~Date, data=BGI_agg, col=volume, pch=pchs[volume])
 plot(log(predmass)~Date, data=BGI_agg, col=volume, pch=pchs[volume])
 
-#BGI model
 
+#BGI model---------------------------------------------------------------------------
 bgi_mod <- lm(log(massincrement) ~ Date*volume, data=BGI)
 anova(bgi_mod)
 library(visreg)
@@ -62,7 +64,7 @@ qqnorm(bgi_mod2, ~ resid(.)|ID)
 qqnorm(residuals.lm(bgi_mod2))
 qqline(residuals.lm(bgi_mod2))
 
-#try full model
+
 
 
 
