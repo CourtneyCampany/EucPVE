@@ -1,4 +1,5 @@
 #develop a linear model equation for either h/D or leaf number with seedling biomass
+#dfr with harvest mass and allometry
 
 source("functions and packages/functions.R")
 source("functions and packages/load packages.R")
@@ -10,10 +11,10 @@ treemass <- biomass[,c(1,11)]
 
 #leaf count harvest
 leafharvest <- read.csv("raw data/harvest leaf area.csv")
-leafharvest$ID <- paste(leafharvest$plot, leafharvest$pot, sep = "-")
-leafno <- leafharvest[, c(4,11)]
-leafnum <- subset(leafno, !is.na(leaf_count))
-row.names(leafnum) <- NULL
+  leafharvest$ID <- paste(leafharvest$plot, leafharvest$pot, sep = "-")
+  leafno <- leafharvest[, c(4,11)]
+  leafnum <- subset(leafno, !is.na(leaf_count))
+  row.names(leafnum) <- NULL
 
 #read survey data
 height <- read.csv("calculated data/height.csv")
@@ -35,15 +36,13 @@ allom <- finaldate(height, diameter)
 #merge with leaf num and tree mass
 allomvar <- merge(allom, leafnum)
 allomvar <- merge(allomvar, treemass)
-allomvar$d2h <- with(allomvar, (diameter^2)*height)
+  #diameter^2 *H (forestry based)
+  allomvar$d2h <- with(allomvar, (diameter^2)*height)
+  #re work labels for volume
+  allomvar <-vollab_func(allomvar)
 
-#re work labels for volume
-allomvar$volume <- gsub("1000", "free", allomvar$volume)
-allomvar$volume <- gsub("^5", "05", allomvar$volume)
-allomvar$volume <- as.factor(allomvar$volume)
 
 #visulaise each realtionship with mass
-
 plot(totalmass~height, data=allomvar,col=volume, pch=pchs[volume])
 #nonlinear and variance increase with height
 plot(totalmass~diameter, data=allomvar,col=volume, pch=pchs[volume])
@@ -86,8 +85,7 @@ dynew <- data.frame(predict(Dmodel, newdata=data.frame(diameter=xnew), interval=
 #plot
 plot(totalmass~diameter, data=allomvar, col=volume, pch=pchs[volume], ylim=c(0, 300), xlim=c(0, 20))
 ablineclip(Dmodel, x1=min(allomvar$diameter), x2=max(allomvar$diameter), lty=1, col="forestgreen")
-lines(dynew$lwr~dxnew, col="forestgreen", lty=2)
-lines(dynew$upr~dxnew, col="forestgreen", lty=2)
+#not lineat
 
 #--------------------------------------------------------------------------------------------------
 #although both models have high r2 the d2h has unequal variances and diameter does not seem linear
@@ -99,7 +97,7 @@ plot(totalmass~d2h, data=allomvar,log="xy", col=volume, pch=pchs[volume])
 plot(totalmass~diameter, data=allomvar,log="xy", col=volume, pch=pchs[volume])
 #this seems to fit linearity and results in equal variances (diameter seems not as good at low values)
 
-#run news model with log for both variables
+#run new models with log for both variables
 
 #diameter
 logD_mod <- lm(log(totalmass)~I(log(diameter)),data=allomvar)
@@ -124,11 +122,12 @@ intcptD <-coefD[1,1]
 slopeD <-coefD[2,1]
 
 allomvar$Dmass <- exp(intcptD)*(allomvar$diameter^slopeD)
+
 #plot predicted versus observed
 plot(totalmass~diameter, data=allomvar,col=volume, pch=1)
 points(Dmass~diameter, data=allomvar,col=volume, pch=16)
 
-##use the equation to generate values, but with no cf
+##use the equation to generate values, but with no correction factor
 mass_predict <- diameter
 mass_predict$treemass <- exp(intcptD)*(mass_predict$diameter^slopeD)
 
@@ -152,9 +151,9 @@ plot(treemass2~diameter, data=subset(mass_predict, volume=="5"), col="black", pc
 ####ues model over all dates to predict seedling mass----------------------------------------------------
 
 mass_date <- diameter
-mass_date$predmass <-  exp(intcptD)*(mass_date$diameter^slopeDcf)
-mass_date$volume<- as.factor(mass_date$volume)
-mass_date$Date<- as.Date(mass_date$Date)
+  mass_date$predmass <-  exp(intcptD)*(mass_date$diameter^slopeDcf)
+  mass_date$volume<- as.factor(mass_date$volume)
+  mass_date$Date<- as.Date(mass_date$Date)
 
 #predicted mass thorugh time with choosen model
 write.csv(mass_date, "calculated data/mass_predicted.csv", row.names=FALSE)
