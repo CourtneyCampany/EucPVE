@@ -7,17 +7,17 @@ source("functions and packages/plot objects.R")
 
 #read in plot design, lma data, merge
 plotsumm <- read.csv("raw data/plot_summary.csv")
-plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
   
 lma <- read.csv("raw data/seedling leaf mass area.csv")
-lma$ID <- paste(lma$plot, lma$pot, sep = "-")
-lma <- merge(lma, plotsumm[3:4], all=TRUE)
-lma$volume <- as.factor(lma$volume)
+  lma$ID <- paste(lma$plot, lma$pot, sep = "-")
+  lma <- merge(lma, plotsumm[3:4], all=TRUE)
+  lma$volume <- as.factor(lma$volume)
   
 #run function to add campaign dates, caluclate lma(g m-2 and sla m g-1)
 lma <- add_campaign_date(lma)
-lma$sla <- with(lma, (area/mass)/10000)
-lma$massarea <- with(lma, (mass/area)*10000)
+  lma$sla <- with(lma, (area/mass)/10000)
+  lma$massarea <- with(lma, (mass/area)*10000)
   
 #remove missing values
 lma_noNA <- subset(lma, !is.na(sla))
@@ -26,7 +26,8 @@ write.csv(lma_noNA, "calculated data/leafmassarea.csv", row.names=FALSE)
   
 #subset with only sla and parameters of lm
 lma_lm <- subset(lma_noNA, select = c("ID", "volume", "campaign", "sla", "massarea"))
-lma_lm <- add_campaign_date(lma_lm)
+  lma_lm <- add_campaign_date(lma_lm)
+
 #treatment means
 sla_means<- summaryBy(sla +massarea~ volume+Date, data=lma_lm, FUN=c(mean, se))
 
@@ -37,7 +38,7 @@ sla_means<- summaryBy(sla +massarea~ volume+Date, data=lma_lm, FUN=c(mean, se))
 windows()
 par(mfrow=c(3,3))
 SLA_plots<- dlply(lma_lm, .(volume), function(x) c(plotBy(sla ~ Date | ID, how="col", type='o', 
-            legend=F, lty=1,col=x$volume, ylim=c(0, 300), xlab="", pch=16, ylab="", data=x), 
+            legend=F, lty=1,col=x$volume, ylim=c(0, .02), xlab="", pch=16, ylab="", data=x), 
             title(main=paste("volume = ", unique(x$volume)), line=-1.5, font.main=1, 
              adj=.05, cex.main=1),title(ylab=slalab, mgp=ypos)))
 
@@ -49,7 +50,7 @@ dev.off()
 windows()
 par(mfrow=c(3,3))
 lma_plots<- dlply(lma_lm, .(volume), function(x) c(plotBy(massarea ~ Date | ID, how="col", type='o', 
-            legend=F, lty=1,col=x$volume, ylim=c(0, .02), xlab="", pch=16, ylab="", data=x), 
+            legend=F, lty=1,col=x$volume, ylim=c(0, 300), xlab="", pch=16, ylab="", data=x), 
             title(main=paste("volume = ", unique(x$volume)), line=-1.5, font.main=1, 
             adj=.05, cex.main=1),title(ylab=lmalab, mgp=ypos)))
 
@@ -64,10 +65,10 @@ dev.off()
 windows()
 plot(sla.mean ~ Date, data = sla_means, col=volume, cex=2, pch=pchs[volume], 
      ylim=c(0,250), ylab="", xlab="")
-title(ylab=slalab, mgp=ypos)
-title(main=datemean, line=-1.5, font.main=1, adj=.05, cex.main=1)
+  title(ylab=slalab, mgp=ypos)
+  title(main=datemean, line=-1.5, font.main=1, adj=.05, cex.main=1)
 d_ply(sla_means, .(volume), function(x) add_trend_line("Date", "sla.mean", x, ))
-legend("topright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
+  legend("topright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
 
 dev.copy2pdf(file="output/stats_plots/SLA_means.pdf")
 dev.off()
@@ -76,10 +77,10 @@ dev.off()
 windows()
 plot(massarea.mean ~ Date, data = sla_means, col=volume, cex=2, pch=pchs[volume], 
      ylim=c(0,.015), ylab="", xlab="")
-title(ylab=lmalab, mgp=ypos)
-title(main=datemean, line=-1.5, font.main=1, adj=.95, cex.main=1)
+  title(ylab=lmalab, mgp=ypos)
+  title(main=datemean, line=-1.5, font.main=1, adj=.95, cex.main=1)
 d_ply(sla_means, .(volume), function(x) add_trend_line("Date", "massarea.mean", x, ))
-legend("bottomright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
+  legend("bottomright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
 
 dev.copy2pdf(file="output/stats_plots/lma_means.pdf")
 dev.off()
