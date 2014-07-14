@@ -1,6 +1,11 @@
 #source functions and packages
 source("functions and packages/functions.R")
 source("functions and packages/stats packages.R")
+  require(lme4)
+  library(lmerTest)
+  library(lattice)
+  require(effects)
+library(LMERConvenienceFunctions)
 source("functions and packages/plot objects.R")
 
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
@@ -25,6 +30,13 @@ Amass_simple <- lm(A_mass~ starch*Nmass_notnc, data=photo_chem)
   anova(Amass_simple)
   summary(Amass_simple)
   visreg(Amass_simple)
+
+#full model
+Amass_full <- lmer(A_mass ~ starch+Nmass_notnc+starch:Nmass_notnc + (1|ID), data=photo_chem)
+anova(Amass_full)
+
+##use the full and simple model to make predict plots with bins
+##make two panel plots with the bins
 
 
 #plot predicted and observed in bins------------------------------------------------------
