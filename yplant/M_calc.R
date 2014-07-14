@@ -21,18 +21,18 @@ names(eucs_list) <- listnames
 
 #function to calculate M (twp arguments:1st is dfr, 2nd is the name of each list element)
 Mcalc <- function(dfr, vol){
-dfr$plant_id <- gsub("yplant/euc_plfiles/", "", dfr$pfile)
-dfr$plant_id <- gsub(".p", "", dfr$plant_id)
-dfr$M <- dfr$totA/dfr$totA0
-M_dfr <- subset(dfr, select = c("plant_id", "M", "totPARleaf"))
-M_dfr$volume <- as.factor(vol)
+  dfr$plant_id <- gsub("yplant/euc_plfiles/", "", dfr$pfile)
+  dfr$plant_id <- gsub(".p", "", dfr$plant_id)
+  dfr$M <- dfr$totA/dfr$totA0
+  M_dfr <- subset(dfr, select = c("plant_id", "M", "totPARleaf"))
+  M_dfr$volume <- as.factor(vol)
 return(M_dfr)
 }
 
 #run the function on each element of the list 
 #call the names of the list into plyr, run the function on each element (eucs_list[[x]]) where vol argument = names
 M_eucs <- ldply(names(eucs_list), function(x) Mcalc(dfr = eucs_list[[x]], vol = x))
-M_eucs$plant_id <- as.factor(M_eucs$plant_id)
+  M_eucs$plant_id <- as.factor(M_eucs$plant_id)
 #write.csv(M_eucs, "calculated data/M_eucs.csv", row.names=FALSE)
 
 #means
@@ -42,7 +42,7 @@ M_agg <- summaryBy(M+totPARleaf~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
 eucs3d$plant_id <- gsub("yplant/euc_plfiles/", "", eucs3d$pfile)
 eucs3d$plant_id <- gsub(".p", "", eucs3d$plant_id)
 eucs_allom <- subset(eucs3d, select = 
-                       c("plant_id", "LA", "meanleafsize", "stemdiam", "leaflen", "nleavesp", "crownsurf"))
+               c("plant_id", "LA", "meanleafsize", "stemdiam", "leaflen", "nleavesp", "crownsurf"))
 
 #merge 3d with M
 M_eucs3d <- merge(M_eucs, eucs_allom, by="plant_id")
