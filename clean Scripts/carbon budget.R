@@ -36,9 +36,52 @@ leafarea <- read.csv("calculated data/LApred.csv")
   leafarea <- merge(leafarea, plotsumm[, 3:4])
   leafarea$volume <- as.factor(leafarea$volume)
 
+#seedling mass form harvest
+mass <- read.csv("calculated data/seedling mass.csv")
+
 ##MODELED A---------------------------------------------------------------------
 #assume that totA and totAo are total mols of CO2day?
 #convert Aleaf to day sum then apply M 
+
+
+####new calc
+Aleaf2 <- summaryBy(Anet ~ Date+volume, data=Aleaf, FUN=mean, keep.names=TRUE )
+  Aleaf2$Date <- as.Date(Aleaf2$Date)
+
+Aleaf3 <- merge(Aleaf2, leafarea)
+  Aleaf3$Adayumol <- with(Aleaf3, Anet*canopysqm_pred)
+
+#functions to turn A15rate into netCgainday (m2)
+gctotal_fun <- function(z)mean(z)*99*24*60*60*10^-6*12
+gcday_fun <- function(z)mean(z)*24*60*60*10^-6*12
+
+C_day <- summaryBy(Adayumol ~ ID+Date, FUN=gcday_fun, data=Aleaf3, keep.names=T)
+names(C_day)[3] <- "carbon_day"
+write.csv(C_day, "calculated data/cgain_date.csv", row.names=FALSE)
+
+c_gain <- summaryBy(Adayumol ~ ID, FUN=gctotal_fun, data=Aleaf3, keep.names=T)
+  names(c_gain)[2] <- "carbon_gain"
+
+massC <- data.frame(ID=mass$ID, volume=mass$volume, totalC=mass$totalmass*0.5)
+
+euc_cgain <- merge(massC, c_gain)
+  euc_cgain$volume <- as.factor(euc_cgain$volume)
+
+
+with(euc_cgain, plot(carbon_gain, totalC, pch=pchs[volume], col=volume))
+abline(0,1)
+abline(lm(totalC ~ carbon_gain, data=euc_cgain), lty=5)
+
+#look at simple models
+lmfit <- lm(totalC ~ carbon_gain * volume, data=euc_cgain)
+lmfit2 <- lm(totalC ~ carbon_gain + volume, data=euc_cgain)
+require(visreg)
+visreg(lmfit2)
+
+
+
+#--------------------------------------------------------------------------------------------
+
 
 #convert aleaf and anet to mols co2 day
 Aleaf$Aleaf_mols <- Aleaf$ALEAF/1000000 #mols co2 s for every 15 min
