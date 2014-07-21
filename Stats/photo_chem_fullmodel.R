@@ -1,21 +1,14 @@
 #source functions and packages
 source("functions and packages/functions.R")
 source("functions and packages/stats packages.R")
-source("functions and packages/plot objects.R")
+# library(lmerTest)
+# library(LMERConvenienceFunctions)
 
-require(car)
-require(lme4)
-library(lmerTest)
-library(lattice)
-require(effects)
-library(LMERConvenienceFunctions)
-
-#lme with repeated dates (nlme package), lmer with nonlinear distrutions
+#lme with repeated dates (nlme package), lmer with nonlinear distributions
 
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
 #run volume format func
 photo_chem<- vollab_func(photo_chem)
-photo_chem$plot <- as.factor(gsub("-[0-9]", "", photo_chem$ID))
 
 
 Amass_full <- lmer(A_mass ~ starch+Nmass_notnc+starch:Nmass_notnc + (1|ID), data=photo_chem)

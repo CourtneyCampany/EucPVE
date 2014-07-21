@@ -15,6 +15,7 @@ PTcex <- 1.6
 
 vollab <- expression(Pot~volume~(l))
 leglab <- c(5, 10, 15, 20, 25, 35, "free")
+leglab2 <- as.character(c(5, 10, 15, 20, 25, 35))
 
 rdlab <-expression(Respiration[dark]~~(mu*mol~m^-2~s^-1))
 suglab<- expression(Leaf~Soluble~Sugars~~(g~g^-1))

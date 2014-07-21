@@ -193,3 +193,12 @@ return(x)
 }
 
 #------------------------------------------------------------------------
+#simple add date and volume as factor 
+datevol_func <- function(x){
+  x$volume <- as.factor(x$volume)
+  x$Date <- as.Date(x$Date)
+  return(x)
+}
+
+
+
