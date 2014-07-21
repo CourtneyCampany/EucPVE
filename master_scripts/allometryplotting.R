@@ -36,11 +36,11 @@ leafno_allpot_agg <- summaryBy(count ~ Date + volume, data = leafno_allpot, FUN 
 xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 
 #all plants
+windows()
 par(cex.axis=1.5, cex.lab=1.5,
     mfrow=c(3,1),  # rows and columns of plots
     omi=c(1,0,0.1,0.1),  # outer margin (inches)
     mar=c(0,7,0,0))   # margin around plots (they are tight together)   
-
 # First Panel
 plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),  
      ylim=c(20,125), axes=FALSE, xlab="")  
@@ -80,6 +80,7 @@ box()
 
 #no free--------------------------------------------------------------------------------
 #PLOT with no FREE plant
+windows()
 par(cex.axis=1.5,  cex.lab=1.5,mfrow=c(3,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
 
 # First Panel

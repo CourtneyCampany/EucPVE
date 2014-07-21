@@ -35,6 +35,8 @@ condlab <- expression(g[s]~~(mu*mol~m^-2~s^-1))
 Amasslab <- expression(A[max]~~(n*mol~g^-1~s^-1))
 cdaylab <- expression(Carbon~gain~~(g~d^-1))
 LAm2 <- expression(Seedling~Leaf~Area~~(m^2))
+anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
+cilab <- expression(C[i]~~(mu*mol~mol^-1))
 
 #labels for mtext
 raw <- "Raw Data"

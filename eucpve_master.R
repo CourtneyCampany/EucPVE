@@ -4,7 +4,9 @@
 source("functions and packages/startscripts.R")
 
 #growth allometry
-source("clean scripts/allometryplotting.R")
+source("master_scripts/allometryplotting.R")
 #leaf area
-source("clean scripts/leafarea_plotting.R")
+source("master_scripts/leafarea_plotting.R")
+#aci curvest, volume means
+source("master_scripts/aci_plotting.R")
 

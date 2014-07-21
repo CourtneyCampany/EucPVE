@@ -1,4 +1,4 @@
-source("functions and packages/load packages.R")
+source("functions and packages/startscripts.R")
 
 # Read data
 aci <- read.csv("raw data/ACi#1.csv")
@@ -17,20 +17,6 @@ plant1 <- plant1[order(plant1$Ci), ]
 with(plant1, plot(Ci, Photo, type = "l"))
 
 #----------------------------------------------------------------------------------------------------
-#plot stuff
-
-#colors
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs <- c(rep(16,6),17)
-#legend labels
-leglab <- c(5, 10, 15, 20, 25, 35, "free")
-vollab <- expression(Pot~volume~(l))
-anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
-cilab <- expression(C[i]~~(mu*mol~mol^-1))
-raw <- "Raw Data"
-volmean <- "Volume Means"
-
 ids <- unique(aci$ID)
 #----------------------------------------------------------------------------------------------------
 
@@ -40,7 +26,7 @@ plotAci <- function(plantID) {
   dat <- subset(aci, ID == plantID)
   
   dat <- dat[order(dat$Ci), ]
-  with(dat, points(Ci, Ps, type = "l", col = treatment))
+  with(dat, points(Ci, Photo, type = "l", col = treatment))
 }
 
 

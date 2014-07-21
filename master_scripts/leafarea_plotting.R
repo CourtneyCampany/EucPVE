@@ -36,6 +36,6 @@ title(main="No Free", line=-1.5, font.main=1)
 legend("topleft", legend, leglab2, pch=16,text.font=3, inset=0.02, 
        title=expression(Pot~volume~(l)), col=palette(), bty='n')
 
-dev.copy2pdf(file= "output/leafarea_2panel.pdf")
-dev.off()
+#dev.copy2pdf(file= "output/leafarea_2panel.pdf")
+
 
