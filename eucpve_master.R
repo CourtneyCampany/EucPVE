@@ -3,5 +3,8 @@
 #source functions, packages, anbd plot objects
 source("functions and packages/startscripts.R")
 
-#start with growth allometry
+#growth allometry
 source("clean scripts/allometryplotting.R")
+#leaf area
+source("clean scripts/leafarea_plotting.R")
+

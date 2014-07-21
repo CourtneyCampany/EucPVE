@@ -75,6 +75,9 @@ with(leafno_agg, arrows(Date, count.mean, Date, count.mean-count.se, angle=90, c
 points(count.mean ~ Date, data=leafno_agg,  pch=pchs[volume], cex=PTcex,col = volume)
 box()
 
+#dev.copy2pdf(file= "output/allometry.pdf")
+#dev.off()
+
 #no free--------------------------------------------------------------------------------
 #PLOT with no FREE plant
 par(cex.axis=1.5,  cex.lab=1.5,mfrow=c(3,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
@@ -112,3 +115,5 @@ with(leafno_allpot_agg, arrows(Date, count.mean, Date, count.mean-count.se, angl
 points(count.mean ~ Date, data=leafno_allpot_agg, pch=16, cex=PTcex, col = volume)
 box()
 
+#dev.copy2pdf(file= "output/allometrypots.pdf")
+#dev.off()
