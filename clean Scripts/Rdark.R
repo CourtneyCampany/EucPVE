@@ -57,17 +57,4 @@ with(rdark, bargraph.CI(as.factor(volume), resppermass,
 box()
 dev.copy2pdf(file= "output/Rdark_per_leafmass.pdf")
 
-with(rdark, bargraph.CI(as.factor(volume),  Ci, 
-                        border="blue",
-                        ylim = c(0,750), ylab = "Rdark Ci", 
-                        xlab = "Pot Volume (l)"))
-box()
-dev.copy2pdf(file= "output/Rdark_Ci.pdf")
 
-
-with(rdark, bargraph.CI(as.factor(volume),  Trmmol, 
-                        border="blue",
-                        ylim = c(0,0.15), ylab = "Dark Transpiration", 
-                        xlab = "Pot Volume (l)"))
-box()
-dev.copy2pdf(file= "output/Rdark_transpiration.pdf")

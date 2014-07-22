@@ -35,7 +35,7 @@ mass <- mass[,c(1:2,5:6)]
 
 Nplant <- merge(mass, leafNharvest[,c(1,4:5)])
   Nplant$leafN <- with(Nplant, leafmass*leafNperc)
-  Nplant$stemNperc <- .01
+  Nplant$stemNperc <- .005
   Nplant$stemN <- with(Nplant, stemNperc*stemmass)
 
 Nplant <- merge(Nplant, rootN[, c(1:2, 10:11)])
@@ -96,4 +96,6 @@ Nuptake <- merge(Npool_agg, Nplant_agg)
 
 
 #total plant N per unit uptake????
-plot(plantN ~Nuptake, data=Nuptake, col=volume, pch=pchs[volume])
+plot(plantN ~Nuptake, data=Nuptake, col=volume, pch=pchs[volume], ylim=c(0,2),
+     xlim=c(0,5))
+abline(0,1)

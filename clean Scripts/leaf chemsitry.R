@@ -1,5 +1,5 @@
 #source functions
-source("functions and packages/functions.R")
+source("functions and packages/startscripts.R")
 
 #read data
 source("read data scripts/harvest read data.R")
@@ -30,7 +30,7 @@ leaf_chem$leafC <- with(leaf_chem, mass*Cperc)
 leaf_chem$leafN <- with(leaf_chem, mass*Nperc)
 
 plot(leafC~Date, col=volume, data=leaf_chem)
-plot(leafN~Date, col=volume, data=leaf_chem)
+plot(leafN~Date, pch=pchs[volume],col=volume, data=leaf_chem)
 #analyze leaf chem with Asat, area, mass on campaign dates
 
 

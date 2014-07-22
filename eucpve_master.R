@@ -8,7 +8,7 @@ source("master_scripts/allometryplotting.R")
 #leaf area
 source("master_scripts/leafarea_plotting.R")
 #rootshoot ratios
-source("master_scripts_rootshott_plotting.R")
+source("master_scripts/rootshoot_plotting.R")
 #aci curvest, volume means
 source("master_scripts/aci_plotting.R")
 #water potential (mean of two sampling dates)

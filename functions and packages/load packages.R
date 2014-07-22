@@ -10,4 +10,4 @@ library(plyr)
 require(nlme)
 
 library(plotrix)
-library(plotBy)
+#library(plotBy)

@@ -31,6 +31,7 @@ waterpotential <- rbind(wp_pre, wp_peak)
 wp_agg <- summaryBy(waterpotential ~ Date+volume+type, data=waterpotential, FUN=mean, keep.names=TRUE)
 
 #PLOT----------------------------------------------------------------------------------
+windows()
 bargraph.CI(as.factor(volume), waterpotential, group=type,data=waterpotential,
             ylim = c(-2,0), ylab = "Water Potential (mPa)", 
             xlab = "Pot Volume (l)", legend=TRUE, col=c("grey40", "grey60"), x.leg=.1, y.leg=-1.5)
