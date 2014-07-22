@@ -5,6 +5,7 @@ numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
 seedling_pre <- read.csv("raw data/seedling_initial.csv")
 seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
 leaffractions <- mean (seedling_pre$leaf_mass/seedling_pre$seedling_mass)
+#average mass of seedlings at start
 mass_mean <- mean(seedling_pre$seedling_mass)
 mean_leafnum <- mean(seedling_pre$leaf_numb)
 
@@ -13,18 +14,23 @@ mean_leafnum <- mean(seedling_pre$leaf_numb)
 lma <- read.csv("calculated data/leafmassarea.csv")
 lma_mean <- mean(lma$massarea)
 leafarea_mean <- (mean(lma$area))/10000
-
+#average starting leaf area
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 
 #read in Cnetm2day---------------------------------------------------------------------
 Cday <- read.csv("calculated data/cgain_date.csv")
 
-Cday_test <- subset(Cday, ID == "7-1")
-Cday_id <- Cday_test[,3]
-Date <- as.Date(Cday_test[2:121,2])
+Cday_test1 <- subset(Cday, ID == "1-8") #5l
+#Cday_test2 <- subset(Cday, ID == "3-2") #free
 
+#date is for plotting, starts day2
+Date <- as.Date(Cday_test1[2:121,2])
 
 #model parameters and empty vectors----------------------------------------------------
+
+#vector with only Cgain
+Cday_id <- Cday_test1[,3]
+
 leafrac <- .25
 sla <- .3
 
@@ -47,8 +53,15 @@ plot(leafarea~Date, data=Cgain_loop)
 
 
 ####attempts to run through all ID's
+require(plyr)
+#need to split Cday, but also get a list of 49 that only include the Cgain vector
+
+cday_sp2 <- dlply(Cday, .(ID))
+cday_sp3 <- lapply(cday_sp2, )
 
 cday_sp <- split(Cday[,c(1,3)], "ID", drop=TRUE)
+
+
 cday_sp2 <- cday_sp[[1]]$Adayumol
 
 modelfunction <- function(x) {
@@ -60,7 +73,7 @@ modelfunction <- function(x) {
 }
 
 Cid <- Cday[,c(1,3)]
-require(plyr)
+
 runmodel <- dlply(Cid, .(id), function(x) c(x<- as.vector(x[,2]), modelfunction(x)))
 
 test <- dlply(Cid, .(id), function(x) y<-as.vector(x[,2]))
