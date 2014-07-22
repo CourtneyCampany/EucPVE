@@ -1,6 +1,5 @@
 
-source("functions and packages/functions.R")
-source("functions and packages/load packages.R")
+source("functions and packages/startscripts.R")
 
 #read data
 source("read data scripts/harvest read data.R")
@@ -74,14 +73,14 @@ anova(FRL_fit)
 #----------------------------------------------------------------------------------------------------
 #plot bits
 
-#color scheme
-gradient <- colorRampPalette(c("red", "blue"))
-color <- palette(gradient(7))
-pchs = c(rep(16,6),17)
-ltys <- c(rep(1,6),4)
-leglab <- c(5, 10, 15, 20, 25, 35, "free")
-leglab2 <- c(5, 10, 15, 20, 25, 35)
-vollab <- expression(Pot~volume~(l))
+# #color scheme
+# gradient <- colorRampPalette(c("red", "blue"))
+# color <- palette(gradient(7))
+# pchs = c(rep(16,6),17)
+# ltys <- c(rep(1,6),4)
+# leglab <- c(5, 10, 15, 20, 25, 35, "free")
+# leglab2 <- c(5, 10, 15, 20, 25, 35)
+# vollab <- expression(Pot~volume~(l))
 #----------------------------------------------------------------------------------------------------
 #two panel plot with raw data for root:shoot and froot:leaf (raw and means)
 
@@ -145,9 +144,6 @@ dev.copy2pdf(file= "output/stats_plots/frootleaf.pdf")
 dev.off()
 
 
-
-
-
 #----------------------------------------------------------------------------------------------------
 #PLOT of Froot:leaf means with SE
 windows(8,6)
@@ -178,7 +174,7 @@ dev.copy2pdf(file= "output/Leaf_Froot.pdf")
 windows(8,6)
 par(mar=c(5,5,1,1), mgp = c(2.5, 1, 0), cex.axis=1.0, cex.lab=1.3)
 with(ratio_agg, plot(root.mean, shoot.mean, cex=1.6, ylim=c(0,40), xlim=c(0,40),
-                     pch=pchs, volume, 
+                     pch=pchs[volume],col=volume, 
                      xlab = "Root Mass (g)",
                      ylab = "Shoot Mass (g)"))
 

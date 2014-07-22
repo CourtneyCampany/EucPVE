@@ -7,6 +7,8 @@ source("functions and packages/startscripts.R")
 source("master_scripts/allometryplotting.R")
 #leaf area
 source("master_scripts/leafarea_plotting.R")
+#rootshoot ratios
+source("master_scripts_rootshott_plotting.R")
 #aci curvest, volume means
 source("master_scripts/aci_plotting.R")
 
