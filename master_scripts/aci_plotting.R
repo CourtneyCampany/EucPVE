@@ -1,4 +1,4 @@
-source("functions and packages/startscripts.R")
+#source("functions and packages/startscripts.R")
 
 # Read data
 aci <- read.csv("raw data/ACi#1.csv")

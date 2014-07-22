@@ -1,5 +1,5 @@
 
-source("functions and packages/startscripts.R")
+#source("functions and packages/startscripts.R")
 
 seedlingmass<- read.csv("calculated data/seedling mass.csv")   
 

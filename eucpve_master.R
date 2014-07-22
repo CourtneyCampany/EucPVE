@@ -11,4 +11,6 @@ source("master_scripts/leafarea_plotting.R")
 source("master_scripts_rootshott_plotting.R")
 #aci curvest, volume means
 source("master_scripts/aci_plotting.R")
+#water potential (mean of two sampling dates)
+source("clean scripts/seedling water potential.R")
 
