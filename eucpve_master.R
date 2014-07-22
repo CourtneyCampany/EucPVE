@@ -14,3 +14,12 @@ source("master_scripts/aci_plotting.R")
 #water potential (mean of two sampling dates)
 source("clean scripts/seedling water potential.R")
 
+#Cgain vs Ctotal
+cgain<- read.csv("calculated data/euc_cgain.csv")
+cgain$volume <- as.factor(cgain$volume)
+
+windows()
+with(cgain, plot(carbon_gain, totalC, pch=pchs[volume], col=volume))
+abline(0,1)
+abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
+
