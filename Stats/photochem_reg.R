@@ -95,6 +95,16 @@ for(i in 1:length(nitrobin)){
 }
 legend("topright", binlab, pch=15, text.font=1, inset=0.01, col=coln,title=nfree , bty='n')
 
+
+
+
+dfr <- expand.grid(starch = c(0.02, 0.06, 0.1, 0.14, 0.2),
+                   Nmass_notnc = seq(0.0007432, 0.0175502, length=25))
+dfr$Amass_pred <- predict(Afit_full, dfr, re.form=NA)
+                 
+
+
+
 #--------------------------------------------------------------------
 photo_chem2 <- subset(photo_chem, volume !="1000")
 coln2 <- c("red", "darkviolet", "blue2", "cyan4")
