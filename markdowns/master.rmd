@@ -15,12 +15,9 @@ library(knitr)
 opts_knit$set(root.dir = '../')
 ```
 ```
-
-
 ```{r loads functions packages and plot objects, echo=FALSE, include=FALSE}
 #source functions, packages, anbd plot objects
 source("functions and packages/startscripts.R")
-
 ```
 
 ```
@@ -42,7 +39,7 @@ root:shoot and leaf:fine root at harvest
 ```
 
 ```{r root:shoot plots }
-source("master_scripts/rootshoot_plotting.R")
+#source("master_scripts/rootshoot_plotting.R")
 ```
 
 ```
