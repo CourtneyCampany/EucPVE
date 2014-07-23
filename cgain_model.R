@@ -31,8 +31,12 @@ Date <- as.Date(Cday_test1[2:121,2])
 #vector with only Cgain
 Cday_id <- Cday_test1[,3]
 
+
+
 leafrac <- .25
-sla <- .3
+sla <- 1/lma_mean  # calculate based on lma_mean above
+aperla <- 3 # fill in average gC m-2 day-1 from plantecophys simulations.
+Cperc <- 50
 
 leafarea <- vector()
   leafarea[1] <- LA_start
@@ -42,10 +46,48 @@ biomass <- vector()
 
 #run model simulation------------------------------------------------------------------
 for (i in 2:numdays) {
-  production <- Cday_id[i-1] * leafarea[i-1]
-  biomass[i] <- biomass[i-1] + production
-  leafarea[i] <- leafarea[i-1] + (production*leafrac*sla)
+  production <- aperla * leafarea[i-1]  # gc day-1
+  biomassprod <- production*(100/Cperc)
+  biomass[i] <- biomass[i-1] + biomassprod
+  leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
 }
+
+
+# function
+runProd <- function(leafrac = .25,
+                    sla = 1/lma_mean,
+                    aperla = 3,
+                    Cperc = 50,
+                    numdays=120){
+  
+  leafarea <- vector()
+  leafarea[1] <- LA_start
+  
+  biomass <- vector()
+  biomass[1] <- mass_mean
+  
+  if(length(aperla) == 1)aperla <- rep(aperla,numdays)
+  if(length(aperla) < numdays)stop("Need at least ",numdays," photosynthesis values.")
+  
+  #run model simulation------------------------------------------------------------------
+  for (i in 2:numdays) {
+    production <- aperla[i] * leafarea[i-1]  # gc day-1
+    biomassprod <- production*(100/Cperc)
+    biomass[i] <- biomass[i-1] + biomassprod
+    leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
+  }
+
+return(c(biomass=biomass[numdays],leafarea=leafarea[numdays]))
+}
+
+# when driver
+res <- lapply(*spliytdataframe*, function(x)runProd(aperla=x$PHTOSYN))
+
+# when constant
+res <- as.data.frame(do.call(rbind, mapply(runProd, aperla=c(3,3.2,4.1), SIMPLIFY=FALSE)))
+
+
+
 
 Cgain_loop <- data.frame(biomass=biomass, leafarea=leafarea, Date=Date)
 plot(biomass~Date, data=Cgain_loop)
