@@ -1,5 +1,5 @@
 ---
-title: "EUV_PVE"
+title: "EUC_PVE"
 author: "Court Campany"
 date: "Tuesday, July 22, 2014"
 output: html_document
@@ -50,17 +50,17 @@ aci curves and jmax/vcmax
 source("master_scripts/aci_plotting.R")
 ```
 
-```
-seedling predawn and midday water potentials
-```
+
+### seedling predawn and midday water potentials
+
 
 ```{r water potential plots}
 source("clean scripts/seedling water potential.R")
 ```
 
-```
+
 Modelled C gain versus harvest seedling total carbon
-```
+
 
 ```{r Cgain vs Cmass }
 cgain<- read.csv("calculated data/euc_cgain.csv")
