@@ -61,14 +61,17 @@ modelfunction <- function(x) {
     production <- x[i-1] * leafarea[i-1]
     biomass[i] <- biomass[i-1] + production
     leafarea[i] <- leafarea[i-1] + (production*leafrac*sla)
-    dfr <- data.frame(mass=biomass, la = leafrea)
+    dfr <- data.frame(mass=biomass, leafarea=leafarea, Date=Date)
     return(dfr)
   }
 }
 
 cday_sp2 <- dlply(Cday, .(ID))
 
-runmodel <- apply(cday_sp2, ,modelfunction)
+
 runmodel<- modelfunction(cday_sp2[["carbon_day"]]) 
+
+runmodel2 <- apply(cday_sp2[3],2, modelfunction)
+runmodel3 <- lapply(cday_sp2[3], modelfunction)
 
 
