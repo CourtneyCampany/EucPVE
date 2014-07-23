@@ -56,26 +56,19 @@ plot(leafarea~Date, data=Cgain_loop)
 require(plyr)
 #need to split Cday, but also get a list of 49 that only include the Cgain vector
 
-cday_sp2 <- dlply(Cday, .(ID))
-cday_sp3 <- lapply(cday_sp2, )
-
-cday_sp <- split(Cday[,c(1,3)], "ID", drop=TRUE)
-
-
-cday_sp2 <- cday_sp[[1]]$Adayumol
-
 modelfunction <- function(x) {
   for (i in 2:numdays) {
     production <- x[i-1] * leafarea[i-1]
     biomass[i] <- biomass[i-1] + production
     leafarea[i] <- leafarea[i-1] + (production*leafrac*sla)
+    dfr <- data.frame(mass=biomass, la = leafrea)
+    return(dfr)
   }
 }
 
-Cid <- Cday[,c(1,3)]
+cday_sp2 <- dlply(Cday, .(ID))
 
-runmodel <- dlply(Cid, .(id), function(x) c(x<- as.vector(x[,2]), modelfunction(x)))
-
-test <- dlply(Cid, .(id), function(x) y<-as.vector(x[,2]))
+runmodel <- apply(cday_sp2, ,modelfunction)
+runmodel<- modelfunction(cday_sp2[["carbon_day"]]) 
 
 

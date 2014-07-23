@@ -1,0 +1,85 @@
+---
+title: "EUV_PVE"
+author: "Court Campany"
+date: "Tuesday, July 22, 2014"
+output: html_document
+---
+
+```
+These are the plots and relevatn statistics for the Eucalpytus tereticornis  
+pot study.  6 total contatiner volumes and 'free'seedlings all grown under  
+natural field conditions during the summer of 2012
+```
+```{r setup}
+library(knitr)
+opts_knit$set(root.dir = '../')
+```
+```
+
+
+```{r loads functions packages and plot objects, echo=FALSE, include=FALSE}
+#source functions, packages, anbd plot objects
+source("functions and packages/startscripts.R")
+
+```
+
+```
+seedling growth through time
+```
+```{r allometry panel plot}
+source("master_scripts/allometryplotting.R")
+```
+
+```
+seedling total leaf area through time
+```
+```{r leaf area plot}
+source("master_scripts/leafarea_plotting.R")
+```
+
+```
+root:shoot and leaf:fine root at harvest
+```
+
+```{r root:shoot plots }
+source("master_scripts/rootshoot_plotting.R")
+```
+
+```
+aci curves and jmax/vcmax
+```
+
+```{r aci means plots }
+source("master_scripts/aci_plotting.R")
+```
+
+```
+seedling predawn and midday water potentials
+```
+
+```{r water potential plots}
+source("clean scripts/seedling water potential.R")
+```
+
+```
+Modelled C gain versus harvest seedling total carbon
+```
+
+```{r Cgain vs Cmass }
+cgain<- read.csv("calculated data/euc_cgain.csv")
+cgain$volume <- as.factor(cgain$volume)
+
+windows()
+with(cgain, plot(carbon_gain, totalC, pch=pchs[volume], col=volume))
+abline(0,1)
+abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
+```
+
+```
+Soil N percent pre expeeriment and at harvest
+```
+```{r Soil N percent}
+source("master_scripts/soilN_plotting.R")
+```
+
+

@@ -23,3 +23,5 @@ with(cgain, plot(carbon_gain, totalC, pch=pchs[volume], col=volume))
 abline(0,1)
 abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 
+#Soil Nitrogen bar plot
+source("master_scripts/soilN_plotting.R")
