@@ -1,3 +1,5 @@
+require(doBy)
+
 #experiment length---------------------------------------------------------------------
 numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
 
@@ -27,22 +29,16 @@ Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
 names(Aleaf)[3] <- "carbon_day"
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
-
-Cday_testvol <- subset(Aleaf_agg, volume == "5") #5l
-
+Aleaf5 <- subset(Aleaf_agg, volume == "5")
 #date is for plotting, starts day2
-uniqueDate <- seq.Date(from=as.Date("2013/01/21"), to=as.Date("2013/05/21"), by="days")
+uniqueDate <- seq.Date(from=as.Date("2013/01/22"), to=as.Date("2013/05/21"), by="days")
 
 #model parameters and empty vectors----------------------------------------------------
-
-#vector with only Cgain
-Cday_id <- Cday_test1[,3]
-
-
+aperla <- Aleaf5[,2]
 
 leafrac <- .25
 sla <- 1/lma_mean  # calculate based on lma_mean above
-aperla <- 3 # fill in average gC m-2 day-1 from plantecophys simulations.
+#aperla <- 3 # fill in average gC m-2 day-1 from plantecophys simulations.
 Cperc <- 50
 
 leafarea <- vector()
@@ -58,12 +54,17 @@ for (i in 2:numdays) {
   biomass[i] <- biomass[i-1] + biomassprod
   leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
 }
+Cgain_5 <- data.frame(biomass=biomass, leafarea=leafarea, Date=uniqueDate)
+Cgain_agg <- sum(Cgain_5$biomass)
+
+plot(biomass~Date, data=Cgain_5)
+plot(leafarea~Date, data=Cgain_5)
 
 
 # function
 runProd <- function(leafrac = .25,
                     sla = 1/lma_mean,
-                    aperla = 3,
+                    aperla = aperla,
                     Cperc = 50,
                     numdays=120){
   
@@ -93,34 +94,11 @@ res <- lapply(*spliytdataframe*, function(x)runProd(aperla=x$PHTOSYN))
 # when constant
 res <- as.data.frame(do.call(rbind, mapply(runProd, aperla=c(3,3.2,4.1), SIMPLIFY=FALSE)))
 
+runProd(aperla)
 
 
 
-Cgain_loop <- data.frame(biomass=biomass, leafarea=leafarea, Date=Date)
-plot(biomass~Date, data=Cgain_loop)
-plot(leafarea~Date, data=Cgain_loop)
 
 
-####attempts to run through all ID's
-require(plyr)
-#need to split Cday, but also get a list of 49 that only include the Cgain vector
-
-modelfunction <- function(x) {
-  for (i in 2:numdays) {
-    production <- x[i-1] * leafarea[i-1]
-    biomass[i] <- biomass[i-1] + production
-    leafarea[i] <- leafarea[i-1] + (production*leafrac*sla)
-    dfr <- data.frame(mass=biomass, leafarea=leafarea, Date=Date)
-    return(dfr)
-  }
-}
-
-cday_sp2 <- dlply(Cday, .(ID))
-
-
-runmodel<- modelfunction(cday_sp2[["carbon_day"]]) 
-
-runmodel2 <- apply(cday_sp2[3],2, modelfunction)
-runmodel3 <- lapply(cday_sp2[3], modelfunction)
 
 
