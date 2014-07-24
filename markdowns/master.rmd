@@ -20,47 +20,37 @@ opts_knit$set(root.dir = '../')
 source("functions and packages/startscripts.R")
 ```
 
-```
 seedling growth through time
-```
+
 ```{r allometry panel plot}
 source("master_scripts/allometryplotting.R")
 ```
 
-```
 seedling total leaf area through time
-```
+
 ```{r leaf area plot}
 source("master_scripts/leafarea_plotting.R")
 ```
 
-```
 root:shoot and leaf:fine root at harvest
-```
 
 ```{r root:shoot plots }
 #source("master_scripts/rootshoot_plotting.R")
 ```
 
-```
 aci curves and jmax/vcmax
-```
 
 ```{r aci means plots }
 source("master_scripts/aci_plotting.R")
 ```
 
-
 ### seedling predawn and midday water potentials
-
 
 ```{r water potential plots}
 source("clean scripts/seedling water potential.R")
 ```
 
-
 Modelled C gain versus harvest seedling total carbon
-
 
 ```{r Cgain vs Cmass }
 cgain<- read.csv("calculated data/euc_cgain.csv")
@@ -72,11 +62,15 @@ abline(0,1)
 abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 ```
 
-```
 Soil N percent pre expeeriment and at harvest
-```
+
 ```{r Soil N percent}
 source("master_scripts/soilN_plotting.R")
+```
+
+Predicted responses of Amax on a mass basis to leaf starch and N levels
+```{r Amass vs TNC and N}
+source(("master_scripts/photochem_predict.R")
 ```
 
 

@@ -25,3 +25,6 @@ abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 
 #Soil Nitrogen bar plot
 source("master_scripts/soilN_plotting.R")
+
+#Amass vs N and TNC with levels
+source(("master_scripts/photochem_predict.R")
