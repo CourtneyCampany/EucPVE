@@ -18,13 +18,20 @@ leafarea_mean <- (mean(lma$area))/10000
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 
 #read in Cnetm2day---------------------------------------------------------------------
-Cday <- read.csv("calculated data/cgain_date.csv")
 
-Cday_test1 <- subset(Cday, ID == "1-8") #5l
-#Cday_test2 <- subset(Cday, ID == "3-2") #free
+##need to convert modelled 15min A into g C m2 day
+Amodel <- read.csv("calculated data/Aleaf_pred_15min.csv")
+Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
+
+#first need sum over day and then means by treatment
+Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
+names(Aleaf)[3] <- "carbon_day"
+Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
+
+Cday_testvol <- subset(Aleaf_agg, volume == "5") #5l
 
 #date is for plotting, starts day2
-Date <- as.Date(Cday_test1[2:121,2])
+uniqueDate <- seq.Date(from=as.Date("2013/01/21"), to=as.Date("2013/05/21"), by="days")
 
 #model parameters and empty vectors----------------------------------------------------
 
