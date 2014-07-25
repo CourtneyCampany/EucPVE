@@ -13,6 +13,7 @@ leafharvest$totalcount <- with(leafharvest, leaf_count + newleaf_count)
 leafharvest <- merge(leafharvest, plotsumm, by = c("pot", "plot", "ID"))
 leafharvest$volume <- as.factor(leafharvest$volume)
 
+write.csv(leafharvest[,c(3, 13:15)], "calculated data/LA_harvest.csv", row.names=FALSE)
 #treatment means for total area and count
 leafharvest_agg <- aggregate(cbind(totalarea, totalcount) ~ volume , data = leafharvest, FUN = mean)
 
