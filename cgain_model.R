@@ -53,9 +53,9 @@ Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRU
 lma_mean <- mean(lma$massarea)#average lma from harvest
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
-Cday <- as.vector(Aleaf_agg[,2]) #vector of 76 treaments in order
-sla <-  1/lma_mean
-volumeid <- as.factor(c(5,10,15,20,25,35,"free"))
+Cday <- as.vector(Aleaf_agg[,2]) #vector of 7 treaments in order
+#sla <-  1/lma_mean
+#volumeid <- as.factor(c(5,10,15,20,25,35,"free"))
 
 # model as a function--------------------------------------------------------------
 productionmodel <- function(leafrac = .18,
@@ -88,42 +88,6 @@ return(c(biomass=biomass[numdays],leafarea=leafarea[numdays]))
 #run mean gCday for each volume through model
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,leafrac=.25, SIMPLIFY=FALSE)))
 
-#plot modelled vs obseved
-
-# # when driver
-# res <- lapply(*spliytdataframe*, function(x)runProd(aperla=x$PHTOSYN))
-# # when constant
-# res <- as.data.frame(do.call(rbind, mapply(runProd, aperla=c(3,3.2,4.1), SIMPLIFY=FALSE)))
-# 
-# productionmodel(aperla=)
-
-
-
-# #model parameters and empty vectors----------------------------------------------------
-# gCday <- Aleaf25[,2]
-# 
-# leafrac <- .10
-# sla <- 1/lma_mean  # calculate based on lma_mean above
-# Cperc <- 50
-# constrt_resp <- (0.65)
-# 
-# leafarea <- vector()
-#   leafarea[1] <- LA_start
-# 
-# biomass <- vector()
-#   biomass[1] <- mass_mean
-# 
-# #run model simulation------------------------------------------------------------------
-# for (i in 2:numdays) {
-#   production <- gCday * constrt_resp* leafarea[i-1]  # gc day-1
-#   biomassprod <- production*(100/Cperc)
-#   biomass[i] <- biomass[i-1] + biomassprod 
-#   leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
-# }
-# Cgain_25 <- data.frame(biomass=biomass, leafarea=leafarea, Date=uniqueDate)
-# 
 # plot(biomass~Date, data=Cgain_25)
 # plot(leafarea~Date, data=Cgain_25)
-
-
 
