@@ -11,6 +11,7 @@ pch2 = c(rep(1,6),2)
 ltys <- c(rep(1,6),4)
 ypos <- c(2.5,1,0)
 PTcex <- 1.6
+LABcex <- 1.3
 #legend and axis labels for all data
 
 vollab <- expression(Pot~volume~(l))
