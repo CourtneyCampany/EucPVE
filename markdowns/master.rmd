@@ -35,7 +35,13 @@ source("master_scripts/leafarea_plotting.R")
 root:shoot and leaf:fine root at harvest
 
 ```{r root:shoot plots }
-source("master_scripts/rootshoot_plotting.R")
+#source("master_scripts/rootshoot_plotting.R")
+```
+
+asat and amax
+
+```{r photosynthesis plotting}
+source("master_scripts/A_plotting.R")
 ```
 
 aci curves and jmax/vcmax
