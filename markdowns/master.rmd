@@ -35,7 +35,7 @@ source("master_scripts/leafarea_plotting.R")
 root:shoot and leaf:fine root at harvest
 
 ```{r root:shoot plots }
-#source("master_scripts/rootshoot_plotting.R")
+source("master_scripts/rootshoot_plotting.R")
 ```
 
 asat and amax
@@ -76,7 +76,7 @@ source("master_scripts/soilN_plotting.R")
 
 Predicted responses of Amax on a mass basis to leaf starch and N levels
 ```{r Amass vs TNC and N}
-#source(("master_scripts/photochem_predict.R")
+source("master_scripts/photochem_predict.R")
 ```
 
 
