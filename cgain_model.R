@@ -61,9 +61,12 @@ Cday <- as.vector(Aleaf_agg[,2]) #vector of 7 treaments in order
 productionmodel <- function(leafrac = .18,
                     sla = .0102,
                     gCday = .2,
-                    Cperc = 50,
-                    constrt_resp = 0.65,
-                    numdays=120){
+                    conversionEfficiency = 0.65,
+                    numdays=120,
+                    returnwhat=c("lastval","all")
+                    ){
+  
+  returnwhat <- match.arg(returnwhat)
   
   leafarea <- vector()
   leafarea[1] <- LA_start
@@ -76,13 +79,17 @@ productionmodel <- function(leafrac = .18,
   
   #run model simulation------------------------------------------------------------------
   for (i in 2:numdays) {
-    production <- gCday[i] * constrt_resp* leafarea[i-1]  # gc day-1
-    biomassprod <- production*(100/Cperc)
+    biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     biomass[i] <- biomass[i-1] + biomassprod
     leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
   }
 
-return(c(biomass=biomass[numdays],leafarea=leafarea[numdays]))
+  if(returnwhat == "lastval")
+    return(c(biomass=biomass[numdays],leafarea=leafarea[numdays]))
+  
+  if(returnwhat == "all")
+    return(list(biomass=biomass,leafarea=leafarea))
+  
 }
 
 #run mean gCday for each volume through model
@@ -90,4 +97,12 @@ modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,lea
 
 # plot(biomass~Date, data=Cgain_25)
 # plot(leafarea~Date, data=Cgain_25)
+
+
+plot(Cday, modelmass$biomass, ylim=c(0,200))
+points(Cday, mass_actual$mass, col="red")
+
+
+
+
 
