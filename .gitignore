@@ -3,7 +3,7 @@
 .RData
 
 
-
+*.html
 *.pdf
 *.ini
 *.l
