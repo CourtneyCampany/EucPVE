@@ -71,7 +71,7 @@ abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 Soil N percent pre expeeriment and at harvest
 
 ```{r Soil N percent}
-source("master_scripts/soilN_plotting.R")
+source("master_scripts/soilCN_plotting.R")
 ```
 
 Predicted responses of Amax on a mass basis to leaf starch and N levels
