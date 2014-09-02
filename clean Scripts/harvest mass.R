@@ -1,17 +1,14 @@
 
 source("functions and packages/startscripts.R")
-
 #read data
 source("read data scripts/harvest read data.R")
 
-
 #merge harvest mass with plot summary
 harvest_mass <- merge(harvest_mass, plotsumm, by = c("pot", "plot", "ID"))
-harvest_mass$volume <- as.factor(harvest_mass$volume)
+  harvest_mass$volume <- as.factor(harvest_mass$volume)
 
 #subset with dry mass
 seedlingmass <- subset(harvest_mass, select = c("ID", "volume", "Croot", "Froot", "leafmass", "stemmass"))
-
 
 #FINE ROOT SUBSAMPLES from SRL-----------------------------------------------------------------------------
 
@@ -20,26 +17,26 @@ srlmass$srl_dw <- with(srlmass, srl_fw * (1-(ss_fw - ss_dw)/ss_fw))
 
 #add extra mass from doubles of plot one SS
 extramass <- data.frame(ID = c("1-1", "1-2", "1-4", "1-5", "1-6", "1-7", "1-8"), 
-                        extramass = c(.27, .30, .53, 1.2, .96, .91, .58))
+             extramass = c(.27, .30, .53, 1.2, .96, .91, .58))
 
 #new data frame with just total dry mass from froot subsample
 srlmass <- merge(srlmass, extramass, by = "ID", all=TRUE)
-srlmass$extramass <- ifelse(is.na(srlmass$extramass), 0, srlmass$extramass)
-srlmass$frootSS_dw <- with(srlmass, srl_dw + ss_dw + extramass)
+  srlmass$extramass <- ifelse(is.na(srlmass$extramass), 0, srlmass$extramass)
+  srlmass$frootSS_dw <- with(srlmass, srl_dw + ss_dw + extramass)
 frootSS <- subset(srlmass, select = c("ID", "frootSS_dw"))
 #------------------------------------------------------------------------------------------------------------
 
 #dfr with all dry weights
 seedlingmass <- merge(seedlingmass, frootSS, by = "ID", all=TRUE)
 
-seedlingmass$fineroot <- with(seedlingmass, frootSS_dw + Froot)
-seedlingmass$root <- with(seedlingmass, Croot + fineroot)
-seedlingmass$shoot <- with(seedlingmass, leafmass + stemmass)
+  seedlingmass$fineroot <- with(seedlingmass, frootSS_dw + Froot)
+  seedlingmass$root <- with(seedlingmass, Croot + fineroot)
+  seedlingmass$shoot <- with(seedlingmass, leafmass + stemmass)
 
-#total mass, shoot:root, fineroot:leafmass
-seedlingmass$totalmass <- with(seedlingmass, shoot + root)
-seedlingmass$rootshoot <- with(seedlingmass, root/shoot)
-seedlingmass$frootleaf <- with(seedlingmass, fineroot/leafmass)
+  #total mass, shoot:root, fineroot:leafmass
+  seedlingmass$totalmass <- with(seedlingmass, shoot + root)
+  seedlingmass$rootshoot <- with(seedlingmass, root/shoot)
+  seedlingmass$frootleaf <- with(seedlingmass, fineroot/leafmass)
 
 massvol <- summaryBy( .~volume, data=seedlingmass, FUN=se)
 
