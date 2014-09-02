@@ -2,6 +2,7 @@ require(doBy)
 
 #experiment length---------------------------------------------------------------------
 numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
+volume <- c("5", "10", "15", "20", "25", "35", "1000")
 
 #date is for plotting, starts day2
 uniqueDate <- seq.Date(from=as.Date("2013/01/22"), to=as.Date("2013/05/21"), by="days")
@@ -110,6 +111,7 @@ productionmodel <- function(leafrac = .18,
 #run mean gCday for each volume through model
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
                                                  sla=sla_trt,leafrac=.25, SIMPLIFY=FALSE)))
+mm <- cbind(volume, modelmass)
 
 modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
                                                  sla=sla_trt,leafrac=.25, returnwhat="all",SIMPLIFY=FALSE)))
@@ -123,7 +125,12 @@ points(Cday, mass_actual$mass, col="red")
 
 #add A and plot mass, leafmass, and LMF vs A
 
+#colors
+gradient <- colorRampPalette(c("red", "blue"))
+palette(gradient(7))
+pchs = c(rep(16,6),17)
 
-
-
+plot(Aleaf_agg$carbon_day, mm$leafmass, pch=pchs)
+plot(Aleaf_agg$carbon_day, mm$LMF,  pch=pchs)
+plot(Aleaf_agg$carbon_day, mm$biomass,  pch=pchs)
 
