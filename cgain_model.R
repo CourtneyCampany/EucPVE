@@ -28,6 +28,7 @@ mean_leafnum <- mean(seedling_pre$leaf_numb)
 #need to pull leaf area from somewhere
 lma <- read.csv("calculated data/leafmassarea.csv")
 sla_vol <- summaryBy(sla ~volume, data=lma, FUN=mean, keep.names=TRUE)
+lma_vol <- summaryBy(massarea ~volume, data=lma, FUN=mean, keep.names=TRUE)
 
 #lma_mean <- mean(lma$massarea)
 leafarea_mean <- (mean(lma$area))/10000
@@ -50,18 +51,19 @@ names(Aleaf)[3] <- "carbon_day"
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
 #Aleaf25 <- subset(Aleaf_agg, volume == "25")
 
-####RUN MODEL
-#model empty vectors and start values
+####MODEL---------------------------------------------------------------------------------
 
+##model start values
 lma_mean <- mean(lma$massarea)#average lma from harvest
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
 Cday <- as.vector(Aleaf_agg[,2]) #vector of 7 treaments in order
 sla_trt <- as.vector(sla_vol[,2])
-#sla <-  1/lma_mean
+lma_trt <- as.vector(lma_vol[,2])
+
 #volumeid <- as.factor(c(5,10,15,20,25,35,"free"))
 
-# model as a function--------------------------------------------------------------
+# model as a function
 productionmodel <- function(leafrac = .18,
                     sla = .0102,
                     gCday = .2,
@@ -69,6 +71,7 @@ productionmodel <- function(leafrac = .18,
                     fr_resp = .010368, #gC/gFroot day Marsden et al
                     cr_resp = .00124, #gC/gCroot day
                     wd_resp = .00269, #gc/gwood day Ryan et al. eucs 1yr
+                    #fr_turn = .48, #production/standing crop
                     numdays=120,
                     lma = 97.5,
                     returnwhat=c("lastval","all")
@@ -110,27 +113,26 @@ productionmodel <- function(leafrac = .18,
 
 #run mean gCday for each volume through model
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 sla=sla_trt,leafrac=.25, SIMPLIFY=FALSE)))
+                                                 sla=sla_trt,leafrac=.25, lma=lma_trt,SIMPLIFY=FALSE)))
 mm <- cbind(volume, modelmass)
 
 modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
                                                  sla=sla_trt,leafrac=.25, returnwhat="all",SIMPLIFY=FALSE)))
 
-# plot(biomass~Date, data=Cgain_25)
-# plot(leafarea~Date, data=Cgain_25)
-
-
-plot(Cday, modelmass$biomass, ylim=c(0,200))
-points(Cday, mass_actual$mass, col="red")
-
-#add A and plot mass, leafmass, and LMF vs A
-
-#colors
+#plotting
+#plot bits
 gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 pchs = c(rep(16,6),17)
 
-plot(Aleaf_agg$carbon_day, mm$leafmass, pch=pchs)
-plot(Aleaf_agg$carbon_day, mm$LMF,  pch=pchs)
-plot(Aleaf_agg$carbon_day, mm$biomass,  pch=pchs)
+plot(Cday, modelmass$biomass, ylim=c(0,500))
+points(Cday, mass_actual$mass, col="red")
+
+plot(mass_actual$leafarea, modelmass$leafarea,ylim=c(0,5))
+abline(0,1)
+
+#A and plot mass, leafmass, and LMF vs A
+plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs)
+plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs)
+plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs)
 
