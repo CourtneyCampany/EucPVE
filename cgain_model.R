@@ -97,9 +97,15 @@ productionmodel <- function(leafrac = .18,
   #run model simulation------------------------------------------------------------------
   for (i in 2:numdays) {
     biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
-    biomass[i] <- biomass[i-1] + biomassprod - ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    leafarea[i] <- leafarea[i-1] + (biomassprod*leafrac*sla)
-    leafmass[i] <- leafarea[i] * lma
+    
+    biomassprodnet <- biomassprod - 
+      ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
+    
+    biomass[i] <- biomass[i-1] + biomassprodnet
+    
+    leafmass[i] <- leafmass[i-1] + biomassprodnet*leafrac
+    leafarea[i] <- leafmass[i] / lma
+    
     LMF[i] <- leafmass[i]/biomass[i]
   }
 
@@ -110,6 +116,8 @@ productionmodel <- function(leafrac = .18,
     return(list(biomass=biomass,leafarea=leafarea, leafmass = leafmass, LMF = LMF))
   
 }
+
+#do.call(rbind,mapply(productionmodel, gCday=seq(6,3,length=101), SIMPLIFY=F))
 
 #run mean gCday for each volume through model
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
@@ -125,8 +133,10 @@ gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 pchs = c(rep(16,6),17)
 
-plot(Cday, modelmass$biomass, ylim=c(0,500))
+plot(Cday, modelmass$biomass, ylim=c(0,200))
 points(Cday, mass_actual$mass, col="red")
+
+plot(modelmass$biomass, mass_actual$mass)
 
 plot(mass_actual$leafarea, modelmass$leafarea,ylim=c(0,5))
 abline(0,1)

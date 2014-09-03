@@ -28,37 +28,37 @@ source("master_scripts/allometryplotting.R")
 
 seedling total leaf area through time
 
-```{r leaf area plot}
+```{r leafareaplot}
 source("master_scripts/leafarea_plotting.R")
 ```
 
 root:shoot and leaf:fine root at harvest
 
-```{r root:shoot plots }
+```{r rootshootplots }
 source("master_scripts/rootshoot_plotting.R")
 ```
 
 asat and amax
 
-```{r photosynthesis plotting}
+```{r photosynthesisplotting}
 source("master_scripts/A_plotting.R")
 ```
 
 aci curves and jmax/vcmax
 
-```{r aci means plots }
+```{r acimeansplots }
 source("master_scripts/aci_plotting.R")
 ```
 
 ### seedling predawn and midday water potentials
 
-```{r water potential plots}
+```{r waterpotentialplots}
 source("clean scripts/seedling water potential.R")
 ```
 
 Modelled C gain versus harvest seedling total carbon
 
-```{r Cgain vs Cmass }
+```{r CgainvsCmass }
 cgain<- read.csv("calculated data/euc_cgain.csv")
 cgain$volume <- as.factor(cgain$volume)
 
@@ -70,12 +70,12 @@ abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 
 Soil N percent pre expeeriment and at harvest
 
-```{r Soil N percent}
+```{r SoilNpercent}
 source("master_scripts/soilCN_plotting.R")
 ```
 
 Predicted responses of Amax on a mass basis to leaf starch and N levels
-```{r Amass vs TNC and N}
+```{r AmassvsTNCandN}
 source("master_scripts/photochem_predict.R")
 ```
 
