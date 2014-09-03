@@ -7,7 +7,7 @@ volume <- c("5", "10", "15", "20", "25", "35", "1000")
 #date is for plotting, starts day2
 uniqueDate <- seq.Date(from=as.Date("2013/01/22"), to=as.Date("2013/05/21"), by="days")
 
-#harvest mass and leaf area for model comparison---------------------------------------
+#harvest mass and leaf area for model comparison----------------------------------------------------------------
 harvestmass <- read.csv("calculated data/seedling mass.csv")
 mass_total <- harvestmass[,c(1:2,11)]
 mass_agg <- summaryBy(totalmass ~volume, data=mass_total, FUN=mean, keep.names=TRUE)
@@ -16,15 +16,31 @@ LA_agg <- summaryBy(totalarea ~volume, data=LA_harvest, FUN=mean, keep.names=TRU
 
 mass_actual <- data.frame(volume = LA_agg$volume, mass = mass_agg$totalmass, leafarea = (LA_agg$totalarea/1000))
 
-#pre seedling data for intial biomass and leaf area (use mean)-------------------------
+#pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
 seedling_pre <- read.csv("raw data/seedling_initial.csv")
-seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
+  seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
+  seedling_pre$rootshoot <- with(seedling_pre, root_mass/(leaf_mass+wood_mass))
 leaffractions <- mean (seedling_pre$leaf_mass/seedling_pre$seedling_mass)
 #average mass of seedlings at start
 #mass_mean <- mean(seedling_pre$seedling_mass)
 mean_leafnum <- mean(seedling_pre$leaf_numb)
 
-#mean lma and leafarea (apply to intial leaf )-----------------------------------------
+#root-shoot ratios, and froot and croot mass fractions---------------------------------------------------------
+
+#harvest
+ratio <- subset(harvestmass, select = c("ID", "volume", "fineroot", "Croot", "root", "shoot", "totalmass"))
+  ratio$rootshoot <-with(ratio, root/shoot)
+  ratio$froot_frac <- with(ratio, fineroot/totalmass)
+  ratio$croot_frac <- with(ratio, Croot/totalmass)
+ratio_agg <- summaryBy(rootshoot+froot_frac+croot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
+rs_mean <- mean(ratio$rootshoot)
+fr_frac_mean <- mean(ratio$froot_frac)
+cr_frac_mean <- mean(ratio$croot_frac)
+
+#pre
+rootshoot_pre_mean <- mean(seedling_pre$rootshoot)
+
+#mean lma and leafarea (apply to intial leaf )------------------------------------------------------------------
 #need to pull leaf area from somewhere
 lma <- read.csv("calculated data/leafmassarea.csv")
 sla_vol <- summaryBy(sla ~volume, data=lma, FUN=mean, keep.names=TRUE)
@@ -64,9 +80,11 @@ lma_trt <- as.vector(lma_vol[,2])
 #volumeid <- as.factor(c(5,10,15,20,25,35,"free"))
 
 # model as a function
-productionmodel <- function(leafrac = .18,
-                    sla = .0102,
-                    gCday = .2,
+productionmodel <- function(leafrac = .25,
+                    crfrac = .25
+                    frfrac = .25
+                    stemfrac=.25
+                    gCday = 1,
                     conversionEfficiency = 0.65,
                     fr_resp = .010368, #gC/gFroot day Marsden et al
                     cr_resp = .00124, #gC/gCroot day
@@ -100,7 +118,7 @@ productionmodel <- function(leafrac = .18,
     
     biomassprodnet <- biomassprod - 
       ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    
+    ######need to implement biomass fractions above and belowground with respiration
     biomass[i] <- biomass[i-1] + biomassprodnet
     
     leafmass[i] <- leafmass[i-1] + biomassprodnet*leafrac
