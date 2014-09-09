@@ -24,26 +24,37 @@ leaffractions <- mean (seedling_pre$leaf_mass/seedling_pre$seedling_mass)
 #average mass of seedlings at start
 #mass_mean <- mean(seedling_pre$seedling_mass)
 mean_leafnum <- mean(seedling_pre$leaf_numb)
+pre_root <- mean(seedling_pre$root_mass)
+pre_stem <- mean(seedling_pre$wood_mass)
+pre_- mean(seedling_pre$leaf_numb)
 
 #root-shoot ratios, and froot and croot mass fractions---------------------------------------------------------
 
 #harvest
-ratio <- subset(harvestmass, select = c("ID", "volume", "fineroot", "Croot", "root", "shoot", "totalmass"))
+ratio <- subset(harvestmass, select = c("ID", "volume", "fineroot", "Croot", "stemmass", "leafmass",
+              "root", "shoot", "totalmass"))
   ratio$rootshoot <-with(ratio, root/shoot)
   ratio$froot_frac <- with(ratio, fineroot/totalmass)
   ratio$croot_frac <- with(ratio, Croot/totalmass)
+  ratio$stem_frac <- with(ratio, stemmass/totalmass)
+  ratio$leaf_frac <- with(ratio, leafmass/totalmass)
 ratio_agg <- summaryBy(rootshoot+froot_frac+croot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
-rs_mean <- mean(ratio$rootshoot)
-fr_frac_mean <- mean(ratio$froot_frac)
-cr_frac_mean <- mean(ratio$croot_frac)
+  #mean component fractions
+  rs_mean <- mean(ratio$rootshoot)
+  fr_frac_mean <- mean(ratio$froot_frac)
+  cr_frac_mean <- mean(ratio$croot_frac)
+  stem_frac_mean <- mean(ratio$stem_frac)
+  #fraction volume means
+  fr_frac_vol <-  summaryBy(froot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
+  cr_frac_vol <- summaryBy(croot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
+  stem_frac_vol <- summaryBy(stem_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
+  leaf_frac_vol <- summaryBy(leaf_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
 
 #pre
 rootshoot_pre_mean <- mean(seedling_pre$rootshoot)
 
 #mean lma and leafarea (apply to intial leaf )------------------------------------------------------------------
-#need to pull leaf area from somewhere
 lma <- read.csv("calculated data/leafmassarea.csv")
-sla_vol <- summaryBy(sla ~volume, data=lma, FUN=mean, keep.names=TRUE)
 lma_vol <- summaryBy(massarea ~volume, data=lma, FUN=mean, keep.names=TRUE)
 
 #lma_mean <- mean(lma$massarea)
@@ -73,17 +84,20 @@ Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRU
 lma_mean <- mean(lma$massarea)#average lma from harvest
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
-Cday <- as.vector(Aleaf_agg[,2]) #vector of 7 treaments in order
-sla_trt <- as.vector(sla_vol[,2])
+Cday <- as.vector(Aleaf_agg[,2]) 
+#vectors of 7 treaments in order
 lma_trt <- as.vector(lma_vol[,2])
-
+frfrac_trt <- as.vector(fr_frac_vol[,2])
+crfrac_trt <- as.vector(cr_frac_vol[,2])
+stemfrac_trt <- as.vector(stem_frac_vol[,2])
+leaffrac_trt <- as.vector(leaf_frac_vol[,2])
 #volumeid <- as.factor(c(5,10,15,20,25,35,"free"))
 
 # model as a function
-productionmodel <- function(leafrac = .25,
-                    crfrac = .25
-                    frfrac = .25
-                    stemfrac=.25
+productionmodel <- function(leaffrac = .25,
+                    crfrac = .25,
+                    frfrac = .25,
+                    stemfrac=.25,
                     gCday = 1,
                     conversionEfficiency = 0.65,
                     fr_resp = .010368, #gC/gFroot day Marsden et al
@@ -103,11 +117,20 @@ productionmodel <- function(leafrac = .25,
   biomass <- vector()
   biomass[1] <- mass_mean
   
+    frootmass <- vector()
+    frootmass[1] <- pre_root*.9
+  
+    crootmass <- vector()
+    crootmass[1] <- pre_root*.1
+     
+    stemmass <- vector()
+    stemmass[1] <- pre_stem
+  
   leafmass <- vector()
-  leafmass[1] <- LA_start*lma_mean
+  leafmass[1] <- LA_start*lma
   
   LMF <- vector()
-  LMF[1] <- (LA_start*lma_mean)/mass_mean
+  LMF[1] <- (LA_start*lma)/mass_mean
   
   if(length(gCday) == 1)gCday <- rep(gCday,numdays)
   if(length(gCday) < numdays)stop("Need at least ",numdays," photosynthesis values.")
@@ -116,12 +139,26 @@ productionmodel <- function(leafrac = .25,
   for (i in 2:numdays) {
     biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
-    biomassprodnet <- biomassprod - 
-      ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    ######need to implement biomass fractions above and belowground with respiration
-    biomass[i] <- biomass[i-1] + biomassprodnet
+    #biomassprodnet <- biomassprod - 
+      #((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
+    #biomass[i] <- biomass[i-1] + biomassprodnet
+   
+   #fractions,stems and wood need respiration
+   leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
+   
+   stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
+    stemmass[i]<- stemgain -(stemgain* wd_resp)
+   
+   frootgain <- frootmass[i-1] + biomassprod*frfrac
+    frootmass[i] <- frootgain-(frootgain * fr_resp)
+   
+   crootgain <- crootmass[i-1] + biomassprod*crfrac 
+    crootmass[i] <- crootgain -(crootgain* cr_resp)
+   
+    #total biomass day
+    biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
     
-    leafmass[i] <- leafmass[i-1] + biomassprodnet*leafrac
+  #leaf area and leaf mass fraction
     leafarea[i] <- leafmass[i] / lma
     
     LMF[i] <- leafmass[i]/biomass[i]
@@ -135,15 +172,22 @@ productionmodel <- function(leafrac = .25,
   
 }
 
-#do.call(rbind,mapply(productionmodel, gCday=seq(6,3,length=101), SIMPLIFY=F))
+#run model simulations--------------------------
 
-#run mean gCday for each volume through model
-modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 sla=sla_trt,leafrac=.25, lma=lma_trt,SIMPLIFY=FALSE)))
-mm <- cbind(volume, modelmass)
+#with sequence of gC, ranges....plot real data, then make new curves with diff parameter assumptions
+gCday_seq <- seq(6,3,length=101)
+free_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_mean, SIMPLIFY=F)))
+  free_sim$gCday <- gCday_seq
+
+with(free_sim, plot(gCday~biomass, xlim=c(62,0)))
+
+modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+            gCday=Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
+            leaffrac=leaffrac_trt,SIMPLIFY=FALSE)))
+#mm <- cbind(volume, modelmass)
 
 modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 sla=sla_trt,leafrac=.25, returnwhat="all",SIMPLIFY=FALSE)))
+                                                 lma=lma_trt,leafrac=.25, returnwhat="all",SIMPLIFY=FALSE)))
 
 #plotting
 #plot bits
