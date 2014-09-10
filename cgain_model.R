@@ -118,10 +118,10 @@ productionmodel <- function(leaffrac = .25,
   biomass[1] <- mass_mean
   
     frootmass <- vector()
-    frootmass[1] <- pre_root*.9
+    frootmass[1] <- pre_root*.5
   
     crootmass <- vector()
-    crootmass[1] <- pre_root*.1
+    crootmass[1] <- pre_root*.5
      
     stemmass <- vector()
     stemmass[1] <- pre_stem
@@ -139,25 +139,25 @@ productionmodel <- function(leaffrac = .25,
   for (i in 2:numdays) {
     biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
-    biomassprodnet <- biomassprod - 
-      ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    biomass[i] <- biomass[i-1] + biomassprodnet
+    #biomassprodnet <- biomassprod - 
+      #((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
+    #biomass[i] <- biomass[i-1] + biomassprodnet
    
    #fractions,stems and wood need respiration
     leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
-#    
-#    stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
-#     stemmass[i]<- stemgain -(stemgain* wd_resp)
-#    
-#    frootgain <- frootmass[i-1] + biomassprod*frfrac
-#     frootmass[i] <- frootgain-(frootgain * fr_resp)
-#    
-#    crootgain <- crootmass[i-1] + biomassprod*crfrac 
-#     crootmass[i] <- crootgain -(crootgain* cr_resp)
-#    
-#     #total biomass day
-#     biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
-#     
+   
+    stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
+    stemmass[i]<- stemgain -(stemgain* wd_resp)
+   
+    frootgain <- frootmass[i-1] + biomassprod*frfrac
+    frootmass[i] <- frootgain-(frootgain * fr_resp)
+   
+    crootgain <- crootmass[i-1] + biomassprod*crfrac 
+    crootmass[i] <- crootgain -(crootgain* cr_resp)
+   
+    #total biomass day
+    biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
+    
   #leaf area and leaf mass fraction
     leafarea[i] <- leafmass[i] / lma
     
@@ -172,14 +172,12 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
-#run model simulations with sequence of g Cday, change parameter assumptions with each sim
+#run model simulations with sequence of g Cday, change parameter assumptions with each sim----------------------
 
 #only lma by mean, components equal
-gCday_seq <- seq(7,4,length=101)
-free_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_mean, SIMPLIFY=F)))
-  free_sim$gCday <- gCday_seq
-
-
+  gCday_seq <- seq(7,4,length=101)
+# free_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_mean, SIMPLIFY=F)))
+#   free_sim$gCday <- gCday_seq
 
 
 #component allocation and lma by volume (7 sims)
@@ -222,7 +220,7 @@ pchs = c(rep(16,6),17)
 cols <- as.vector(palette())
 
 #model plotting
-with(sim5, plot(gCday~biomass, xlim=c(150,0),col=cols[1]))
+with(sim5, plot(gCday~biomass, xlim=c(250,0),col=cols[1]))
   points( sim10$gCday~sim10$biomass,col=cols[2])
   points( sim15$gCday~sim15$biomass,col=cols[3])
   points( sim20$gCday~sim20$biomass,col=cols[4])
