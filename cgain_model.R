@@ -139,25 +139,25 @@ productionmodel <- function(leaffrac = .25,
   for (i in 2:numdays) {
     biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
-    #biomassprodnet <- biomassprod - 
-      #((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    #biomass[i] <- biomass[i-1] + biomassprodnet
+    biomassprodnet <- biomassprod - 
+      ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
+    biomass[i] <- biomass[i-1] + biomassprodnet
    
    #fractions,stems and wood need respiration
-   leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
-   
-   stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
-    stemmass[i]<- stemgain -(stemgain* wd_resp)
-   
-   frootgain <- frootmass[i-1] + biomassprod*frfrac
-    frootmass[i] <- frootgain-(frootgain * fr_resp)
-   
-   crootgain <- crootmass[i-1] + biomassprod*crfrac 
-    crootmass[i] <- crootgain -(crootgain* cr_resp)
-   
-    #total biomass day
-    biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
-    
+    leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
+#    
+#    stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
+#     stemmass[i]<- stemgain -(stemgain* wd_resp)
+#    
+#    frootgain <- frootmass[i-1] + biomassprod*frfrac
+#     frootmass[i] <- frootgain-(frootgain * fr_resp)
+#    
+#    crootgain <- crootmass[i-1] + biomassprod*crfrac 
+#     crootmass[i] <- crootgain -(crootgain* cr_resp)
+#    
+#     #total biomass day
+#     biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
+#     
   #leaf area and leaf mass fraction
     leafarea[i] <- leafmass[i] / lma
     
@@ -172,14 +172,77 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
-#run model simulations--------------------------
+#run model simulations with sequence of g Cday, change parameter assumptions with each sim
 
-#with sequence of gC, ranges....plot real data, then make new curves with diff parameter assumptions
-gCday_seq <- seq(6,3,length=101)
+#only lma by mean, components equal
+gCday_seq <- seq(7,4,length=101)
 free_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_mean, SIMPLIFY=F)))
   free_sim$gCday <- gCday_seq
 
-with(free_sim, plot(gCday~biomass, xlim=c(62,0)))
+
+
+
+#component allocation and lma by volume (7 sims)
+
+#5l
+sim5 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[1],frfrac=frfrac_trt[1], 
+                  crfrac=crfrac_trt[1], stemfrac=stemfrac_trt[1],leaffrac=leaffrac_trt[1], SIMPLIFY=F)))
+#10l
+sim10 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[2],frfrac=frfrac_trt[2], 
+                  crfrac=crfrac_trt[2], stemfrac=stemfrac_trt[2],leaffrac=leaffrac_trt[2], SIMPLIFY=F)))
+#15
+sim15 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[3],frfrac=frfrac_trt[3],
+                   crfrac=crfrac_trt[3], stemfrac=stemfrac_trt[3],leaffrac=leaffrac_trt[3], SIMPLIFY=F)))
+#20
+sim20 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[4],frfrac=frfrac_trt[4],
+                   crfrac=crfrac_trt[4], stemfrac=stemfrac_trt[4],leaffrac=leaffrac_trt[4], SIMPLIFY=F)))
+#25
+sim25 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[5],frfrac=frfrac_trt[5],
+                   crfrac=crfrac_trt[5], stemfrac=stemfrac_trt[5],leaffrac=leaffrac_trt[5], SIMPLIFY=F)))
+#35
+sim35 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[6],frfrac=frfrac_trt[6],
+                   crfrac=crfrac_trt[6], stemfrac=stemfrac_trt[6],leaffrac=leaffrac_trt[6], SIMPLIFY=F)))
+#free
+simfree <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[7],frfrac=frfrac_trt[7],
+                   crfrac=crfrac_trt[7], stemfrac=stemfrac_trt[7],leaffrac=leaffrac_trt[7], SIMPLIFY=F)))
+
+sim5$gCday <- gCday_seq
+sim10$gCday <- gCday_seq
+sim15$gCday <- gCday_seq
+sim20$gCday <- gCday_seq
+sim25$gCday <- gCday_seq
+sim35$gCday <- gCday_seq
+simfree$gCday <- gCday_seq
+
+#plot bits
+gradient <- colorRampPalette(c("red", "blue"))
+palette(gradient(7))
+pchs = c(rep(16,6),17)
+
+cols <- as.vector(palette())
+
+#model plotting
+with(sim5, plot(gCday~biomass, xlim=c(150,0),col=cols[1]))
+  points( sim10$gCday~sim10$biomass,col=cols[2])
+  points( sim15$gCday~sim15$biomass,col=cols[3])
+  points( sim20$gCday~sim20$biomass,col=cols[4])
+  points( sim25$gCday~sim25$biomass,col=cols[5])
+  points( sim35$gCday~sim35$biomass,col=cols[6])
+
+  points( simfree$gCday~simfree$biomass,col=cols[7])
+
+  points( mass_actual$mass, Cday,pch=16,col=palette())
+
+
+
+
+
+
+
+
+
+
+
 
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
             gCday=Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
@@ -187,13 +250,10 @@ modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel,
 #mm <- cbind(volume, modelmass)
 
 modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 lma=lma_trt,leafrac=.25, returnwhat="all",SIMPLIFY=FALSE)))
+                                                 lma=lma_trt, returnwhat="all",SIMPLIFY=FALSE)))
 
 #plotting
-#plot bits
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs = c(rep(16,6),17)
+
 
 plot(Cday, modelmass$biomass, ylim=c(0,200))
 points(Cday, mass_actual$mass, col="red")
