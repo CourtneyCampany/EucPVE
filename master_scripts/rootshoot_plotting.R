@@ -36,8 +36,9 @@ legend("topleft", leglab, pch=pchs,text.font=3, inset=0.01,
 #PLOT of Root:Shoot means with SE
 
 windows(8,6)
+#png(filename = "output/presentations/rootshoot.png", width = 11, height = 8.5, units = "in", res= 400)
 par(mar=c(5,5,1,1), cex.axis=1.0, cex.lab=1.3)
-with(ratio_agg, plot(root.mean, shoot.mean, ylim=c(0,40), xlim=c(0,40),
+with(ratio_agg, plot(root.mean, shoot.mean, ylim=c(0,100), xlim=c(0,100),
                      pch=pchs,col=palette(), cex=PTcex,
                      xlab = "Root Mass (g)",
                      ylab = "Shoot Mass (g)"))
@@ -56,4 +57,5 @@ abline(0,1)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.01, 
        title=expression(Pot~volume~(l)), col=palette(), bty='n')
 box()
+#dev.off()
 #dev.copy2pdf(file= "output/Shoot_Root.pdf")

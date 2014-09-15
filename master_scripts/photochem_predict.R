@@ -48,6 +48,7 @@ legpch <- c(5, 10, 15, 20, 25, 35, "free")
 
 
 #Amass vs N (full model)
+#png(filename = "output/presentations/Amass_N.png", width = 11, height = 8.5, units = "in", res= 400)
 with(photo_chem, plot(Nmass_notnc, A_mass, pch=pchs[volume], col=cols[starchbin], 
                       ylab="", xlab=nmass_noTNC,ylim=c(0,800)))
 for(i in 1:length(starchbin)){
@@ -58,8 +59,11 @@ for(i in 1:length(starchbin)){
 }
 title(ylab=Amasslab, mgp=ypos)
 legend("topleft", binlab, pch=15, text.font=1, inset=0.005, col=cols,title=starchlab , bty='n')
+#dev.off()
+
 
 #Amass vs starch (full model) 
+#png(filename = "output/presentations/Amass_TNC.png", width = 11, height = 8.5, units = "in", res= 400)
 with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
                       xlab=starchlab,xlim=c(0, .275)))
 for(i in 1:length(nitrobin)){
@@ -70,7 +74,7 @@ for(i in 1:length(nitrobin)){
 }
 title(ylab=Amasslab, mgp=ypos)
 legend("topright", binlab, pch=15, text.font=1, inset=0.01, col=coln,title=nfree , bty='n')
-
+#dev.off()
 
 # ###using predict instead of eqautions####
 # dfr <- expand.grid(starch = c(0.02, 0.06, 0.1, 0.14, 0.2),
