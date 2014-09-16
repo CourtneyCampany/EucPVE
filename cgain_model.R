@@ -232,26 +232,17 @@ with(sim5, plot(gCday~biomass, xlim=c(250,0),col=cols[1]))
   points( mass_actual$mass, Cday,pch=16,col=palette())
 
 
-
-
-
-
-
-
-
-
-
+####model with parameters and Cday by volume to compare with final harvest----------------------
 
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
             gCday=Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
             leaffrac=leaffrac_trt,SIMPLIFY=FALSE)))
 #mm <- cbind(volume, modelmass)
 
-modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 lma=lma_trt, returnwhat="all",SIMPLIFY=FALSE)))
+#modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
+                                                 #lma=lma_trt, returnwhat="all",SIMPLIFY=FALSE)))
 
 #plotting
-
 
 plot(Cday, modelmass$biomass, ylim=c(0,200))
 points(Cday, mass_actual$mass, col="red")
@@ -262,7 +253,7 @@ plot(mass_actual$leafarea, modelmass$leafarea,ylim=c(0,5))
 abline(0,1)
 
 #A and plot mass, leafmass, and LMF vs A
-plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs)
-plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs)
-plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs)
+plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs, col=palette())
+plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs, col=palette())
+plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs, col=palette())
 
