@@ -14,7 +14,7 @@ mass_agg <- summaryBy(totalmass ~volume, data=mass_total, FUN=mean, keep.names=T
 LA_harvest <- read.csv("calculated data/LA_harvest.csv")
 LA_agg <- summaryBy(totalarea ~volume, data=LA_harvest, FUN=mean, keep.names=TRUE)
 
-mass_actual <- data.frame(volume = LA_agg$volume, mass = mass_agg$totalmass, leafarea = (LA_agg$totalarea/1000))
+mass_actual <- data.frame(volume = LA_agg$volume, mass = mass_agg$totalmass, leafarea = (LA_agg$totalarea * 10^-4))
 
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
 seedling_pre <- read.csv("raw data/seedling_initial.csv")
@@ -120,16 +120,16 @@ productionmodel <- function(leaffrac = .25,
   
   biomass <- vector()
   biomass[1] <- mass_mean
-  
-    frootmass <- vector()
-    frootmass[1] <- pre_root*.5
-  
-    crootmass <- vector()
-    crootmass[1] <- pre_root*.5
-     
-    stemmass <- vector()
-    stemmass[1] <- pre_stem
-  
+
+  frootmass <- vector()
+  frootmass[1] <- pre_root*.5
+
+  crootmass <- vector()
+  crootmass[1] <- pre_root*.5
+   
+  stemmass <- vector()
+  stemmass[1] <- pre_stem
+
   leafmass <- vector()
   leafmass[1] <- LA_start*lma
   
@@ -141,33 +141,26 @@ productionmodel <- function(leaffrac = .25,
   
   #run model simulation------------------------------------------------------------------
   for (i in 2:numdays) {
-    biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
+    grossbiomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
-#     biomassprodnet <- biomassprod - 
-#       ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-#     biomass[i] <- biomass[i-1] + biomassprodnet
-   
+    netbiomassprod <- grossbiomassprod - fr_resp*frootmass[i-1] - cr_resp*crootmass[i-1] - wd_resp*frootmass[i-1]
+    
    #fractions,stems and wood need respiration
-    leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
+    leafmass[i] <- leafmass[i-1] + netbiomassprod*leaffrac
     leafarea[i] <- leafmass[i] / lma
 
 #### need to account for tnc here
 #leafarea[i] <- (leafmass[i]-tnc_frac) / lma
 #or with the realtionship of A and tnc
    
-    stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
-    stemmass[i]<- stemgain -(stemgain* wd_resp)
-   
-    frootgain <- frootmass[i-1] + biomassprod*frfrac
-    frootmass[i] <- frootgain-(frootgain * fr_resp)
-   
-    crootgain <- crootmass[i-1] + biomassprod*crfrac 
-    crootmass[i] <- crootgain -(crootgain* cr_resp)
-   
+    stemmass[i] <- stemmass[i-1] + netbiomassprod*stemfrac
+    frootmass[i] <- frootmass[i-1] + netbiomassprod*frfrac
+    crootmass[i] <- crootmass[i-1] + netbiomassprod*crfrac
+
     #total biomass day
-    biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
+    biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1] + stemmass[i-1]
     
-  #leaf mass fraction
+    #leaf mass fraction
     LMF[i] <- leafmass[i]/biomass[i]
   }
 
@@ -240,10 +233,12 @@ with(sim5, plot(gCday~biomass, xlim=c(250,0),col=cols[1]))
   points( mass_actual$mass, Cday,pch=16,col=palette())
 
 
+
+
 ####model with parameters and Cday by volume to compare with final harvest----------------------
 
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
-            gCday=Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
+            gCday=0.6*Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
             leaffrac=leaffrac_trt,SIMPLIFY=FALSE)))
 #mm <- cbind(volume, modelmass)
 
@@ -251,9 +246,21 @@ modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel,
                                                  #lma=lma_trt, returnwhat="all",SIMPLIFY=FALSE)))
 
 #plotting
+windows(8,4)
+par(mfrow=c(1,2))
+plot(modelmass$biomass, mass_actual$mass)
+abline(0,1)
+plot(modelmass$leafarea, mass_actual$leafarea)
+abline(0,1)
 
-plot(Cday, modelmass$biomass, ylim=c(0,200))
+
+
+
+windows()
+plot(Cday, modelmass$biomass, ylim=c(0,500))
 points(Cday, mass_actual$mass, col="red")
+
+
 
 plot(modelmass$biomass, mass_actual$mass)
 
@@ -264,4 +271,82 @@ abline(0,1)
 plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs, col=palette())
 plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs, col=palette())
 plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs, col=palette())
+
+
+
+
+# DOES NOT REALLY WORK - FORGET THIS FOR NOW
+fp <- function(p, i=1:7, leafareaweight=10, returnwhat=c("objective","simulation"),...){
+  
+  returnwhat <- match.arg(returnwhat)
+  
+  leaffrac <- p[1]
+  m <- p[2]
+  
+  ofrac <- (1 - leaffrac)/3
+  modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+                                                   gCday=m*Cday[i], 
+                                                   lma=lma_trt[i], 
+                                                   frfrac=ofrac, 
+                                                   crfrac=ofrac, 
+                                                   stemfrac=ofrac,
+                                                   leaffrac=leaffrac,
+                                                   ...,
+                                                   SIMPLIFY=FALSE)))
+  
+  if(returnwhat == "objective"){
+    O <- leafareaweight*sum((modelmass$leafarea - mass_actual$leafarea)^2) + 
+    sum((modelmass$biomass - mass_actual$mass)^2)
+    return(O)
+  }
+  
+  if(returnwhat == "simulation"){
+    return(modelmass)
+  }
+}
+
+
+opt <- optim(c(0.2,1), fp, method="L-BFGS-B", lower=c(0, 0), upper=c(0.9, 5))
+
+# opt <- optim(c(0.2,1), fp)
+
+optmodel <- fp(opt$par, returnwhat="sim")
+
+windows(8,4)
+par(mfrow=c(1,2))
+plot(optmodel$biomass, mass_actual$mass)
+abline(0,1)
+plot(optmodel$leafarea, mass_actual$leafarea)
+abline(0,1)
+
+
+opt <- optim(c(0.2,1), fp, i=2, method="L-BFGS-B", lower=c(0, 0), upper=c(0.9, 5))
+
+
+
+
+
+leaffrac <- 0.5
+ofrac <- (1-leaffrac)/3
+
+modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+                                                 gCday=0.25*Cday, lma=lma_trt,frfrac=ofrac, 
+                                                 crfrac=ofrac, stemfrac=ofrac,
+                                                 leaffrac=leaffrac,SIMPLIFY=FALSE)))
+windows(8,4)
+par(mfrow=c(1,2))
+plot(modelmass$biomass, mass_actual$mass)
+abline(0,1)
+plot(modelmass$leafarea, mass_actual$leafarea)
+abline(0,1)
+
+
+
+p <- productionmodel(gCday = 6.9, leaffrac=0.25, lma=80)
+
+
+
+dfr <- merge(harvestmass[,c("ID","leafmass")], LA_harvest[,c("ID","totalarea")])
+
+
 
