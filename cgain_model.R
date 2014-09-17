@@ -139,9 +139,9 @@ productionmodel <- function(leaffrac = .25,
   for (i in 2:numdays) {
     biomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
-    #biomassprodnet <- biomassprod - 
-      #((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
-    #biomass[i] <- biomass[i-1] + biomassprodnet
+#     biomassprodnet <- biomassprod - 
+#       ((biomass[i-1]*fr_resp)+(biomass[i-1]*cr_resp)+(biomass[i-1]*wd_resp))
+#     biomass[i] <- biomass[i-1] + biomassprodnet
    
    #fractions,stems and wood need respiration
     leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
@@ -220,6 +220,7 @@ pchs = c(rep(16,6),17)
 cols <- as.vector(palette())
 
 #model plotting
+windows()
 with(sim5, plot(gCday~biomass, xlim=c(250,0),col=cols[1]))
   points( sim10$gCday~sim10$biomass,col=cols[2])
   points( sim15$gCday~sim15$biomass,col=cols[3])
