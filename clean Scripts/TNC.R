@@ -29,7 +29,10 @@ leaf_tnc$tnc <- with(leaf_tnc, sugars+starch)
 write.csv(leaf_tnc, "calculated data/tnc_leaf.csv", row.names=FALSE)
 
 #generate means from raw data
-tnc_means <- summaryBy(starch+sugars+tnc~ volume+Date, data=leaf_tnc, FUN=c(mean, se))   
+tnc_means <- summaryBy(starch+sugars+tnc~ volume+Date, data=leaf_tnc, FUN=c(mean, se))  
+
+tnc_agg <- summaryBy(tnc~ volume, data=leaf_tnc, FUN=c(mean, se)) 
+write.csv(tnc_agg, "calculated data/tnc_agg.csv", row.names=FALSE)
 #save these means as dfr going forward?????
 
 #---------------------------------------------------------------------------------------------------

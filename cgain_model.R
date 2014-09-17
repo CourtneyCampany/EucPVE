@@ -62,6 +62,9 @@ leafarea_mean <- (mean(lma$area))/10000
 #average starting leaf area
 #LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 
+#add TNC to model (first just have avereage TNC (starch+sugar) by treatment)
+tnc_vol <- read.csv("calculated data/tnc_agg.csv")
+
 #read in Anet conver to gC day for each volume-----------------------------------------
 
 ##need to convert modelled 15min A into g C m2 day
@@ -106,6 +109,7 @@ productionmodel <- function(leaffrac = .25,
                     #fr_turn = .48, #production/standing crop
                     numdays=120,
                     lma = 97.5,
+                    tnc_fract = .15,
                     returnwhat=c("lastval","all")
                     ){
   
@@ -145,6 +149,11 @@ productionmodel <- function(leaffrac = .25,
    
    #fractions,stems and wood need respiration
     leafmass[i] <- leafmass[i-1] + biomassprod*leaffrac
+    leafarea[i] <- leafmass[i] / lma
+
+#### need to account for tnc here
+#leafarea[i] <- (leafmass[i]-tnc_frac) / lma
+#or with the realtionship of A and tnc
    
     stemgain <- (stemmass[i-1] + biomassprod*stemfrac)
     stemmass[i]<- stemgain -(stemgain* wd_resp)
@@ -158,9 +167,7 @@ productionmodel <- function(leaffrac = .25,
     #total biomass day
     biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1]+stemmass[i-1]
     
-  #leaf area and leaf mass fraction
-    leafarea[i] <- leafmass[i] / lma
-    
+  #leaf mass fraction
     LMF[i] <- leafmass[i]/biomass[i]
   }
 
