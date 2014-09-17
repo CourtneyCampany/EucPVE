@@ -1,3 +1,7 @@
+
+##implement other fraction to simplify
+
+
 require(doBy)
 
 #experiment length---------------------------------------------------------------------
@@ -215,7 +219,6 @@ sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=.6*gCday_seq, l
 allsims[[i]] <- sim
 }
   
-  
 #model plotting
 windows()
   with(as.data.frame(allsims[1]),plot(gCday~biomass,col=cols[1], xlim=c(175,0), ylim=c(0,8)))
@@ -226,9 +229,6 @@ windows()
     with(as.data.frame(allsims[6]),points(gCday~biomass,col=cols[6]))
     with(as.data.frame(allsims[7]),points(gCday~biomass,col=cols[7]))
   points( mass_actual$mass, Cday,pch=16,col=palette())
-
-
-
 
 ####model with parameters and Cday by volume to compare with final harvest----------------------
 
@@ -249,13 +249,9 @@ plot(modelmass$leafarea, mass_actual$leafarea)
 abline(0,1)
 
 
-
-
 windows()
 plot(Cday, modelmass$biomass, ylim=c(0,500))
 points(Cday, mass_actual$mass, col="red")
-
-
 
 plot(modelmass$biomass, mass_actual$mass)
 
@@ -266,7 +262,6 @@ abline(0,1)
 plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs, col=palette())
 plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs, col=palette())
 plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs, col=palette())
-
 
 
 
@@ -318,9 +313,6 @@ abline(0,1)
 opt <- optim(c(0.2,1), fp, i=2, method="L-BFGS-B", lower=c(0, 0), upper=c(0.9, 5))
 
 
-
-
-
 leaffrac <- 0.5
 ofrac <- (1-leaffrac)/3
 
@@ -336,32 +328,6 @@ plot(modelmass$leafarea, mass_actual$leafarea)
 abline(0,1)
 
 
-
 p <- productionmodel(gCday = 6.9, leaffrac=0.25, lma=80)
 
-
-
-dfr <- merge(harvestmass[,c("ID","leafmass")], LA_harvest[,c("ID","totalarea")])
-
-#5l
-sim5 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[1],frfrac=frfrac_trt[1], 
-                                           crfrac=crfrac_trt[1], stemfrac=stemfrac_trt[1],leaffrac=leaffrac_trt[1], SIMPLIFY=F)))
-#10l
-sim10 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[2],frfrac=frfrac_trt[2], 
-                                            crfrac=crfrac_trt[2], stemfrac=stemfrac_trt[2],leaffrac=leaffrac_trt[2], SIMPLIFY=F)))
-#15
-sim15 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[3],frfrac=frfrac_trt[3],
-                                            crfrac=crfrac_trt[3], stemfrac=stemfrac_trt[3],leaffrac=leaffrac_trt[3], SIMPLIFY=F)))
-#20
-sim20 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[4],frfrac=frfrac_trt[4],
-                                            crfrac=crfrac_trt[4], stemfrac=stemfrac_trt[4],leaffrac=leaffrac_trt[4], SIMPLIFY=F)))
-#25
-sim25 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[5],frfrac=frfrac_trt[5],
-                                            crfrac=crfrac_trt[5], stemfrac=stemfrac_trt[5],leaffrac=leaffrac_trt[5], SIMPLIFY=F)))
-#35
-sim35 <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[6],frfrac=frfrac_trt[6],
-                                            crfrac=crfrac_trt[6], stemfrac=stemfrac_trt[6],leaffrac=leaffrac_trt[6], SIMPLIFY=F)))
-#free
-simfree <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gCday_seq, lma=lma_trt[7],frfrac=frfrac_trt[7],
-                                              crfrac=crfrac_trt[7], stemfrac=stemfrac_trt[7],leaffrac=leaffrac_trt[7], SIMPLIFY=F)))
 
