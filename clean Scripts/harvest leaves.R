@@ -56,18 +56,16 @@ anova(lmeLA2)
 #plot---------------------------------------------------------------------------
 
 #windows(11,8)
-png(filename = "output/png/leafarea.png", width = 11, height = 8, units = "in", res= 400)
-par(cex.axis=1.5,  cex.lab=1.5)
-#png(filename = "output/png/leafarea.png", width = 8, height = 11.5, units = "in", res= 400)
-#windows()
+#png(filename = "output/presentations/leafarea.png", width = 10, height = 8, units = "in", res= 400)
+par(cex.axis=1.3,  cex.lab=1.3)
 plot(canopysqm.mean ~ Date, data=leaftime_agg,xlab="", ylab="", ylim=c(0,.6), type='n')
-title(ylab=leaf, mgp=ypos)
-with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean+SE, angle=90, col=palette(),length=0.03))
-with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean-SE, angle=90, col=palette(),length=0.03))
+title(ylab=leaflab, mgp=ypos)
+with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean+canopysqm.se, angle=90, col=palette(),length=0.03))
+with(leaftime_agg, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.se, angle=90, col=palette(),length=0.03))
 d_ply(leaftime_agg, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                   col=x$volume, type="b", pch = pchs[x$volume], cex=1.3,))
-legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)),
-       col=palette(),cex=1.5, bty='n')
+legend("topleft", leglab, pch=pchs,text.font=1.3, inset=0.02, title=expression(Pot~volume~(l)),
+       col=palette(),cex=1.3, bty='n')
 #dev.copy2pdf(file= "output/canopyleafarea.pdf")
-dev.off()
+#dev.off()
 
