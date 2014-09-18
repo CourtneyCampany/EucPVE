@@ -1,5 +1,5 @@
 #this script is for sourcing the allometry plots into master
-#source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 height <- read.csv("calculated data/height.csv")
 diam <- read.csv("calculated data/diameter.csv")
@@ -37,6 +37,7 @@ xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 
 #all plants
 windows()
+#png(filename = "output/presentations/growth.png", width = 8.5, height = 9.5, units = "in", res= 400)
 par(cex.axis=1.5, cex.lab=1.5,
     mfrow=c(3,1),  # rows and columns of plots
     omi=c(1,0,0.1,0.1),  # outer margin (inches)
