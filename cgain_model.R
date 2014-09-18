@@ -150,10 +150,6 @@ productionmodel <- function(leaffrac = .25,
    #fractions,stems and wood need respiration
     leafmass[i] <- leafmass[i-1] + netbiomassprod*leaffrac
     leafarea[i] <- leafmass[i] / lma
-
-#### need to account for tnc here
-#leafarea[i] <- (leafmass[i]-tnc_frac) / lma
-#or with the realtionship of A and tnc
    
     stemmass[i] <- stemmass[i-1] + netbiomassprod*stemfrac
     frootmass[i] <- frootmass[i-1] + netbiomassprod*frfrac
@@ -177,12 +173,24 @@ productionmodel <- function(leaffrac = .25,
 #run model simulations with sequence of g Cday, change parameter assumptions with each sim----------------------
 
   gCday_seq <- seq(7,2,length=101)
-  gCday_seq_adj <- gCday_seq*.6
+  mu <- .6
 
-sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=.6*gCday_seq, lma=lma_mean, 
+sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_mean, 
                                                 frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                 leaffrac=lf,SIMPLIFY=F)))
 sim_means$gCday <- gCday_seq
+
+
+
+ofrac <- (1 - leaffrac)/3
+modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+                                                 gCday=m*Cday[i], 
+                                                 lma=lma_trt[i], 
+                                                 frfrac=ofrac, 
+                                                 crfrac=ofrac, 
+                                                 stemfrac=ofrac,
+                                                 leaffrac=leaffrac,
+
 
 
 #plot bits
@@ -211,7 +219,7 @@ allsims <- list()
 for (i in 1:7){
 gCday_seq <- seq(7,2,length=101)
 
-sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=.6*gCday_seq, lma=lma_trt[i],frfrac=frfrac_trt[i], 
+sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_trt[i],frfrac=frfrac_trt[i], 
                   crfrac=crfrac_trt[i], stemfrac=stemfrac_trt[i],leaffrac=leaffrac_trt[i], SIMPLIFY=F)))
 
   sim$gCday <- gCday_seq
