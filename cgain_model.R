@@ -138,6 +138,7 @@ productionmodel <- function(leaffrac = .25,
   LMF <- vector()
   LMF[1] <- (LA_start*lma)/mass_mean
   
+  
   if(length(gCday) == 1)gCday <- rep(gCday,numdays)
   if(length(gCday) < numdays)stop("Need at least ",numdays," photosynthesis values.")
   
@@ -181,16 +182,16 @@ sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_
 sim_means$gCday <- gCday_seq
 
 
-
+leaffrac=.25
 ofrac <- (1 - leaffrac)/3
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
-                                                 gCday=m*Cday[i], 
-                                                 lma=lma_trt[i], 
+                                                 gCday=mu*gCday_seq, 
+                                                 lma=lma_mean, 
                                                  frfrac=ofrac, 
                                                  crfrac=ofrac, 
                                                  stemfrac=ofrac,
                                                  leaffrac=leaffrac,
-
+                                                 SIMPLIFY=F)))
 
 
 #plot bits
@@ -198,21 +199,38 @@ gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 pchs = c(rep(16,6),17)
 ypos <- c(2.5,1,0)
+
 cols <- as.vector(palette())
 
+cols1 <- alpha(cols[1], 0.45)
+cols2 <- alpha(cols[2], 0.45)
+cols3 <- alpha(cols[3], 0.45)
+cols4 <- alpha(cols[4], 0.45)
+cols5 <- alpha(cols[5], 0.45)
+cols6 <- alpha(cols[6], 0.45)
+cols7 <- alpha(cols[7], 0.45)
+
 treelab<- "Seedling Mass (g)"
-cdaylab <- expression(Carbon~gain~~(g~d^-1))
+cdaylab <- expression(Daily~Carbon~Gain~~(g~d^-1))
 
 
+require(scales)
 windows()
-with(sim_means, plot(gCday~biomass, xlim=c(175,0), ylim=c(2,8), ylab= "", xlab=treelab))
-  points( mass_actual$mass, Cday,pch=pchs,col=palette())
-  title(ylab=cdaylab, mgp=ypos)
-#make no free
-with(sim_means, plot(gCday~biomass, xlim=c(75,0), ylim=c(0,8), ylab= "", xlab=treelab))
-  points( mass_actual$mass, Cday,pch=pchs,col=palette())
-  title(ylab=cdaylab, mgp=ypos)
+png(filename = "output/presentations/Cmodel.png", width = 10, height = 8, units = "in", res= 400)
+par(cex.axis=1.3, cex.lab=1.3)
+with(sim_means, plot(gCday~biomass, xlim=c(0,175), ylim=c(0,8), ylab= "", xlab=treelab,,cex=1.6))
+  points( Cday~mass_actual$mass,pch=pchs,col=palette(),cex=1.6)
+  #points( modelmass$gCday~modelmass$biomass,pch=pchs,col=palette())
+title(ylab=cdaylab, mgp=ypos)
 
+dev.off()
+#make no free
+png(filename = "output/presentations/Cmodel_nofree.png", width = 10, height = 8, units = "in", res= 400)
+par(cex.axis=1.3, cex.lab=1.3)
+with(sim_means, plot(gCday~biomass, xlim=c(0,75), ylim=c(0,8), ylab= "", xlab=treelab, cex=1.6))
+  points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
+  title(ylab=cdaylab, mgp=ypos)
+dev.off()
 #component allocation and lma by volume (7 sims) in loop
 
 allsims <- list()
@@ -229,15 +247,18 @@ allsims[[i]] <- sim
   
 #model plotting
 windows()
-  with(as.data.frame(allsims[1]),plot(gCday~biomass,col=cols[1], xlim=c(175,0), ylim=c(0,8)))
-    with(as.data.frame(allsims[2]),points(gCday~biomass,col=cols[2]))
-    with(as.data.frame(allsims[3]),points(gCday~biomass,col=cols[3]))
-    with(as.data.frame(allsims[4]),points(gCday~biomass,col=cols[4]))
-    with(as.data.frame(allsims[5]),points(gCday~biomass,col=cols[5]))
-    with(as.data.frame(allsims[6]),points(gCday~biomass,col=cols[6]))
-    with(as.data.frame(allsims[7]),points(gCday~biomass,col=cols[7]))
-  points( mass_actual$mass, Cday,pch=16,col=palette())
-
+png(filename = "output/presentations/Cmodel_leaffrac.png", width = 10, height = 8, units = "in", res= 400)
+par(cex.axis=1.3, cex.lab=1.3)
+  with(as.data.frame(allsims[1]),plot(gCday~biomass, col=cols1, xlim=c(0,175), ylim=c(0,8), cex=1.6, ylab="", xlab=treelab))
+    with(as.data.frame(allsims[2]),points(gCday~biomass,col=cols2, cex=1.6))
+    with(as.data.frame(allsims[3]),points(gCday~biomass,col=cols3, cex=1.6))
+    with(as.data.frame(allsims[4]),points(gCday~biomass,col=cols4, cex=1.6))
+    with(as.data.frame(allsims[5]),points(gCday~biomass,col=cols5, cex=1.6))
+    with(as.data.frame(allsims[6]),points(gCday~biomass,col=cols6, cex=1.6))
+    with(as.data.frame(allsims[7]),points(gCday~biomass,col=cols7, pch=17, cex=1.6))
+  points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
+title(ylab=cdaylab, mgp=ypos)
+dev.off()
 ####model with parameters and Cday by volume to compare with final harvest----------------------
 
 modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
