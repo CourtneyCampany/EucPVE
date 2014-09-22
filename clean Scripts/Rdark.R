@@ -1,5 +1,8 @@
 
 source("functions and packages/load packages.R")
+source("functions and packages/functions.R")
+require(broom)
+require(visreg)
 
 #Read in R dark spot measurements,  plot design
 source("read data scripts/physiology read data.R")
@@ -57,4 +60,36 @@ with(rdark, bargraph.CI(as.factor(volume), resppermass,
 box()
 dev.copy2pdf(file= "output/Rdark_per_leafmass.pdf")
 
+#mass Rd
+# 'Being in a pot' effect.
+rd_container <- lm(resppermass ~ as.factor(volume), data=rdark)
+rd_lm <- tidy(rd_container)
+rd_stat <- extract_func(rd_container)
 
+anova(rd_container)
+summary(rd_container)
+
+#volume effect
+rd_volume <- lm(resppermass ~ as.factor(volume), data=rdark, subset=volume != "1000")
+rd2_lm <- tidy(rd_volume)
+rd2_stat <- extract_func(rd_volume)
+
+anova(rd_volume)
+summary(rd_volume)
+
+#area Rd
+# 'Being in a pot' effect.
+rda_container <- lm(Photo ~ as.factor(volume), data=rdark)
+rda_lm <- tidy(rda_container)
+rda_stat <- extract_func(rda_container)
+
+anova(rda_container)
+summary(rda_container)
+
+#volume effect
+rda_volume <- lm(Photo ~ as.factor(volume), data=rdark, subset=volume != "1000")
+rd2a_lm <- tidy(rda_volume)
+rd2a_stat <- extract_func(rda_volume)
+
+anova(rda_volume)
+summary(rda_volume)
