@@ -30,7 +30,6 @@ leaffractions <- mean (seedling_pre$leaf_mass/seedling_pre$seedling_mass)
 mean_leafnum <- mean(seedling_pre$leaf_numb)
 pre_root <- mean(seedling_pre$root_mass)
 pre_stem <- mean(seedling_pre$wood_mass)
-pre_- mean(seedling_pre$leaf_numb)
 
 #root-shoot ratios, and froot and croot mass fractions---------------------------------------------------------
 
@@ -201,7 +200,7 @@ pchs = c(rep(16,6),17)
 ypos <- c(2.5,1,0)
 
 cols <- as.vector(palette())
-
+require(scales)
 cols1 <- alpha(cols[1], 0.45)
 cols2 <- alpha(cols[2], 0.45)
 cols3 <- alpha(cols[3], 0.45)
@@ -214,7 +213,7 @@ treelab<- "Seedling Mass (g)"
 cdaylab <- expression(Daily~Carbon~Gain~~(g~d^-1))
 
 
-require(scales)
+
 windows()
 png(filename = "output/presentations/Cmodel.png", width = 10, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
@@ -257,6 +256,7 @@ par(cex.axis=1.3, cex.lab=1.3)
     with(as.data.frame(allsims[6]),points(gCday~biomass,col=cols6, cex=1.6))
     with(as.data.frame(allsims[7]),points(gCday~biomass,col=cols7, pch=17, cex=1.6))
   points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
+  with(sim_means, points(gCday~biomass,  cex=1.6))
 title(ylab=cdaylab, mgp=ypos)
 dev.off()
 ####model with parameters and Cday by volume to compare with final harvest----------------------
