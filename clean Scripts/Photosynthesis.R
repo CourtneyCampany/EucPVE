@@ -149,89 +149,37 @@ dev.copy2pdf(file= "output/stats_plots/Gs.pdf")
 dev.off()
 
 
-
-
-
-
-
-
-
-
-
-
 #stats
 require(nlme)
-lme1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax)
-anova(lme1)
+require(visreg)
+require(broom)
 
-lme2 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax, subset=volume != "1000")
-anova(lme2)
+#amax
+amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax)
+amax2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSmax))
+anova(amax_lm)
+summary(amax_lm)
+visreg(amax_lm)
 
+amax_vol_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax, subset=volume != "1000")
+amax2_vol <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSmax, subset=volume != "1000"))
+anova(amax_vol_lm)
+summary(amax_vol_lm)
+visreg(amax_vol_lm)
 
+#asat
+asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat)
+asat2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat))
+anova(asat_lm)
+summary(asat_lm)
+visreg(asat_lm)
 
+asat_vol_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat, subset=volume != "1000")
+asat2_vol <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat, subset=volume != "1000"))
+anova(asat_vol_lm)
+summary(asat_lm)
+visreg(asat_lm)
 
-
-#plots of Ps and Ci with treatments and campaigns
-#windows(4,4)
-leglab <- unique(PS$Date)
-
-#ASAT plots of Photosynthesis, Conductance and Ci
-with(subset(PS,type=="Asat"), bargraph.CI(as.factor(volume), Photo, as.factor(Date), 
-      #legend=TRUE, leg.lab = leglab, args.legend = (x="topleft"),
-      ylim = c(0,30), ylab = expression(italic(A)[sat]~~(mu*mol~m^-2~s^-1)), xlab = "Pot Volume (l)", 
-      col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30")))
-box()
-dev.copy2pdf(file= "ASAT.pdf")
-dev.off()
-
-with(subset(PS,type=="Asat"), bargraph.CI(as.factor(volume), Cond, as.factor(Date),
-      #legend=TRUE, leg.lab = leglab, args.legend = (x="topleft"),
-      ylim = c(0,1),ylab = expression(Conductance~~(mol~m^-2~s^-1)),
-      xlab = "Pot Volume (l)", 
-      col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30")))
-box()
-dev.copy2pdf(file= "ASAT_cond.pdf")
-dev.off()
-
-with(subset(PS,type=="Asat"), bargraph.CI(as.factor(volume), Ci, as.factor(Date),
-      ylim = c(0,350),ylab = "Ci", xlab = "Pot Volume (l)", 
-      col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30")))
-box()
-dev.copy2pdf(file= "ASAT_.Ci.pdf")
-dev.off()
-
-#AMAX plots of Photosynthesis  and Ci
-with(subset(PS,type=="Amax"), bargraph.CI(as.factor(volume), Photo, as.factor(Date),
-      #legend=TRUE, leg.lab = leglab, args.legend = (x="topleft"), 
-      ylim = c(0,40),ylab = expression(italic(A)[max]~~(mu*mol~m^-2~s^-1)), xlab = "Pot Volume (l)", 
-      col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30"))) 
-box()
-dev.copy2pdf(file= "AMAX.pdf")
-dev.off()
-
-with(subset(PS,type=="Amax"), bargraph.CI(as.factor(volume), Ci, as.factor(Date),
-      ylim = c(0,1750),ylab = "Ci", xlab = "Pot Volume (l)", 
-      col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30"))) 
-box()
-dev.copy2pdf(file= "AMAX_Ci.pdf")
-dev.off()
-
-#transpiration plots
-with(subset(PS,type=="Asat"), bargraph.CI(as.factor(volume), Trmmol, as.factor(Date),
-                                          ylim = c(0,7.5),ylab = "Transpiration (Asat)", xlab = "Pot Volume (l)", 
-                                          col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30"))) 
-box()
-dev.copy2pdf(file= "transpiration_Asat.pdf")
-dev.off()
-
-
-with(subset(PS,type=="Amax"), bargraph.CI(as.factor(volume), Trmmol, as.factor(Date),
-                                          ylim = c(0,7.5),ylab = "Transpiration (Amax)", xlab = "Pot Volume (l)", 
-                                          col=c("gray80", "gray70", "gray60", "gray50", "gray40", "gray30"))) 
-
-box()
-dev.copy2pdf(file= "transpiration_Amax.pdf")
-dev.off()
 
 
 
