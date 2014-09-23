@@ -50,7 +50,7 @@ legpch <- c(5, 10, 15, 20, 25, 35, "free")
 
 
 #Amass vs N (full model)
-png(filename = "output/presentations/Amass_N.png", width = 10, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/Amass_N.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(photo_chem, plot(Nmass_notnc, A_mass, pch=pchs[volume], col=cols[starchbin], 
                       ylab="", xlab=nmass_noTNC,ylim=c(0,800),cex=1.3))
@@ -66,7 +66,7 @@ dev.off()
 
 
 #Amass vs starch (full model) 
-png(filename = "output/presentations/Amass_TNC.png", width = 10, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/Amass_TNC.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
                       xlab=starchlab,xlim=c(0, .275),cex=1.3))

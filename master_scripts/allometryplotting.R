@@ -37,7 +37,7 @@ xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 
 #all plants
 windows()
-#png(filename = "output/presentations/growth.png", width = 8.5, height = 9.5, units = "in", res= 400)
+png(filename = "output/presentations/growth.png", width = 10.5, height = 9.5, units = "in", res= 400)
 par(cex.axis=1.5, cex.lab=1.5,
     mfrow=c(3,1),  # rows and columns of plots
     omi=c(1,0,0.1,0.1),  # outer margin (inches)
@@ -77,7 +77,7 @@ points(count.mean ~ Date, data=leafno_agg,  pch=pchs[volume], cex=PTcex,col = vo
 box()
 
 #dev.copy2pdf(file= "output/allometry.pdf")
-#dev.off()
+dev.off()
 
 #no free--------------------------------------------------------------------------------
 #PLOT with no FREE plant

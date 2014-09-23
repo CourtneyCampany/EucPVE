@@ -34,9 +34,9 @@ legend("topleft", leglab, pch=pchs,text.font=3, inset=0.01,
 # #dev.copy2pdf(file= "output/Leaf_Froot.pdf")
 # ------------------------------------------------------------------------------------------------------
 #PLOT of Root:Shoot means with SE
-mar=c(5,5,1,1)
+#mar=c(5,5,1,1)
 #windows(8,6)
-#png(filename = "output/presentations/rootshoot.png", width = 10, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/rootshoot.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(ratio_agg, plot(root.mean, shoot.mean, ylim=c(0,100), xlim=c(0,100),
                      pch=pchs,col=palette(), cex=1.3,
@@ -57,5 +57,5 @@ abline(0,1, lty=2)
 legend("bottomright", leglab, pch=pchs,text.font=1.3, inset=0.01, 
        title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
 box()
-#dev.off()
+dev.off()
 #dev.copy2pdf(file= "output/Shoot_Root.pdf")

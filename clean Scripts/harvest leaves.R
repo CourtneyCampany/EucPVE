@@ -56,7 +56,7 @@ anova(lmeLA2)
 #plot---------------------------------------------------------------------------
 
 #windows(11,8)
-#png(filename = "output/presentations/leafarea.png", width = 10, height = 8, units = "in", res= 400)
+#png(filename = "output/presentations/leafarea.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3,  cex.lab=1.3)
 plot(canopysqm.mean ~ Date, data=leaftime_agg,xlab="", ylab="", ylim=c(0,.6), type='n')
 title(ylab=leaflab, mgp=ypos)

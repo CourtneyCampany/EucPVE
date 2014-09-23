@@ -215,7 +215,7 @@ cdaylab <- expression(Daily~Carbon~Gain~~(g~d^-1))
 
 
 windows()
-png(filename = "output/presentations/Cmodel.png", width = 10, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/Cmodel.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(sim_means, plot(gCday~biomass, xlim=c(0,175), ylim=c(0,8), ylab= "", xlab=treelab,,cex=1.6))
   points( Cday~mass_actual$mass,pch=pchs,col=palette(),cex=1.6)
@@ -224,7 +224,7 @@ title(ylab=cdaylab, mgp=ypos)
 
 dev.off()
 #make no free
-png(filename = "output/presentations/Cmodel_nofree.png", width = 10, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/Cmodel_nofree.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(sim_means, plot(gCday~biomass, xlim=c(0,75), ylim=c(0,8), ylab= "", xlab=treelab, cex=1.6))
   points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
@@ -245,8 +245,8 @@ allsims[[i]] <- sim
 }
   
 #model plotting
-windows()
-png(filename = "output/presentations/Cmodel_leaffrac.png", width = 10, height = 8, units = "in", res= 400)
+
+png(filename = "output/presentations/Cmodel_leaffrac.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
   with(as.data.frame(allsims[1]),plot(gCday~biomass, col=cols1, xlim=c(0,175), ylim=c(0,8), cex=1.6, ylab="", xlab=treelab))
     with(as.data.frame(allsims[2]),points(gCday~biomass,col=cols2, cex=1.6))
