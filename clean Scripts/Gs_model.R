@@ -27,11 +27,17 @@ cond_agg$volume <- as.factor(cond_agg$volume)
 # boxplot(gs ~ Date, data = cond_agg)
 # #models
 # 
-# volumegs <- lm(gs ~ volume, data = cond_agg)
+# gs_lm <- lm(gs ~ volume, data = cond_agg)
 # gs_Date<- lm(gs ~ volume+Date, data = cond_agg)
-# summary(gs_Date)
-# anova(gs_Date)
+# summary(gs_lm)
+# anova(gs_lm)
+# visreg(gs_lm)
 # #gs different by volume and date
+# 
+# gs_volume <- lm(gs ~ volume, data = cond_agg, subset=volume != "1000")
+# summary(gs_volume)
+# anova(gs_volume)
+# visreg(gs_volume)
 
 #------------------------------------------------------------------------------------------------------
 #fit optimal conductance model on means and date
@@ -53,6 +59,7 @@ cond_agg$gspred_vol <- with(cond_agg, 1.6*(1+g1_vol/sqrt(D))*(A/Ca))
 with(cond_agg, plot(gspred_vol,gs))
 abline(0,1)
 with(cond_agg, plot(A/(sqrt(D)*Ca), gs))
+
 
 #run model by date+volume, interpolate parameters across experiment dates
 
