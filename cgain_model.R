@@ -209,20 +209,23 @@ cols5 <- alpha(cols[5], 0.45)
 cols6 <- alpha(cols[6], 0.45)
 cols7 <- alpha(cols[7], 0.45)
 
-treelab<- "Seedling Mass (g)"
-cdaylab <- expression(Daily~Carbon~Gain~~(g~d^-1))
+col_bl <- alpha("black", .45)
+
+treelab<- paste("Seedling Mass Production over ",numdays," days (g)", sep="")
+cdaylab <- expression(Daily~Carbon~Gain~~(g~m^-2~d^-1))
 
 
 
-windows()
-png(filename = "output/presentations/Cmodel.png", width = 12, height = 8, units = "in", res= 400)
+#windows()
+png(filename = "output/presentations/Cmodel_meanC_massactual.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
-with(sim_means, plot(gCday~biomass, xlim=c(0,175), ylim=c(0,8), ylab= "", xlab=treelab,,cex=1.6))
-  points( Cday~mass_actual$mass,pch=pchs,col=palette(),cex=1.6)
+with(sim_means, plot(biomass~gCday, ylim=c(0,175), xlim=c(0,8), ylab= "", xlab=cdaylab,pch=16,cex=1.6, col=col_bl))
+  points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
   #points( modelmass$gCday~modelmass$biomass,pch=pchs,col=palette())
-title(ylab=cdaylab, mgp=ypos)
+title(ylab=treelab, mgp=ypos)
 
 dev.off()
+
 #make no free
 png(filename = "output/presentations/Cmodel_nofree.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
@@ -248,16 +251,16 @@ allsims[[i]] <- sim
 
 png(filename = "output/presentations/Cmodel_leaffrac.png", width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
-  with(as.data.frame(allsims[1]),plot(gCday~biomass, col=cols1, xlim=c(0,175), ylim=c(0,8), cex=1.6, ylab="", xlab=treelab))
-    with(as.data.frame(allsims[2]),points(gCday~biomass,col=cols2, cex=1.6))
-    with(as.data.frame(allsims[3]),points(gCday~biomass,col=cols3, cex=1.6))
-    with(as.data.frame(allsims[4]),points(gCday~biomass,col=cols4, cex=1.6))
-    with(as.data.frame(allsims[5]),points(gCday~biomass,col=cols5, cex=1.6))
-    with(as.data.frame(allsims[6]),points(gCday~biomass,col=cols6, cex=1.6))
-    with(as.data.frame(allsims[7]),points(gCday~biomass,col=cols7, pch=17, cex=1.6))
-  points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
-  with(sim_means, points(gCday~biomass,  cex=1.6))
-title(ylab=cdaylab, mgp=ypos)
+  with(as.data.frame(allsims[1]),plot(biomass~gCday, col=cols1, ylim=c(0,175), xlim=c(0,8), cex=1.6, ylab="", xlab=cdaylab))
+    with(as.data.frame(allsims[2]),points(biomass~gCday,col=cols2, cex=1.6))
+    with(as.data.frame(allsims[3]),points(biomass~gCday,col=cols3, cex=1.6))
+    with(as.data.frame(allsims[4]),points(biomass~gCday,col=cols4, cex=1.6))
+    with(as.data.frame(allsims[5]),points(biomass~gCday,col=cols5, cex=1.6))
+    with(as.data.frame(allsims[6]),points(biomass~gCday,col=cols6, cex=1.6))
+    with(as.data.frame(allsims[7]),points(biomass~gCday,col=cols7, pch=17, cex=1.6))
+  points( mass_actual$mass~Cday,pch=pchs,col=palette(), cex=1.6)
+  with(sim_means, points(biomass~gCday,  col=col_bl, pch=16,cex=1.6))
+title(ylab=treelab, mgp=ypos)
 dev.off()
 ####model with parameters and Cday by volume to compare with final harvest----------------------
 
