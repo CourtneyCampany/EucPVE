@@ -77,7 +77,7 @@ for(i in 1:length(nitrobin)){
   lines(x,y, col=coln[i], lwd=2)
 }
 title(ylab=Amasslab, mgp=ypos)
-legend("topright", binlab, pch=15, text.font=1.3, inset=0.02, col=coln,title=nfree , bty='n', cex=1.3)
+legend("topright", binlab, pch=16, text.font=1.3, inset=0.02, col=coln,title=nfree , bty='n', cex=1.3)
 dev.off()
 
 # ###using predict instead of eqautions####
