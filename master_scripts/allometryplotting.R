@@ -82,6 +82,8 @@ dev.off()
 #no free--------------------------------------------------------------------------------
 #PLOT with no FREE plant
 windows()
+
+
 par(cex.axis=1.5,  cex.lab=1.5,mfrow=c(3,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
 
 # First Panel
@@ -119,3 +121,40 @@ box()
 
 #dev.copy2pdf(file= "output/allometrypots.pdf")
 #dev.off()
+
+
+
+
+####two panel with heigh and diameter
+
+windows(12,10)
+par(mfrow=c(2,1), omi=c(1,0,0.5,0.5),mar=c(0,5,0,0),mgp = c(2.5, 1, 0))
+
+png(filename = "output/presentations/diam_height.png", width = 10.5, height = 9.5, units = "in", res= 400)
+par(cex.axis=1.5,  cex.lab=1.5, mfrow=c(2,1),  omi=c(1,0,0.1,0.1),  mar=c(0,7,0,0))  
+# First Panel
+plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),  
+     ylim=c(20,125), axes=FALSE, xlab="")  
+axis.Date(1, at=xAT, labels=FALSE) #axis needs no labels
+axis(2, labels=TRUE)  # Y axis
+legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
+       cex=1.5, col=palette(), bty='n')
+
+with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90, col=palette(),length=0.03))
+with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03))
+points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=PTcex, col = volume)      
+box()
+
+# Second panel         
+plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),ylim=c(0,15), axes = FALSE, xlab="")
+axis.Date(1, at=xAT, labels=TRUE)  
+axis(2)     
+
+with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean+diameter.se, angle=90, col=palette(),length=0.03))
+with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angle=90, col=palette(),length=0.03))
+points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume],cex=PTcex,col = volume)
+box()
+
+dev.off()
+
+
