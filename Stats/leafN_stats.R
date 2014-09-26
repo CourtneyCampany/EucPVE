@@ -102,16 +102,20 @@ dev.off()
 N_end <- subset(leafchem_noNA, Date == "2013-05-16")
 
 #windows()
+
+ypos2 <- c(.75,1,0)
+
+
 png(filename = "output/presentations/LeafN_area.png", width = 3.25, height = 2.25, units = "in", res= 400, bg = "transparent")
 par(cex.axis=.5, cex.lab=.5, tck=.02)
 bar(Nmass, c(volume), leafchem_noNA, col=palette(), half.errbar=FALSE, xlab="", 
     legend=FALSE, ylim=c(0, 0.008), ylab="", mgp = c(3, .1, 0))
 #legend("topleft", leglab, pch=15,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
 title(ylab=nitro, mgp=ypos2)
+title(main="Harvest", line=-1, cex.main=0.5, adj=.1)
 
 dev.off()
 
-ypos2 <- c(.75,1,0)
 
 #----------------------------------------------------------------------------------
 #fit seperate linear regression models for each volume through time for each pot

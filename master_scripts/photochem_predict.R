@@ -45,7 +45,7 @@ cols <- c("green3", "cyan4", "#0081FFFF", "darkviolet", "red")
 #coln <- c("#FF3300FF", "#FF7500FF","#ECFD08FF",  "#80FE1AFF", "forestgreen" )
 coln <- c("red", "darkviolet", "#0081FFFF", "cyan4", "green3")
 binlab <- c("0-4", "4-8", "8-12", "12-16", ">16")
-binlab2 <- c("0-.001", ".001-.003", ".003-.006", ".006-.008", ".008-.012")
+binlab2 <- c(" 0    -.001", ".001-.003", ".003-.006", ".006-.008", ".008-.012")
 
 pchbin <- c(1,2,3,4,5)
 legpch <- c(5, 10, 15, 20, 25, 35, "free")
