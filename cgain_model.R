@@ -180,17 +180,17 @@ sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_
                                                 leaffrac=lf,SIMPLIFY=F)))
 sim_means$gCday <- gCday_seq
 
-
-leaffrac=.25
-ofrac <- (1 - leaffrac)/3
-modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
-                                                 gCday=mu*gCday_seq, 
-                                                 lma=lma_mean, 
-                                                 frfrac=ofrac, 
-                                                 crfrac=ofrac, 
-                                                 stemfrac=ofrac,
-                                                 leaffrac=leaffrac,
-                                                 SIMPLIFY=F)))
+# 
+# leaffrac=.25
+# ofrac <- (1 - leaffrac)/3
+# modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+#                                                  gCday=mu*gCday_seq, 
+#                                                  lma=lma_mean, 
+#                                                  frfrac=ofrac, 
+#                                                  crfrac=ofrac, 
+#                                                  stemfrac=ofrac,
+#                                                  leaffrac=leaffrac,
+#                                                  SIMPLIFY=F)))
 
 
 #plot bits
@@ -198,6 +198,8 @@ gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 pchs = c(rep(16,6),17)
 ypos <- c(2.5,1,0)
+vollab <- expression(Pot~volume~(l))
+leglab <- c(5, 10, 15, 20, 25, 35, "free")
 
 cols <- as.vector(palette())
 require(scales)
@@ -223,6 +225,8 @@ with(sim_means, plot(biomass~gCday, ylim=c(0,175), xlim=c(0,8), ylab= "", xlab=c
   points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
   #points( modelmass$gCday~modelmass$biomass,pch=pchs,col=palette())
 title(ylab=treelab, mgp=ypos)
+legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01, 
+       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
 
 dev.off()
 
@@ -233,6 +237,7 @@ with(sim_means, plot(gCday~biomass, xlim=c(0,75), ylim=c(0,8), ylab= "", xlab=tr
   points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
   title(ylab=cdaylab, mgp=ypos)
 dev.off()
+
 #component allocation and lma by volume (7 sims) in loop
 
 allsims <- list()
@@ -261,6 +266,8 @@ par(cex.axis=1.3, cex.lab=1.3)
   points( mass_actual$mass~Cday,pch=pchs,col=palette(), cex=1.6)
   with(sim_means, points(biomass~gCday,  col=col_bl, pch=16,cex=1.6))
 title(ylab=treelab, mgp=ypos)
+legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01, 
+       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
 dev.off()
 ####model with parameters and Cday by volume to compare with final harvest----------------------
 
