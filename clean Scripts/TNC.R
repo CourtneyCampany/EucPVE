@@ -1,7 +1,4 @@
-#source functions
-source("functions and packages/functions.R")
-source("functions and packages/load packages.R")
-source("functions and packages/plot objects.R")
+source("functions and packages/startscripts.R")
 
 #raw data
 leaf_tnc <- read.csv("raw data/leaf_tnc.csv")
@@ -33,7 +30,6 @@ tnc_means <- summaryBy(starch+sugars+tnc~ volume+Date, data=leaf_tnc, FUN=c(mean
 
 tnc_agg <- summaryBy(tnc~ volume, data=leaf_tnc, FUN=c(mean, se)) 
 write.csv(tnc_agg, "calculated data/tnc_agg.csv", row.names=FALSE)
-#save these means as dfr going forward?????
 
 #---------------------------------------------------------------------------------------------------
 #plot bits and plotting functions
@@ -58,45 +54,51 @@ tncplot <-tncbar(d =leaf_tnc, v ="tnc", label = tnclab, ylim=c(0, .25), col="gre
 #Starch
 windows()
 par(mgp=ypos)
-plot(starch.mean ~ Date, data=tnc_means,type='n',ylab=starchlab,  ylim=c(0,.3), axes=FALSE, xlab="")  
+
+plot(starch.mean ~ Date, data=tnc_means,type='n',ylab="",  ylim=c(0,.3), axes=FALSE, xlab="")  
 box()
 axis(2, labels=TRUE)
 axis.Date(1, at=tnc_means$Date)
+  with(tnc_means, arrows(Date, starch.mean, Date, starch.mean+starch.se, angle=90, col=volume,length=0.03))
+  with(tnc_means, arrows(Date, starch.mean, Date, starch.mean-starch.se, angle=90, col=volume,length=0.03))
+  points(starch.mean ~ Date, data=tnc_means, pch=pchs[volume], cex=1, col=volume)  
+  title(ylab=starchlab, mgp=ypos)
+  d_ply(tnc_means, .(volume), function(x) add_trend_line("Date", "starch.mean", x, ))
+  legend("topright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
 
-with(tnc_means, arrows(Date, starch.mean, Date, starch.mean+starch.se, angle=90, col=volume,length=0.03))
-with(tnc_means, arrows(Date, starch.mean, Date, starch.mean-starch.se, angle=90, col=volume,length=0.03))
 
-points(starch.mean ~ Date, data=tnc_means, pch=pchs[volume], cex=PTcex, col=volume)    
-legend("topright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
+
 
 #sugars
 windows()
 par(mgp=ypos)
-plot(sugars.mean ~ Date, data=tnc_means,type='n',ylab=suglab,  ylim=c(0,.15), axes=FALSE, xlab="")  
-box()
-axis(2, labels=TRUE)
-axis.Date(1, at=tnc_means$Date)
+plot(sugars.mean ~ Date, data=tnc_means,type='n',ylab="",  ylim=c(0,.15), axes=FALSE, xlab="")  
+  box()
+  axis(2, labels=TRUE)
+  axis.Date(1, at=tnc_means$Date)
+  title(ylab=suglab, mgp=ypos)
+  with(tnc_means, arrows(Date, sugars.mean, Date, sugars.mean+sugars.se, angle=90, col=volume,length=0.03))
+  with(tnc_means, arrows(Date, sugars.mean, Date, sugars.mean-sugars.se, angle=90, col=volume,length=0.03))
 
-with(tnc_means, arrows(Date, sugars.mean, Date, sugars.mean+sugars.se, angle=90, col=volume,length=0.03))
-with(tnc_means, arrows(Date, sugars.mean, Date, sugars.mean-sugars.se, angle=90, col=volume,length=0.03))
-
-points(sugars.mean ~ Date, data=tnc_means, pch=pchs[volume], cex=PTcex, col=volume)    
-legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
+  points(sugars.mean ~ Date, data=tnc_means, pch=pchs[volume], cex=1, col=volume)    
+  d_ply(tnc_means, .(volume), function(x) add_trend_line("Date", "sugars.mean", x, ))
+  legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
 
 
 #TNC
 windows()
 par(mgp=ypos)
-plot(tnc.mean ~ Date, data=tnc_means,type='n',ylab=tnclab,  ylim=c(0,.3), axes=FALSE, xlab="")  
-box()
-axis(2, labels=TRUE)
-axis.Date(1, at=tnc_means$Date)
+plot(tnc.mean ~ Date, data=tnc_means,type='n',ylab="",  ylim=c(0,.3), axes=FALSE, xlab="")  
+  box()
+  axis(2, labels=TRUE)
+  axis.Date(1, at=tnc_means$Date)
+  title(ylab=tnclab, mgp=ypos)
+  with(tnc_means, arrows(Date, tnc.mean, Date, tnc.mean+tnc.se, angle=90, col=volume,length=0.03))
+  with(tnc_means, arrows(Date, tnc.mean, Date, tnc.mean-tnc.se, angle=90, col=volume,length=0.03))
 
-with(tnc_means, arrows(Date, tnc.mean, Date, tnc.mean+tnc.se, angle=90, col=volume,length=0.03))
-with(tnc_means, arrows(Date, tnc.mean, Date, tnc.mean-tnc.se, angle=90, col=volume,length=0.03))
-
-points(tnc.mean ~ Date, data=tnc_means, pch=pchs[volume],cex=PTcex, col=volume)    
-#legend("topright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
+  points(tnc.mean ~ Date, data=tnc_means, pch=pchs[volume],cex=PTcex, col=volume)    
+  d_ply(tnc_means, .(volume), function(x) add_trend_line("Date", "tnc.mean", x, ))
+  #legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
 
 
 #STATS------------------------------------------------------------------------------------
