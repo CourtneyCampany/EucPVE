@@ -6,7 +6,12 @@
 
 #source functions and packages
 source("functions and packages/startscripts.R")
+require(lme4)
 require(lmerTest)
+library(effects)
+source("functions and packages/rsquared_glmm.R")
+#runthe new r2 function to get r2 and p values for the model
+
 
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
 #run volume format func
@@ -32,10 +37,27 @@ photo_chem$nitrobin <- cut(photo_chem$Nmass_notnc, breaks = nitrobin)
 # Afit2 <- lm(A_mass ~ starch*Nmass_notnc, data=photo_chem)
 # p2 <- coef(Afit2)
 
-
+#model and stats
 Afit_full <- lmer(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=photo_chem)
+  Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
+  Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
+
+
+rsquared.glmm(list(Afit_full, Afit_N, Afit_TNC))
+summary(Afit_full)
+plot(effect("Nmass_notnc:starch", Afit_full), multiline=TRUE)
+
+require(car)
+Anova(Afit_full)
+visreg(Afit_full, "starch", by="Nmass_notnc", overlay=TRUE)
+
+#model parameters
 f <- fixef(Afit_full)
+
+
+###same model with fixed effects in different order for ease of preductions later
 Afit2_full <- lmer(A_mass ~ starch+Nmass_notnc+starch:Nmass_notnc + (1|ID), data=photo_chem)
+summary(Afit2_full)
 f2 <- fixef(Afit2_full)
 
 
