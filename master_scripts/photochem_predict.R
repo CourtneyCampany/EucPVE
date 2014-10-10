@@ -39,8 +39,24 @@ photo_chem$nitrobin <- cut(photo_chem$Nmass_notnc, breaks = nitrobin)
 
 #model and stats
 Afit_full <- lmer(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=photo_chem)
-  Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
-  Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
+
+
+# but old nlmesays is is significant
+library(nlme)
+Afit_full_lme <- lme(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch, random=~1|ID, data=photo_chem)
+anova(Afit_full_lme)
+
+
+# remove interaction, starch very significant
+Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
+
+# likelihood ratio test
+Afit_almostfull2 <- lmer(A_mass ~ Nmass_notnc+ (1|ID), data=photo_chem)
+anova(Afit_full, Afit_almostfull2)
+
+
+Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
+Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
 
 
 rsquared.glmm(list(Afit_full, Afit_N, Afit_TNC))
