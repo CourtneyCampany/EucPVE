@@ -1,25 +1,50 @@
 source("functions and packages/startscripts.R")
 
 require(visreg)
+library(multcomp)
 
-seedlingmass<- read.csv("calculated data/seedling mass.csv")  
+seedlingmass<- read.csv("calculated data/seedling mass.csv") 
 
 # rmf calculate
 seedlingmass$RMF <- with(seedlingmass, root/totalmass)
+seedlingmass$BVR <- with(seedlingmass, totalmass/volume)
 
 #treatment means
 mass_agg <- summaryBy(totalmass~volume, data=seedlingmass, FUN=c(mean,se))
 mass_agg_nofree <- subset(mass_agg, volume != 1000)
 
+#volue as factor after new variable calculations
+seedlingmass$volume <- as.factor(seedlingmass$volume)
 
-#plot and analyze RMF
+#plot and analyze RMF------------------------------------------------------------------
 RMF_lm <- lm(RMF ~ as.factor(volume), data=seedlingmass)
 extract_func(RMF_lm)
 anova(RMF_lm)
-
+###RMF not different across volumes
 bar(RMF, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
     legend=FALSE,ylim=c(0,.8) , ylab="", mgp = c(3, .1, 0))
-###RMF not different across volumes
+
+#plot and analyze RBVR------------------------------------------------------------------
+boxplot(BVR~volume, data=seedlingmass, mean)
+#poorter mean bvr=9.5, very few experiments have values lower than 2
+BVR_lm <- lm(BVR ~ volume, data=seedlingmass)
+  #check for normaility assumptions
+  plot(BVR_lm)
+extract_func(BVR_lm)
+tukey_BVR <- glht(BVR_lm, linfct=mcp(volume="Tukey"))
+  summary(tukey_BVR)
+  plot(tukey_BVR)
+anova(BVR_lm)
+#different across pot size
+
+
+
+bar(BVR, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
+    legend=FALSE,ylim=c(0,4) , ylab="", mgp = c(3, .1, 0))
+
+
+
+
 
 #start value
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
