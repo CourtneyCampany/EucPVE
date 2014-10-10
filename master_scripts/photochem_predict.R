@@ -39,24 +39,31 @@ photo_chem$nitrobin <- cut(photo_chem$Nmass_notnc, breaks = nitrobin)
 
 #model and stats
 Afit_full <- lmer(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=photo_chem)
-
+anova(Afit_full)
+summary(Afit_full)
+#with lmer tnc not significant nor the interaction
 
 # but old nlmesays is is significant
 library(nlme)
 Afit_full_lme <- lme(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch, random=~1|ID, data=photo_chem)
 anova(Afit_full_lme)
+summary(Afit_full_lme)
 
+###to make sure not violating assumpotions then your bootstrapping, can also log A
 
 # remove interaction, starch very significant
 Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
+#need fixed effects from almost model
+fixed.effects(Afit_almostfull)
+#need something with ci and fixed effect size to 
 
 # likelihood ratio test
 Afit_almostfull2 <- lmer(A_mass ~ Nmass_notnc+ (1|ID), data=photo_chem)
 anova(Afit_full, Afit_almostfull2)
 
 
-Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
-Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
+# Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
+# Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
 
 
 rsquared.glmm(list(Afit_full, Afit_N, Afit_TNC))
