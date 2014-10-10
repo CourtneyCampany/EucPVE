@@ -1,9 +1,25 @@
 source("functions and packages/startscripts.R")
-seedlingmass<- read.csv("calculated data/seedling mass.csv")   
+
+require(visreg)
+
+seedlingmass<- read.csv("calculated data/seedling mass.csv")  
+
+# rmf calculate
+seedlingmass$RMF <- with(seedlingmass, root/totalmass)
 
 #treatment means
 mass_agg <- summaryBy(totalmass~volume, data=seedlingmass, FUN=c(mean,se))
 mass_agg_nofree <- subset(mass_agg, volume != 1000)
+
+
+#plot and analyze RMF
+RMF_lm <- lm(RMF ~ as.factor(volume), data=seedlingmass)
+extract_func(RMF_lm)
+anova(RMF_lm)
+
+bar(RMF, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
+    legend=FALSE,ylim=c(0,.8) , ylab="", mgp = c(3, .1, 0))
+###RMF not different across volumes
 
 #start value
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
@@ -11,6 +27,15 @@ seedling_pre <- read.csv("raw data/seedling_initial.csv")
 seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
 #average mass of seedlings at start
 mass_mean <- mean(seedling_pre$seedling_mass)
+
+
+
+
+
+
+#calculate BVR
+#total plant mass : root volume ratio
+
 
 # #dataframe with percent diff in total mass
 # a<- Delt(mass_agg$totalmass.mean[1], mass_agg$totalmass.mean[2], type = c("arithmetic"))
