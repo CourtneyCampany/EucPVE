@@ -10,7 +10,7 @@ seedlingmass$RMF <- with(seedlingmass, root/totalmass)
 seedlingmass$BVR <- with(seedlingmass, totalmass/volume)
 
 #treatment means
-mass_agg <- summaryBy(totalmass~volume, data=seedlingmass, FUN=c(mean,se))
+mass_agg <- summaryBy(.~volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
 mass_agg_nofree <- subset(mass_agg, volume != 1000)
 
 #volue as factor after new variable calculations
@@ -24,7 +24,7 @@ anova(RMF_lm)
 bar(RMF, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
     legend=FALSE,ylim=c(0,.8) , ylab="", mgp = c(3, .1, 0))
 
-#plot and analyze RBVR------------------------------------------------------------------
+#plot and analyze BVR------------------------------------------------------------------
 boxplot(BVR~volume, data=seedlingmass, mean)
 #poorter mean bvr=9.5, very few experiments have values lower than 2
 BVR_lm <- lm(BVR ~ volume, data=seedlingmass)
@@ -37,14 +37,29 @@ tukey_BVR <- glht(BVR_lm, linfct=mcp(volume="Tukey"))
 anova(BVR_lm)
 #different across pot size
 
-
-
 bar(BVR, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
     legend=FALSE,ylim=c(0,4) , ylab="", mgp = c(3, .1, 0))
 
+####figure that shows dry mass scaled to free plant or sacled to largest pot
 
+maxfree <- with(subset(seedlingmass,volume ==1000),max(totalmass)) 
+max35 <- with(subset(seedlingmass,volume ==35),max(totalmass)) 
 
+#new variable that scales mass to 35 or free
+seedlingmass$scale_1000 <- with(seedlingmass, totalmass/maxfree)
+seedlingmass$scale_35<- with(seedlingmass, totalmass/max35)
 
+mass_agg$scale_1000 <- with(mass_agg, totalmass/maxfree)
+
+#plots of scaled mass to largest pots or free with BVR
+plot(scale_1000~BVR, data=seedlingmass, col=volume, pch=16, ylim=c(0,1.2))
+abline(1,0, lty=2)
+
+plot(scale_1000~BVR, data=mass_agg, col=volume, pch=pchs, ylim=c(0,1.2))
+abline(1,0, lty=2)
+
+with(subset(seedlingmass, volume !=1000), plot(scale_35~BVR, col=volume, pch=16,ylim=c(0,1.2)))
+abline(1,0, lty=2)
 
 #start value
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
