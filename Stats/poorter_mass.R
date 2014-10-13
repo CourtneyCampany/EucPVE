@@ -2,6 +2,7 @@ source("functions and packages/startscripts.R")
 
 require(visreg)
 library(multcomp)
+require(quantmod)
 
 seedlingmass<- read.csv("calculated data/seedling mass.csv") 
 
@@ -70,27 +71,29 @@ mass_mean <- mean(seedling_pre$seedling_mass)
 
 
 
+#dataframe with percent diff in total mass---------------------------------------------
+ allocation <- data.frame(cr = mass_agg$Croot/mass_agg$totalmass,
+                              fr = mass_agg$fineroot/mass_agg$totalmass,
+                              leaf = mass_agg$leafmass/mass_agg$totalmass,
+                              stem = mass_agg$stemmass/mass_agg$totalmass,
+                              volume = mass_agg$volume)
 
 
+# change in allocation of each component
+allocation_diff <- data.frame(cr_diff= ((allocation$cr-allocation$cr[1])/allocation$cr)*100,
+                              fr_diff = ((allocation$fr-allocation$fr[1])/allocation$fr)*100,
+                              leaf_diff = ((allocation$leaf-allocation$leaf[1])/allocation$leaf)*100,
+                              stem_diff = ((allocation$stem-allocation$stem[1])/allocation$stem)*100,
+                              volume = mass_agg$volume)
 
-#calculate BVR
-#total plant mass : root volume ratio
+#this is diff but need 
+test <- ((allocation$cr-allocation$cr[1])/allocation$cr)*100
 
-
-# #dataframe with percent diff in total mass
-# a<- Delt(mass_agg$totalmass.mean[1], mass_agg$totalmass.mean[2], type = c("arithmetic"))
-# 
-# pc.diff <- function(n1, n2) { ((n1-n2)/n2)*100} 
-# pc.diff(mass_agg$totalmass.mean[4],mass_agg$totalmass.mean[2])
-# 
-# diffloop <- for
-
-
-#plot with a abline for poorters 50% from start value, then add my numbers
+#plot with a abline for poorters 43% from start value, then add my numbers------------------
 
 #start with 5l pot and build up
 
-startmass <- mass_agg$totalmass.mean[1]
+startmass <- mass_agg$totalmass[1]
 
 massincrease <- vector()
 massincrease[1] <- startmass
@@ -98,12 +101,10 @@ massincrease[1] <- startmass
 #new vector with 2x volumes
 soilvolume <- c(5, 10, 20, 40)
 
-#now calculate mass increase with poorters 50% with 2x
-
-
+#now calculate mass increase with poorters 43% with 2x
  for(i in 2:length(soilvolume)) {
   
-  massincrease[i] <- massincrease[i-1] + (massincrease[i-1] *.50)
+  massincrease[i] <- massincrease[i-1] + (massincrease[i-1] *.43)
   
 }
 
@@ -111,4 +112,4 @@ poortermass <- as.data.frame(cbind(massincrease, soilvolume))
 
 plot(massincrease~soilvolume , pch=16, cex=1.5, ylim=c(0,100), ylab="Seeling Mass (g)", xlab="Soil Volume (l)")
   lines(massincrease~soilvolume, lty=2, lwd=2 )
-  points(mass_agg_nofree$totalmass.mean~ mass_agg_nofree$volume, pch=pchs, col=palette(), cex=1.5)
+  points(mass_agg_nofree$totalmass~ mass_agg_nofree$volume, pch=pchs, col=palette(), cex=1.5)
