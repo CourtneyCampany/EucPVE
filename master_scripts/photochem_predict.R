@@ -127,6 +127,10 @@ dev.off()
 
 
 ###two panel of graph above, using predict------------------------------------------------------------
+require(scales)
+
+coln2 <- alpha(coln, .75)
+cols2 <- alpha(cols, .75)
 
 #using predict instead of eqautions
 Npred <- expand.grid(starch = c(0.02, 0.06, 0.1, 0.14, 0.2),
@@ -137,15 +141,42 @@ TNCpred <- expand.grid(Nmass_notnc = c(0.00125, 0.00375, 0.00625, 0.00875, 0.012
                        starch = seq(min(photo_chem$starch), max(photo_chem$starch), length=101))
   TNCpred$Amass_pred <- predict(Afit2_full, TNCpred, re.form=NA)
 
+windows(12, 8)
+par(cex.axis=1.5, cex.lab=1.5,
+    mfrow=c(1,2),  # rows and columns of plots
+    omi=c(1,1,0.1,0.1),  # outer margin (inches)
+    mar=c(0,0,0,0))   # margin around plots (they are tight together) 
 
+# First Panel
+plot(A_mass ~ starch, data=photo_chem,type='n',ylim=c(0,800), xlim=c(0, 0.275),ylab=Amasslab, axes=FALSE, xlab="")  
+  box()
+  axis(1, labels=TRUE) 
+  axis(2, labels=TRUE)  
+  #title(ylab=Amasslab, mgp=ypos)
+  points(A_mass ~ starch, pch=21, data=photo_chem, bg=coln2[nitrobin], ylim=c(0,800), ylab="",
+                      xlab=starchlab,xlim=c(0, .275),cex=1.3, ylab="")
 
+  for(i in 1:length(unique(TNCpred$Nmass_notnc))){
+    m <- subset(TNCpred, Nmass_notnc == unique(TNCpred$Nmass_notnc)[i])
+    with(m, lines(starch, Amass_pred, col=coln[i], lwd=2))
+    }
+legend("topright", binlab, pch=21, text.font=1.3, inset=0.02, bg=coln2,title=starchlab , bty='n', cex=1.3) 
 
-with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
-                      xlab=starchlab,xlim=c(0, .275),cex=1.3))
-for(i in 1:length(unique(Npred$starch))){
-  d <- subset(Npred, starch == unique(Npred$starch)[i])
-  with(d, lines(Nmass_notnc, Amass_pred))
-}
+# Second Panel
+plot(A_mass ~ Nmass_notnc, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0, 0.02), ylim=c(0,800), xlab="")
+  box()
+  axis(1, labels=TRUE) 
+  axis(2, labels=FALSE, tcl=0.5)  
+
+  points(A_mass ~ Nmass_notnc, data=photo_chem, pch=21, bg=cols2[starchbin], 
+                      ylab="", xlab=nmass_noTNC,ylim=c(0,800),cex=1.3)
+
+  for(i in 1:length(unique(Npred$starch))){
+    d <- subset(Npred, starch == unique(Npred$starch)[i])
+    with(d, lines(Nmass_notnc, Amass_pred, col=cols[i], lwd=2))
+    }
+legend("bottomright", binlab2, pch=21, text.font=1.3, inset=0.02, bg=cols2,title=nfree , bty='n', cex=1.3)  
+
 
 
 

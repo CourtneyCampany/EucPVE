@@ -5,9 +5,9 @@ gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
 
 #lines and symbols
-lwds=2
-pchs = c(rep(16,6),17)
-pch2 = c(rep(1,6),2)
+lwds<- 2
+pchs <- c(rep(16,6),17)
+pch2 <- c(rep(1,6),2)
 ltys <- c(rep(1,6),4)
 ypos <- c(2.5,1,0)
 PTcex <- 1.6
