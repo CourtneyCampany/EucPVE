@@ -142,7 +142,7 @@ TNCpred <- expand.grid(Nmass_notnc = c(0.00125, 0.00375, 0.00625, 0.00875, 0.012
 
 with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
                       xlab=starchlab,xlim=c(0, .275),cex=1.3))
-for(i in 1:unique(Npred$starch)){
+for(i in 1:length(unique(Npred$starch))){
   d <- subset(Npred, starch == unique(Npred$starch)[i])
   with(d, lines(Nmass_notnc, Amass_pred))
 }
