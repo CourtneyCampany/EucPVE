@@ -17,6 +17,28 @@ mass_agg_nofree <- subset(mass_agg, volume != 1000)
 #volue as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
+#new dataframe of with mass as fold increase
+
+mass_agg <- summaryBy(. ~ volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
+
+mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
+  mass_fold$Fold <- c(1,2,3,4,5,7,200) #fold increase for each pot size
+
+Bo <- mass_fold[1,] #5l has intial value for step increase
+
+fold_increase <- data.frame(volume = mass_fold$volume, leaf = mass_fold$leafmass/mass_fold$leafmass[1],
+                            stem = mass_fold$stemmass/mass_fold$stemmass[1], 
+                            froot = mass_fold$fineroot/mass_fold$fineroot[1],
+                            croot = mass_fold$Croot/mass_fold$Croot[1], 
+                            mass = mass_fold$totalmass/mass_fold$totalmass[1], 
+                            fold = c(1,2,3,4,5,7,200))
+#probably need to reshape data first to use boxplot 
+
+
+#boxplot with fold increase
+
+boxplot
+
 #plot and analyze RMF------------------------------------------------------------------
 RMF_lm <- lm(RMF ~ as.factor(volume), data=seedlingmass)
 extract_func(RMF_lm)
