@@ -1,7 +1,4 @@
 
-##implement other fraction to simplify
-
-
 require(doBy)
 
 #experiment length---------------------------------------------------------------------
@@ -19,6 +16,7 @@ LA_harvest <- read.csv("calculated data/LA_harvest.csv")
 LA_agg <- summaryBy(totalarea ~volume, data=LA_harvest, FUN=mean, keep.names=TRUE)
 
 mass_actual <- data.frame(volume = LA_agg$volume, mass = mass_agg$totalmass, leafarea = (LA_agg$totalarea * 10^-4))
+#write.csv(mass_actual, "calculated data/harvest_mass_means.csv", row.names=FALSE)
 
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
 seedling_pre <- read.csv("raw data/seedling_initial.csv")
@@ -69,17 +67,17 @@ leafarea_mean <- (mean(lma$area))/10000
 
 ##need to convert modelled 15min A into g C m2 day
 Amodel <- read.csv("calculated data/Aleaf_pred_15min.csv")
-Amodel$Date <- as.Date(Amodel$Date)
-Amodel$volume <- as.factor(Amodel$volume)
-Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
+  Amodel$Date <- as.Date(Amodel$Date)
+  Amodel$volume <- as.factor(Amodel$volume)
+  Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
 
 #plot(Anet~Date, data=Amodel, subset=volume==35)
 
 #first need sum over day and then means by treatment
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
-names(Aleaf)[3] <- "carbon_day"
+  names(Aleaf)[3] <- "carbon_day"
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
-#Aleaf25 <- subset(Aleaf_agg, volume == "25")
+#write.csv(Aleaf_agg, "calculated data/model_runs/gCday_means.csv", row.names=FALSE)
 
 ####MODEL---------------------------------------------------------------------------------
 
@@ -172,13 +170,98 @@ productionmodel <- function(leaffrac = .25,
 
 #run model simulations with sequence of g Cday, change parameter assumptions with each sim----------------------
 
-  gCday_seq <- seq(7,2,length=101)
-  mu <- .6
+gCday_seq <- seq(7,2,length=101)
+mu <- .6
 
 sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_mean, 
                                                 frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                 leaffrac=lf,SIMPLIFY=F)))
-sim_means$gCday <- gCday_seq
+  sim_means$gCday <- gCday_seq
+#save run
+write.csv(sim_means, "calculated data/model_runs/sim_gCseq.csv" , row.names=FALSE)
+
+
+######component allocation and lma by volume (7 sims) in loop---------------------------------------------------
+
+allsims <- list()
+for (i in 1:7){
+gCday_seq <- seq(7,2,length=101)
+
+sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_trt[i],frfrac=frfrac_trt[i], 
+                  crfrac=crfrac_trt[i], stemfrac=stemfrac_trt[i],leaffrac=leaffrac_trt[i], SIMPLIFY=F)))
+
+  sim$gCday <- gCday_seq
+
+allsims[[i]] <- sim
+}
+#save run  
+saveRDS(allsims, file = "calculated data/model_runs/allocation_sim.rds")
+
+
+####mass as a function of largest container or free (btw 0 and 1)
+vol35 <- as.data.frame(allsims[6])
+  vol35$volume <- "35"
+  sim35 <- data.frame(mass35 = vol35$biomass)
+  vol35 <- cbind(vol35, sim35)
+
+volfree <- as.data.frame(allsims[7])
+  volfree$volume <- "1000"
+  simfree <- data.frame(massfree = volfree$biomass)
+  volfree <- cbind(volfree, simfree)
+
+
+  volfree <- cbind(volfree, sim35)
+  vol35 <- cbind(vol35, simfree)
+  
+bigmass <- data.frame(sim35, simfree)
+  
+#add vol35 free to the others 
+vol5 <- as.data.frame(allsims[1])
+  vol5$volume <- "5"
+  vol5 <- cbind(vol5, bigmass)
+
+vol10 <- as.data.frame(allsims[2])
+  vol10$volume <- "10"
+  vol10 <- cbind(vol10, bigmass)
+
+vol15 <- as.data.frame(allsims[3])
+  vol15$volume <- "15"
+  vol15 <- cbind(vol15, bigmass)
+
+vol20 <- as.data.frame(allsims[4])
+  vol20$volume <- "20"
+  vol20 <- cbind(vol20, bigmass)
+
+vol25 <- as.data.frame(allsims[5])
+  vol25$volume <- "25"
+  vol25 <- cbind(vol25, bigmass)
+
+simcarbon <- rbind(vol5, vol10, vol15, vol20, vol25, vol35, volfree)
+  simcarbon$volume <- as.factor(simcarbon$volume)
+  #new parameter that standardizes mass to the largest volume
+  simcarbon$mass_stnd_pot <- with(simcarbon, biomass/mass35)
+  simcarbon$mass_stnd_free <- with(simcarbon, biomass/massfree)
+
+write.csv(simcarbon, "calculated data/model_runs/sim_gCseq_allocation.csv", row.names=FALSE)
+
+
+####model with parameters and Cday by volume to compare with final harvest----------------------
+
+modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
+            gCday=0.6*Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
+            leaffrac=leaffrac_trt,SIMPLIFY=FALSE)))
+modelmass <- cbind(volume, modelmass)
+write.csv(modelmass, "calculated data/model_runs/mass_sim.csv", row.names=FALSE)
+
+modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,lma=lma_trt, frfrac=frfrac_trt, 
+                                      crfrac=crfrac_trt, stemfrac=stemfrac_trt,
+                                      leaffrac=leaffrac_trt,returnwhat="all",SIMPLIFY=FALSE)))
+#saveRDS(modelmass_all, file = "calculated data/model_runs/mass_sim_alldays.rds")
+
+
+
+# DOES NOT REALLY WORK - FORGET THIS FOR NOW--------------------------------------------------
+
 
 # 
 # leaffrac=.25
@@ -192,119 +275,6 @@ sim_means$gCday <- gCday_seq
 #                                                  leaffrac=leaffrac,
 #                                                  SIMPLIFY=F)))
 
-
-#plot bits
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs = c(rep(16,6),17)
-ypos <- c(2.5,1,0)
-vollab <- expression(Pot~volume~(l))
-leglab <- c(5, 10, 15, 20, 25, 35, "free")
-
-cols <- as.vector(palette())
-require(scales)
-cols1 <- alpha(cols[1], 0.45)
-cols2 <- alpha(cols[2], 0.45)
-cols3 <- alpha(cols[3], 0.45)
-cols4 <- alpha(cols[4], 0.45)
-cols5 <- alpha(cols[5], 0.45)
-cols6 <- alpha(cols[6], 0.45)
-cols7 <- alpha(cols[7], 0.45)
-
-col_bl <- alpha("black", .45)
-
-treelab<- paste("Seedling Mass Production over ",numdays," days (g)", sep="")
-cdaylab <- expression(Daily~Carbon~Gain~~(g~m^-2~d^-1))
-
-
-
-#windows()
-png(filename = "output/presentations/Cmodel_meanC_massactual.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(sim_means, plot(biomass~gCday, ylim=c(0,175), xlim=c(0,8), ylab= "", xlab=cdaylab,pch=16,cex=1.6, col=col_bl))
-  points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
-  #points( modelmass$gCday~modelmass$biomass,pch=pchs,col=palette())
-title(ylab=treelab, mgp=ypos)
-legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01, 
-       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
-
-dev.off()
-
-#make no free
-png(filename = "output/presentations/Cmodel_nofree.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(sim_means, plot(gCday~biomass, xlim=c(0,75), ylim=c(0,8), ylab= "", xlab=treelab, cex=1.6))
-  points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
-  title(ylab=cdaylab, mgp=ypos)
-dev.off()
-
-#component allocation and lma by volume (7 sims) in loop
-
-allsims <- list()
-for (i in 1:7){
-gCday_seq <- seq(7,2,length=101)
-
-sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_trt[i],frfrac=frfrac_trt[i], 
-                  crfrac=crfrac_trt[i], stemfrac=stemfrac_trt[i],leaffrac=leaffrac_trt[i], SIMPLIFY=F)))
-
-  sim$gCday <- gCday_seq
-
-allsims[[i]] <- sim
-}
-  
-#model plotting
-
-png(filename = "output/presentations/Cmodel_leaffrac.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-  with(as.data.frame(allsims[1]),plot(biomass~gCday, col=cols1, ylim=c(0,175), xlim=c(0,8), cex=1.6, ylab="", xlab=cdaylab))
-    with(as.data.frame(allsims[2]),points(biomass~gCday,col=cols2, cex=1.6))
-    with(as.data.frame(allsims[3]),points(biomass~gCday,col=cols3, cex=1.6))
-    with(as.data.frame(allsims[4]),points(biomass~gCday,col=cols4, cex=1.6))
-    with(as.data.frame(allsims[5]),points(biomass~gCday,col=cols5, cex=1.6))
-    with(as.data.frame(allsims[6]),points(biomass~gCday,col=cols6, cex=1.6))
-    with(as.data.frame(allsims[7]),points(biomass~gCday,col=cols7, pch=17, cex=1.6))
-  points( mass_actual$mass~Cday,pch=pchs,col=palette(), cex=1.6)
-  with(sim_means, points(biomass~gCday,  col=col_bl, pch=16,cex=1.6))
-title(ylab=treelab, mgp=ypos)
-legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01, 
-       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
-dev.off()
-####model with parameters and Cday by volume to compare with final harvest----------------------
-
-modelmass <- as.data.frame(do.call(rbind, mapply(productionmodel, 
-            gCday=0.6*Cday, lma=lma_trt,frfrac=frfrac_trt, crfrac=crfrac_trt, stemfrac=stemfrac_trt,
-            leaffrac=leaffrac_trt,SIMPLIFY=FALSE)))
-#mm <- cbind(volume, modelmass)
-
-#modelmass_all <- as.data.frame(do.call(rbind, mapply(productionmodel, gCday=Cday,
-                                                 #lma=lma_trt, returnwhat="all",SIMPLIFY=FALSE)))
-
-#plotting
-windows(8,4)
-par(mfrow=c(1,2))
-plot(modelmass$biomass, mass_actual$mass)
-abline(0,1)
-plot(modelmass$leafarea, mass_actual$leafarea)
-abline(0,1)
-
-
-windows()
-plot(Cday, modelmass$biomass, ylim=c(0,500))
-points(Cday, mass_actual$mass, col="red")
-
-plot(modelmass$biomass, mass_actual$mass)
-
-plot(mass_actual$leafarea, modelmass$leafarea,ylim=c(0,5))
-abline(0,1)
-
-#A and plot mass, leafmass, and LMF vs A
-plot(Aleaf_agg$carbon_day, modelmass$leafmass, pch=pchs, col=palette())
-plot(Aleaf_agg$carbon_day, modelmass$LMF,  pch=pchs, col=palette())
-plot(Aleaf_agg$carbon_day, modelmass$biomass,  pch=pchs, col=palette())
-
-
-
-# DOES NOT REALLY WORK - FORGET THIS FOR NOW
 fp <- function(p, i=1:7, leafareaweight=10, returnwhat=c("objective","simulation"),...){
   
   returnwhat <- match.arg(returnwhat)
