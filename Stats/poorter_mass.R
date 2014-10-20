@@ -3,6 +3,7 @@ source("functions and packages/startscripts.R")
 require(visreg)
 library(multcomp)
 require(quantmod)
+library(reshape)
 
 seedlingmass<- read.csv("calculated data/seedling mass.csv") 
 
@@ -26,18 +27,64 @@ mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "
 
 Bo <- mass_fold[1,] #5l has intial value for step increase
 
-fold_increase <- data.frame(volume = mass_fold$volume, leaf = mass_fold$leafmass/mass_fold$leafmass[1],
+
+
+#volume = mass_fold$volume,
+
+fold_increase <- data.frame( volume = mass_fold$volume,
+                            leaf = mass_fold$leafmass/mass_fold$leafmass[1],
                             stem = mass_fold$stemmass/mass_fold$stemmass[1], 
                             froot = mass_fold$fineroot/mass_fold$fineroot[1],
                             croot = mass_fold$Croot/mass_fold$Croot[1], 
                             mass = mass_fold$totalmass/mass_fold$totalmass[1], 
                             fold = c(1,2,3,4,5,7,200))
-#probably need to reshape data first to use boxplot 
+
+fold_pot_mod <- subset(fold_increase[2:6,2:7])
+
+#linear model of fold increase for each componen
+leaf_mod <- lm(leaf ~ fold, data=fold_pot_mod)
+  summary(leaf_mod)
+stem_mod <- lm(stem ~ fold, data=fold_pot_mod)
+  summary(stem_mod)
+froot_mod <- lm(froot ~ fold, data=fold_pot_mod)
+  summary(froot_mod)
+croot_mod <- lm(croot ~ fold, data=fold_pot_mod)
+  summary(croot_mod)
+mass_mod <- lm(mass ~ fold, data=fold_pot_mod)
+  summary(mass_mod) 
 
 
-#boxplot with fold increase
 
-boxplot
+
+
+####for box plotting
+fold_pot <- subset(fold_increase[1:6,])
+
+fold_perc <- data.frame(fold = fold_pot$fold, leaf_perc=Delt(fold_pot$leaf),
+                       stem_perc = Delt(fold_pot$stem),
+                       froot_perc = Delt(fold_pot$froot),
+                       croot_perc = Delt(fold_pot$croot),
+                       mass_perc = Delt(fold_pot$mass))
+
+names(fold_perc) <- c("fold", "Leaf", "Stem", "Fine Root", "Coarse Root", "Seedling Mass")
+
+fold_agg <- subset(fold_perc, fold != 1)
+fold_box <- fold_agg[2:6]
+
+#####35 represents a two fold incrase......
+windows()
+par(oma=c(0,3,0,0))
+boxplot(fold_box, at=c(1,2,3,4,6),border="forestgreen")
+  title(ylab="mean % change in mass with fold increase \nin pot size from 5l", mgp=c(2.25,1,0))
+  abline(.43,0, lty=2, col="red")
+  mtext("43% increase with 2 fold increase (Poorter et al.)", side=4, line=-20,las=1, padj=.2)
+
+
+#####this isnt close.......
+
+
+
+
 
 #plot and analyze RMF------------------------------------------------------------------
 RMF_lm <- lm(RMF ~ as.factor(volume), data=seedlingmass)
