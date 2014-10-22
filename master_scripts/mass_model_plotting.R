@@ -3,7 +3,9 @@
 
 #seq of gC, alloction is equal
 gCseq_sim <- read.csv("calculated data/model_runs/sim_gCseq.csv")
-
+ #new parameters with mass and gC relative to largest value
+  gCseq_sim$mass_adj <- with(gCseq_sim, biomass/biomass[1])
+  gCseq_sim$C_adj <- with(gCseq_sim, gCday/gCday[1])
 
 #sequence of gC with allocation and lma by treatment
 gCseq_alloc_sim <- readRDS("calculated data/model_runs/allocation_sim.rds")
@@ -12,6 +14,8 @@ alloc_sim <- read.csv("calculated data/model_runs/sim_gCseq_allocation.csv")
 
 #simple model with mean gCday by treament (sum mass and daily accrual)
 mass_sim <- read.csv("calculated data/model_runs/mass_sim.csv")
+  mass_sim$mass_adj <- with(mass_sim, biomass/biomass[7])
+
 mass_sim_alldays <- readRDS("calculated data/model_runs/mass_sim_alldays.rds")
 
 #new dataframe with parameters relative to largest pot of free
@@ -19,6 +23,8 @@ mass_adj <- data.frame(volume=mass_sim$volume, mass35_adj = mass_sim$biomass/mas
                        massfree_adj = mass_sim$biomass/mass_sim$biomass[7], 
                        la_35_adj = mass_sim$leafarea/mass_sim$leafarea[6],
                        la_free_adj = mass_sim$leafarea/mass_sim$leafarea[7])
+
+
 
 
 #harvest mass and leaf area for model comparison
@@ -58,6 +64,7 @@ sub35 <- expression(Scaled[35])
 subfree <- expression(Scaled[free])
 treelab35 <- paste("Seedling Mass Production over ",numdays," days ",sub35,"  (g)", sep="")
 treelabfree <- paste("Seedling Mass Production over ",numdays," days ",subfree,"  (g)", sep="")
+treelabfree <- paste("Relative Mass Production over ",numdays," days ","  (g)", sep="")
 
 cdaylab <- expression(Daily~Carbon~Gain~~(g~m^-2~d^-1))
 cday35lab <- expression(Daily~Carbon~Gain~Scaled[35]~~(g~m^-2~d^-1))
@@ -112,14 +119,12 @@ legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01,
 
 dev.off()
 
-#make no free (just changes the ylim to exclude the free seedling)
-png(filename = "output/presentations/Cmodel_nofree.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(gCseq_sim, plot(gCday~biomass, xlim=c(0,75), ylim=c(0,8), ylab= "", xlab=treelab, cex=1.6))
-points( mass_actual$mass, Cday,pch=pchs,col=palette(), cex=1.6)
-title(ylab=cdaylab, mgp=ypos)
-dev.off()
+####same plot with mass and gC adjusted to smallest gCday value
+with(gCseq_sim, plot(C_adj~mass_adj, xlim=c(1,0), ylim=c(0,1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))
+  points( mass_sim$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 
+
+##redo bottom graph as the one above
 
 ######this sim uses seq of gC day and treatment means for lma and allocation
 ###plotting mass and gC as a function of the ratio to the largest pot size
