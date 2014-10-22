@@ -1,8 +1,8 @@
 source("functions and packages/startscripts.R")
 
-require(visreg)
+library(visreg)
 library(multcomp)
-require(quantmod)
+library(quantmod)
 library(reshape)
 
 seedlingmass<- read.csv("calculated data/seedling mass.csv") 
@@ -39,19 +39,40 @@ fold_increase <- data.frame( volume = mass_fold$volume,
                             mass = mass_fold$totalmass/mass_fold$totalmass[1], 
                             fold = c(1,2,3,4,5,7,200))
 
-fold_pot_mod <- subset(fold_increase[2:6,2:7])
+fold_pot_mod <- fold_increase[2:6,2:7]
 
 #linear model of fold increase for each componen
-leaf_mod <- lm(leaf ~ fold, data=fold_pot_mod)
+leaf_mod <- lm(leaf ~ fold-1, data=fold_pot_mod)
   summary(leaf_mod)
-stem_mod <- lm(stem ~ fold, data=fold_pot_mod)
+stem_mod <- lm(stem ~ fold-1, data=fold_pot_mod)
   summary(stem_mod)
-froot_mod <- lm(froot ~ fold, data=fold_pot_mod)
+froot_mod <- lm(froot ~ fold-1, data=fold_pot_mod)
   summary(froot_mod)
-croot_mod <- lm(croot ~ fold, data=fold_pot_mod)
+croot_mod <- lm(croot ~ fold-1, data=fold_pot_mod)
   summary(croot_mod)
-mass_mod <- lm(mass ~ fold, data=fold_pot_mod)
+mass_mod <- lm(mass ~ fold-1, data=fold_pot_mod)
   summary(mass_mod) 
+
+
+library(scales)
+with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
+ablinepiece(mass_mod)
+
+# percent increase in mass when doubling pot size
+coef(mass_mod) * 2
+
+
+massmod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+p <- coef(massmod_nls)
+
+with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
+curve(1 + p[[1]]*x^p[[2]], add=T)
+
+# Fit through origin, so that 0,0 means smallest pot size
+mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
+summary(mass_mod) 
+# percent increase in mass when doubling pot size
+100*predict(mass_mod, data.frame(fold=2)) 
 
 
 
