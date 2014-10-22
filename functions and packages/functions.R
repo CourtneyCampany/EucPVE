@@ -327,3 +327,64 @@ bar <- function(dv, factors, dataframe, percentage=FALSE, errbar=!percentage, ha
 }
 
 
+
+
+
+addpoly <- function(x,y1,y2,col=alpha("lightgrey",0.8),...){
+  ii <- order(x)
+  y1 <- y1[ii]
+  y2 <- y2[ii]
+  x <- x[ii]
+  polygon(c(x,rev(x)), c(y1, rev(y2)), col=col, border=NA,...)
+}
+predline <- function(fit, from=NULL, to=NULL, ...){
+  
+  if(is.null(from))from <- min(fit$model[,2], na.rm=TRUE)
+  if(is.null(to))to <- max(fit$model[,2], na.rm=TRUE)
+  
+  newdat <- data.frame(X = seq(from,to, length=101))
+  names(newdat)[1] <- names(coef(fit))[2]
+  
+  pred <- as.data.frame(predict(fit, newdat, se.fit=TRUE, interval="confidence")$fit)
+  
+  addpoly(newdat[[1]], pred$lwr, pred$upr)
+  ablinepiece(fit, from=from, to=to, ...)
+  
+}
+#'@title Add a line to a plot
+#'@description As \code{abline}, but with \code{from} and \code{to} arguments. 
+#'If a fitted linear regression model is used as asn argument, it uses the min and max values of the data used to fit the model.
+#'@param a Intercept (optional)
+#'@param b Slope (optional)
+#'@param reg A fitted linear regression model (output of \code{\link{lm}}).
+#'@param from Draw from this X value
+#'@param to Draw to this x value
+#'@param \dots Further parameters passed to \code{\link{segments}}
+#'@export
+ablinepiece <- function(a=NULL,b=NULL,reg=NULL,from=NULL,to=NULL,...){
+  
+  # Borrowed from abline
+  if (!is.null(reg)) a <- reg
+  
+  if (!is.null(a) && is.list(a)) {
+    temp <- as.vector(coefficients(a))
+    from <- min(a$model[,2], na.rm=TRUE)
+    to <- max(a$model[,2], na.rm=TRUE)
+    
+    if (length(temp) == 1) {
+      a <- 0
+      b <- temp
+    }
+    else {
+      a <- temp[1]
+      b <- temp[2]
+    }
+  }
+  
+  segments(x0=from,x1=to,
+           y0=a+from*b,y1=a+to*b,...)
+  
+}
+
+
+
