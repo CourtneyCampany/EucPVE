@@ -7,10 +7,22 @@ gCseq_sim <- read.csv("calculated data/model_runs/sim_gCseq.csv")
   gCseq_sim$mass_adj <- with(gCseq_sim, biomass/biomass[1])
   gCseq_sim$C_adj <- with(gCseq_sim, gCday/gCday[1])
 
+
 #sequence of gC with allocation and lma by treatment
 gCseq_alloc_sim <- readRDS("calculated data/model_runs/allocation_sim.rds")
+
 #this is a rds and dataframe seperately of same model run
 alloc_sim <- read.csv("calculated data/model_runs/sim_gCseq_allocation.csv")
+  alloc_sim$C_adj <- with(alloc_sim, gCday/gCday[1])
+
+  alloc_sim$maxmass <- c(rep(alloc_sim$biomass[1],101),rep(alloc_sim$biomass[102],101),rep(alloc_sim$biomass[203],101),
+          rep(alloc_sim$biomass[304],101),rep(alloc_sim$biomass[405],101),rep(alloc_sim$biomass[506],101),
+          rep(alloc_sim$biomass[607],101))
+
+  alloc_sim$mass_adj <- alloc_sim$biomass/alloc_sim$maxmass
+  alloc_sim$mass_adj_free <- alloc_sim$biomass/alloc_sim$biomass[607]
+
+
 
 #simple model with mean gCday by treament (sum mass and daily accrual)
 mass_sim <- read.csv("calculated data/model_runs/mass_sim.csv")
@@ -120,17 +132,17 @@ legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01,
 dev.off()
 
 ####same plot with mass and gC adjusted to smallest gCday value
-with(gCseq_sim, plot(C_adj~mass_adj, xlim=c(1,0), ylim=c(0,1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))
+with(gCseq_sim, plot(mass_adj~C_adj, xlim=c(1,0), ylim=c(0,1), 
+                     ylab= "Mass Production adjusted", xlab="gC Day adjusted", cex=1.6, pch=16, col=col_bl))
   points( mass_sim$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 
-
-##redo bottom graph as the one above
 
 ######this sim uses seq of gC day and treatment means for lma and allocation
 ###plotting mass and gC as a function of the ratio to the largest pot size
 
 with(subset(alloc_sim, volume==5),plot(mass_stnd_pot~gCday, col=cols1, ylim=c(0,1), xlim=c(0,8), cex=1.6, ylab="", 
                                        xlab=cdaylab))
+
 
   with(subset(alloc_sim, volume==10),points(mass_stnd_pot~gCday, col=cols2, cex=1.6))
   with(subset(alloc_sim, volume==15),points(mass_stnd_pot~gCday, col=cols3, cex=1.6))
@@ -140,13 +152,44 @@ with(subset(alloc_sim, volume==5),plot(mass_stnd_pot~gCday, col=cols1, ylim=c(0,
   title(ylab=treelab, mgp=ypos)
 
 ###plottig mass and gC as a function of the ratio to the free seedlings
-with(subset(alloc_sim, volume==5),plot(mass_stnd_free~gCday, col=cols1, ylim=c(0,1), 
-                                       xlim=c(0,8), cex=1.6, ylab="", xlab=cdaylab))
+with(subset(alloc_sim, volume==5),plot(C_adj~mass_adj_free, col=cols1, ylim=c(0,1), 
+                                       xlim=c(1,0), cex=1.6, ylab="Biomass adjusted", xlab="gC day adjusted",pch=16))
 
-  with(subset(alloc_sim, volume==10),points(mass_stnd_free~gCday, col=cols2, cex=1.6))
-  with(subset(alloc_sim, volume==15),points(mass_stnd_free~gCday, col=cols3, cex=1.6))
-  with(subset(alloc_sim, volume==20),points(mass_stnd_free~gCday, col=cols4, cex=1.6))
-  with(subset(alloc_sim, volume==25),points(mass_stnd_free~gCday, col=cols5, cex=1.6))
-  with(subset(alloc_sim, volume==35),points(mass_stnd_free~gCday, col=cols6, cex=1.6))
+  with(subset(alloc_sim, volume==10),points(C_adj~mass_adj_free, col=cols2, cex=1.6, pch=16))
+  with(subset(alloc_sim, volume==15),points(C_adj~mass_adj_free, col=cols3, cex=1.6,pch=16))
+  with(subset(alloc_sim, volume==20),points(C_adj~mass_adj_free, col=cols4, cex=1.6,pch=16))
+  with(subset(alloc_sim, volume==25),points(C_adj~mass_adj_free, col=cols5, cex=1.6,pch=16))
+  with(subset(alloc_sim, volume==35),points(C_adj~mass_adj_free, col=cols6, cex=1.6,pch=16))
+  with(subset(alloc_sim, volume==1000),points(C_adj~mass_adj_free, col=cols7, cex=1.6,pch=17))
+  with(gCseq_sim, points(C_adj~mass_adj, xlim=c(1,0), ylim=c(0,1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))
+  points( mass_sim$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
+
   title(ylab=treelab, mgp=ypos)
+
+
+###plottig mass and gC as a function of the ratio to largest pot
+
+#new dataframe
+alloc_pot <- subset(alloc_sim[c(1:6, 11)], volume != "1000")
+
+alloc_pot$maxmass <- c(rep(alloc_pot$biomass[1],101),rep(alloc_pot$biomass[102],101),rep(alloc_pot$biomass[203],101),
+                       rep(alloc_pot$biomass[304],101),rep(alloc_pot$biomass[405],101),rep(alloc_pot$biomass[506],101))
+
+alloc_pot$mass_adj <- alloc_pot$biomass/alloc_pot$maxmass
+
+
+#plot
+with(subset(alloc_pot, volume==5),plot(C_adj~mass_adj, col=cols1, ylim=c(0,1), 
+            xlim=c(1,0), cex=1.6, ylab="Biomass adjusted", xlab="gC day adjusted",pch=16))
+
+with(subset(alloc_pot, volume==10),points(C_adj~mass_adj, col=cols2, cex=1.6, pch=16))
+with(subset(alloc_pot, volume==15),points(C_adj~mass_adj, col=cols3, cex=1.6,pch=16))
+with(subset(alloc_pot, volume==20),points(C_adj~mass_adj, col=cols4, cex=1.6,pch=16))
+with(subset(alloc_pot, volume==25),points(C_adj~mass_adj, col=cols5, cex=1.6,pch=16))
+with(subset(alloc_pot, volume==35),points(C_adj~mass_adj, col=cols6, cex=1.6,pch=16))
+with(gCseq_sim, points(C_adj~mass_adj, xlim=c(1,0), ylim=c(0,1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))
+points( mass_sim$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
+
+title(ylab=treelab, mgp=ypos)
+
 
