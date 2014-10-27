@@ -15,22 +15,14 @@ seedlingmass$BVR <- with(seedlingmass, totalmass/volume)
 mass_agg <- summaryBy(.~volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
 mass_agg_nofree <- subset(mass_agg, volume != 1000)
 
-#volue as factor after new variable calculations
+#volume as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
 #new dataframe of with mass as fold increase
-
-mass_agg <- summaryBy(. ~ volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
-
 mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
   mass_fold$Fold <- c(1,2,3,4,5,7,200) #fold increase for each pot size
 
-Bo <- mass_fold[1,] #5l has intial value for step increase
-
-
-
-#volume = mass_fold$volume,
-
+###mass increase with fold increase
 fold_increase <- data.frame( volume = mass_fold$volume,
                             leaf = mass_fold$leafmass/mass_fold$leafmass[1],
                             stem = mass_fold$stemmass/mass_fold$stemmass[1], 
@@ -39,71 +31,111 @@ fold_increase <- data.frame( volume = mass_fold$volume,
                             mass = mass_fold$totalmass/mass_fold$totalmass[1], 
                             fold = c(1,2,3,4,5,7,200))
 
+#subset with fold and no free
 fold_pot_mod <- fold_increase[2:6,2:7]
 
-#linear model of fold increase for each componen
-leaf_mod <- lm(leaf ~ fold-1, data=fold_pot_mod)
-  summary(leaf_mod)
-stem_mod <- lm(stem ~ fold-1, data=fold_pot_mod)
-  summary(stem_mod)
-froot_mod <- lm(froot ~ fold-1, data=fold_pot_mod)
-  summary(froot_mod)
-croot_mod <- lm(croot ~ fold-1, data=fold_pot_mod)
-  summary(croot_mod)
-mass_mod <- lm(mass ~ fold-1, data=fold_pot_mod)
-  summary(mass_mod) 
+###analyze mass increase with pot size------------------------------------------------------------------
+  #linera model may not be appropirate so use nls
+  library(scales)
 
-
-library(scales)
-with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
-ablinepiece(mass_mod)
-
-# percent increase in mass when doubling pot size
-coef(mass_mod) * 2
-
-
-massmod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-p <- coef(massmod_nls)
-
-with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
-curve(1 + p[[1]]*x^p[[2]], add=T)
-
+#linear
 # Fit through origin, so that 0,0 means smallest pot size
 mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
-summary(mass_mod) 
-# percent increase in mass when doubling pot size
-100*predict(mass_mod, data.frame(fold=2)) 
+  summary(mass_mod) 
+  coef(mass_mod) * 2 # percent increase in mass when doubling pot size
+
+#nls
+mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  m <- coef(mass_mod_nls) 
+
+#plot
+  with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
+  #add linear and nls fits
+  ablinepiece(mass_mod)
+  curve(1 + m[[1]]*x^m[[2]], add=T)
+  
+#nls
+mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  m <- coef(mass_mod_nls)
+  #plot nls curve
+  with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
+  curve(1 + p[[1]]*x^p[[2]], add=T)
+
+
+###analyze leaf mass increase with pot size------------------------------------------------------------------
+
+#linear
+# Fit through origin, so that 0,0 means smallest pot size
+leaf_mod <- lm(I(leaf-1) ~ I(fold-1) -1, data=fold_pot_mod)
+  summary(leaf_mod) 
+
+#nls
+leaf_mod_nls <- nls(leaf ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  l <- coef(leaf_mod_nls)
+  
+#plot
+with(fold_pot_mod,plot(fold, leaf, ylim=c(0,6), xlim=c(0,8)))
+  #add linear and nls fits
+  ablinepiece(leaf_mod)
+  curve(1 + l[[1]]*x^l[[2]], add=T)
+
+
+###analyze stem mass increase with pot size------------------------------------------------------------------
+
+#linear first
+# Fit through origin, so that 0,0 means smallest pot size
+stem_mod <- lm(I(stem-1) ~ I(fold-1) -1, data=fold_pot_mod)
+  summary(stem_mod) 
+
+#nls
+stem_mod_nls <- nls(stem ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  s <- coef(stem_mod_nls)
+
+#plot nls curve
+  with(fold_pot_mod,plot(fold, stem, ylim=c(0,6), xlim=c(0,8)))
+  #add linear and nls fits
+  ablinepiece(stem_mod)
+  curve(1 + s[[1]]*x^s[[2]], add=T)
+
+
+###analyze froot mass increase with pot size------------------------------------------------------------------
+
+#linear first
+# Fit through origin, so that 0,0 means smallest pot size
+froot_mod <- lm(I(froot-1) ~ I(fold-1) -1, data=fold_pot_mod)
+  summary(froot_mod) 
+
+#nls
+froot_mod_nls <- nls(froot ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  fr <- coef(froot_mod_nls)
+
+#plot
+with(fold_pot_mod,plot(fold, froot, ylim=c(0,6), xlim=c(0,8)))
+  #add linear and nls fits
+  ablinepiece(froot_mod)
+  curve(1 + fr[[1]]*x^fr[[2]], add=T)
 
 
 
+###analyze croot mass increase with pot size------------------------------------------------------------------
+
+#linear first
+# Fit through origin, so that 0,0 means smallest pot size
+croot_mod <- lm(I(croot-1) ~ I(fold-1) -1, data=fold_pot_mod)
+  summary(croot_mod) 
+
+#nls
+croot_mod_nls <- nls(froot ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+  cr <- coef(croot_mod_nls)
+
+#plot
+with(fold_pot_mod,plot(fold, froot, ylim=c(0,6), xlim=c(0,8)))
+  #add linear and nls fits
+  ablinepiece(froot_mod)
+  curve(1 + cr[[1]]*x^cr[[2]], add=T)
 
 
-####for box plotting
-fold_pot <- subset(fold_increase[1:6,])
-
-fold_perc <- data.frame(fold = fold_pot$fold, leaf_perc=Delt(fold_pot$leaf),
-                       stem_perc = Delt(fold_pot$stem),
-                       froot_perc = Delt(fold_pot$froot),
-                       croot_perc = Delt(fold_pot$croot),
-                       mass_perc = Delt(fold_pot$mass))
-
-names(fold_perc) <- c("fold", "Leaf", "Stem", "Fine Root", "Coarse Root", "Seedling Mass")
-
-fold_agg <- subset(fold_perc, fold != 1)
-fold_box <- fold_agg[2:6]
-
-#####35 represents a two fold incrase......
-windows()
-par(oma=c(0,3,0,0))
-boxplot(fold_box, at=c(1,2,3,4,6),border="forestgreen")
-  title(ylab="mean % change in mass with fold increase \nin pot size from 5l", mgp=c(2.25,1,0))
-  abline(.43,0, lty=2, col="red")
-  mtext("43% increase with 2 fold increase (Poorter et al.)", side=4, line=-20,las=1, padj=.2)
-
-
-#####this isnt close.......
-
-
+######roots appear to be linear but not aboveground or total mass
 
 
 
