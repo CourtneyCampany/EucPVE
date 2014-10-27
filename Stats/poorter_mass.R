@@ -43,10 +43,12 @@ fold_pot_mod <- fold_increase[2:6,2:7]
 mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
   summary(mass_mod) 
   coef(mass_mod) * 2 # percent increase in mass when doubling pot size
+  visreg(mass_mod)
 
 #nls
 mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
   m <- coef(mass_mod_nls) 
+
 
 #plot
   with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
@@ -54,12 +56,6 @@ mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
   ablinepiece(mass_mod)
   curve(1 + m[[1]]*x^m[[2]], add=T)
   
-#nls
-mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-  m <- coef(mass_mod_nls)
-  #plot nls curve
-  with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
-  curve(1 + p[[1]]*x^p[[2]], add=T)
 
 
 ###analyze leaf mass increase with pot size------------------------------------------------------------------
@@ -68,6 +64,7 @@ mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
 # Fit through origin, so that 0,0 means smallest pot size
 leaf_mod <- lm(I(leaf-1) ~ I(fold-1) -1, data=fold_pot_mod)
   summary(leaf_mod) 
+  visreg(leaf_mod)
 
 #nls
 leaf_mod_nls <- nls(leaf ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
@@ -77,6 +74,7 @@ leaf_mod_nls <- nls(leaf ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
 with(fold_pot_mod,plot(fold, leaf, ylim=c(0,6), xlim=c(0,8)))
   #add linear and nls fits
   ablinepiece(leaf_mod)
+  predline(leaf_mod)
   curve(1 + l[[1]]*x^l[[2]], add=T)
 
 
@@ -86,9 +84,10 @@ with(fold_pot_mod,plot(fold, leaf, ylim=c(0,6), xlim=c(0,8)))
 # Fit through origin, so that 0,0 means smallest pot size
 stem_mod <- lm(I(stem-1) ~ I(fold-1) -1, data=fold_pot_mod)
   summary(stem_mod) 
+  visreg(stem_mod)
 
 #nls
-stem_mod_nls <- nls(stem ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+stem_mod_nls <- nls(stem ~ 1 + a*fold^b, start=list(a=1,b=3), data=fold_pot_mod)
   s <- coef(stem_mod_nls)
 
 #plot nls curve

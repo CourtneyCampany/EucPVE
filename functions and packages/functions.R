@@ -327,7 +327,7 @@ bar <- function(dv, factors, dataframe, percentage=FALSE, errbar=!percentage, ha
 }
 
 
-
+#####function for plotting model stuff
 
 
 addpoly <- function(x,y1,y2,col=alpha("lightgrey",0.8),...){
@@ -337,6 +337,7 @@ addpoly <- function(x,y1,y2,col=alpha("lightgrey",0.8),...){
   x <- x[ii]
   polygon(c(x,rev(x)), c(y1, rev(y2)), col=col, border=NA,...)
 }
+
 predline <- function(fit, from=NULL, to=NULL, ...){
   
   if(is.null(from))from <- min(fit$model[,2], na.rm=TRUE)
