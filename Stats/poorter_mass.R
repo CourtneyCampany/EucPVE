@@ -18,6 +18,32 @@ mass_agg_nofree <- subset(mass_agg, volume != 1000)
 #volume as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
+###Stacked Bar Plot of Mass Components by Volume-------------------------------------------------
+
+#new dfr with only components
+#mass_perc <- data.frame(volume = mass_agg$volume, leaf_perc = with(mass_agg, leafmass/totalmass))
+masses <- mass_agg[, c(1:2, 4:5,7)]
+  masses$volume <- as.factor(masses$volume)
+
+mass_perc <- data.frame(volume=as.factor(mass_agg$volume), 
+            stem_perc = with(mass_agg, stemmass/totalmass),
+            leaf_perc = with(mass_agg, leafmass/totalmass),
+            cr_perc = with(mass_agg, Croot/totalmass),
+            fr_perc = with(mass_agg, fineroot/totalmass))
+
+mass_melt <- melt(mass_perc, id.vars = "volume", measure.vars= c("leaf_perc","stem_perc", 
+                    "fr_perc", "cr_perc"), variable_name="component")
+
+mass_wide <- reshape(mass_melt,timevar="volume",  v.names="value", idvar = "component",
+                             direction = "wide")
+
+barplot(t(mass_wide))
+
+barplot(matrix(mass_wide), beside=FALSE)
+      
+
+### Analyze Mass increase with each fold increase from 5l to test Poorter------------------------
+
 #new dataframe of with mass as fold increase
 mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
   mass_fold$Fold <- c(1,2,3,4,5,7,200) #fold increase for each pot size
