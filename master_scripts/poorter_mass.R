@@ -31,6 +31,14 @@ mass_perc <- data.frame(volume=as.factor(mass_agg$volume),
             cr_perc = with(mass_agg, Croot/totalmass),
             fr_perc = with(mass_agg, fineroot/totalmass))
 
+
+x <- mass_perc[,2:5]
+i <- c(4,3,1,2)
+barplot(t(as.matrix(x))[i,], names.arg=mass_perc$volume)
+
+
+
+
 mass_melt <- melt(mass_perc, id.vars = "volume", measure.vars= c("leaf_perc","stem_perc", 
                     "fr_perc", "cr_perc"), variable_name="component")
 
@@ -67,7 +75,9 @@ fold_pot_mod <- fold_increase[2:6,2:7]
 #linear
 # Fit through origin, so that 0,0 means smallest pot size
 mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
-  summary(mass_mod) 
+fold_pot_mod$masspred <- predict(mass_mod, fold_pot_mod) + 1
+
+summary(mass_mod) 
   coef(mass_mod) * 2 # percent increase in mass when doubling pot size
   visreg(mass_mod)
 
@@ -77,10 +87,16 @@ mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
 
 
 #plot
-  with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
-  #add linear and nls fits
-  ablinepiece(mass_mod)
-  curve(1 + m[[1]]*x^m[[2]], add=T)
+  with(fold_pot_mod,{
+    plot(fold, mass, ylim=c(0,5), xlim=c(0,8))
+    lines(fold, masspred)
+})
+
+coef(mass_mod)
+# means a 34% increase in mass with doubling of pot size
+
+#   #add linear and nls fits
+#   curve(1 + m[[1]]*x^m[[2]], add=T)
   
 
 
