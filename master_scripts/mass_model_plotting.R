@@ -124,7 +124,8 @@ plot(mass_adj$massfree_adj~Cday_means$C_stnd_free,  ylab=treelabfree, xlab=cdayf
 ######this sim uses a sequence of gC day and keeps lma and allocation equal
 
 #windows()
-png(filename = "output/presentations/Cmodel_meanC_massactual.png", width = 12, height = 8, units = "in", res= 400)
+png(filename = "output/presentations/Cmodel_meanC_massactual.png", 
+    width = 12, height = 8, units = "in", res= 400)
 par(cex.axis=1.3, cex.lab=1.3)
 with(gCseq_sim, plot(biomass~gCday, ylim=c(0,175), xlim=c(0,8), ylab= "", xlab=cdaylab,pch=16,cex=1.6, col=col_bl))
 points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
@@ -140,8 +141,10 @@ dev.off()
 ###gCday sim plot 
 
 #mass and gC adjusted to smallest gCday value
-with(gCseq_sim, plot(mass_adj~C_adj, xlim=c(1,0), ylim=c(0,1), 
-                     ylab= "Mass Production adjusted", xlab="gC Day adjusted", cex=1.6, pch=16, col=col_bl))
+with(gCseq_sim, plot(mass_adj~C_adj,  ylim=c(0,1), 
+                     ylab= "Mass Production adjusted", xlab="gC Day adjusted", 
+                     xlim=c(1, 0.6),
+                     type='l', col=col_bl))
   points( mass_sim$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 
 

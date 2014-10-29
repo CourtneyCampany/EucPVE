@@ -18,6 +18,26 @@ mass_agg_nofree <- subset(mass_agg, volume != 1000)
 #volume as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
+
+seedlingmass$Msr <- with(seedlingmass, stemmass + Croot + fineroot)
+
+
+library(smatr)
+sm1 <- sma(leafmass ~ Msr + volume, log="xy", data=seedlingmass)
+summary(sm1)
+# here the slope is 1.13, which is the exponent b1 in Mf = b0*Msr^b1
+# if b1 > 1, then we have an increasing LMF with plant size.
+
+sm2 <- sma(leafmass ~ Msr * volume, log="xy", data=seedlingmass)
+summary(sm2)
+
+# probably include this
+plot(sm2)
+# this shows that LMF is higher for free seedlings because they were bigger.
+
+
+
+
 ###Stacked Bar Plot of Mass Components by Volume-------------------------------------------------
 
 #new dfr with only components
