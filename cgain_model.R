@@ -112,6 +112,13 @@ productionmodel <- function(leaffrac = .25,
                     returnwhat=c("lastval","all")
                     ){
   
+  
+  sumf <- leaffrac + crfrac + frfrac + stemfrac
+  leaffrac <- leaffrac / sumf
+  crfrac <- crfrac / sumf
+  frfrac <- frfrac / sumf
+  stemfrac <- stemfrac / sumf
+  
   returnwhat <- match.arg(returnwhat)
   
   leafarea <- vector()
