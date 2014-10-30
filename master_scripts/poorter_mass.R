@@ -9,6 +9,7 @@ seedlingmass<- read.csv("calculated data/seedling mass.csv")
 # rmf calculate
 seedlingmass$RMF <- with(seedlingmass, root/totalmass)
 seedlingmass$BVR <- with(seedlingmass, totalmass/volume)
+seedlingmass$Msr <- with(seedlingmass, stemmass + Croot + fineroot)
 
 #treatment means
 mass_agg <- summaryBy(.~volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
@@ -17,11 +18,8 @@ mass_agg_nofree <- subset(mass_agg, volume != 1000)
 #volume as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
-seedlingmass$Msr <- with(seedlingmass, stemmass + Croot + fineroot)
-seedlingmass$logMsr <- log10(seedlingmass$Msr)
-seedlingmass$logLeaf <- log10(seedlingmass$leafmass)
 
-###Test whether leaf mass fraction is different with treatment
+###Test whether leaf mass fraction is different with treatment----------------------------------------------------
   #must account for variation in plant size
 library(smatr)
 
@@ -32,17 +30,15 @@ summary(Mf_mod)
 
 Mf_mod2 <- sma(leafmass ~ Msr * volume, log="xy", data=seedlingmass)
 summary(Mf_mod2)
+# this shows that LMF is higher for free seedlings because they were bigger.
+#refer to differences in elevation from model showing above result
 
 #PLotting of LMF model (use as a 2panel with allocation stacked)
-plot(Mf_mod2, xlab= expression(log[10]~Stem+Root~Mass~~(g)), ylab="", col=as.factor(seedlingmass$volume), 
-     pch=pchs[as.factor(seedlingmass$volume)])
-  title(ylab=expression(log[10]~Leaf~Mass~~(g)), mgp=ypos)
-  legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
+plot(Mf_mod2, xlab= expression(log[10]~Stem+Root~Mass~~(g)), ylab="", col=palette(), 
+     pch=pchs)
+title(ylab=expression(log[10]~Leaf~Mass~~(g)), mgp=ypos)
+legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
        col=palette(), bty='n')
-# this shows that LMF is higher for free seedlings because they were bigger.
-with(seedlingmass, plot(logLeaf~logMsr, col=volume))
-
-
 
 ###Stacked Bar Plot of Mass Components by Volume-------------------------------------------------
 
@@ -72,15 +68,10 @@ barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, x
 
 
 
+### Analyze Mass increase with each fold increase from 5l to test Poorter---------------------------------------------
 
-
-par(mar = c(5.1, 4.1, 4.1, 7.1), xpd = TRUE)
-barplot(prop, col = heat.colors(length(rownames(prop))), width = 2)
-legend("topright", inset = c(-0.25, 0), fill = heat.colors(length(rownames(prop))), 
-       legend = rownames(data))
-
-
-### Analyze Mass increase with each fold increase from 5l to test Poorter------------------------
+#linera model may not be appropirate so use nls too
+library(scales)
 
 #new dataframe of with mass as fold increase
 mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
@@ -98,12 +89,9 @@ fold_increase <- data.frame( volume = mass_fold$volume,
 #subset with fold and no free
 fold_pot_mod <- fold_increase[2:6,2:7]
 
-###analyze mass increase with pot size------------------------------------------------------------------
-  #linera model may not be appropirate so use nls
-  library(scales)
 
-#linear
-# Fit through origin, so that 0,0 means smallest pot size
+
+#linear, Fit through origin, so that 0,0 means smallest pot size
 mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
 fold_pot_mod$masspred <- predict(mass_mod, fold_pot_mod) + 1
 
@@ -129,96 +117,33 @@ coef(mass_mod)
 #   curve(1 + m[[1]]*x^m[[2]], add=T)
   
 
+#plot with a abline for poorters 43% from start value, then add my numbers----------------------------------------
+#might show my exponential with nls for this here vs linear expectation
 
-###analyze leaf mass increase with pot size------------------------------------------------------------------
 
-#linear
-# Fit through origin, so that 0,0 means smallest pot size
-leaf_mod <- lm(I(leaf-1) ~ I(fold-1) -1, data=fold_pot_mod)
-  summary(leaf_mod) 
-  visreg(leaf_mod)
+#start with 5l pot and build up
+startmass <- mass_agg$totalmass[1]
 
-#nls
-leaf_mod_nls <- nls(leaf ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-  l <- coef(leaf_mod_nls)
+massincrease <- vector()
+massincrease[1] <- startmass
+
+#new vector with 2x volumes
+soilvolume <- c(5, 10, 20, 40)
+
+#now calculate mass increase with poorters 43% with 2x
+for(i in 2:length(soilvolume)) {
   
-#plot
-with(fold_pot_mod,plot(fold, leaf, ylim=c(0,6), xlim=c(0,8)))
-  #add linear and nls fits
-  ablinepiece(leaf_mod)
-  predline(leaf_mod)
-  curve(1 + l[[1]]*x^l[[2]], add=T)
+  massincrease[i] <- massincrease[i-1] + (massincrease[i-1] *.43)
+}
+
+poortermass <- as.data.frame(cbind(massincrease, soilvolume))
+#uses simulated model mass to with percent increase and real values
+plot(massincrease~soilvolume , pch=16, cex=1.5, ylim=c(0,100), ylab="Seeling Mass (g)", xlab="Soil Volume (l)")
+lines(massincrease~soilvolume, lty=2, lwd=2 )
+points(mass_agg_nofree$totalmass~ mass_agg_nofree$volume, pch=pchs, col=palette(), cex=1.5)
 
 
-###analyze stem mass increase with pot size------------------------------------------------------------------
-
-#linear first
-# Fit through origin, so that 0,0 means smallest pot size
-stem_mod <- lm(I(stem-1) ~ I(fold-1) -1, data=fold_pot_mod)
-  summary(stem_mod) 
-  visreg(stem_mod)
-
-#nls
-stem_mod_nls <- nls(stem ~ 1 + a*fold^b, start=list(a=1,b=3), data=fold_pot_mod)
-  s <- coef(stem_mod_nls)
-
-#plot nls curve
-  with(fold_pot_mod,plot(fold, stem, ylim=c(0,6), xlim=c(0,8)))
-  #add linear and nls fits
-  ablinepiece(stem_mod)
-  curve(1 + s[[1]]*x^s[[2]], add=T)
-
-
-###analyze froot mass increase with pot size------------------------------------------------------------------
-
-#linear first
-# Fit through origin, so that 0,0 means smallest pot size
-froot_mod <- lm(I(froot-1) ~ I(fold-1) -1, data=fold_pot_mod)
-  summary(froot_mod) 
-
-#nls
-froot_mod_nls <- nls(froot ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-  fr <- coef(froot_mod_nls)
-
-#plot
-with(fold_pot_mod,plot(fold, froot, ylim=c(0,6), xlim=c(0,8)))
-  #add linear and nls fits
-  ablinepiece(froot_mod)
-  curve(1 + fr[[1]]*x^fr[[2]], add=T)
-
-
-
-###analyze croot mass increase with pot size------------------------------------------------------------------
-
-#linear first
-# Fit through origin, so that 0,0 means smallest pot size
-croot_mod <- lm(I(croot-1) ~ I(fold-1) -1, data=fold_pot_mod)
-  summary(croot_mod) 
-
-#nls
-croot_mod_nls <- nls(froot ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-  cr <- coef(croot_mod_nls)
-
-#plot
-with(fold_pot_mod,plot(fold, froot, ylim=c(0,6), xlim=c(0,8)))
-  #add linear and nls fits
-  ablinepiece(froot_mod)
-  curve(1 + cr[[1]]*x^cr[[2]], add=T)
-
-
-######roots appear to be linear but not aboveground or total mass
-
-
-
-#plot and analyze RMF------------------------------------------------------------------
-RMF_lm <- lm(RMF ~ as.factor(volume), data=seedlingmass)
-extract_func(RMF_lm)
-anova(RMF_lm)
-###RMF not different across volumes
-bar(RMF, c(volume), seedlingmass, col=palette(), half.errbar=FALSE, xlab="", 
-    legend=FALSE,ylim=c(0,.8) , ylab="", mgp = c(3, .1, 0))
-
-#plot and analyze BVR------------------------------------------------------------------
+#plot and analyze BVR--------------------------------------------------------------------------------------------
 boxplot(BVR~volume, data=seedlingmass, mean)
 #poorter mean bvr=9.5, very few experiments have values lower than 2
 BVR_lm <- lm(BVR ~ volume, data=seedlingmass)
@@ -255,54 +180,9 @@ abline(1,0, lty=2)
 with(subset(seedlingmass, volume !=1000), plot(scale_35~BVR, col=volume, pch=16,ylim=c(0,1.2)))
 abline(1,0, lty=2)
 
-#start value
-#pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
-seedling_pre <- read.csv("raw data/seedling_initial.csv")
-seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
-#average mass of seedlings at start
-mass_mean <- mean(seedling_pre$seedling_mass)
 
 
 
-#dataframe with percent diff in total mass---------------------------------------------
- allocation <- data.frame(cr = mass_agg$Croot/mass_agg$totalmass,
-                              fr = mass_agg$fineroot/mass_agg$totalmass,
-                              leaf = mass_agg$leafmass/mass_agg$totalmass,
-                              stem = mass_agg$stemmass/mass_agg$totalmass,
-                              volume = mass_agg$volume)
 
 
-# change in allocation of each component
-allocation_diff <- data.frame(cr_diff= ((allocation$cr-allocation$cr[1])/allocation$cr)*100,
-                              fr_diff = ((allocation$fr-allocation$fr[1])/allocation$fr)*100,
-                              leaf_diff = ((allocation$leaf-allocation$leaf[1])/allocation$leaf)*100,
-                              stem_diff = ((allocation$stem-allocation$stem[1])/allocation$stem)*100,
-                              volume = mass_agg$volume)
 
-#this is diff but need 
-test <- ((allocation$cr-allocation$cr[1])/allocation$cr)*100
-
-#plot with a abline for poorters 43% from start value, then add my numbers------------------
-
-#start with 5l pot and build up
-
-startmass <- mass_agg$totalmass[1]
-
-massincrease <- vector()
-massincrease[1] <- startmass
-
-#new vector with 2x volumes
-soilvolume <- c(5, 10, 20, 40)
-
-#now calculate mass increase with poorters 43% with 2x
- for(i in 2:length(soilvolume)) {
-  
-  massincrease[i] <- massincrease[i-1] + (massincrease[i-1] *.43)
-  
-}
-
-poortermass <- as.data.frame(cbind(massincrease, soilvolume))
-
-plot(massincrease~soilvolume , pch=16, cex=1.5, ylim=c(0,100), ylab="Seeling Mass (g)", xlab="Soil Volume (l)")
-  lines(massincrease~soilvolume, lty=2, lwd=2 )
-  points(mass_agg_nofree$totalmass~ mass_agg_nofree$volume, pch=pchs, col=palette(), cex=1.5)
