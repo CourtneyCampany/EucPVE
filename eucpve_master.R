@@ -28,3 +28,6 @@ source("master_scripts/soilN_plotting.R")
 
 #Amass vs N and TNC with levels
 source(("master_scripts/photochem_predict.R")
+       
+#Allocation and LMF
+source(("master_scripts/allocation_plotting.R"))
