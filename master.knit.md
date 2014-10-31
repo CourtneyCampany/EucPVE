@@ -61,7 +61,7 @@ source("master_scripts/aci_plotting.R")
 
 <img src="./master_files/figure-html/acimeansplots.png" title="plot of chunk acimeansplots" alt="plot of chunk acimeansplots" width="672" />
 
-### seedling predawn and midday water potentials
+seedling predawn and midday water potentials
 
 
 ```r
@@ -96,6 +96,44 @@ source("master_scripts/soilCN_plotting.R")
 
 Predicted responses of Amax on a mass basis to leaf starch and N levels
 
+```r
+source("master_scripts/Amax_TNC_N_plotting.R")
+```
 
+```
+## Loading required package: lme4
+## Loading required package: Matrix
+## 
+## Attaching package: 'Matrix'
+## 
+## The following object is masked from 'package:reshape':
+## 
+##     expand
+## 
+## Loading required package: Rcpp
+## 
+## Attaching package: 'lme4'
+## 
+## The following object is masked from 'package:nlme':
+## 
+##     lmList
+## 
+## Loading required package: scales
+## 
+## Attaching package: 'scales'
+## 
+## The following object is masked from 'package:plotrix':
+## 
+##     rescale
+```
+
+```
+## Warning: Some predictor variables are on very different scales: consider rescaling
+## Warning: Some predictor variables are on very different scales: consider rescaling
+```
+
+<img src="./master_files/figure-html/AmassvsTNCandN.png" title="plot of chunk AmassvsTNCandN" alt="plot of chunk AmassvsTNCandN" width="672" />
+
+Mass allocaiton and LMF plotting
 
 

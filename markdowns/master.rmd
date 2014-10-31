@@ -76,7 +76,7 @@ source("master_scripts/soilCN_plotting.R")
 
 Predicted responses of Amax on a mass basis to leaf starch and N levels
 ```{r AmassvsTNCandN}
-source("master_scripts/photochem_predict.R")
+source("master_scripts/Amax_TNC_N_plotting.R")
 ```
 
 Mass allocaiton and LMF plotting

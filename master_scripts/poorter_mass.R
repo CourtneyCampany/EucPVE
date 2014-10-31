@@ -110,8 +110,6 @@ fold_increase <- data.frame( volume = mass_fold$volume,
 #subset with fold and no free
 fold_pot_mod <- fold_increase[2:6,2:7]
 
-
-
 #linear, Fit through origin, so that 0,0 means smallest pot size
 mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
 fold_pot_mod$masspred <- predict(mass_mod, fold_pot_mod) + 1

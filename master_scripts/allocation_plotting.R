@@ -1,6 +1,8 @@
 #this script is for sourcing the allocation plots into master
 source("functions and packages/startscripts.R")
 
+library(smatr)
+
 #harvest mass dfr
 seedlingmass<- read.csv("calculated data/seedling mass.csv") 
   seedlingmass$Msr <- with(seedlingmass, stemmass + Croot + fineroot)

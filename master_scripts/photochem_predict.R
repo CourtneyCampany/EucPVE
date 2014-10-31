@@ -174,19 +174,3 @@ plot(A_mass ~ Nmass_notnc, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c
 legend("bottomright", binlab2, pch=21, text.font=1.3, inset=0.02, pt.bg=cols2,title=nfree , bty='n', cex=1.3)  
 
 
-
-
-
-
-####plot Asat?
-# with(photo_chem, plot(Nmass_notnc, Photo, pch=pchs[volume], col=cols[starchbin], 
-#                       ylab="", xlab=nmass_noTNC,ylim=c(0,35),cex=1.3))
-# for(i in 1:length(starchbin)){
-#   
-#   x <- seq(min(photo_chem$Nmass_notnc), max(photo_chem$Nmass_notnc), length=101)
-#   y <- f[[1]] + f[[2]]*x + f[[3]]*starchmid[i] + f[[4]]*starchmid[i]*x
-#   lines(x,y, col=cols[i], lwd=2)
-# }
-
-
-
