@@ -62,7 +62,6 @@ Afit_full_lme <- lme(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch, random=~1|I
   anova(Afit_full_lme)
   summary(Afit_full_lme)
 
-
 # remove interaction, starch very significant
 Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
   #need fixed effects from almost model
@@ -72,8 +71,6 @@ Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
 # likelihood ratio test
 Afit_almostfull2 <- lmer(A_mass ~ Nmass_notnc+ (1|ID), data=photo_chem)
   anova(Afit_full, Afit_almostfull2)
-
-
 
 
 ###same model with fixed effects in different order for ease of plotting preductions later
@@ -93,37 +90,36 @@ pchbin <- c(1,2,3,4,5)
 legpch <- c(5, 10, 15, 20, 25, 35, "free")
 
 
-#Amass vs N (full model)
-png(filename = "output/presentations/Amass_N.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(photo_chem, plot(Nmass_notnc, A_mass, pch=pchs[volume], col=cols[starchbin], 
-                      ylab="", xlab=nmass_noTNC,ylim=c(0,800),cex=1.3))
-for(i in 1:length(starchbin)){
-  
-  x <- seq(min(photo_chem$Nmass_notnc), max(photo_chem$Nmass_notnc), length=101)
-  y <- f[[1]] + f[[2]]*x + f[[3]]*starchmid[i] + f[[4]]*starchmid[i]*x
-  lines(x,y, col=cols[i], lwd=2)
-}
-title(ylab=Amasslab, mgp=ypos)
-legend("topleft", binlab, pch=15, text.font=1.3, inset=0.02, col=cols,title=starchlab , bty='n', cex=1.3)
-dev.off()
-
-
-#Amass vs starch (full model) 
-png(filename = "output/presentations/Amass_TNC.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
-                      xlab=starchlab,xlim=c(0, .275),cex=1.3))
-for(i in 1:length(nitrobin)){
-  
-  x <- seq(0, max(photo_chem$starch), length=101)
-  y <- f2[[1]] + f2[[2]]*x + f2[[3]]*nitromid[i] + f2[[4]]*nitromid[i]*x
-  lines(x,y, col=coln[i], lwd=2)
-}
-title(ylab=Amasslab, mgp=ypos)
-legend("topright", binlab2, pch=16, text.font=1.3, inset=0.02, col=coln,title=nfree , bty='n', cex=1.3)
-dev.off()
-
+# #Amass vs N (full model)
+# #png(filename = "output/presentations/Amass_N.png", width = 12, height = 8, units = "in", res= 400)
+# par(cex.axis=1.3, cex.lab=1.3)
+# with(photo_chem, plot(Nmass_notnc, A_mass, pch=pchs[volume], col=cols[starchbin], 
+#                       ylab="", xlab=nmass_noTNC,ylim=c(0,800),cex=1.3))
+# for(i in 1:length(starchbin)){
+#   
+#   x <- seq(min(photo_chem$Nmass_notnc), max(photo_chem$Nmass_notnc), length=101)
+#   y <- f[[1]] + f[[2]]*x + f[[3]]*starchmid[i] + f[[4]]*starchmid[i]*x
+#   lines(x,y, col=cols[i], lwd=2)
+# }
+# title(ylab=Amasslab, mgp=ypos)
+# legend("topleft", binlab, pch=15, text.font=1.3, inset=0.02, col=cols,title=starchlab , bty='n', cex=1.3)
+# #dev.off()
+# 
+# 
+# #Amass vs starch (full model) 
+# #png(filename = "output/presentations/Amass_TNC.png", width = 12, height = 8, units = "in", res= 400)
+# par(cex.axis=1.3, cex.lab=1.3)
+# with(photo_chem, plot(starch, A_mass, pch=19, col=coln[nitrobin], ylim=c(0,800), ylab="",
+#                       xlab=starchlab,xlim=c(0, .275),cex=1.3))
+# for(i in 1:length(nitrobin)){
+#   
+#   x <- seq(0, max(photo_chem$starch), length=101)
+#   y <- f2[[1]] + f2[[2]]*x + f2[[3]]*nitromid[i] + f2[[4]]*nitromid[i]*x
+#   lines(x,y, col=coln[i], lwd=2)
+# }
+# title(ylab=Amasslab, mgp=ypos)
+# legend("topright", binlab2, pch=16, text.font=1.3, inset=0.02, col=coln,title=nfree , bty='n', cex=1.3)
+# #dev.off()
 
 
 ###two panel of graph above, using predict------------------------------------------------------------
