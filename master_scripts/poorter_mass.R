@@ -57,7 +57,7 @@ plot(Mr_mod, xlab= expression(log[10]~Leaf+Root~Mass~~(g)), ylab="", col=palette
 
 Mr_mod2 <- sma(root ~ shoot * volume, log="xy", data=seedlingmass)
 summary(Mr_mod2)
-plot(Mr_mod2, xlab= expression(log[10]~Leaf+Root~Mass~~(g)), ylab="", col=palette(), pch=pchs
+plot(Mr_mod2, xlab= expression(log[10]~Leaf+Root~Mass~~(g)), ylab="", col=palette(), pch=pchs)
      
 ###differences in LMF, SMF, and RMF only exists as a functional of plant size, not treatments
 
