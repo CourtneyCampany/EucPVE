@@ -163,6 +163,8 @@ box()
 dev.copy2pdf(file="output/roots and soil/srl.pdf")
 dev.off()
 
-
-
-
+srlm <- lm(SRL ~ as.factor(volume), data=srl)
+summary(srlm)
+anova(srlm)
+library(visreg)
+visreg(srlm)
