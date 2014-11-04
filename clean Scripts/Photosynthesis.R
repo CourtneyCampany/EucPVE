@@ -1,8 +1,5 @@
-#Spot measurements of Asat and Amax
-
-source("functions and packages/load packages.R")
-source("functions and packages/functions.R")
-source("functions and packages/plot objects.R")
+#source functions, packages, anbd plot objects
+source("functions and packages/startscripts.R")
 
 #Read in spot A measurements and merge plot design
 source("read data scripts/physiology read data.R")
@@ -19,10 +16,8 @@ PS <- add_campaign_date(PS)
 #Ps$volume <- as.factor(Ps$volume)
 PS$type <- factor(ifelse (PS$CO2 == "400", "Asat", "Amax"))
 
-#pot volume means
-PS_agg <- aggregate(cbind(Photo, Cond, Ci, Trmmol) ~ campaign + type + volume, data=PS, FUN=mean)
 
-#subset Amax
+#Amax------------------------------------------------------------------------------
 PSmax <- subset(PS, type=="Amax")
 PSmax <- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
 PSmax$volume <- as.factor(PSmax$volume)
@@ -35,23 +30,54 @@ PSagg$SE <- with(PSagg, Photo.sd/sqrt(Photo.length))
 #PSagg$Date <- as.Date(mdy(PSagg$Date))
 PSagg$volume <- as.factor(PSagg$volume)
 
-#subset Asat
+#Asat----------------------------------------------------------------------------------------------
 PSsat <- subset(PS, type=="Asat")
-PSsat <- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
-PSsat$volume <- as.factor(PSsat$volume)
 
-PSsat_agg <- summaryBy(Photo ~ Date + volume, data=PSsat, 
-                   FUN=c(mean,sd,length))
+#mean of 5 logs per plant
+PSsat_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
 
-PSsat_agg$SE <- with(PSsat_agg, Photo.sd/sqrt(Photo.length))
-#PSsat_agg$Date <- as.Date(mdy(PSsat_agg$Date))
-PSsat_agg$volume <- as.factor(PSsat_agg$volume)
+#mean by plant over all dates, then treatment means
+PSsat_ID <- summaryBy(. ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
+  PSsat_ID$volume <- as.factor(PSsat_ID$volume)
+
+PSsat_id_agg <- summaryBy(Photo ~volume, data=PSsat_ID, FUN=c(mean,se))
+
+#treatment mean with se across dates
+PSsat_agg <- summaryBy(Photo ~ Date + volume, data=PSsat_spot, FUN=c(mean,se))
+  PSsat_agg$volume <- as.factor(PSsat_agg$volume)
 
 #write.csv(PSsat, "calculated data/Asat.csv", row.names=FALSE)
 #write.csv(PSsat_agg, "calculated data/Asat treatment means.csv", row.names=FALSE)
 
 
-#----------------------------------------------------------------------------------------------------
+#Plotting----------------------------------------------------------------------------------------------
+
+#ASAT
+windows(8,6)
+par(oma = c(0, 1, 0, 0), mgp = c(2.5, 1, 0), cex.axis=1.0, cex.lab=1.3)
+
+with(PSsat_agg, plot(Date, Photo.mean, cex=1.6, pch=pchs, col=volume, 
+                     ylab = satlab,
+                     ylim=c(0,30), xlab=""))
+for(i in 1:7){
+  
+  dat <- subset(PSsat_agg, volume==levels(volume)[i]) 
+  with(dat, arrows(Date, Photo.mean, Date, Photo.mean+Photo.se, angle=90, length=0.05,col=palette()[i], lwd=2))
+  with(dat, arrows(Date, Photo.mean, Date, Photo.mean-Photo.se, angle=90, length=0.05,col=palette()[i], lwd=2))
+  with(dat,points(Date, Photo.mean, type='l', lwd=2, col=palette()[i],  pch=pchs[i])) 
+}
+
+#legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.0, 
+# title=expression(Pot~volume~(l)), col=palette(), bty='n')
+dev.copy2pdf(file= "output/Asat.pdf")
+
+###barplot with asat values
+bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
+                col=palette(), legend=FALSE)
+title(ylab=satlab, mgp=ypos)
+
+
+
 
 #AMAX
 windows(8,6)
@@ -73,26 +99,6 @@ legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02,
 
 dev.copy2pdf(file= "output/Amax.pdf")
 dev.off()
-
-
-#ASAT
-windows(8,6)
-par(oma = c(0, 1, 0, 0), mgp = c(2.5, 1, 0), cex.axis=1.0, cex.lab=1.3)
-
-with(PSsat_agg, plot(Date, Photo.mean, cex=1.6, pch=pchs, col=volume, 
-                 ylab = satlab,
-                 ylim=c(0,30), xlab=""))
-for(i in 1:7){
-  
-  dat <- subset(PSsat_agg, volume==levels(volume)[i]) 
-  with(dat, arrows(Date, Photo.mean, Date, Photo.mean+SE, angle=90, length=0.05,col=palette()[i], lwd=2))
-  with(dat, arrows(Date, Photo.mean, Date, Photo.mean-SE, angle=90, length=0.05,col=palette()[i], lwd=2))
-  with(dat,points(Date, Photo.mean, type='l', lwd=2, col=palette()[i],  pch=pchs[i])) 
-}
-
-#legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.0, 
-      # title=expression(Pot~volume~(l)), col=palette(), bty='n')
-dev.copy2pdf(file= "output/Asat.pdf")
 
 
 
