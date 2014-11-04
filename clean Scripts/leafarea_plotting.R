@@ -1,4 +1,4 @@
-#source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
   leafarea_time <-datevol_func (leafarea_time)
