@@ -16,15 +16,11 @@ mass_agg <- summaryBy(.~volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
 Mf_mod2 <- sma(leafmass ~ Msr * volume, log="xy", data=seedlingmass)
 #summary(Mf_mod2)
 
-#PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
-plot(Mf_mod2, xlab= expression(log[10]~Stem+Root~Mass~~(g)), ylab="", col=palette(), pch=pchs)
-  title(ylab=expression(log[10]~Leaf~Mass~~(g)), mgp=ypos)
-  legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
-  col=palette(), bty='n')
 
+
+####allocation by components
 
 #new dfr with only components
-
 masses <- mass_agg[, c(1:2, 4:5,7)]
 masses$volume <- as.factor(masses$volume)
 
@@ -39,11 +35,28 @@ mass_perc2 <- mass_perc[,2:5]
 i <- c(4,3,1,2) #correct order of variables
 treecols <- c("darkgoldenrod4","lightgoldenrod3",  "olivedrab","forestgreen")
 treecols2 <- c("forestgreen","olivedrab", "lightgoldenrod3","darkgoldenrod4")
-treelab <- c("Leaves", "Stems", "Coarse Roots", "Fine Roots")
+treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
+#PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
+windows(14,8)
 
-#plot
-par(mar = c(5.1, 4.1, 4.1, 7.3), xpd = TRUE)
+par(cex.axis=1.3, cex.lab=1.3,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1) )   # margin around plots (they are tight together) 
+
+#plot1
+par(mar=c(4,4,1,1))
+plot(Mf_mod2, xlab="" , ylab="", col=palette(), pch=pchs, cex=1.3, lwd=2)
+title(ylab=expression(log[10]~Leaf~Mass~~(g)), mgp=ypos)
+title(xlab=expression(log[10]~Stem+Root~Mass~~(g)), mgp=ypos)
+legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
+       col=palette(), bty='n',cex=1)
+
+#plot2
+par(mar = c(4, 4, 1, 5.3), xpd = TRUE)
 barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "", 
-        space = c(.2,.2,.2,.2,.2,.2,.8))
-legend("topright", inset = c(-0.225, 0), fill = treecols2, legend=treelab)
+        ylab="")
+        #space = c(.2,.2,.2,.2,.2,.2,.8))
+title(ylab="Tree Component Partioning  (%)", mgp=ypos)
+title(xlab="Soil Volume  (l)", mgp=ypos)
+
+legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
+
