@@ -27,7 +27,7 @@ PSsat_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
 PSsat_ID <- summaryBy(. ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
 PSsat_ID$volume <- as.factor(PSsat_ID$volume)
 
-###barplot with asat values
+###barplot with asat values, drop colors for now ( col=palette(),)
 bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
-    col=palette(), legend=FALSE)
+    col="grey", legend=FALSE)
 title(ylab=satlab, mgp=ypos)

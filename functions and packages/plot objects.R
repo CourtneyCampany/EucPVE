@@ -15,8 +15,7 @@ LABcex <- 1.3
 #legend and axis labels for all data
 
 vollab <- expression(Pot~volume~(l))
-leglab <- c(5, 10, 15, 20, 25, 35, "free")
-leglab3 <- c(05, 10, 15, 20, 25, 35, "free")
+leglab <- c(5, 10, 15, 20, 25, 35, "Free")
 leglab2 <- as.character(c(5, 10, 15, 20, 25, 35))
 
 rdlab <-expression(Respiration[dark]~~(mu*mol~m^-2~s^-1))
