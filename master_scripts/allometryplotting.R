@@ -27,7 +27,7 @@ leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
 xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 
 #all plants
-windows(12,10)
+windows(14,12)
 #png(filename = "output/presentations/growth.png", width = 10.5, height = 9.5, units = "in", res= 400)
 par(cex.axis=1.5, cex.lab=1.5,
     mfrow=c(3,1),  # rows and columns of plots
@@ -35,9 +35,9 @@ par(cex.axis=1.5, cex.lab=1.5,
     mar=c(0,7,0,0))   # margin around plots (they are tight together)   
 # First Panel
 plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),  
-     ylim=c(20,125), axes=FALSE, xlab="")  
+     ylim=c(0,135), axes=FALSE, xlab="")  
 axis.Date(1, at=xAT, labels=FALSE) #axis needs no labels
-axis(2, labels=TRUE)  # Y axis
+axis(2, labels=TRUE, at=c(0,20,40,60,80,100,120))  
 legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
        cex=1.5, col=palette(), bty='n')
 
@@ -45,9 +45,10 @@ with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90
 with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03))
 points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=PTcex, col = volume)      
 box()
+text(x=as.Date("2013-05-21"), 128, "(a)", cex=1.5)
 
 # Second panel         
-plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),ylim=c(0,15), axes = FALSE, xlab="")
+plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),ylim=c(0,17), axes = FALSE, xlab="")
 axis.Date(1, at=xAT, labels=FALSE)  
 axis(2)     
 
@@ -55,13 +56,14 @@ with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean+diameter.se, angl
 with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angle=90, col=palette(),length=0.03))
 points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume],cex=PTcex,col = volume)
 box()
+text(x=as.Date("2013-05-21"), 16, "(b)", cex=1.5)
 
 #third panel
 
 plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab="",
-     type='n', ylim=c(0,.6))
+     type='n', ylim=c(0,.7))
 box()
-axis(2, labels=TRUE)  
+axis(2, labels=TRUE, at=c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))  
 axis.Date(1, at=xAT, labels=TRUE)  
 title(ylab=LAm2, mgp=ypos)
 with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean+canopysqm.se, angle=90, 
@@ -70,6 +72,7 @@ with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.
                            col=volume,length=0.03))
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                    col=x$volume, pch = pchs[x$volume],cex=PTcex,))
+text(x=as.Date("2013-05-21"), .65, "(c)", cex=1.5)
 
 #dev.copy2pdf(file= "output/allometry.pdf")
 dev.off()
