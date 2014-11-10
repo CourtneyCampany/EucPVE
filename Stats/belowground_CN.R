@@ -2,9 +2,8 @@
 #specific root length?
 #root mass by volume?
 
-#source functions and packages
-source("functions and packages/functions.R")
-source("functions and packages/load packages.R")
+source("functions and packages/startscripts.R")
+
 #read in plot design and harvest data
 plotsumm <- read.csv("raw data/plot_summary.csv")
 plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
@@ -24,7 +23,7 @@ root_chem$rootmass <- with(root_chem, Croot+fineroot)
 root_chem$volume <- gsub("1000", "free", root_chem$volume)
 root_chem$volume <- gsub("^5", "05", root_chem$volume)
 root_chem$volume <- as.factor(root_chem$volume)
-write.csv(root_chem, "calculated data/root_chem.csv", row.names=FALSE)
+#write.csv(root_chem, "calculated data/root_chem.csv", row.names=FALSE)
 
 #roots no free
 root_pot <- subset(root_chem, volume != "1000")
@@ -50,21 +49,6 @@ soil_harvest$volume <- gsub("1000", "free", soil_harvest$volume)
 soil_harvest$volume <- gsub("^5", "05", soil_harvest$volume)
 soil_harvest$volume <- as.factor(soil_harvest$volume)
 
-srl <- read.csv("raw data/SRLmass.csv")
-srl$ID <- paste(srl$plot, srl$pot, sep = "-")
-srl <- merge(srl, plotsumm[3:4], all=TRUE)
-srl <- subset(srl, !is.na(volume))
-srl$SRL <- with(srl, (total_length_cm/100)*(srl_fw*(ss_dw/ss_fw)))
-#replace 1000 with free
-srl$volume <- gsub("1000", "free", srl$volume)
-srl$volume <- gsub("^5", "05", srl$volume)
-srl$volume <- as.factor(srl$volume)
-
-#plot stuff
-
-#colors
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
 
 #PLOT of Root Mass-----------------------------------------------------------------------------------------------
 
@@ -152,19 +136,3 @@ title(main=paste("mean harvest soil N% = ", Hmean), line=-3, font.main=1, adj=.0
 dev.copy2pdf(file="output/roots and soil/soilN.pdf")
 dev.off()
 
-#-----------------------------------------------------------------------------------------------  
-#SRL
-
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,SRL, data=srl,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-            ylab = expression(Specific~Root~Length~~(m~g^1)),ylim = c(0, .7))
-box()
-dev.copy2pdf(file="output/roots and soil/srl.pdf")
-dev.off()
-
-srlm <- lm(SRL ~ as.factor(volume), data=srl)
-summary(srlm)
-anova(srlm)
-library(visreg)
-visreg(srlm)
