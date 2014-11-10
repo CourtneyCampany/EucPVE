@@ -7,59 +7,64 @@ source("functions and packages/plot objects.R")
 
 #read in plot design, lma data, merge
 plotsumm <- read.csv("raw data/plot_summary.csv")
-plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 
 lma <- read.csv("raw data/seedling leaf mass area.csv")
-lma$ID <- paste(lma$plot, lma$pot, sep = "-")
-lma <- merge(lma, plotsumm[3:4], all=TRUE)
-lma$volume <- as.factor(lma$volume)
-
-#run function to add campaign dates, caluclate sla
-lma <- add_campaign_date(lma)
+  lma$ID <- paste(lma$plot, lma$pot, sep = "-")
+  lma <- merge(lma, plotsumm[3:4], all=TRUE)
+  lma$volume <- as.factor(lma$volume)
+  #run function to add campaign dates, caluclate sla
+  lma <- add_campaign_date(lma)
+ 
 
 #remove missing values
 lma_noNA <- subset(lma, !is.na(area))
 
 #read in TNC data, substract mass of TNC from mass of leaves and then calculate TNC-free SLA
 #Read in spot measurements and merge plot design
-TNC <- read.csv("raw data/TNC.csv")
+TNC <- read.csv("raw data/leaf_tnc.csv")
 
 #run function to add campaign Date
 TNC <- add_campaign_noID(TNC)
-TNC$volume <- as.factor(TNC$volume)
-TNC$tnc_mgperg <- with(TNC, starch_mgperg+sugar_mgperg)
+  TNC$volume <- gsub("free", "1000", TNC$volume)
+  TNC$volume <- as.factor(TNC$volume)
+  TNC$ID <- gsub("'", "", TNC$ID)
+  TNC$tnc_mgperg <- with(TNC, starch_mgperg+sugars_mgperg)
 
-SLA_TNCfree <- merge(lma, TNC)
 
-SLA_TNCfree$mass_noTNC <- with(SLA_TNCfree, mass-((mass*tnc_mgperg)/1000))
-#TNC free sla and lma
-SLA_TNCfree$sla_free <- with(SLA_TNCfree, area/mass_noTNC)
-SLA_TNCfree$lma_free <- with(SLA_TNCfree, mass_noTNC/area)
+#merge tnc with leaf data
+SLA_TNCfree <- merge(lma[,c(1,4,6:9)], TNC,  all=TRUE)
+  SLA_TNCfree$mass_noTNC <- with(SLA_TNCfree, mass-((mass*tnc_mgperg)/1000))
+  #TNC free sla and lma
+  SLA_TNCfree$sla_free <- with(SLA_TNCfree, area/mass_noTNC)
+  SLA_TNCfree$lma_free <- with(SLA_TNCfree, mass_noTNC/area)
 
 #remove missing values
 SLA_TNCfree_noNA <- subset(SLA_TNCfree, !is.na(sla_free))
+  row.names(SLA_TNCfree_noNA) <- NULL
+#convert tnc to mass and % basis
+  SLA_TNCfree_noNA$leafstarch <- with(SLA_TNCfree_noNA, (mass*starch_mgperg)/1000)
+  SLA_TNCfree_noNA$leafsugar <- with(SLA_TNCfree_noNA, (mass*sugars_mgperg)/1000)
+  SLA_TNCfree_noNA$percstarch <- with(SLA_TNCfree_noNA, (leafstarch/mass)*100)
+  SLA_TNCfree_noNA$percsugar <- with(SLA_TNCfree_noNA, (leafsugar/mass)*100)
 
 #---------------------------------------------------------------------------------------------
 #new dfr creating starch and sugar content per leaf for use in other analyses
-leaf_tnc <- SLA_TNCfree_noNA[, c(1:4, 8:10,12,14)]
-leaf_tnc$leafstarch <- with(leaf_tnc, (mass*starch_mgperg)/1000)
-leaf_tnc$leafsugar <- with(leaf_tnc, (mass*sugar_mgperg)/1000)
-leaf_tnc$percstarch <- with(leaf_tnc, (leafstarch/mass)*100)
-leaf_tnc$percsugar <- with(leaf_tnc, (leafsugar/mass)*100)
+TNC_content <- SLA_TNCfree_noNA[, c(1,3:6, 9:15)]
 
-write.csv(leaf_tnc, "calculated data/leaf_tnc.csv", row.names=FALSE)
+write.csv(TNC_content, "calculated data/TNC_content", row.names=FALSE)
 #---------------------------------------------------------------------------------------------
 
 leaf_TNCfree <- subset(SLA_TNCfree_noNA, select = c("ID", "campaign", "volume", "sla_free", "lma_free","Date"))
 volorder<-order(leaf_TNCfree$volume, by=leaf_TNCfree$Date)
-leaf_TNCfree <- SLA_TNCfree[volorder,]
+leaf_TNCfree <- leaf_TNCfree[volorder,]
 
 #treatment means
 sla_tnc_campaign <- summaryBy(sla_free+lma_free ~ volume+Date, data=leaf_TNCfree, FUN=c(mean, se))
 
 #---------------------------------------------------------------------------------------------------
 #Visualize changes in SLA across campaigns (Date messes things up so stay with campaign# (interval=2wks))
-
+require(plotBy)
 #SLA
 
 #Plot Raw specific leaf area
