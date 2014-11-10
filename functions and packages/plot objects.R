@@ -16,6 +16,7 @@ LABcex <- 1.3
 
 vollab <- expression(Pot~volume~(l))
 leglab <- c(5, 10, 15, 20, 25, 35, "free")
+leglab3 <- c(05, 10, 15, 20, 25, 35, "free")
 leglab2 <- as.character(c(5, 10, 15, 20, 25, 35))
 
 rdlab <-expression(Respiration[dark]~~(mu*mol~m^-2~s^-1))
@@ -39,6 +40,7 @@ cdaylab <- expression(Carbon~gain~~(g~d^-1))
 LAm2 <- expression(Seedling~Leaf~Area~~(m^2))
 anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
 cilab <- expression(C[i]~~(mu*mol~mol^-1))
+srllab <- expression(Specific~Root~Length~~(m~g^1))
 
 #labels for mtext
 raw <- "Raw Data"
