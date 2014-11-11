@@ -50,13 +50,15 @@ anova(srlm)
 # legend("topright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n', cex=1.3)
 
 
+
 windows(14,8)
+###remove colors for not (col=palette())
 par(cex.axis=1.3, cex.lab=1.3,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1) )
 #panel2 (srl)
-bar(SRL, volume, srl,half.errbar=FALSE, ylab="", ylim=c(0,.8), names.arg=leglab,col=palette(), legend=FALSE, xlab="")
+bar(SRL, volume, srl,half.errbar=FALSE, ylab="", ylim=c(0,.8), names.arg=leglab,col="grey", legend=FALSE, xlab="")
 title(ylab=srllab, mgp=c(2.4,1,0))
 
 #panel1 (sla)
-bar(sla_free, volume, sla_tnc,half.errbar=FALSE,ylim=c(0,180),ylab="",names.arg=leglab,col=palette(), legend=FALSE, xlab="")
+bar(sla_free, volume, sla_tnc,half.errbar=FALSE,ylim=c(0,180),ylab="",names.arg=leglab,col="grey", legend=FALSE, xlab="")
 title(ylab=slalab, mgp=c(2.4,1,0))
-mtext("Soil Volume  (L)", side=1, adj=-.325, cex=1.3, line=2.5)
+mtext("Soil Volume  (L)", side=1, adj=-.325, cex=1.3, line=2.75)
