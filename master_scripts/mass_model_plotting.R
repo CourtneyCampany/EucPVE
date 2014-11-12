@@ -1,14 +1,67 @@
+source("gC_day_model/model_plot_objects.R")
 
-#read in model data runs, gCday means, and harvest mass means-----------------------------------------------------
 
-#seq of gC, alloction is equal
-gCseq_sim <- read.csv("calculated data/model_runs/sim_gCseq.csv")
- 
-###new parameters with mass and gC relative to largest value
-  gCseq_sim$mass_adj <- with(gCseq_sim, biomass/biomass[1])
+#read in observed mass and Cday---------------------------------------------------------------------------------
+#harvest mass and leaf area for model comparison
+mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
+
+Cday_means <- read.csv("calculated data/model_runs/gCday_means.csv")
+#new variables with gC standardized to largest pot and free
+Cday_means$C_stnd_pot <- with(Cday_means, carbon_day/carbon_day[6])
+Cday_means$C_stnd_free <- with(Cday_means, carbon_day/carbon_day[7])
+Cday <- as.vector(Cday_means[,2]) 
+
+
+#read in model data runs (uses range of Cday values)------------------------------------------------------------
+
+####Scenario #1 (seq of gC, alloction = mean)
+gCseq_sim_obs <- read.csv("calculated data/model_runs/sim_gCseq_obs.csv")
+  #new parameters with mass and gC relative to largest value
+  gCseq_sim_obs$mass_adj <- with(gCseq_sim_obs, biomass/biomass[1])
   #Gcday relative to largest value (7.0)
-  gCseq_sim$C_adj <- with(gCseq_sim, gCday/gCday[1])
+  gCseq_sim_obs$C_adj <- with(gCseq_sim_obs, gCday/gCday[1])
 
+####Scenario 2 (fine root allocation adjusted +/- 50% from mean)
+sim_exudate <- read.csv("calculated data/model_runs/sim_exudate.csv")
+  sim_exudate <- sim_exudate[c(1,2,4,3),] #correct order of variables for polygon
+
+####Scenario 3
+sim_rootresp <- read.csv("calculated data/model_runs/sim_rootresp.csv")
+#new dataframe with coordinates for poly, use max and min here with means from sim_obs
+rootresp_coords <- do.call(rbind(sim_rootresp[c(1,101),] 
+sim_obs_coords <- gCseq_sim_obs[c(1,101),1:5]
+
+rootresp_poly <- rbind(rootresp_coords[,c(1,5)], sim_obs_coords[,c(1,5)])
+rootresp_poly <- rootresp_poly[c(1,2,4,3),] #correct order of variables for polygon
+
+#####PLOT Scenarios--------------------------------------------------------------------------------------------
+
+
+windows()
+#png(filename = "output/presentations/Cmodel_meanC_massactual.png", width = 12, height = 8, units = "in", res= 400)
+par(cex.axis=1.3, cex.lab=1.3)
+#scenario #1
+with(gCseq_sim_obs, plot(biomass~gCday, ylim=c(0,175), xlim=c(4,8), ylab= "",xlab=cdaylab,pch=16,
+                         cex=1.6, col=col_bl, type="n"))
+  
+  #sceario #2 (as poly)
+  polygon(sim_exudate$Cday, sim_exudate$biomass, lty=2, lwd=2,border="darkorange2", col=col_exude, density= -.4)
+  #scenario #3
+  polygon(rootresp_poly$gCday, rootresp_poly$biomass, lty=2, lwd=2,border="forestgreen", col=col_resp, density= -.4)
+  #scenario #1 (means)
+  points(biomass~gCday,pch=16,cex=1.6, col="black", data=gCseq_sim_obs, type="l", lwd=2)
+  #observed mass
+  points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
+  
+title(ylab=treelab, mgp=ypos)
+  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.01, 
+   title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
+
+dev.off()
+
+
+
+#read in model runs by TREATMENT--------------------------------------------------------------------------------
 
 #sequence of gC with allocation and lma by treatment
 gCseq_alloc_sim <- readRDS("calculated data/model_runs/allocation_sim.rds")
@@ -42,56 +95,9 @@ mass_adj <- data.frame(volume=mass_sim$volume, mass35_adj = mass_sim$biomass/mas
 
 
 
-
-#harvest mass and leaf area for model comparison
-mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
-
-Cday_means <- read.csv("calculated data/model_runs/gCday_means.csv")
-  #new variables with gC standardized to largest pot and free
-  Cday_means$C_stnd_pot <- with(Cday_means, carbon_day/carbon_day[6])
-  Cday_means$C_stnd_free <- with(Cday_means, carbon_day/carbon_day[7])
-Cday <- as.vector(Cday_means[,2]) 
-
-
-#plot objects----------------------------------------------------------------------------------------------------
-numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
-
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-pchs = c(rep(16,6),17)
-ypos <- c(2.5,1,0)
-vollab <- expression(Pot~volume~(l))
-leglab <- c(5, 10, 15, 20, 25, 35, "free")
-
-cols <- as.vector(palette())
-require(scales)
-cols1 <- alpha(cols[1], 0.45)
-cols2 <- alpha(cols[2], 0.45)
-cols3 <- alpha(cols[3], 0.45)
-cols4 <- alpha(cols[4], 0.45)
-cols5 <- alpha(cols[5], 0.45)
-cols6 <- alpha(cols[6], 0.45)
-cols7 <- alpha(cols[7], 0.45)
-
-col_bl <- alpha("black", .45)
-
-treelab<- paste("Seedling Mass Production over ",numdays," days (g)", sep="")
-sub35 <- expression(Scaled[35])
-subfree <- expression(Scaled[free])
-treelab35 <- paste("Seedling Mass Production over ",numdays," days ",sub35,"  (g)", sep="")
-treelabfree <- paste("Seedling Mass Production over ",numdays," days ",subfree,"  (g)", sep="")
-treelabfree <- paste("Relative Mass Production over ",numdays," days ","  (g)", sep="")
-
-cdaylab <- expression(Daily~Carbon~Gain~~(g~m^-2~d^-1))
-cday35lab <- expression(Daily~Carbon~Gain~Scaled[35]~~(g~m^-2~d^-1))
-cdayfreelab <- expression(Daily~Carbon~Gain~Scaled[free]~~(g~m^-2~d^-1))
-
-
-#plotting---------------------------------------------------------------------------------------------
+#other plotting---------------------------------------------------------------------------------------------
 
 ##simple plotting with output of gCday volume means (n=7) versus observed mass and leaf area
-
-#plotting
 
 par(mfrow=c(1,2))
 plot(mass_sim$biomass, mass_actual$mass)
@@ -121,20 +127,7 @@ plot(mass_adj$mass35_adj[1:6]~Cday_means$C_stnd_pot[1:6],  ylab=treelab35, xlab=
 plot(mass_adj$massfree_adj~Cday_means$C_stnd_free,  ylab=treelabfree, xlab=cdayfreelab, xlim=c(1.2,0),
      ylim=c(0, 1.2),col=palette(), pch=pchs)
   abline(1,0, lty=2)
-######this sim uses a sequence of gC day and keeps lma and allocation equal
 
-#windows()
-png(filename = "output/presentations/Cmodel_meanC_massactual.png", 
-    width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
-with(gCseq_sim, plot(biomass~gCday, ylim=c(0,175), xlim=c(0,8), ylab= "", xlab=cdaylab,pch=16,cex=1.6, col=col_bl))
-points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
-#points( modelmass$gCday~modelmass$biomass,pch=pchs,col=palette())
-title(ylab=treelab, mgp=ypos)
-legend("bottomleft", leglab, pch=pchs,text.font=1.3, inset=0.01, 
-       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
-
-dev.off()
 
 #######scaled plotting-----------------------------------------------------------------------
 
