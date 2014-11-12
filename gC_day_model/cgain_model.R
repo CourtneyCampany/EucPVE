@@ -86,6 +86,11 @@ lma_mean <- mean(lma$massarea)#average lma from harvest
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
 Cday <- as.vector(Aleaf_agg[,2]) 
+
+fr_resp = .010368 #gC/gFroot day Marsden et al
+cr_resp = .00124#gC/gCroot day
+wd_resp = .001877 #gc/gwood day Drake with 1.86 q10 to 20C
+
 #vectors of 7 treaments in order
 lma_trt <- as.vector(lma_vol[,2])
 frfrac_trt <- as.vector(fr_frac_vol[,2])
@@ -212,12 +217,28 @@ sim_exud_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc
 
 sim_exudate <- rbind(sim_exud_low, sim_exud_high)
   sim_exudate$change <- c("-50", "+50", "-50", "+50" )
+  sim_exudate$Cday <- c(gc_min,gc_min,gc_max,gc_max)
 
 #save run
 write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE)
 
+####Scenario #3: increases in root respiration (mean to +50%)
+resp50_fr <- fr_resp*1.5
+resp50_cr <- cr_resp*1.5
 
-######component allocation and lma by volume (7 sims) in loop---------------------------------------------------
+sim_rootresp <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                    frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
+                                                    leaffrac=lf,fr_resp=resp50_fr, cr_resp= resp50_cr, SIMPLIFY=F)))
+sim_rootresp$gCday <- gcday_seq_obs
+
+#save run
+write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp" , row.names=FALSE)
+
+
+
+####Simultaions by treatment-----------------------------------------------------------------------------------
+
+#component allocation and lma by volume (7 sims) in loop---------------------------------------------------
 allsims <- list()
 for (i in 1:7){
 sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_trt[i],frfrac=frfrac_trt[i], 
