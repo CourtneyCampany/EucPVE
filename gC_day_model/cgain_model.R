@@ -175,35 +175,63 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
-#run model simulations with sequence of g Cday, change parameter assumptions with each sim----------------------
+###### These are the extra parameters to run model: 
+gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) #sequence over modelled range
+gc_mean <- mean(Cday)  #mean of modelled gCday for each volume
+gc_min <- min(Cday)
+gc_max <- max(Cday)
 
-gCday_seq <- seq(7,2,length=101)
-mu <- .6
+mu <- .6 #cf for gCday
 
-sim_means <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_mean, 
+
+#Scenario#1: Gcday seq, allocation = mean------------------------------------------------------------------------------------
+sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
                                                 frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                 leaffrac=lf,SIMPLIFY=F)))
-  sim_means$gCday <- gCday_seq
+  sim_means_obs$gCday <- gcday_seq_obs
 #save run
-write.csv(sim_means, "calculated data/model_runs/sim_gCseq.csv" , row.names=FALSE)
+write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.names=FALSE)
+
+
+#Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
+
+#sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
+fr_exude <- seq(fr_frac_mean*.5, fr_frac_mean*1.5, length=2)
+ofrac <- (1 - fr_exude)/3
+
+sim_exud_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_min, lma=lma_mean, 
+                                                    frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
+                                                    leaffrac=ofrac,SIMPLIFY=F)))
+
+sim_exud_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_max, lma=lma_mean, 
+                                                   frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
+                                                   leaffrac=ofrac,SIMPLIFY=F)))
+
+  sim_exud_low$fr_alloc <- fr_exude
+  sim_exud_high$fr_alloc <- fr_exude
+
+sim_exudate <- rbind(sim_exud_low, sim_exud_high)
+  sim_exudate$change <- c("-50", "+50", "-50", "+50" )
+
+#save run
+write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE)
 
 
 ######component allocation and lma by volume (7 sims) in loop---------------------------------------------------
-
 allsims <- list()
 for (i in 1:7){
-gCday_seq <- seq(7,2,length=101)
-
-sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gCday_seq, lma=lma_trt[i],frfrac=frfrac_trt[i], 
+sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_trt[i],frfrac=frfrac_trt[i], 
                   crfrac=crfrac_trt[i], stemfrac=stemfrac_trt[i],leaffrac=leaffrac_trt[i], SIMPLIFY=F)))
 
-  sim$gCday <- gCday_seq
+  sim$gCday <- gcday_seq_obs
 
 allsims[[i]] <- sim
 }
 #save run  
 saveRDS(allsims, file = "calculated data/model_runs/allocation_sim.rds")
 
+
+####need to build this into a function when running scenarios
 
 ####mass as a function of largest container or free (btw 0 and 1)
 vol35 <- as.data.frame(allsims[6])
@@ -215,7 +243,6 @@ volfree <- as.data.frame(allsims[7])
   volfree$volume <- "1000"
   simfree <- data.frame(massfree = volfree$biomass)
   volfree <- cbind(volfree, simfree)
-
 
   volfree <- cbind(volfree, sim35)
   vol35 <- cbind(vol35, simfree)
