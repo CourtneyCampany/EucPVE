@@ -232,7 +232,9 @@ sim_rootresp <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcd
 sim_rootresp$gCday <- gcday_seq_obs
 
 #save run
-write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp" , row.names=FALSE)
+write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp.csv" , row.names=FALSE)
+
+####Scenario #4: increase in leaf respiration with increase in SLA
 
 
 
