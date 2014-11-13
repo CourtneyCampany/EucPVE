@@ -45,9 +45,7 @@ PSsat_id_agg <- summaryBy(Photo ~volume, data=PSsat_ID, FUN=c(mean,se))
 #treatment mean with se across dates
 PSsat_agg <- summaryBy(Photo ~ Date + volume, data=PSsat_spot, FUN=c(mean,se))
   PSsat_agg$volume <- as.factor(PSsat_agg$volume)
-
 #write.csv(PSsat, "calculated data/Asat.csv", row.names=FALSE)
-#write.csv(PSsat_agg, "calculated data/Asat treatment means.csv", row.names=FALSE)
 
 
 #Plotting----------------------------------------------------------------------------------------------
