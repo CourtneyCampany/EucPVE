@@ -14,9 +14,12 @@ totalmasslm <- lm(totalmass ~ as.factor(volume), data=finalmass)
 rootshootlm <- lm(rootshoot ~ as.factor(volume), data=finalmass)
 frootleaflm <- lm(frootleaf ~ as.factor(volume), data=finalmass)
 
-getP(totalmasslm)
-getP(rootshootlm)
-getP(frootleaflm)
+library(visreg)
+visreg(totalmasslm)
+
+extract_func(totalmasslm)
+extract_func(rootshootlm)
+extract_func(frootleaflm)
 
 
 # Pot size effect.
@@ -24,8 +27,8 @@ totalmass_potsize <- lm(totalmass ~ as.factor(volume), data=finalmass, subset=vo
 rootshoot_potsize <- lm(rootshoot ~ as.factor(volume), data=finalmass, subset=volume != "1000")
 frootleaf_potsize <- lm(frootleaf ~ as.factor(volume), data=finalmass, subset=volume != "1000")
 
-getP(totalmass_potsize)
-getP(rootshoot_potsize)
-getP(frootleaf_potsize)
+extract_func(totalmass_potsize)
+extract_func(rootshoot_potsize)
+extract_func(frootleaf_potsize)
 
 

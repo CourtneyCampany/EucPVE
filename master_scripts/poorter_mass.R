@@ -134,6 +134,18 @@ coef(mass_mod)
 
 #   #add linear and nls fits
 #   curve(1 + m[[1]]*x^m[[2]], add=T)
+
+
+#plot
+with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
+#add linear and nls fits
+ablinepiece(mass_mod)
+curve(1 + m[[1]]*x^m[[2]], add=T)
+
+
+
+
+
   
 
 #plot with a abline for poorters 43% from start value, then add my numbers----------------------------------------
