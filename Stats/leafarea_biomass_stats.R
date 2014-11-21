@@ -1,8 +1,6 @@
 #Leaf Aread and Seedling Mass
 
-source("functions and packages/functions.R")
-source("functions and packages/load packages.R")
-source("functions and packages/plot objects.R")
+source("functions and packages/startscripts.R")
 
 #read in harvest data
 source("read data scripts/harvest read data.R")
@@ -25,6 +23,14 @@ tree_stats <- merge(tree[,c(1:2,5)], plotsumm[,3:4])
 tree_stats$volume <- as.factor(tree_stats$volume)
 
 tree_stats2 <- tree_stats[order(tree_stats$volume),] 
+
+#leaf area and volume model
+la_fit<- lm(leaf_area~ volume,data=tree_stats2)
+summary(la_fit)
+anova(la_fit)
+visreg(la_fit)
+
+
 #-----------------------------------------------------------------------------------------
 #calculate overall means and means for each date
 
@@ -36,10 +42,15 @@ tree_campaign <- summaryBy(leaf_area+tree_dw  ~ campaign + volume, FUN=c(mean, s
                               keep.names=TRUE, data=tree_stats2)
 
 #linear model 
-la_mass_fit <- lm(tree_dw~ leaf_area,data=tree_stats2)
+la_mass_fit2 <- lm(tree_dw~ leaf_area+volume,data=tree_stats2)
 summary(la_mass_fit)
 anova(la_mass_fit)
-
+library(visreg)
+visreg(la_mass_fit)
+la_mass_fit2 <- lm(tree_dw~ leaf_area+volume,data=tree_stats2)
+summary(la_mass_fit2)
+anova(la_mass_fit2)
+visreg(la_mass_fit2)
 #-----------------------------------------------------------------------------------------------
 #panel graph for each relationship with raw, overall mean, and mean by date
 
