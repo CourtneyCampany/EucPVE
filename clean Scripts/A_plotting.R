@@ -1,4 +1,4 @@
-#source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 #Read in spot A measurements and merge plot design
 source("read data scripts/physiology read data.R")
