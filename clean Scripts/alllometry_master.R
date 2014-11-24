@@ -1,5 +1,4 @@
 source("functions and packages/startscripts.R")
-
 source("read data scripts/survey read data.R")
 
 #HEIGHT
@@ -85,4 +84,57 @@ visreg(leafno_potsize)
 diam_pot_stat<- extract_func(diam_potsize)
 height_pot_stat<-extract_func(height_potsize)
 leafno_pot_stat<-extract_func(leafno_potsize)
+
+
+###visualizse fit of treatment effects
+library(mgcv)
+library(scales)
+source("functions and packages/gamplotfunctions.R")
+#g <- gam(Y ~ s(X, k=15, by=treatment), data=dfr)
+
+
+smoothplot(as.numeric(Date), height, volume, data=height, kgam=15, axes=FALSE, xlab="", ylab="Height (cm)", 
+           random="ID")
+axis.Date(1,height$Date)
+axis(2)
+box()
+
+####find specific dates where treatment effects occurred
+library(visreg)
+library(multcomp)
+        
+##height (treatment differences began on 3/11)
+H_mod1 <- lm(height~volume, data=height, subset=Date=="2013-03-11")
+summary(H_mod1)
+anova(H_mod1)
+extract_func(H_mod1)
+visreg(H_mod1)
+tukey_H<- glht(H_mod1, linfct = mcp(volume = "Tukey"))
+cld(tukey_H)
+
+H_mod2 <- lm(height~volume, data=height, subset=Date=="2013-03-04")
+summary(H_mod2)
+anova(H_mod2)
+extract_func(H_mod2)
+visreg(H_mod2)
+
+##diameter (treatment differences began on 3/18)
+D_mod1 <- lm(diameter~volume, data=diam, subset=Date=="2013-03-18")
+summary(D_mod1)
+anova(D_mod1)
+visreg(D_mod1)
+tukey_D <- glht(D_mod1, linfct = mcp(volume = "Tukey"))
+cld(tukey_D)
+
+D_mod2 <- lm(diameter~volume, data=diam, subset=Date=="2013-03-11")
+summary(D_mod2)
+anova(D_mod2)
+visreg(D_mod2)
+
+
+
+
+
+
+
 

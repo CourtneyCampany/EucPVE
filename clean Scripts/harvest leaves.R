@@ -79,11 +79,27 @@ leaf2 <- subset(leaftime_agg,volume != "1000" )
 #----------------------------------------------------------------------------------------------------
 #stats
 require(nlme)
+library(multcomp)
 lmeLA <- lme(canopysqm ~ volume, random= ~1|ID, data=leaftime)
 anova(lmeLA)
 
 lmeLA2 <- lme(canopysqm ~ volume, random= ~1|ID, data=leaftime, subset=volume != "1000")
 anova(lmeLA2)
+
+###which date did treatment differences emerge?
+la_mod1 <- lm(canopysqm~volume, data=leaftime, subset=Date=="2013-02-11")
+summary(la_mod1)
+anova(la_mod1)
+visreg(la_mod1)
+tukey_la <- glht(la_mod1, linfct = mcp(volume = "Tukey"))
+cld(la_mod1)
+
+la_mod2 <- lm(canopysqm~volume, data=leaftime, subset=Date=="2013-02-03")
+summary(la_mod2)
+anova(la_mod2)
+visreg(la_mod2)
+
+
 
 #plot---------------------------------------------------------------------------
 
