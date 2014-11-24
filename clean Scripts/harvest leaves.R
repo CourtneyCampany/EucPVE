@@ -23,7 +23,7 @@ ll_agg <- aggregate(leaf_length ~ ID, ll_harvest, FUN=mean,  na.action = na.omit
 leafharvest <- merge(leafharvest, ll_agg, by ="ID")
   row.names(leafharvest) <- NULL
 
-write.csv(leafharvest[,c(3, 13:15)], "calculated data/LA_harvest.csv", row.names=FALSE)
+write.csv(leafharvest[,c(1, 13:15)], "calculated data/LA_harvest.csv", row.names=FALSE)
 
 #treatment means for total area and count
 leafharvest_agg <- aggregate(cbind(totalarea, totalcount) ~ volume , data = leafharvest, FUN = mean)
