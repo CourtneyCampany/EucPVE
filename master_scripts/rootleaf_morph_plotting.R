@@ -22,21 +22,54 @@ sla_tnc_campaign <- summaryBy(sla_free+lma_free+ sla+ lma ~ volume+Date, data=le
 sla_tnc_agg <- summaryBy(sla_free+lma_free+ sla+ lma~volume, data=leaf_TNCfree, FUN=c(mean, se))
 
 #SRL------------------------------------------------------------------------------------------------------
-srl <- read.csv("raw data/SRLmass.csv")
+(srl <- read.csv("raw data/SRLmass.csv")
   srl$ID <- paste(srl$plot, srl$pot, sep = "-")
   srl <- merge(srl, plotsumm[3:4], all=TRUE)
   srl <- subset(srl, !is.na(volume))
   srl$SRL <- with(srl, (total_length_cm/100)*(srl_fw*(ss_dw/ss_fw)))
-  row.names(srl) <- NULL
+  srl$volume <- as.factor(srl$volume)
+  row.names(srl) <- NULL)
 #srl <- vollab_func(srl)
 
 srlm <- lm(SRL ~ volume, data=srl)
 summary(srlm)
 anova(srlm)
 
+##Stats for sla and srl--------------------------------------------------------------------------------------
+require(nlme)
+require(visreg)
+library(multcomp)
+
+#srl (not different)
+srl_lm <- lme(SRL ~ volume, random= ~1|ID, data=srl)
+anova(srl_lm)
+summary(srl_lm)
+
+tukey_srl<- glht(srl_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_srl)
+visreg(srl_lm)
+
+
+#sla
+sla_lm <- lme(sla_free ~ volume, random= ~1|ID, data=sla_tnc)
+anova(sla_lm)
+summary(sla_lm)
+
+tukey_sla<- glht(sla_lm, linfct = mcp(volume = "Tukey"))
+siglets_sla <- cld(tukey_sla)
+visreg(sla_lm)
+
+#when did sla free happen?
+sla_lm2 <- lme(sla_free ~ volume, random= ~1|ID, data=sla_tnc, subset=Date=="2013-03-07")
+anova(sla_lm2)
+visreg(sla_lm2)
+tukey_srl2<- glht(sla_lm2, linfct = mcp(volume = "Tukey"))
+cld(tukey_srl2)
+
+
 
 #2panel plot of leaf and root morphology------------------------------------------------------------------
-
+SigLetters <- siglets_sla$mcletters$Letters
 #can use sla through time (might be better)
 
 #Plot objects
@@ -62,3 +95,4 @@ title(ylab=srllab, mgp=c(2.4,1,0))
 bar(sla_free, volume, sla_tnc,half.errbar=FALSE,ylim=c(0,180),ylab="",names.arg=leglab,col="grey", legend=FALSE, xlab="")
 title(ylab=slalab, mgp=c(2.4,1,0))
 mtext("Soil Volume  (L)", side=1, adj=-.325, cex=1.3, line=2.75)
+text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 50, SigLetters, cex=1.3)
