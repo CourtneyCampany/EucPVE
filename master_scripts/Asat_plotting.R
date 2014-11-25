@@ -34,18 +34,13 @@ PSsat <- subset(PS, type=="Asat")
 
 #mean of 5 logs per plant
 PSsat_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
+  PSsat_spot$volume <- as.factor(PSsat_spot$volume)
 
 #mean by plant over all dates, then treatment means
 PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
   PSsat_ID$volume <- as.factor(PSsat_ID$volume)
 
 
-##PLOTTING
-
-###barplot with asat values, drop colors for now ( col=palette(),)
-bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
-    col="grey", legend=FALSE)
-    title(ylab=satlab, mgp=ypos)
 
 
 
@@ -59,4 +54,49 @@ PSsat_mean <- summaryBy(Photo~volume, data=PSsat_ID, FUN=c(mean,se))
 
 A_means <- merge(PSmax_mean, PSsat_mean)
 write.csv(A_means, "calculated data/A_treatment_means.csv", row.names=FALSE)
+
+
+####stats on Asat------------------------------------------------------------------------------------------------
+require(nlme)
+require(visreg)
+require(broom)
+library(multcomp)
+
+#asat
+asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
+anova(asat_lm)
+summary(asat_lm)
+#tidy(asat_lm)
+
+tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
+siglets <-cld(tukey_A)
+visreg(asat_lm)
+
+
+asat_lm2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat_spot))
+
+#lets prove that asat was immediately different, then use average
+asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
+anova(asat_lm_d1)
+summary(asat_lm_d1)
+
+tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
+cld(tukey_A1)
+visreg(asat_lm_d1)
+
+
+
+##PLOTTING----------------------------------------------------------------------------------------------------------
+SigLetters <- siglets$mcletters$Letters
+
+
+###barplot with asat values, drop colors for now ( col=palette(),)
+bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
+    col="grey", legend=FALSE)
+title(ylab=satlab, mgp=ypos)
+text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
+
+
+
+
 
