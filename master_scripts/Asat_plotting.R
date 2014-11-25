@@ -42,8 +42,6 @@ PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_s
 
 
 
-
-
 ##Photosynthesis means for paper table---------------------------------------------------------------------------
 
 ##overall means
@@ -85,7 +83,6 @@ cld(tukey_A1)
 visreg(asat_lm_d1)
 
 
-
 ##PLOTTING----------------------------------------------------------------------------------------------------------
 SigLetters <- siglets$mcletters$Letters
 
@@ -95,7 +92,6 @@ bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", 
     col="grey", legend=FALSE)
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
-
 
 
 
