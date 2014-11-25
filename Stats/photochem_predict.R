@@ -43,6 +43,7 @@ Afit_full <- lmer(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=
   plot(effect("Nmass_notnc:starch", Afit_full), multiline=TRUE)
 
   require(car)
+  require(visreg)
   Anova(Afit_full)
   visreg(Afit_full, "starch", by="Nmass_notnc", overlay=TRUE)
 
