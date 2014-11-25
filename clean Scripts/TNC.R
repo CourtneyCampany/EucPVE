@@ -23,13 +23,13 @@ leaf_tnc$sugars <- with(leaf_tnc, sugars_mgperg /1000)
 leaf_tnc$tnc <- with(leaf_tnc, sugars+starch)
 
 #save this dfr as calculated data (raw with no missing values)
-write.csv(leaf_tnc, "calculated data/tnc_leaf.csv", row.names=FALSE)
+#write.csv(leaf_tnc, "calculated data/tnc_leaf.csv", row.names=FALSE)
 
 #generate means from raw data
 tnc_means <- summaryBy(starch+sugars+tnc~ volume+Date, data=leaf_tnc, FUN=c(mean, se))  
 
 tnc_agg <- summaryBy(tnc~ volume, data=leaf_tnc, FUN=c(mean, se)) 
-write.csv(tnc_agg, "calculated data/tnc_agg.csv", row.names=FALSE)
+#write.csv(tnc_agg, "calculated data/tnc_agg.csv", row.names=FALSE)
 
 #---------------------------------------------------------------------------------------------------
 #plot bits and plotting functions
@@ -102,11 +102,50 @@ plot(tnc.mean ~ Date, data=tnc_means,type='n',ylab="",  ylim=c(0,.3), axes=FALSE
 
 
 #STATS------------------------------------------------------------------------------------
-lme1 <- lm(starch_mgperg ~ volume, #random= ~1|PS.
-             data=leaf_tnc)
-anova(lme1)
-summary(lme1)
+require(nlme)
+require(visreg)
+require(broom)
+library(multcomp)
 
-lme2 <- lme(starch_mgperg ~ volume, random= ~1|ID, data=leaf_tnc)
-anova(lme2)
-summary(lme2)
+#starch
+starch_lm  <- lme(starch  ~ volume, random= ~1|ID, data=leaf_tnc)
+anova(starch_lm)
+summary(starch_lm)
+
+tukey_starch<- glht(starch_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_starch)
+visreg(starch_lm)
+
+#sugars
+sugar_lm  <- lme(sugars ~ volume, random= ~1|ID, data=leaf_tnc)
+anova(sugar_lm)
+summary(sugar_lm)
+
+tukey_sug<- glht(sugar_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_sug)
+visreg(sugar_lm)
+
+#tnc
+tnc_lm  <- lme(tnc ~ volume, random= ~1|ID, data=leaf_tnc)
+anova(tnc_lm)
+summary(tnc_lm)
+
+tukey_tnc<- glht(tnc_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_tnc)
+visreg(tnc_lm)
+
+
+#lets prove that asat was immediately different, then use average
+#starch d1
+starch_lm2  <- lme(starch  ~ volume, random= ~1|ID, data=leaf_tnc, subset=Date=="2013-03-07 ")
+anova(starch_lm2)
+summary(starch_lm2)
+
+tukey_starch2<- glht(starch_lm2, linfct = mcp(volume = "Tukey"))
+cld(tukey_starch2)
+visreg(starch_lm2)
+
+
+
+
+
