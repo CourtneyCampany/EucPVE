@@ -173,7 +173,7 @@ visreg(amax_vol_lm)
 
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat)
-asat2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat))
+asat_lm2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat))
 anova(asat_lm)
 summary(asat_lm)
 visreg(asat_lm)
