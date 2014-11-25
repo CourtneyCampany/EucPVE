@@ -102,6 +102,7 @@ box()
 ####find specific dates where treatment effects occurred
 library(visreg)
 library(multcomp)
+require(broom
         
 ##height (treatment differences began on 3/11)
 H_mod1 <- lm(height~volume, data=height, subset=Date=="2013-03-11")
@@ -110,7 +111,9 @@ anova(H_mod1)
 extract_func(H_mod1)
 visreg(H_mod1)
 tukey_H<- glht(H_mod1, linfct = mcp(volume = "Tukey"))
+
 cld(tukey_H)
+tidy(H_mod1)
 
 H_mod2 <- lm(height~volume, data=height, subset=Date=="2013-03-04")
 summary(H_mod2)
