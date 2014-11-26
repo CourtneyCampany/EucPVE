@@ -9,6 +9,7 @@ source("functions and packages/startscripts.R")
 require(lme4)
 require(lmerTest)
 library(effects)
+library(LMERConvenienceFunctions)
 source("functions and packages/rsquared_glmm.R")
 #runthe new r2 function to get r2 and p values for the model
 
@@ -38,8 +39,13 @@ photo_chem$nitrobin <- cut(photo_chem$Nmass_notnc, breaks = nitrobin)
 Afit_full <- lmer(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=photo_chem)
   anova(Afit_full)
   summary(Afit_full)
+  mcp.fnc(Afit_full)
+
+Afit_N <- lmer(A_mass ~ Nmass_notnc + (1|ID), data=photo_chem)
+Afit_TNC <- lmer(A_mass ~ starch + (1|ID), data=photo_chem)
+
   #with lmer tnc not significant nor the interaction
-  rsquared.glmm(list(Afit_full, Afit_N, Afit_TNC))
+
   plot(effect("Nmass_notnc:starch", Afit_full), multiline=TRUE)
 
   require(car)
@@ -54,7 +60,6 @@ f <- fixef(Afit_full)
 Afit_logA <- lmer(log(A_mass) ~ Nmass_notnc+starch+Nmass_notnc:starch + (1|ID), data=photo_chem)
   anova(Afit_logA)
   summary(Afit_logA)
-  visreg(Afit_logA)
   #TNC and N sig, no interaction
 
 #old nlmesays is is significant
@@ -62,6 +67,8 @@ library(nlme)
 Afit_full_lme <- lme(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch, random=~1|ID, data=photo_chem)
   anova(Afit_full_lme)
   summary(Afit_full_lme)
+
+rsquared.glmm(list(Afit_full, Afit_logA, Afit_full_lme))
 
 # remove interaction, starch very significant
 Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
