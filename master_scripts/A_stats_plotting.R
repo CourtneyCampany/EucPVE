@@ -23,6 +23,7 @@ PSmax <- subset(PS, type=="Amax")
 
 #mean of 5 logs per plant
 PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
+  PSmax_spot$volume <- as.factor(PSmax_spot$volume)
 
 #mean by plant over all dates, then treatment means
 PSmax_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
@@ -54,10 +55,9 @@ A_means <- merge(PSmax_mean, PSsat_mean)
 write.csv(A_means, "calculated data/A_treatment_means.csv", row.names=FALSE)
 
 
-####stats on Asat------------------------------------------------------------------------------------------------
+####stats on A------------------------------------------------------------------------------------------------
 require(nlme)
 require(visreg)
-require(broom)
 library(multcomp)
 
 #asat
@@ -70,9 +70,6 @@ tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
 siglets <-cld(tukey_A)
 visreg(asat_lm)
 
-
-asat_lm2 <- anova(lme(Photo ~ volume, random=~1 | ID, method="ML", data=PSsat_spot))
-
 #lets prove that asat was immediately different, then use average
 asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
 anova(asat_lm_d1)
@@ -81,6 +78,24 @@ summary(asat_lm_d1)
 tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
 cld(tukey_A1)
 visreg(asat_lm_d1)
+
+#amax
+amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
+anova(amax_lm)
+summary(amax_lm)
+
+tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_Amax)
+visreg(amax_lm)
+
+#lets prove that asat was immediately different, then use average
+amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="2013-03-07")
+anova(amax_lm_d1)
+summary(amax_lm_d1)
+
+tukey_Amax1<- glht(amax_lm_d1, linfct = mcp(volume = "Tukey"))
+cld(tukey_Amax1)
+visreg(amax_lm_d1)
 
 
 ##PLOTTING----------------------------------------------------------------------------------------------------------
