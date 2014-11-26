@@ -1,8 +1,10 @@
 
-source("functions and packages/load packages.R")
-source("functions and packages/functions.R")
+source("functions and packages/startscripts.R")
 require(broom)
+require(nlme)
 require(visreg)
+library(multcomp)
+require(plantecophys)
 
 #read 2 ACi datasets (they are from two seperate dates during the experiment...deal with this later)
 source("read data scripts/physiology read data.R")
@@ -29,7 +31,21 @@ aci2coef$campaign <- "b"
 
 aci_stats <- rbind(aci1coef, aci2coef)
   aci_stats$ratio <- with(aci_stats, Jmax/Vcmax)
+  aci_stats$volume <- as.factor(aci_stats$volume)
+  aci_stats$campaign <- as.factor(aci_stats$campaign)
+
 #test if two sets are different by volume
+vc_diff<- lme(Vcmax ~ volume+campaign, random= ~1|ID, data=aci_stats)
+summary(vc_diff)
+anova(vc_diff)
+tukey_vdiff<- glht(vc_diff, linfct = mcp(campaign = "Tukey"))
+cld(tukey_vdiff)
+
+j_diff<- lme(Jmax ~ volume+campaign, random= ~1|ID, data=aci_stats)
+summary(j_diff)
+anova(j_diff)
+tukey_jdiff<- glht(j_diff, linfct = mcp(campaign = "Tukey"))
+cld(tukey_jdiff)
 
 #means
 aci_means <- summaryBy(Vcmax+Jmax+ratio ~ volume , data = aci_stats,  FUN=c(mean,se))
@@ -49,48 +65,41 @@ abline()
 ratio_container <- lm(ratio ~ as.factor(volume), data=aci_stats)
 ratio_lm1 <- tidy(ratio_container)
 ratio1_stat <- extract_func(ratio_container)
-
 anova(ratio_container)
 summary(ratio_container)
 visreg(ratio_container)
 
-# Pot size effect.
-ratio_potsize <- lm(ratio ~ as.factor(volume), data=aci_stats, subset=volume != "1000")
-ratio_lm <- tidy(ratio_potsize)
+boxplot(Vcmax~ volume, data = aci_stats, subset=campaign=="a") 
+boxplot(Vcmax~ volume, data = aci_stats, subset=campaign=="b") 
 
-anova(ratio_potsize)
-summary(ratio_potsize)
-
-
-boxplot(Vcmax.mean ~ volume, data = subset(aci_means, campaing="a"))
-boxplot(Vcmax.mean ~ volume, data = subset(aci_means, campaing="b"))
 boxplot(Jmax.mean ~ volume, data = aci_means)
 
-#models
+#VCmax
+vc_lm <- lme(Vcmax ~ volume, random= ~1|ID, data=aci_stats)
+anova(vc_lm)
+summary(vc_lm)
 
-volumeVc <- lm(Vcmax ~ volume, data = acitstats)
-anova(volumeVc)
-summary(volumeVc)
-visreg(volumeVc)
+tukey_vc<- glht(vc_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_vc)
+visreg(vc_lm)
 
-volumeVc_nofree <- lm(Vcmax ~ volume, data = acitstats, subset=volume != "1000")
-anova(volumeVc_nofree)
-summary(volumeVc_nofree)
-visreg(volumeVc_nofree)
+#JmAX,
+J_lm <- lme(Jmax ~ volume, random= ~1|ID, data=aci_stats)
+anova(J_lm)
+summary(J_lm)
 
+tukey_j<- glht(J_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_j)
+visreg(J_lm)
 
-volumeJ <- lm(Jmax ~ volume, data = acitstats)
-anova(volumeJ)
-summary(volumeJ)
-visreg(volumeJ)
+#ratio
+ratio_lm <- lme(ratio ~ volume, random= ~1|ID, data=aci_stats)
+anova(ratio_lm)
+summary(ratio_lm)
 
-volumeJ_nofree <- lm(Jmax ~ volume, data = acitstats, subset=volume != "1000")
-anova(volumeJ_nofree)
-summary(volumeJ_nofree)
-visreg(volumeJ_nofree)
-
-Vc_campaign <- lm(Vcmax ~ volume+campaign, data = acitstats)
-J_campaign <- lm(Jmax ~ volume+campaign, data = acitstats)
+tukey_r<- glht(ratio_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_r)
+visreg(ratio_lm)
 
 #Summary, both vcmax and jmax are different by treatment, the ratio is not different
 #the fact that the ratio is not different and linear confirms that treatments are affecting both
