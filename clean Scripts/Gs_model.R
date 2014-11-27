@@ -19,25 +19,37 @@ cond_data <- subset(A_obs, CO2=="400", select = c("Date", "Cond", "VpdL", "Photo
 cond_agg <- summaryBy(. ~ ID + Date, data = cond_data, FUN = c(mean))
 names(cond_agg)[3:8] <- c("gs", "D", "A", "Ca", "Ci", "volume")
 cond_agg$volume <- as.factor(cond_agg$volume)
+cond_agg$Date <- as.Date(cond_agg$Date)
 
-#------------------------------------------------------------------------------------------------------
-# #test if gs is different by volume or by time
-# boxplot(gs ~ volume, data = cond_agg)
-# boxplot(Cond ~ volume, data = cond_data)
-# boxplot(gs ~ Date, data = cond_agg)
-# #models
-# 
-# gs_lm <- lm(gs ~ volume, data = cond_agg)
-# gs_Date<- lm(gs ~ volume+Date, data = cond_agg)
-# summary(gs_lm)
-# anova(gs_lm)
-# visreg(gs_lm)
-# #gs different by volume and date
-# 
-# gs_volume <- lm(gs ~ volume, data = cond_agg, subset=volume != "1000")
-# summary(gs_volume)
-# anova(gs_volume)
-# visreg(gs_volume)
+------------------------------------------------------------------------------------------------------
+#test if gs is different by volume or by time
+boxplot(gs ~ volume, data = cond_agg)
+boxplot(Cond ~ volume, data = cond_data)
+boxplot(gs ~ Date, data = cond_agg)
+
+#find where date different and look at overall model
+
+gs_lm <- lme(gs ~ volume, random= ~1|ID, data=cond_agg)
+anova(gs_lm)
+summary(gs_lm)
+
+tukey_gs<- glht(gs_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_gs)
+visreg(gs_lm)
+
+##overall model with date
+gs_lm2 <- lme(gs ~ volume + Date, random= ~1|ID, data = cond_agg)
+summary(gs_lm2)
+anova(gs_lm2)
+visreg(gs_lm2)
+
+tukey_gs2<- glht(gs_lm2, linfct = mcp(volume = "Tukey"))
+
+#remove possible outlier in vol 15, 2013-03-07, 5-4???????????????
+
+#overall seedling gs to show that not stressed
+gs_mean <- mean(cond_agg$gs)
+
 
 #------------------------------------------------------------------------------------------------------
 #fit optimal conductance model on means and date
@@ -50,9 +62,14 @@ cond_agg$volume <- as.factor(cond_agg$volume)
 library(nlme)
 nlsfits <- nlsList(gs ~  1.6*(1+g1/sqrt(D))*(A/Ca) | volume,
                    start=list(g1=8),data=cond_agg)
-g1_vol <- as.data.frame(coef(nlsfits))
-g1_vol$volume <- as.numeric(rownames(g1_vol))
-names(g1_vol)[1] <- "g1_vol"
+
+#extract g1 parameter values from nls list
+g1_vol <- data.frame(coef(nlsfits))
+  g1_vol$volume <- as.numeric(rownames(g1_vol))
+  row.names(g1_vol) <- NULL
+  g1_vol$volume <- as.factor(g1_vol$volume)
+  names(g1_vol)[1] <- "g1_vol"
+
 cond_agg <- merge(cond_agg,g1_vol)
 cond_agg$gspred_vol <- with(cond_agg, 1.6*(1+g1_vol/sqrt(D))*(A/Ca))
 
@@ -61,7 +78,34 @@ abline(0,1)
 with(cond_agg, plot(A/(sqrt(D)*Ca), gs))
 
 
-#run model by date+volume, interpolate parameters across experiment dates
+#test  g1 is different----------------------------------------------------------------------------
+###rerun nlslist by id so I can run stats 
+nlsfits2 <- nlsList(gs ~  1.6*(1+g1/sqrt(D))*(A/Ca) | ID,
+                   start=list(g1=8),data=cond_agg)
+
+g1_vol2 <- data.frame(coef(nlsfits2))
+  g1_vol2$ID <- as.character(rownames(g1_vol2))
+  row.names(g1_vol2) <- NULL
+  names(g1_vol2)[1] <- "g1_ID"
+###merge with plotsumm to get treatment
+#read in plot design and harvest data
+plotsumm <- read.csv("raw data/plot_summary.csv")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+
+g1_vol2 <- merge(g1_vol2, plotsumm[,3:4])
+  g1_vol2$volume <- as.factor(g1_vol2$volume)
+
+#stats
+g1_lm <- lme(g1_ID ~ volume, random= ~1|ID, data=g1_vol2)
+anova(g1_lm)
+summary(g1_lm)
+
+tukey_g1<- glht(g1_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_g1)
+visreg(g1_lm)
+
+
+#run model by date+volume, interpolate parameters across experiment dates-----------------------------------------
 
 cond_agg$uniqueID <- paste(cond_agg$volume, cond_agg$Date, sep="-")
 #IDfactor <-unique(cond_agg$uniqueID)
@@ -78,9 +122,20 @@ cond_pred$gspred_date <- with(cond_pred, 1.6*(1+g1_date/sqrt(D))*(A/Ca))
 
 with(cond_pred, plot(gspred_vol,gs, col=volume))
 with(cond_pred, points(gspred_date, gs, pch=16, col=volume))
+abline(0,1)
 
-write.csv(cond_pred[,c(2:5, 10, 12)], "calculated data/g1_pred.csv", row.names=FALSE)
+#write.csv(cond_pred[,c(2:5, 10, 12)], "calculated data/g1_pred.csv", row.names=FALSE)
 
+##stats on g1
+g1_lm <- lme(g1_date ~ volume, random= ~1|ID, data=cond_pred)
+anova(g1_lm)
+summary(g1_lm)
+
+tukey_g1<- glht(g1_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_g1)
+visreg(g1_lm)
+
+test <- subset(cond_pred, volume == "15")
 
 #interpolate across dates (parameters g0 and g1)---------------------------------------------------
 
@@ -96,7 +151,7 @@ date_sp <- lapply(ID_sp, function(z){
 })
 
 g0g1_pred <- do.call(rbind,date_sp)
-write.csv(g0g1_pred, "calculated data/g0g1_pred.csv", row.names=FALSE)
+#write.csv(g0g1_pred, "calculated data/g0g1_pred.csv", row.names=FALSE)
 
 
 #------------------------------------------------------------------------------------------------------------
@@ -121,22 +176,3 @@ plot(gs~gs_func, col=volume, ylim=c(0,3), xlim=c(0,.15), cex=1.3, data=cond_fit)
 #with(cond_fit, plot(gs~gs_func, col=volume, ylim=c(0,3), xlim=c(0,3), cex=1.3))
 points(gs_pred~gs_func, data=cond_fit, pch=16, col=volume)
 abline(0,1)
-
-
-
-#loop through dataframe by volume, return coef for each volume 
-#return one set of parameters for all dates and IDs for each volume
-
-# volumefactor <- unique(cond_agg$volume)
-# gsmodel <- list()
-# 
-# for (i in 1:length(volumefactor)){
-#   #gsmodel[[i]] stores all seven models results in a one list
-#   gsmodel[[i]] <- nls(gs ~
-#                         1.6*(1+g1/sqrt(D))*(A/Ca),start=list(g1=8),subset=volume==volumefactor[i],data=cond_agg)
-# }
-# 
-# #use sapply to return the results of the coef fun for each element in the list(gsmodel)
-# gs_res <- data.frame(t(sapply(gsmodel,coef)))
-# #add in volume ID, specific to the order of the for loop
-# gs_param <- cbind(gs_res, volumefactor)

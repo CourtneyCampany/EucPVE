@@ -1,34 +1,63 @@
 #Dark Respiration and Sugars
 
-source("functions and packages/functions.R")
-source("functions and packages/load packages.R")
-source("functions and packages/plot objects.R")
+source("functions and packages/startscripts.R")
+require(nlme)
+require(visreg)
+library(multcomp)
 
 #read in Asat and leaf Ndata
 
 #dark respiration (two dates)
 resp_dark <- read.csv("raw data/Rdark_cleanCi.csv")
-resp_dark$Date <- as.Date(resp_dark$Date)
-resp_dark$ID <- paste(resp_dark$plot, resp_dark$pot, sep = "-")
+  resp_dark$Date <- as.Date(resp_dark$Date)
+  resp_dark$ID <- paste(resp_dark$plot, resp_dark$pot, sep = "-")
 
 #read in plot design and harvest data
 plotsumm <- read.csv("raw data/plot_summary.csv")
-plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 
 rd <- merge(resp_dark[,c(1,10,62)], plotsumm[,3:4])
+  rd$volume <- as.factor(rd$volume)
 
 #mean Rd by volume
 rd_agg <- ddply(rd, .(volume), function(x) data.frame(rd_mean=mean(x$Photo)))
 
-#merge Rd with TNC-sugars, R per leaf mass?
+#rd stats ----------------------------------------------------------------------------------------
+rd_lm <- lme(Photo ~ volume, random= ~1|ID, data=rd)
+anova(rd_lm)
+summary(rd_lm)
+
+tukey_rd<- glht(rd_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_rd)
+visreg(rd_lm)
+
+
+#merge Rd with TNC-sugars, R per leaf mass?-------------------------------------------------------------
 leaf_tnc <- read.csv("calculated data/leaf_tnc.csv")
 leaf_sugars <- leaf_tnc[,c(1:6, 8,11)]
 
 rd_sugar<- merge(leaf_tnc[,c(1:6, 8,11)], rd_agg)
-rd_sugar$volume <- as.factor(rd_sugar$volume)
+  rd_sugar$volume <- as.factor(rd_sugar$volume)
 
-#new variables
-rd_sugar$resppermass <- with(rd_sugar, rd_mean/mass)
+###need leaf mass to from campaigns (respiration per unit mass)
+lma <- read.csv("raw data/seedling leaf mass area.csv")
+  lma$ID <- paste(lma$plot, lma$pot, sep = "-")
+  lma <- merge(lma, plotsumm[3:4], all=TRUE)
+lma <- lma[complete.cases(lma),]
+
+
+rd_sugar2 <- merge(rd_sugar, lma[,c(1,4,7)]) 
+  #new variables
+  rd_sugar2$resppermass <- with(rd_sugar2, rd_mean/mass)
+
+###stats of resp on mass basis
+rdm_lm <- lme(resppermass ~ volume, random= ~1|ID, data=rd_sugar2)
+anova(rdm_lm)
+summary(rdm_lm)
+
+tukey_rdm<- glht(rdm_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_rdm)
+visreg(rdm_lm)
 
 #-----------------------------------------------------------------------------------------
 #calculate overall means and means for each date
@@ -39,6 +68,8 @@ rdsugar_agg <- summaryBy(resppermass+leafsugar ~ volume, FUN=c(mean, se),
 #means(campaign)
 rdsugar_campaign <- summaryBy(resppermass+leafsugar ~ campaign + volume, FUN=c(mean, se), 
                            keep.names=TRUE, data=rd_sugar)
+
+
 
 #----------------------------------------------------------------------------------------------------
 #plot stuff
