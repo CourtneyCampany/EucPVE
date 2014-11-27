@@ -1,15 +1,13 @@
 #Stomatal conducatnce model (use nls)
 
-source("functions and packages/load packages.R")
-source("functions and packages/functions.R")
-source("functions and packages/plot objects.R")
+source("functions and packages/startscripts.R")
 
 #this script reads in a caluclated Asat dataframe
 #Read in A spot measurements and create plot IDs
 A_obs <- read.csv("calculated data/Asat_obs.csv")
-A_obs$ID <- paste(A_obs$plot, A_obs$pot, sep = "-")
-A_obs$Date <- as.Date(A_obs$Date)
-A_obs$Date <-strftime(A_obs$Date ,"%Y/%m/%d")
+  A_obs$ID <- paste(A_obs$plot, A_obs$pot, sep = "-")
+  A_obs$Date <- as.Date(A_obs$Date)
+  A_obs$Date <-strftime(A_obs$Date ,"%Y/%m/%d")
 
 #subset conductance measurements of Asat data
 cond_data <- subset(A_obs, CO2=="400", select = c("Date", "Cond", "VpdL", "Photo", "CO2R","Ci","ID", "volume"))
@@ -17,14 +15,14 @@ cond_data <- subset(A_obs, CO2=="400", select = c("Date", "Cond", "VpdL", "Photo
 
 #mean of raw data (5 observations per pot per date)
 cond_agg <- summaryBy(. ~ ID + Date, data = cond_data, FUN = c(mean))
-names(cond_agg)[3:8] <- c("gs", "D", "A", "Ca", "Ci", "volume")
-cond_agg$volume <- as.factor(cond_agg$volume)
-cond_agg$Date <- as.Date(cond_agg$Date)
+  names(cond_agg)[3:8] <- c("gs", "D", "A", "Ca", "Ci", "volume")
+  cond_agg$volume <- as.factor(cond_agg$volume)
+  cond_agg$Date <- as.Date(cond_agg$Date)
+  cond_agg$cica <- with(cond_agg, Ci/Ca )
 
 ------------------------------------------------------------------------------------------------------
 #test if gs is different by volume or by time
 boxplot(gs ~ volume, data = cond_agg)
-boxplot(Cond ~ volume, data = cond_data)
 boxplot(gs ~ Date, data = cond_agg)
 
 #find where date different and look at overall model
@@ -49,6 +47,19 @@ tukey_gs2<- glht(gs_lm2, linfct = mcp(volume = "Tukey"))
 
 #overall seedling gs to show that not stressed
 gs_mean <- mean(cond_agg$gs)
+
+##also test ci/ca
+cica_mean <- mean(cond_agg$cica)
+
+boxplot(cica ~ volume, data = cond_agg)
+
+cica_lm <- lme(cica ~ volume, random= ~1|ID, data=cond_agg)
+anova(cica_lm)
+summary(cica_lm)
+
+tukey_cica<- glht(cica_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_cica)
+visreg(cica_lm)
 
 
 #------------------------------------------------------------------------------------------------------
