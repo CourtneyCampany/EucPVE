@@ -3,6 +3,9 @@
 #root mass by volume?
 
 source("functions and packages/startscripts.R")
+require(nlme)
+require(visreg)
+library(multcomp)
 
 #read in plot design and harvest data
 plotsumm <- read.csv("raw data/plot_summary.csv")
@@ -41,16 +44,28 @@ soilN_mean = round(mean(soilpre$n_perc),3)
 
 
 #soil harvest
-soil_harvest <- soil[0:48,]
-harvestmean <- summaryBy(n_perc~volume, data=soil_harvest, keep.names=TRUE)
-Hmean <- round(mean(harvestmean$n_perc),3)
+soil_harvest <- soil[0:47,]
+  soil_harvest$volume <- as.factor(soil_harvest$volume)
 
+harvestmean <- summaryBy(n_perc~volume, data=soil_harvest, keep.names=TRUE)
+Hmean <- round(mean(harvestmean$n_perc),4)
+
+#soilN
+n_lm <- lme(n_perc ~ volume, random= ~1|ID, data=soil_harvest)
+anova(n_lm)
+summary(n_lm)
+
+tukey_N<- glht(n_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_N)
+visreg(n_lm)
+
+
+###these changes are after stats for plotting labels
 soil_harvest$volume <- gsub("1000", "free", soil_harvest$volume)
 soil_harvest$volume <- gsub("^5", "05", soil_harvest$volume)
-soil_harvest$volume <- as.factor(soil_harvest$volume)
 
 
-#PLOT of Root Mass-----------------------------------------------------------------------------------------------
+#PLOT-----------------------------------------------------------------------------------------------
 
 #froot
 windows()
