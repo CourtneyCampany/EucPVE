@@ -180,7 +180,38 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
-###### These are the extra parameters to run model: 
+
+#####Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
+require(plyr)
+
+#test with vol5
+Aleaf5 <- subset(Aleaf, volume == 5)
+
+Aleaf5_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=Aleaf5[3], lma=lma_mean, 
+                            frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
+                            leaffrac=lf,SIMPLIFY=F)))
+
+###now all of them, build a dfr with cday and allocation then use plyr
+Aleaf_day <- Aleaf[,2:3]
+  Aleaf_day <- merge(Aleaf_day, lma_vol)
+  Aleaf_day <- merge(Aleaf_day, fr_frac_vol)
+  Aleaf_day <- merge(Aleaf_day, cr_frac_vol)
+  Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
+  Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
+
+
+test2 <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(productionmodel, gCday=x$carbon_day, 
+                                        lma=x$massarea,frfrac=x$frfrac, 
+                                        crfrac=x$crfrac, stemfrac=x$stemfrac,
+                                        leaffrac=x$leaffrac, SIMPLIFY=F))))
+
+test3 <- dlply(Aleaf_day, .(volume))
+  
+
+
+
+
+###### These are the extra parameters to run model when using mean gCday (n=7): 
 gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) #sequence over modelled range
 gc_mean <- mean(Cday)  #mean of modelled gCday for each volume
 gc_min <- min(Cday)
