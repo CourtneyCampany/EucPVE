@@ -199,15 +199,12 @@ Aleaf_day <- Aleaf[,2:3]
   Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
   Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
 
+testsp <- dlply(Aleaf_day, .(volume))
 
 test2 <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(productionmodel, gCday=x$carbon_day, 
                                         lma=x$massarea,frfrac=x$frfrac, 
                                         crfrac=x$crfrac, stemfrac=x$stemfrac,
                                         leaffrac=x$leaffrac, SIMPLIFY=F))))
-
-test3 <- dlply(Aleaf_day, .(volume))
-  
-
 
 
 
