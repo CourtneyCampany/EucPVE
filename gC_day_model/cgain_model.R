@@ -199,13 +199,21 @@ Aleaf_day <- Aleaf[,2:3]
   Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
   Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
 
-testsp <- dlply(Aleaf_day, .(volume))
 
-test2 <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(productionmodel, gCday=x$carbon_day, 
-                                        lma=x$massarea,frfrac=x$frfrac, 
-                                        crfrac=x$crfrac, stemfrac=x$stemfrac,
-                                        leaffrac=x$leaffrac, SIMPLIFY=F))))
 
+Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(productionmodel, gCday=x$carbon_day, 
+                                        lma=x$massarea,frfrac=x$froot_frac, 
+                                        crfrac=x$croot_frac, stemfrac=x$stem_frac,
+                                        leaffrac=x$leaf_frac, SIMPLIFY=F))))
+###merge Cday with Aleaf
+
+Aleaf_sp <- dlply(Aleaf_day[1:2], .(volume)) #list of Cday
+Aleaf_sim2 <- mapply(c, Aleaf_sim, Aleaf_sp, SIMPLIFY=FALSE) #merge two lists
+##creates a list of lists, simply to list of dfrs
+Aleaf_sim3 <- llply(Aleaf_sim2, function(x) as.data.frame(sapply(x, rbind)))
+
+##save Aleaf_sim as rds
+saveRDS(Aleaf_sim3, file = "calculated data/model_runs/Aleaf_sim.rds")
 
 
 ###### These are the extra parameters to run model when using mean gCday (n=7): 
