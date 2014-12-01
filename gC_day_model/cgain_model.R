@@ -180,6 +180,7 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
+mu <- .6 #cf for gCday
 
 #####Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
 require(plyr)
@@ -201,7 +202,8 @@ Aleaf_day <- Aleaf[,2:3]
 
 
 
-Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(productionmodel, gCday=x$carbon_day, 
+Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
+                                        productionmodel, gCday=mu*(x$carbon_day), 
                                         lma=x$massarea,frfrac=x$froot_frac, 
                                         crfrac=x$croot_frac, stemfrac=x$stem_frac,
                                         leaffrac=x$leaf_frac, SIMPLIFY=F))))
@@ -221,8 +223,6 @@ gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) #sequence over modelled r
 gc_mean <- mean(Cday)  #mean of modelled gCday for each volume
 gc_min <- min(Cday)
 gc_max <- max(Cday)
-
-mu <- .6 #cf for gCday
 
 
 #Scenario#1: Gcday seq, allocation = mean------------------------------------------------------------------------------------
