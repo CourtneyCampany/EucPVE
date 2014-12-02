@@ -284,13 +284,13 @@ sim_rootresp$gCday <- gcday_seq_obs
 #save run
 write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp.csv" , row.names=FALSE)
 
-####Scenario #4: increase in leaf respiration with increase in SLA
+####Scenario #?: increase in leaf respiration with increase in SLA
 
 
 
-####Simultaions by treatment-----------------------------------------------------------------------------------
+####Scenario #4:  allocation by harvest mean
 
-#component allocation and lma by volume (7 sims) in loop---------------------------------------------------
+#component allocation and lma by volume (7 sims) in loop
 allsims <- list()
 for (i in 1:7){
 sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_trt[i],frfrac=frfrac_trt[i], 
