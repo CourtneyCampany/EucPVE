@@ -6,7 +6,7 @@ source("functions and packages/startscripts.R")
 #growth allometry
 source("master_scripts/allometryplotting.R")
 #leaf area
-source("master_scripts/leafarea_plotting.R")
+source("master_scripts/allocation_plotting.R")
 #rootshoot ratios
 source("master_scripts/rootshoot_plotting.R")
 #aci curvest, volume means
@@ -27,7 +27,7 @@ abline(lm(totalC ~ carbon_gain, data=cgain), lty=5)
 source("master_scripts/soilN_plotting.R")
 
 #Amass vs N and TNC with levels
-source(("master_scripts/photochem_predict.R")
-       
-#Allocation and LMF
-source(("master_scripts/allocation_plotting.R"))
+source("master_scripts/Amax_TNC_N_plotting.R")
+
+#morphology
+source("master_scripts/rootleaf_morph_plotting.R")
