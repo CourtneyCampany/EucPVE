@@ -88,24 +88,26 @@ par(cex.axis=1.3, cex.lab=1.3)
 with(gCseq_sim_obs, plot(biomass~gCday, ylim=c(0,250), xlim=c(4,8), ylab= "",xlab=cdaylab,pch=16,
                          cex=1.6, col=col_bl, type="n"))
   
+  #observed mass vs mean Cday
+  points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
+  #sim mass wiht Aleaf  (all days Cday with allocation)
+  points(Aleaf_sim$biomass~ Cday, col=palette(), pch=pchs2, cex=1.6)
+  #sim mass with sunny day Cday
+  points(mass_sim$biomass ~ Cday, pch=pchs3, bg=palette(), cex=1.6)  
+  
+  #scenario #1 (means)
+  points(biomass~gCday,pch=16,cex=1.6, col="black", data=gCseq_sim_obs, type="l", lwd=2)
+  
   #sceario #2 (as poly)
   polygon(sim_exudate$Cday, sim_exudate$biomass, lty=2, lwd=2,border="darkorange2", col=col_exude, density= -.4)
   #scenario #3
   polygon(rootresp_poly$gCday, rootresp_poly$biomass, lty=2, lwd=2,border="forestgreen", col=col_resp, density= -.4)
-  #scenario #1 (means)
-  points(biomass~gCday,pch=16,cex=1.6, col="black", data=gCseq_sim_obs, type="l", lwd=2)
-  #observed mass
-  points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
-  #sim mass wiht Aleaf  
-  points(Aleaf_sim$biomass~ Cday, col=palette(), pch=pchs2, cex=1.6)
-  #sim mass with sunny day Cday
-  points(mass_sim$biomass ~ Cday, pch=pchs3, bg=palette(), cex=1.6)
   
-title(ylab=treelab, mgp=ypos)
+  title(ylab=treelab, mgp=ypos)
   legend("topleft", leglab, pch=pchs,text.font=1, inset=0.01, 
-   title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
+        title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
 
-dev.off()
+#dev.off()
 
 
 
@@ -114,24 +116,20 @@ dev.off()
 ##simple plotting with output of gCday volume means (n=7) versus observed mass and leaf area
 
 par(mfrow=c(1,2))
-plot(mass_sim$biomass, mass_actual$mass, col="blue", pch=19, ylim=c(0,200), xlim=c(0,250))
-  points(Aleaf_final$biomass, mass_actual$mass, col="green", pch=19)
+plot(mass_actual$mass,mass_sim$biomass, col=palette(), pch=pchs, ylim=c(0,200), xlim=c(0,250))
+  points( mass_actual$mass,Aleaf_sim$biomass, col=palette(), pch=pchs2)
 abline(0,1, lty=2)
 
+plot(mass_actual$leafarea, mass_sim$leafarea,ylim=c(0,.5), col=palette(), pch=pchs)
+  points( mass_actual$leafarea, Aleaf_sim$leafarea, col=palette(), pch=pchs2)
+abline(0,1, lty=2)
 
-plot(mass_actual$leafarea, mass_sim$leafarea,ylim=c(0,.5))
-abline(0,1)
+##mass output vs sunny day mean carbon day
+plot(Cday, mass_actual$mass, ylim=c(0,225))
+  points(Cday, mass_sim$biomass, col="red")
+  points(Cday, Aleaf_sim$biomass, col="green")
 
 
-plot(Cday, mass_sim$biomass, ylim=c(0,225))
-  points(Cday, mass_actual$mass, col="red")
-
-
-
-#A and plot mass, leafmass, and LMF vs A
-plot(Cday, mass_sim$leafmass, pch=pchs, col=palette())
-plot(Cday, mass_sim$LMF,  pch=pchs, col=palette())
-plot(Cday, mass_sim$biomass,  pch=pchs, col=palette())
 
 #plot simple model has a function of mass standardized to largest pot and free (both mass and gC)
 
