@@ -45,7 +45,7 @@ with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90
 with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03, cex=2))
 points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=2, col = volume)      
 box()
-text(x=as.Date("2013-05-21"), 128, "(a)", cex=1.5)
+text(x=as.Date("2013-05-21"), 128, "(a)", cex=2)
 
 # Second panel         
 plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),ylim=c(0,17), axes = FALSE, xlab="")
@@ -56,7 +56,7 @@ with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean+diameter.se, angl
 with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angle=90, col=palette(),length=0.03, cex=2))
 points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume], cex=2,col = volume)
 box()
-text(x=as.Date("2013-05-21"), 16, "(b)", cex=1.5)
+text(x=as.Date("2013-05-21"), 16, "(b)", cex=2)
 
 #third panel
 
@@ -72,7 +72,7 @@ with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.
                            col=volume,length=0.03, cex=2))
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                    col=x$volume, pch = pchs[x$volume],cex=2))
-text(x=as.Date("2013-05-21"), .65, "(c)", cex=1.5)
+text(x=as.Date("2013-05-21"), .65, "(c)", cex=2)
 
 dev.copy2pdf(file= "output/allometry.pdf")
 dev.off()

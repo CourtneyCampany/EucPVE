@@ -2,7 +2,7 @@ source("functions and packages/startscripts.R")
 
 #read in plot design and harvest data
 plotsumm <- read.csv("raw data/plot_summary.csv")
-plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 
 ##SLA[tncfree]------------------------------------------------------------------------------------------
 
@@ -13,8 +13,8 @@ sla_tnc <- read.csv("calculated data/TNC_content")
   sla_tnc$lma <- with(sla_tnc, mass/area)
 
 leaf_TNCfree <- subset(sla_tnc, select = c("ID", "volume", "sla_free", "lma_free","sla", "lma","Date"))
-volorder<-order(leaf_TNCfree$volume, by=leaf_TNCfree$Date)
-leaf_TNCfree <- leaf_TNCfree[volorder,]
+  volorder<-order(leaf_TNCfree$volume, by=leaf_TNCfree$Date)
+  leaf_TNCfree <- leaf_TNCfree[volorder,]
 
 #treatment means
 sla_tnc_campaign <- summaryBy(sla_free+lma_free+ sla+ lma ~ volume+Date, data=leaf_TNCfree, FUN=c(mean, se))
@@ -22,7 +22,7 @@ sla_tnc_campaign <- summaryBy(sla_free+lma_free+ sla+ lma ~ volume+Date, data=le
 sla_tnc_agg <- summaryBy(sla_free+lma_free+ sla+ lma~volume, data=leaf_TNCfree, FUN=c(mean, se))
 
 #SRL------------------------------------------------------------------------------------------------------
-(srl <- read.csv("raw data/SRLmass.csv")
+srl <- read.csv("raw data/SRLmass.csv")
   srl$ID <- paste(srl$plot, srl$pot, sep = "-")
   srl <- merge(srl, plotsumm[3:4], all=TRUE)
   srl <- subset(srl, !is.na(volume))
@@ -32,8 +32,8 @@ sla_tnc_agg <- summaryBy(sla_free+lma_free+ sla+ lma~volume, data=leaf_TNCfree, 
 #srl <- vollab_func(srl)
 
 srlm <- lm(SRL ~ volume, data=srl)
-summary(srlm)
-anova(srlm)
+  summary(srlm)
+  anova(srlm)
 
 ##Stats for sla and srl--------------------------------------------------------------------------------------
 require(nlme)
@@ -42,30 +42,29 @@ library(multcomp)
 
 #srl (not different)
 srl_lm <- lme(SRL ~ volume, random= ~1|ID, data=srl)
-anova(srl_lm)
-summary(srl_lm)
+  anova(srl_lm)
+  summary(srl_lm)
 
-tukey_srl<- glht(srl_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_srl)
-visreg(srl_lm)
+  tukey_srl<- glht(srl_lm, linfct = mcp(volume = "Tukey"))
+  cld(tukey_srl)
+  visreg(srl_lm)
 
 
 #sla
 sla_lm <- lme(sla_free ~ volume, random= ~1|ID, data=sla_tnc)
-anova(sla_lm)
-summary(sla_lm)
+  anova(sla_lm)
+  summary(sla_lm)
 
-tukey_sla<- glht(sla_lm, linfct = mcp(volume = "Tukey"))
-siglets_sla <- cld(tukey_sla)
-visreg(sla_lm)
+  tukey_sla<- glht(sla_lm, linfct = mcp(volume = "Tukey"))
+  siglets_sla <- cld(tukey_sla)
+  visreg(sla_lm)
 
 #when did sla free happen?
 sla_lm2 <- lme(sla_free ~ volume, random= ~1|ID, data=sla_tnc, subset=Date=="2013-03-07")
-anova(sla_lm2)
-visreg(sla_lm2)
-tukey_srl2<- glht(sla_lm2, linfct = mcp(volume = "Tukey"))
-cld(tukey_srl2)
-
+  anova(sla_lm2)
+  visreg(sla_lm2)
+  tukey_srl2<- glht(sla_lm2, linfct = mcp(volume = "Tukey"))
+  cld(tukey_srl2)
 
 
 #2panel plot of leaf and root morphology------------------------------------------------------------------
@@ -81,7 +80,6 @@ SigLetters <- siglets_sla$mcletters$Letters
 #   axis.Date(1, at=xAT, labels=TRUE)  
 # d_ply(sla_tnc_campaign, .(volume), function(x) add_trend_line("Date", "sla_free.mean", x, ))
 # legend("topright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n', cex=1.3)
-
 
 
 windows(14,8)
