@@ -182,17 +182,25 @@ productionmodel <- function(leaffrac = .25,
 
 mu <- .6 #cf for gCday
 
-#####Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
+#1.Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
 require(plyr)
 
-#test with vol5
-Aleaf5 <- subset(Aleaf, volume == 5)
+###run sim with all aleaf and mean alllocation
+Aleaf_mean <- dlply(Aleaf, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
+  productionmodel, gCday=mu*(x$carbon_day), 
+  lma=lma_mean,frfrac=fr_frac_mean, 
+  crfrac=cr_frac_mean, stemfrac=stem_frac_mean,
+  leaffrac=lf, SIMPLIFY=F))))
 
-Aleaf5_sim <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=Aleaf5[3], lma=lma_mean, 
-                            frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
-                            leaffrac=lf,SIMPLIFY=F)))
+  #extract final number and then save
+  Aleaf_mean2 <- do.call(rbind, lapply(Aleaf_mean , function(x) x[121,])) 
+    Aleaf_mean2$volume = as.factor(rownames(Aleaf_mean2))
+    row.names(Aleaf_mean2) <- NULL
+  write.csv(Aleaf_mean2, "calculated data/model_runs/Aleaf_mean.csv", row.names=FALSE)
 
-###now all of them, build a dfr with cday and allocation then use plyr
+#2. run sim with gcday by treatment and day with allocation 
+
+#dfr for input
 Aleaf_day <- Aleaf[,2:3]
   Aleaf_day <- merge(Aleaf_day, lma_vol)
   Aleaf_day <- merge(Aleaf_day, fr_frac_vol)
@@ -200,25 +208,31 @@ Aleaf_day <- Aleaf[,2:3]
   Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
   Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
 
-
-
 Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
                                         productionmodel, gCday=mu*(x$carbon_day), 
                                         lma=x$massarea,frfrac=x$froot_frac, 
                                         crfrac=x$croot_frac, stemfrac=x$stem_frac,
                                         leaffrac=x$leaf_frac, SIMPLIFY=F))))
-###merge Cday with Aleaf
+  #merge Cday with Aleaf
+  Aleaf_sp <- dlply(Aleaf_day[1:2], .(volume)) #list of Cday
+  Aleaf_sim2 <- mapply(c, Aleaf_sim, Aleaf_sp, SIMPLIFY=FALSE) #merge two lists
 
-Aleaf_sp <- dlply(Aleaf_day[1:2], .(volume)) #list of Cday
-Aleaf_sim2 <- mapply(c, Aleaf_sim, Aleaf_sp, SIMPLIFY=FALSE) #merge two lists
-##creates a list of lists, simply to list of dfrs
-Aleaf_sim3 <- llply(Aleaf_sim2, function(x) as.data.frame(sapply(x, rbind)))
+  #creates a list of lists, simply to list of dfrs
+  Aleaf_sim3 <- llply(Aleaf_sim2, function(x) as.data.frame(sapply(x, rbind)))
 
-##save Aleaf_sim as rds
-saveRDS(Aleaf_sim3, file = "calculated data/model_runs/Aleaf_sim.rds")
+  Aleaf_sim4 <- do.call(rbind, lapply(Aleaf_sim3 , function(x) x[121,])) 
+    Aleaf_sim4$volume = as.factor(rownames(Aleaf_sim4))
+    row.names(Aleaf_sim4) <- NULL
+
+  #save Aleaf_sim as rds and as simple dfr of last dates
+  write.csv(Aleaf_sim4, "calculated data/model_runs/Aleaf_sim_final.csv", row.names=FALSE)
+  saveRDS(Aleaf_sim3, file = "calculated data/model_runs/Aleaf_sim.rds")
 
 
-###### These are the extra parameters to run model when using mean gCday (n=7): 
+
+####next models sims use sequence of carbon day and test scenarios-----------------------------------------------------
+
+#Extra parameters to run model when using mean gCday (n=7) or sequence of gcday: 
 gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) #sequence over modelled range
 gc_mean <- mean(Cday)  #mean of modelled gCday for each volume
 gc_min <- min(Cday)
