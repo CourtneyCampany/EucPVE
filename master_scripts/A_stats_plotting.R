@@ -1,3 +1,7 @@
+
+to.pdf(figure1(), filename="manuscript/figures/figure1.pdf", height=7, width=7)
+
+figure1 <- function(){
 #source functions, packages, anbd plot objects
 source("functions and packages/startscripts.R")
 
@@ -108,6 +112,6 @@ bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", 
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
 
-
+}
 
 
