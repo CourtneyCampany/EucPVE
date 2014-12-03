@@ -28,7 +28,7 @@ srl <- read.csv("raw data/SRLmass.csv")
   srl <- subset(srl, !is.na(volume))
   srl$SRL <- with(srl, (total_length_cm/100)*(srl_fw*(ss_dw/ss_fw)))
   srl$volume <- as.factor(srl$volume)
-  row.names(srl) <- NULL)
+  row.names(srl) <- NULL
 #srl <- vollab_func(srl)
 
 srlm <- lm(SRL ~ volume, data=srl)

@@ -30,6 +30,8 @@ xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 windows(14,12)
 #png(filename = "output/presentations/growth.png", width = 10.5, height = 9.5, units = "in", res= 400)
 par(cex.axis=1.5, cex.lab=1.5,
+    las=1,
+    mgp=c(3.5,1,0),
     mfrow=c(3,1),  # rows and columns of plots
     omi=c(.5,0,0.1,0.1),  # outer margin (inches)
     mar=c(0,7,0,0))   # margin around plots (they are tight together)   
