@@ -27,41 +27,41 @@ xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
 tminlab <- expression(T[min])
 tmaxlab <- expression(T[max])
 vpdlab <- expression(Daily~VPD[min]~and~VPD[max]~(kPa))
-ppfdlab <- 
+
 
 windows(12,8)
-
 ####multipanel plot of 
-par(cex.axis=1, cex.lab=1.3,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
-    omi=c(.5,0,0.1,0.1),  # outer margin (inches)
-    mar=c(0,7,0,0))   # margin around plots (they are tight together)   
-
+par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
+    omi=c(.5,0,0.1,0.1))
+    
 #1=temp
-#par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+par(mar=c(0,7,2,2))
 with(airvars, {
   plot(Date, Temperature.max, type='l', col="red",ylim=c(0,40),lwd=2,
        xlab="",axes=FALSE,ylab=expression(Daily~T[min]~and~T[max]~(degree*C)),
        panel.first={
-         addpoly(Date, Temperature.min, Temperature.max,col="grey90")
+         addpoly(Date, Temperature.min, Temperature.max,col="grey98")
        })
   lines(Date, Temperature.min, col="blue", lwd=2)
   
 })
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
-legend("topright",col=c("red","blue"),lty=1,legend=c(tmaxlab,tminlab), inset=.01)
+legend("topright",col=c("red","blue"),lty=1,lwd=2,legend=c(tmaxlab,tminlab), inset=.01, cex=1.51)
 box()
 
 #2=PPFD
-plot(Par.max~Date,type="l",col="orange",data=airvars, xlab="", lwd=2,
-     ylab=expression(Daily~~PPFD[max]~(mol~m^-2~s^-1)),axes=FALSE)
+par(mar=c(0,7,0,2))
+plot(Par.max~Date,type="l",col="orange",data=airvars, xlab="", lwd=2,ylim=c(0, 2750),
+     ylab=expression(Daily~PPFD[max]~~(mol~m^-2~s^-1)),axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 box()
 
 #3= VPD
-plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,
-    ylab=expression(Daily~VPD[min]~and~VPD[max]~(kPa)),data=airvars, axes=FALSE)
+par(mar=c(2,7,0,2))
+plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.5),
+    ylab=expression(Daily~VPD[max]~~(kPa)),data=airvars, axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT)
 box()
