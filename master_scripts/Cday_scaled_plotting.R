@@ -1,3 +1,7 @@
+to.pdf(figure1(), filename="manuscript/figures/figure1.pdf", height=7, width=7)
+figure1 <- function(){
+
+
 source("gC_day_model/model_plot_objects.R")
 
 #read in observed mass and Cday---------------------------------------------------------------------------------
@@ -27,9 +31,8 @@ alloc_sim$maxmass <- c(rep(alloc_sim$biomass[1],101),rep(alloc_sim$biomass[102],
 alloc_sim$mass_adj_free <- alloc_sim$biomass/alloc_sim$biomass[607]
 
 #######scaled plotting-----------------------------------------------------------------------
-
 windows(7,5)
-par(mar=c(5,5,2,2), cex.axis=0.8)
+par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 
 with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=cols1, xlim=c(1,.6),ylim=c(0,1),
                                        cex=1, pch=16,
