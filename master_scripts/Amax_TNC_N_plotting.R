@@ -64,43 +64,45 @@ TNCpred <- expand.grid(Nmass_notnc = c(0.00125, 0.00375, 0.00625, 0.00875, 0.012
                        starch = seq(min(photo_chem$starch), max(photo_chem$starch), length=101))
 TNCpred$Amass_pred <- predict(Afit2_full, TNCpred, re.form=NA)
 
+##plot
+alab <- expression(A[mass]~~(n*mol~g^-1~s^-1))
+
+
 windows(12, 8)
-par(cex.axis=1.5, cex.lab=1.5,
-    mfrow=c(1,2),  
-    omi=c(1,1,0.1,0.1),  # outer margin (inches)
-    mar=c(0,0,0,0))   # margin around plots (they are tight together) 
+par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),  oma=c(0.1,0.1,0.1,0.1), las=1)
 
 # First Panel
-plot(A_mass ~ starch, data=photo_chem,type='n',ylim=c(0,800), xlim=c(0, 0.275),ylab="", axes=FALSE, xlab="")  
+par(mar=c(5,5,2,0))
+plot(A_mass ~ starch, data=photo_chem,type='n',ylim=c(0,800), xlim=c(0, 0.275),ylab=alab, axes=FALSE, xlab="")  
 box()
 axis(1, labels=TRUE) 
 axis(2, labels=TRUE)  
-mtext(expression(A[mass]~~(n*mol~g^-1~s^-1)), outer=TRUE, line=2.5, side=2, cex=1.5)
+#mtext(alab, outer=TRUE, line=2.5, side=2, cex=1.5)
 points(A_mass ~ starch, pch=21, data=photo_chem, bg=coln2[nitrobin], ylim=c(0,800), ylab="",
-       xlab="",xlim=c(0, .275),cex=1.3, ylab="")
+       xlab="",xlim=c(0, .275),cex=1.2, ylab="")
 
 for(i in 1:length(unique(TNCpred$Nmass_notnc))){
   m <- subset(TNCpred, Nmass_notnc == unique(TNCpred$Nmass_notnc)[i])
   with(m, lines(starch, Amass_pred, col=coln[i], lwd=2))
 }
-text(0, 805, "(a)", adj=-.1, cex=1.5)
-mtext(starchlab, cex=1.5, line=3.5, side=1)
-legend("topright", binlab2, pch=21, text.font=1.3, inset=0.02, pt.bg=cols2,title=nfree , bty='n', cex=1.3) 
+text(0, 805, "(a)", adj=-.1, cex=1.2)
+mtext(starchlab, cex=1.2, line=3.5, side=1)
+legend("topright", binlab2, pch=21, text.font=1.2, inset=0.02, pt.bg=cols2,title=nfree , bty='n', cex=1.2) 
  
-
 # Second Panel
+par(mar=c(5,0,2,2))
 plot(A_mass ~ Nmass_notnc, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0, 0.02), ylim=c(0,800), xlab="")
 box()
 axis(1, labels=TRUE) 
 axis(2, labels=FALSE, tcl=0.5)  
 
 points(A_mass ~ Nmass_notnc, data=photo_chem, pch=21, bg=cols2[starchbin], 
-       ylab="", xlab="",ylim=c(0,800),cex=1.3)
+       ylab="", xlab="",ylim=c(0,800),cex=1.2)
 
 for(i in 1:length(unique(Npred$starch))){
   d <- subset(Npred, starch == unique(Npred$starch)[i])
   with(d, lines(Nmass_notnc, Amass_pred, col=cols[i], lwd=2))
 }
-text(0, 805, "(b)", adj=-.1, cex=1.5)
-mtext(nmass_noTNC, side=1, cex=1.5, line=3.5)
-legend("bottomright", binlab, pch=21, text.font=1.3, inset=0.02, pt.bg=coln2,title=starchlab , bty='n', cex=1.3)
+text(0, 805, "(b)", adj=-.1, cex=1.2)
+mtext(nmass_noTNC, side=1, cex=1.2, line=3.5)
+legend("bottomright", binlab, pch=21, text.font=1.2, inset=0.02, pt.bg=coln2,title=starchlab , bty='n', cex=1.2)
