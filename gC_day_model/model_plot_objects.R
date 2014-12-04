@@ -7,7 +7,7 @@ pchs = c(rep(16,6),17)
 pchs2 <- c(rep(1,6),2)
 pchs3 <- c(rep(21,6), 24)
 ypos <- c(2.5,1,0)
-vollab <- expression(Pot~volume~(l))
+vollab <- expression(Soil~volume~(L))
 leglab <- c(5, 10, 15, 20, 25, 35, "free")
 
 cols <- as.vector(palette())

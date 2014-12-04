@@ -14,7 +14,7 @@ PTcex <- 1.6
 LABcex <- 1.3
 #legend and axis labels for all data
 
-vollab <- expression(Pot~volume~(l))
+vollab <- expression(Soil~volume~(L))
 leglab <- c(5, 10, 15, 20, 25, 35, "Free")
 leglab2 <- as.character(c(5, 10, 15, 20, 25, 35))
 
