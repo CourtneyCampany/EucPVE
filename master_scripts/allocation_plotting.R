@@ -22,7 +22,7 @@ Mf_mod2 <- sma(leafmass ~ Msr * volume, log="xy", data=seedlingmass)
 
 #new dfr with only components
 masses <- mass_agg[, c(1:2, 4:5,7)]
-masses$volume <- as.factor(masses$volume)
+  masses$volume <- as.factor(masses$volume)
 
 mass_perc <- data.frame(volume=as.factor(mass_agg$volume), 
                         stem_perc = with(mass_agg, stemmass/totalmass),
@@ -38,24 +38,25 @@ treecols2 <- c("forestgreen","olivedrab", "lightgoldenrod3","darkgoldenrod4")
 treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
+
 windows(14,8)
 
-par(cex.axis=1.3, cex.lab=1.3,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1) )   # margin around plots (they are tight together) 
+par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
 
-#plot1
-par(mar = c(4, 4, 1, 5.3), xpd = TRUE)
+#1. partitioning
+par(mar = c(5, 4, 2, 5.3), xpd = TRUE)
 barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "", 
         ylab="", ylim=c(0, 1))
 #space = c(.2,.2,.2,.2,.2,.2,.8))
-title(ylab="Tree Component Partioning  (%)", mgp=c(2.25,1,0))
+title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
 title(xlab="Soil Volume  (l)", mgp=ypos)
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
 
 #plot2
-par(mar=c(4,4,1,1))
+par(mar=c(5,4,2,2))
 plot(Mf_mod2, xlab="" , ylab="", col=palette(), pch=pchs, cex=1.5, lwd=2)
-title(ylab=expression(log[10]~Leaf~Mass~~(g)), mgp=c(2.25,1,0))
-title(xlab=expression(log[10]~Stem+Root~Mass~~(g)), mgp=ypos)
-legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=expression(Pot~volume~(l)), 
-       col=palette(), bty='n',cex=1)
+title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
+title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
+legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
+       col=palette(), bty='n',cex=1.2)
 

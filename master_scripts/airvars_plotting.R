@@ -47,7 +47,7 @@ with(airvars, {
 })
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
-legend("topright",col=c("red","blue"),lty=1,lwd=2,legend=c(tmaxlab,tminlab), inset=.01, cex=1.51)
+legend("topright",col=c("red","blue"),lty=1,lwd=2,legend=c(tmaxlab,tminlab), inset=.01, cex=1.51, bty='n')
 box()
 
 #2=PPFD
