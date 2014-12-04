@@ -23,98 +23,71 @@ airvars <- summaryBy(Par+Temperature+VPD~Date, met_120, FUN =c(min, max, mean))
 
 
 ##plot---------------------------------------------------------------------
-windows(7,5)
+xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
+tminlab <- expression(T[min])
+tmaxlab <- expression(T[max])
+vpdlab <- expression(Daily~VPD[min]~and~VPD[max]~(kPa))
+ppfdlab <- 
 
-par(mar=c(5,5,2,2), cex.axis=0.8)
+windows(12,8)
+
+####multipanel plot of 
+par(cex.axis=1, cex.lab=1.3,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
+    omi=c(.5,0,0.1,0.1),  # outer margin (inches)
+    mar=c(0,7,0,0))   # margin around plots (they are tight together)   
+
+#1=temp
+#par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 with(airvars, {
-  plot(Date, Temperature.max, type='l', col="blue",ylim=c(0,40),
+  plot(Date, Temperature.max, type='l', col="red",ylim=c(0,40),lwd=2,
        xlab="",axes=FALSE,ylab=expression(Daily~T[min]~and~T[max]~(degree*C)),
        panel.first={
-         #abline(h=seq(0,40,by=10),lty=5)
-         addpoly(Date, Temperature.min, Temperature.max,col="lightblue1")
+         addpoly(Date, Temperature.min, Temperature.max,col="grey90")
        })
-  lines(Date, Temperature.min, col="blue")
+  lines(Date, Temperature.min, col="blue", lwd=2)
   
 })
 axis(2)
-xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
-#xATminor <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
-axis.Date(1, at=xAT, format="%b-'%y" )
+axis.Date(1, at=xAT, labels=FALSE)
+legend("topright",col=c("red","blue"),lty=1,legend=c(tmaxlab,tminlab), inset=.01)
 box()
 
-#par
-
-parlab <- expression(mol~m^-2~s^-1)
-
-par(mar=c(5,5,2,2), cex.axis=0.8)
-with(airvars, {
-  plot(Date, Par.max, type='l', col="red",ylim=c(0,2200),
-       xlab="",axes=FALSE,ylab=expression(Daily~PPFD[min]~and~PPFD[max]~(mol~m^-2~s^-1)),
-       panel.first={
-         #abline(h=seq(0,40,by=10),lty=5)
-         addpoly(Date, Par.min, Par.max,col="pink")
-       })
-  lines(Date, Par.min, col="red")
-  
-})
+#2=PPFD
+plot(Par.max~Date,type="l",col="orange",data=airvars, xlab="", lwd=2,
+     ylab=expression(Daily~~PPFD[max]~(mol~m^-2~s^-1)),axes=FALSE)
 axis(2)
-xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
-axis.Date(1, at=xAT, format="%b-'%y" )
+axis.Date(1, at=xAT, labels=FALSE)
 box()
 
-#vpd
-par(mar=c(5,5,2,2), cex.axis=0.8)
-with(airvars, {
-  plot(Date, VPD.max, type='l', col="forestgreen",ylim=c(0,5),
-       xlab="",axes=FALSE,ylab=expression(Daily~T[min]~and~T[max]~(degree*C)),
-       panel.first={
-         #abline(h=seq(0,40,by=10),lty=5)
-         addpoly(Date, VPD.min, VPD.max,col="darkseagreen1")
-       })
-  lines(Date, VPD.min, col="forestgreen")
-  
-})
+#3= VPD
+plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,
+    ylab=expression(Daily~VPD[min]~and~VPD[max]~(kPa)),data=airvars, axes=FALSE)
 axis(2)
-xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
-#xATminor <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
-axis.Date(1, at=xAT, format="%b-'%y" )
+axis.Date(1, at=xAT)
 box()
 
-plot(VPD.max~Date, data=met_maxmin, type="l", col="forestgreen")
-
-plot(Temperature.max~Date, data=met_maxmin,  type="l", col="red")
-
+#dev.copy2pdf(file= "output/.pdf")
+#dev.off()
 
 
 
-#simple example of met data table
-require(data.table)
-library(gridExtra)
-# met_agg <- summaryBy(Par+Temperature+VPD ~ month, data=eucpve_met, FUN=mean, keep.names=TRUE)
-# met_agg$month <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun")
-# met_agg<- met_agg[1:5,]
+
+# #vpd
+# par(mar=c(5,5,2,2), cex.axis=0.8)
+# with(airvars, {
+#   plot(Date, VPD.max, type='l', col="forestgreen",ylim=c(0,5),
+#        xlab="",axes=FALSE,ylab=expression(Daily~VPD[min]~and~VPD[max]~(kPa)),
+#        panel.first={
+#          addpoly(Date, VPD.min, VPD.max,col="darkseagreen1")
+#        })
+#   lines(Date, VPD.min, col="forestgreen")
+#   
+# })
+# axis(2)
 # 
-# met_table <- as.table <- met_agg
-# pdf(file = "output/temp1.pdf")
-# capture.output(met_table, file= "output/temp1.txt")
-# write.csv(met_table, "calculated data/met data.csv", row.names=FALSE)
+# axis.Date(1, at=xAT )
+# box()
 
 
-EmptyLine <- data.frame(month = "",Par = "",Temperature = "", RH = "")
-Eqmonthdf <- as.data.frame(met_agg[1,])
 
-pdf(file = "output/temp.pdf")
 
-for (i in 2:nrow(met_agg)) 
-{
-  if (as.vector(met_agg$month[i])  ==  as.vector(met_agg$month[i-1])) 
-  {Eqmonthdf <- rbind(Eqmonthdf, met_agg[i,])}
-  
-  else {
-    Eqmonthdf <- rbind(Eqmonthdf, EmptyLine)
-    Eqmonthdf <- rbind(Eqmonthdf, met_agg[i,]) 
-  }
-}
-
-grid.table(Eqmonthdf, show.rownames = FALSE)
-dev.off()
