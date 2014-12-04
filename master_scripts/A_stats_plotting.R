@@ -1,7 +1,3 @@
-
-to.pdf(figure1(), filename="manuscript/figures/figure1.pdf", height=7, width=7)
-
-figure1 <- function(){
 #source functions, packages, anbd plot objects
 source("functions and packages/startscripts.R")
 
@@ -46,7 +42,6 @@ PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_s
   PSsat_ID$volume <- as.factor(PSsat_ID$volume)
 
 
-
 ##Photosynthesis means for paper table---------------------------------------------------------------------------
 
 ##overall means
@@ -66,27 +61,26 @@ library(multcomp)
 
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
-anova(asat_lm)
-summary(asat_lm)
-#tidy(asat_lm)
+  anova(asat_lm)
+  summary(asat_lm)
 
-tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
-siglets <-cld(tukey_A)
-visreg(asat_lm)
+  tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
+  siglets <-cld(tukey_A)
+  visreg(asat_lm)
 
 #lets prove that asat was immediately different, then use average
 asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
-anova(asat_lm_d1)
-summary(asat_lm_d1)
+  anova(asat_lm_d1)
+  summary(asat_lm_d1)
 
-tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
-cld(tukey_A1)
-visreg(asat_lm_d1)
+  tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
+    cld(tukey_A1)
+  visreg(asat_lm_d1)
 
 #amax
 amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
-anova(amax_lm)
-summary(amax_lm)
+  anova(amax_lm)
+  summary(amax_lm)
 
 tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
 cld(tukey_Amax)
@@ -94,24 +88,25 @@ visreg(amax_lm)
 
 #lets prove that asat was immediately different, then use average
 amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="2013-03-07")
-anova(amax_lm_d1)
-summary(amax_lm_d1)
+  anova(amax_lm_d1)
+  summary(amax_lm_d1)
 
-tukey_Amax1<- glht(amax_lm_d1, linfct = mcp(volume = "Tukey"))
-cld(tukey_Amax1)
-visreg(amax_lm_d1)
+  tukey_Amax1<- glht(amax_lm_d1, linfct = mcp(volume = "Tukey"))
+  cld(tukey_Amax1)
+  visreg(amax_lm_d1)
 
 
 ##PLOTTING----------------------------------------------------------------------------------------------------------
 SigLetters <- siglets$mcletters$Letters
 
 
+windows(7,5)
+par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 ###barplot with asat values, drop colors for now ( col=palette(),)
 bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
     col="grey", legend=FALSE)
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
 
-}
 
 
