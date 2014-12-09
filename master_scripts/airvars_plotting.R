@@ -66,8 +66,8 @@ axis(2)
 axis.Date(1, at=xAT)
 box()
 
-#dev.copy2pdf(file= "output/.pdf")
-#dev.off()
+dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
+dev.off()
 
 
 

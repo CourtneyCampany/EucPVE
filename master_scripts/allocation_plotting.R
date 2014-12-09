@@ -60,3 +60,5 @@ title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
 legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1.2)
 
+dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
+dev.off()

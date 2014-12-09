@@ -99,7 +99,6 @@ amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="
 ##PLOTTING----------------------------------------------------------------------------------------------------------
 SigLetters <- siglets$mcletters$Letters
 
-
 windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 ###barplot with asat values, drop colors for now ( col=palette(),)
@@ -108,5 +107,5 @@ bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", 
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
 
-
-
+dev.copy2pdf(file= "master_scripts/manuscript_figs/Asat.pdf")
+dev.off()

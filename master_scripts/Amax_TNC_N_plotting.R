@@ -106,3 +106,6 @@ for(i in 1:length(unique(Npred$starch))){
 text(0, 805, "(b)", adj=-.1, cex=1.2)
 mtext(nmass_noTNC, side=1, cex=1.2, line=3.5)
 legend("bottomright", binlab, pch=21, text.font=1.2, inset=0.02, pt.bg=coln2,title=starchlab , bty='n', cex=1.2)
+
+dev.copy2pdf(file= "master_scripts/manuscript_figs/A_leafchem.pdf")
+dev.off()

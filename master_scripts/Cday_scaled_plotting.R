@@ -1,5 +1,5 @@
-to.pdf(figure1(), filename="manuscript/figures/figure1.pdf", height=7, width=7)
-figure1 <- function(){
+# to.pdf(figure1(), filename="manuscript/figures/figure1.pdf", height=7, width=7)
+# figure1 <- function(){
 
 
 source("gC_day_model/model_plot_objects.R")
@@ -48,6 +48,9 @@ with(subset(alloc_sim, volume==1000),points(C_adj,mass_adj_free, col=cols7, cex=
 points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1)
 legend("topright", leglab, pch=pchs,text.font=1, inset=0.01, 
        title=vollab, col=palette(), bty='n',cex=1.0,)
+
+dev.copy2pdf(file= "master_scripts/manuscript_figs/gC_day.pdf")
+dev.off()
 
 # ###simple version
 # with(gCseq_sim_obs, plot(C_adj,mass_adj, xlim=c(1,.5),ylim=c(0, 1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))

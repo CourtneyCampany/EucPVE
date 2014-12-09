@@ -76,8 +76,8 @@ d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,
                                                    col=x$volume, pch = pchs[x$volume],cex=2))
 text(x=as.Date("2013-05-21"), .65, "(c)", cex=2)
 
-# dev.copy2pdf(file= "output/allometry.pdf")
-# dev.off()
+dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
+dev.off()
 
 
 
