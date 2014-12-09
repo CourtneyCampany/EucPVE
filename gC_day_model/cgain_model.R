@@ -250,9 +250,9 @@ write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.na
 
 #Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
 
-#sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
-fr_exude <- seq(fr_frac_mean*.5, fr_frac_mean*1.5, length=2)
-ofrac <- (1 - fr_exude)/3
+  #sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
+  fr_exude <- seq(fr_frac_mean*.5, fr_frac_mean*1.5, length=2)
+  ofrac <- (1 - fr_exude)/3
 
 sim_exud_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_min, lma=lma_mean, 
                                                     frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
@@ -284,11 +284,41 @@ sim_rootresp$gCday <- gcday_seq_obs
 #save run
 write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp.csv" , row.names=FALSE)
 
+
+
 ####Scenario #?: increase in leaf respiration with increase in SLA
 
+####scernario #4:  increase to leaf allocation (includes increases in leaf turnover)
+
+#sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
+lf_turn_max <- lf*1.5
+lf_turn_min <- lf*.5
+ofrac2 <- (1 - lf_turn_max)/3
+ofrac3 <- (1 - lf_turn_min)/3
+
+sim_lfturn_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                   frfrac=ofrac3, crfrac=ofrac3, stemfrac=ofrac3,         
+                                                   leaffrac=lf_turn_min,SIMPLIFY=F)))
+
+sim_lfturn_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                    frfrac=ofrac2, crfrac=ofrac2, stemfrac=ofrac2,         
+                                                    leaffrac=lf_turn_max,SIMPLIFY=F)))
+
+sim_lfturn_low$lf_alloc <- lf_turn_min
+sim_lfturn_low$lf_alloc_mean <- lf
+sim_lfturn_low$Cday <- gcday_seq_obs
+
+sim_lfturn_high$lf_alloc <- lf_turn_max
+sim_lfturn_high$lf_alloc_mean <- lf
+sim_lfturn_high$Cday <- gcday_seq_obs
+
+#save run2
+write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow_csv" , row.names=FALSE)
+write.csv(sim_lfturn_low, "calculated data/model_runs/sim_lfturn_high" , row.names=FALSE)
 
 
-####Scenario #4:  allocation by harvest mean
+
+####Scenario #5:  allocation by harvest mean
 
 #component allocation and lma by volume (7 sims) in loop
 allsims <- list()
