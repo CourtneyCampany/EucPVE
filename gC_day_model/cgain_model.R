@@ -313,8 +313,8 @@ sim_lfturn_high$lf_alloc_mean <- lf
 sim_lfturn_high$Cday <- gcday_seq_obs
 
 #save run2
-write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow_csv" , row.names=FALSE)
-write.csv(sim_lfturn_low, "calculated data/model_runs/sim_lfturn_high" , row.names=FALSE)
+write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow" , row.names=FALSE)
+write.csv(sim_lfturn_low, "calculated data/model_runs/sim_lfhigh" , row.names=FALSE)
 
 
 
