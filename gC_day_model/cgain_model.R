@@ -71,13 +71,12 @@ Amodel <- read.csv("calculated data/Aleaf_pred_15min.csv")
   Amodel$volume <- as.factor(Amodel$volume)
   Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
 
-#plot(Anet~Date, data=Amodel, subset=volume==35)
-
 #first need sum over day and then means by treatment
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
   names(Aleaf)[3] <- "carbon_day"
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
 #write.csv(Aleaf_agg, "calculated data/model_runs/gCday_means.csv", row.names=FALSE)
+
 
 ####MODEL---------------------------------------------------------------------------------
 
@@ -180,67 +179,18 @@ productionmodel <- function(leaffrac = .25,
   
 }
 
-mu <- .6 #cf for gCday
 
-#1.Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
-require(plyr)
+#Extra parameters to run model  
 
-###run sim with all aleaf and mean alllocation
-Aleaf_mean <- dlply(Aleaf, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
-  productionmodel, gCday=mu*(x$carbon_day), 
-  lma=lma_mean,frfrac=fr_frac_mean, 
-  crfrac=cr_frac_mean, stemfrac=stem_frac_mean,
-  leaffrac=lf, SIMPLIFY=F))))
-
-  #extract final number and then save
-  Aleaf_mean2 <- do.call(rbind, lapply(Aleaf_mean , function(x) x[121,])) 
-    Aleaf_mean2$volume = as.factor(rownames(Aleaf_mean2))
-    row.names(Aleaf_mean2) <- NULL
-  write.csv(Aleaf_mean2, "calculated data/model_runs/Aleaf_mean.csv", row.names=FALSE)
-
-#2. run sim with gcday by treatment and day with allocation 
-
-#dfr for input
-Aleaf_day <- Aleaf[,2:3]
-  Aleaf_day <- merge(Aleaf_day, lma_vol)
-  Aleaf_day <- merge(Aleaf_day, fr_frac_vol)
-  Aleaf_day <- merge(Aleaf_day, cr_frac_vol)
-  Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
-  Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
-
-Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
-                                        productionmodel, gCday=mu*(x$carbon_day), 
-                                        lma=x$massarea,frfrac=x$froot_frac, 
-                                        crfrac=x$croot_frac, stemfrac=x$stem_frac,
-                                        leaffrac=x$leaf_frac, SIMPLIFY=F))))
-  #merge Cday with Aleaf
-  Aleaf_sp <- dlply(Aleaf_day[1:2], .(volume)) #list of Cday
-  Aleaf_sim2 <- mapply(c, Aleaf_sim, Aleaf_sp, SIMPLIFY=FALSE) #merge two lists
-
-  #creates a list of lists, simply to list of dfrs
-  Aleaf_sim3 <- llply(Aleaf_sim2, function(x) as.data.frame(sapply(x, rbind)))
-
-  Aleaf_sim4 <- do.call(rbind, lapply(Aleaf_sim3 , function(x) x[121,])) 
-    Aleaf_sim4$volume = as.factor(rownames(Aleaf_sim4))
-    row.names(Aleaf_sim4) <- NULL
-
-  #save Aleaf_sim as rds and as simple dfr of last dates
-  write.csv(Aleaf_sim4, "calculated data/model_runs/Aleaf_sim_final.csv", row.names=FALSE)
-  saveRDS(Aleaf_sim3, file = "calculated data/model_runs/Aleaf_sim.rds")
+#sequence is the range of mean values (over 120 days) reperenting the mean of all days per volume
+gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) 
+#mu <- .6 #cf for gCday, not in use when scaling
 
 
-
-####next models sims use sequence of carbon day and test scenarios-----------------------------------------------------
-
-#Extra parameters to run model when using mean gCday (n=7) or sequence of gcday: 
-gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) #sequence over modelled range
-gc_mean <- mean(Cday)  #mean of modelled gCday for each volume
-gc_min <- min(Cday)
-gc_max <- max(Cday)
-
+####models sims use sequence of carbon day and test scenarios-----------------------------------------------------
 
 #Scenario#1: Gcday seq, allocation = mean------------------------------------------------------------------------------------
-sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                 frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                 leaffrac=lf,SIMPLIFY=F)))
   sim_means_obs$gCday <- gcday_seq_obs
@@ -255,11 +205,11 @@ fr_exude_min <- fr_frac_mean*.5
 ofrac <- (1 - fr_exude_max)/3
 ofrac1 <- (1 - fr_exude_min)/3
 
-sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                      frfrac=fr_exude_min, crfrac=ofrac1, stemfrac=ofrac1,         
                                                      leaffrac=ofrac1,SIMPLIFY=F)))
 
-sim_frexude_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_frexude_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                       frfrac=fr_exude_max, crfrac=ofrac, stemfrac=ofrac,         
                                                       leaffrac=ofrac,SIMPLIFY=F)))
 
@@ -283,12 +233,12 @@ respmin_fr <- fr_resp*.5
 respmin_cr <- cr_resp*.5
 
 
-sim_rootresp_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_rootresp_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                     frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                     leaffrac=lf,fr_resp=respmax_fr, cr_resp= respmax_cr, SIMPLIFY=F)))
 sim_rootresp_high$gCday <- gcday_seq_obs
 
-sim_rootresp_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_rootresp_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                        frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                        leaffrac=lf,fr_resp=respmin_fr, cr_resp= respmin_cr, SIMPLIFY=F)))
 sim_rootresp_low$gCday <- gcday_seq_obs
@@ -308,11 +258,11 @@ lf_turn_min <- lf*.5
 ofrac2 <- (1 - lf_turn_max)/3
 ofrac3 <- (1 - lf_turn_min)/3
 
-sim_lfturn_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_lfturn_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                    frfrac=ofrac3, crfrac=ofrac3, stemfrac=ofrac3,         
                                                    leaffrac=lf_turn_min,SIMPLIFY=F)))
 
-sim_lfturn_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+sim_lfturn_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                     frfrac=ofrac2, crfrac=ofrac2, stemfrac=ofrac2,         
                                                     leaffrac=lf_turn_max,SIMPLIFY=F)))
 
@@ -324,13 +274,60 @@ sim_lfturn_high$lf_alloc <- lf_turn_max
 sim_lfturn_high$lf_alloc_mean <- lf
 sim_lfturn_high$gCday <- gcday_seq_obs
 
-#save run2
+#save runs
 write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow.csv" , row.names=FALSE)
 write.csv(sim_lfturn_high, "calculated data/model_runs/sim_leafhigh.csv" , row.names=FALSE)
 
 
-####Scenario #?: increase in leaf respiration with increase in SLA
-####Scenario #5:  allocation by harvest mean
+
+#####------------------------old sims---------------------------------------------------------------------------------
+#1.Run the model for each day with individual gCday by treatment and day  (gcday = ALeaf )
+require(plyr)
+
+###run sim with all aleaf and mean alllocation
+Aleaf_mean <- dlply(Aleaf, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
+  productionmodel, gCday=mu*(x$carbon_day), 
+  lma=lma_mean,frfrac=fr_frac_mean, 
+  crfrac=cr_frac_mean, stemfrac=stem_frac_mean,
+  leaffrac=lf, SIMPLIFY=F))))
+
+#extract final number and then save
+Aleaf_mean2 <- do.call(rbind, lapply(Aleaf_mean , function(x) x[121,])) 
+Aleaf_mean2$volume = as.factor(rownames(Aleaf_mean2))
+row.names(Aleaf_mean2) <- NULL
+write.csv(Aleaf_mean2, "calculated data/model_runs/Aleaf_mean.csv", row.names=FALSE)
+
+#2. run sim with gcday by treatment and day with allocation 
+
+#dfr for input
+Aleaf_day <- Aleaf[,2:3]
+Aleaf_day <- merge(Aleaf_day, lma_vol)
+Aleaf_day <- merge(Aleaf_day, fr_frac_vol)
+Aleaf_day <- merge(Aleaf_day, cr_frac_vol)
+Aleaf_day <- merge(Aleaf_day, stem_frac_vol)
+Aleaf_day <- merge(Aleaf_day, leaf_frac_vol)
+
+Aleaf_sim <- dlply(Aleaf_day, .(volume), function(x) as.data.frame(do.call(rbind,mapply(
+  productionmodel, gCday=mu*(x$carbon_day), 
+  lma=x$massarea,frfrac=x$froot_frac, 
+  crfrac=x$croot_frac, stemfrac=x$stem_frac,
+  leaffrac=x$leaf_frac, SIMPLIFY=F))))
+#merge Cday with Aleaf
+Aleaf_sp <- dlply(Aleaf_day[1:2], .(volume)) #list of Cday
+Aleaf_sim2 <- mapply(c, Aleaf_sim, Aleaf_sp, SIMPLIFY=FALSE) #merge two lists
+
+#creates a list of lists, simply to list of dfrs
+Aleaf_sim3 <- llply(Aleaf_sim2, function(x) as.data.frame(sapply(x, rbind)))
+
+Aleaf_sim4 <- do.call(rbind, lapply(Aleaf_sim3 , function(x) x[121,])) 
+Aleaf_sim4$volume = as.factor(rownames(Aleaf_sim4))
+row.names(Aleaf_sim4) <- NULL
+
+#save Aleaf_sim as rds and as simple dfr of last dates
+write.csv(Aleaf_sim4, "calculated data/model_runs/Aleaf_sim_final.csv", row.names=FALSE)
+saveRDS(Aleaf_sim3, file = "calculated data/model_runs/Aleaf_sim.rds")
+
+
 
 #component allocation and lma by volume (7 sims) in loop
 allsims <- list()
