@@ -69,7 +69,7 @@ points(frexude_high$mass_adj,frexude_high$C_adj, cex=1.6, pch=16, col=col_exude1
 points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 
 
-
+#------------------------------------------------------------------------------------------------------------
 
 windows(14,12)
 par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
