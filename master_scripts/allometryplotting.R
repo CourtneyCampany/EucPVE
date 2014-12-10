@@ -27,7 +27,7 @@ leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
 xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
 
 
-windows(14,12)
+windows(7,10)
 
 par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))   
@@ -44,7 +44,7 @@ with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90
 with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03, cex=2))
 points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=2, col = volume)      
 box()
-text(x=as.Date("2013-05-21"), 128, "(a)", cex=2)
+text(x=as.Date("2013-05-21"), 129, "(a)", cex=2)
 
 # Second panel   
 par(mar=c(0,7,0,2))
@@ -57,8 +57,7 @@ with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angl
 points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume], cex=2,col = volume)
 box()
 text(x=as.Date("2013-05-21"), 16, "(b)", cex=2)
-legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
-       cex=1.51, col=palette(), bty='n')
+
 
 #third panel
 par(mar=c(2,7,0,2))
@@ -75,6 +74,8 @@ with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                    col=x$volume, pch = pchs[x$volume],cex=2))
 text(x=as.Date("2013-05-21"), .65, "(c)", cex=2)
+legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
+       cex=1.51, col=palette(), bty='n')
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
 dev.off()
