@@ -60,15 +60,6 @@ daypar <- sum(metday$par15_mol_s)#molsm2d
 daypar_mj <- daypar/(4.57/2)
 
 
-#subset one cloudy day
-# metday2 <- subset(weather, Date=="2013-03-14")
-# plot(PPFD_Avg.mean~DateTime15, data=metday2, ylim=c(0,2000))
-# #calculate total par
-# metday2$par15 <- metday2$PPFD_Avg.mean*15*60
-# plot(par15~DateTime15, data=metday2)
-# day2par <- sum(metday2$par15)/1000000 #molsm2d
-
-
 #object with weather data from chosen date
 sunnyday <- setMet(richmond, month=2, day=07, year=2013, nsteps=12, Tmin=14.83, Tmax=31.25, PARday=daypar_mj)
 plot(sunnyday)
@@ -77,9 +68,6 @@ parpred <- as.data.frame(sunnyday[1][[1]])
 #compare PAR from weather station and from setMET
 plot(PAR~timeofday, data=parpred, ylim=c(0,2500), xlim=c(0,24))
   points(PPFD_Avg.mean~timeofday, data=metday, pch=16)
-
-# cloudyday <- setMet(richmond, month=3, day=14, nsteps=12, year=2013,Tmin=16.73, Tmax=26.04, PARday=day2par)
-# plot(cloudyday)
 
 
 # Test direct vs. diffuse--------------------------------------------------------------------
