@@ -22,6 +22,16 @@ cols7 <- alpha(cols[7], 0.45)
 
 col_bl <- alpha("black", .50)
 
+col_gr1 <- alpha("forestgreen", .50)
+col_gr2 <- alpha("yellowgreen", .50)
+
+col_br1 <- alpha("chocolate4", .50)
+col_br2 <- alpha("burlywood4", .50)
+
+col_exude1 <- alpha("darkorange", .50)
+col_exude2 <- alpha("darkorange3", .50)
+
+
 col_exude <- alpha("darkorange2", .25)
 col_resp <- alpha("green4", .5)
 

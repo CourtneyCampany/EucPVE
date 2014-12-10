@@ -248,47 +248,59 @@ sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc
 write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.names=FALSE)
 
 
+
 #Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
+fr_exude_max <- fr_frac_mean*1.5
+fr_exude_min <- fr_frac_mean*.5
+ofrac <- (1 - fr_exude_max)/3
+ofrac1 <- (1 - fr_exude_min)/3
 
-  #sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
-  fr_exude <- seq(fr_frac_mean*.5, fr_frac_mean*1.5, length=2)
-  ofrac <- (1 - fr_exude)/3
+sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                     frfrac=fr_exude_min, crfrac=ofrac1, stemfrac=ofrac1,         
+                                                     leaffrac=ofrac1,SIMPLIFY=F)))
 
-sim_exud_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_min, lma=lma_mean, 
-                                                    frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
-                                                    leaffrac=ofrac,SIMPLIFY=F)))
+sim_frexude_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                      frfrac=fr_exude_max, crfrac=ofrac, stemfrac=ofrac,         
+                                                      leaffrac=ofrac,SIMPLIFY=F)))
 
-sim_exud_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_max, lma=lma_mean, 
-                                                   frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
-                                                   leaffrac=ofrac,SIMPLIFY=F)))
 
-  sim_exud_low$fr_alloc <- fr_exude
-  sim_exud_high$fr_alloc <- fr_exude
+  sim_frexude_low$gCday <- gcday_seq_obs
+  sim_frexude_high$gCday <- gcday_seq_obs
 
-sim_exudate <- rbind(sim_exud_low, sim_exud_high)
-  sim_exudate$change <- c("-50", "+50", "-50", "+50" )
-  sim_exudate$Cday <- c(gc_min,gc_min,gc_max,gc_max)
+#save run2
+write.csv(sim_frexude_low, "calculated data/model_runs/sim_frexudelow.csv" , row.names=FALSE)
+write.csv(sim_frexude_high, "calculated data/model_runs/sim_frexudehigh.csv" , row.names=FALSE)
+
 
 #save run
-write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE)
+#write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE) #moved the script for this below
 
-####Scenario #3: increases in root respiration (mean to +50%)
-resp50_fr <- fr_resp*1.5
-resp50_cr <- cr_resp*1.5
 
-sim_rootresp <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+####Scenario #3: increases in root respiration (+-50%)-------------------------------------------------------------------
+respmax_fr <- fr_resp*1.5
+respmax_cr <- cr_resp*1.5
+respmin_fr <- fr_resp*.5
+respmin_cr <- cr_resp*.5
+
+
+sim_rootresp_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
                                                     frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
-                                                    leaffrac=lf,fr_resp=resp50_fr, cr_resp= resp50_cr, SIMPLIFY=F)))
-sim_rootresp$gCday <- gcday_seq_obs
+                                                    leaffrac=lf,fr_resp=respmax_fr, cr_resp= respmax_cr, SIMPLIFY=F)))
+sim_rootresp_high$gCday <- gcday_seq_obs
 
-#save run
-write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp.csv" , row.names=FALSE)
+sim_rootresp_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gcday_seq_obs, lma=lma_mean, 
+                                                       frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
+                                                       leaffrac=lf,fr_resp=respmin_fr, cr_resp= respmin_cr, SIMPLIFY=F)))
+sim_rootresp_low$gCday <- gcday_seq_obs
+
+#save run2
+#write.csv(sim_rootresp, "calculated data/model_runs/sim_rootresp.csv" , row.names=FALSE) #previous run with +50
+write.csv(sim_rootresp_low, "calculated data/model_runs/sim_rootresp_low.csv" , row.names=FALSE)
+write.csv(sim_rootresp_high, "calculated data/model_runs/sim_rootresp_high.csv" , row.names=FALSE)
 
 
 
-####Scenario #?: increase in leaf respiration with increase in SLA
-
-####scernario #4:  increase to leaf allocation (includes increases in leaf turnover)
+####scernario #4:  increase to leaf allocation (includes increases in leaf turnover)-----------------------------
 
 #sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
 lf_turn_max <- lf*1.5
@@ -306,18 +318,18 @@ sim_lfturn_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*
 
 sim_lfturn_low$lf_alloc <- lf_turn_min
 sim_lfturn_low$lf_alloc_mean <- lf
-sim_lfturn_low$Cday <- gcday_seq_obs
+sim_lfturn_low$gCday <- gcday_seq_obs
 
 sim_lfturn_high$lf_alloc <- lf_turn_max
 sim_lfturn_high$lf_alloc_mean <- lf
-sim_lfturn_high$Cday <- gcday_seq_obs
+sim_lfturn_high$gCday <- gcday_seq_obs
 
 #save run2
-write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow" , row.names=FALSE)
-write.csv(sim_lfturn_low, "calculated data/model_runs/sim_lfhigh" , row.names=FALSE)
+write.csv(sim_lfturn_low, "calculated data/model_runs/sim_leaflow.csv" , row.names=FALSE)
+write.csv(sim_lfturn_high, "calculated data/model_runs/sim_leafhigh.csv" , row.names=FALSE)
 
 
-
+####Scenario #?: increase in leaf respiration with increase in SLA
 ####Scenario #5:  allocation by harvest mean
 
 #component allocation and lma by volume (7 sims) in loop
@@ -475,5 +487,27 @@ abline(0,1)
 
 
 p <- productionmodel(gCday = 6.9, leaffrac=0.25, lma=80)
+
+
+
+####---  scripts for making polygon of scenairos
+#sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
+fr_exude <- seq(fr_frac_mean*.5, fr_frac_mean*1.5, length=2)
+ofrac <- (1 - fr_exude)/3
+
+sim_exud_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_min, lma=lma_mean, 
+                                                   frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
+                                                   leaffrac=ofrac,SIMPLIFY=F)))
+
+sim_exud_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=mu*gc_max, lma=lma_mean, 
+                                                    frfrac=fr_exude, crfrac=ofrac, stemfrac=ofrac,         
+                                                    leaffrac=ofrac,SIMPLIFY=F)))
+
+sim_exud_low$fr_alloc <- fr_exude
+sim_exud_high$fr_alloc <- fr_exude
+
+sim_exudate <- rbind(sim_exud_low, sim_exud_high)
+sim_exudate$change <- c("-50", "+50", "-50", "+50" )
+sim_exudate$Cday <- c(gc_min,gc_min,gc_max,gc_max)
 
 
