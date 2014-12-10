@@ -121,10 +121,6 @@ testday <- YplantDay(test, phy=eucphy20, met=sunnyday)
 plot(testday)
 testdata<-psrdata(testday)
 
-#cloudy
-# testday2 <- YplantDay(test, phy=eucphy, met=cloudyday)
-# plot(testday2)
-# test2data <- psrdata(testday)
 
 # #direct v. diffuse
 # run2 <- YplantDay(plant, phy=eucphy, met=sunny_fbeam0)
