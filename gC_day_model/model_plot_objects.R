@@ -9,7 +9,6 @@ scaletofree_func <- function(dfr){
 }
 
 
-
 #plot objects----------------------------------------------------------------------------------------------------
 numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
 
@@ -43,9 +42,14 @@ col_resp2 <- alpha("mediumorchid1", .50)
 col_exude1 <- alpha("darkorange", .50)
 col_exude2 <- alpha("darkorange3", .50)
 
+modlab1 <- c("+50%", "mean", "-50%")
+modlab2 <- c("+75%", "mean", "-75%")
 
-col_exude <- alpha("darkorange2", .25)
-col_resp <- alpha("green4", .5)
+modcol1 <-c(col_lf1, col_bl, col_lf2) 
+modcol2 <- c(col_resp1, col_bl, col_resp2) 
+modcol3 <- c(col_exude1, col_bl, col_exude2) 
+
+
 
 treelab<- paste("Seedling Mass Production over ",numdays," days (g)", sep="")
 sub35 <- expression(Scaled[35])

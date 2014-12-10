@@ -73,7 +73,7 @@ plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=frexude_low,
 
 #------------------------------------------------------------------------------------------------------------
 
-windows(7,7)
+windows(7,10)
 par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))   
 
@@ -88,6 +88,9 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=leafturn_low, ylab= "", 
   axis(2, labels=TRUE)  
   box()
 
+legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Leaf Allocation", 
+       cex=1.51, col=modcol1, bty='n')
+
 #Second Panel
 par(mar=c(0,7,0,2))
 
@@ -100,6 +103,10 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=rootresp_low, xlab="",
   axis(1, labels=FALSE)  
   axis(2)     
   box()
+  legend("bottomleft", leglab, pch=c(rep(16,6),17),text.font=1.51, inset=0.025, title=vollab, 
+      cex=1.51, col=palette(), bty='n')
+  legend("topright", modlab2, pch=16,text.font=1.51, inset=0.025, title="Root Respiration", 
+       cex=1.51, col=modcol2, bty='n')
 
 #Third Panel
 par(mar=c(5,7,0,2))
@@ -113,6 +120,8 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=frexude_low,
   box()
   axis(2, labels=TRUE)  
   axis(1,labels=TRUE) 
+  legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Fine Root Allcation", 
+       cex=1.51, col=modcol3, bty='n')
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/gc_Day_scenario.pdf")
 dev.off()
