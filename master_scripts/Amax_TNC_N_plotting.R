@@ -68,7 +68,7 @@ TNCpred$Amass_pred <- predict(Afit2_full, TNCpred, re.form=NA)
 alab <- expression(A[mass]~~(n*mol~g^-1~s^-1))
 
 
-windows(12, 8)
+windows(10, 7)
 par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),  oma=c(0.1,0.1,0.1,0.1), las=1)
 
 # First Panel
