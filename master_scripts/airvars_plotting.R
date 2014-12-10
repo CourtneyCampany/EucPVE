@@ -21,15 +21,24 @@ met_120 <- subset(eucpve_met[3:9], Date >= "2013-01-21" & Date <= "2013-05-21")
 #new dfr with max min
 airvars <- summaryBy(Par+Temperature+VPD~Date, met_120, FUN =c(min, max, mean))
 
+#need total daily ppfd
+ppfd<- met_120[, c(1, 4:5, 7)]
+  ppfd$par15_mol <- ppfd$Par/1000000
+  ppfd$par15_mol_s <- ppfd$par15_mol*15*60
+
+daypar <- summaryBy(par15_mol_s ~ Date, data=ppfd,FUN=sum, keeo.names=TRUE)
+names(daypar)[2] <- "PPFD_day"
+
+
 
 ##plot---------------------------------------------------------------------
 xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
 tminlab <- expression(T[min])
 tmaxlab <- expression(T[max])
-vpdlab <- expression(Daily~VPD[min]~and~VPD[max]~(kPa))
+vpdlab <- expression(VPD[min]~and~VPD[max]~(kPa))
 
 
-windows(12,8)
+windows(7,7)
 ####multipanel plot of 
 par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))
@@ -38,9 +47,9 @@ par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),
 par(mar=c(0,7,2,2))
 with(airvars, {
   plot(Date, Temperature.max, type='l', col="red",ylim=c(0,40),lwd=2,
-       xlab="",axes=FALSE,ylab=expression(Daily~T[min]~and~T[max]~(degree*C)),
+       xlab="",axes=FALSE,ylab=expression(T[min]~and~T[max]~(degree*C)),
        panel.first={
-         addpoly(Date, Temperature.min, Temperature.max,col="grey98")
+         addpoly(Date, Temperature.min, Temperature.max,col="grey95")
        })
   lines(Date, Temperature.min, col="blue", lwd=2)
   
@@ -52,16 +61,16 @@ box()
 
 #2=PPFD
 par(mar=c(0,7,0,2))
-plot(Par.max~Date,type="l",col="orange",data=airvars, xlab="", lwd=2,ylim=c(0, 2750),
-     ylab=expression(Daily~PPFD[max]~~(mol~m^-2~s^-1)),axes=FALSE)
+plot(PPFD_day~Date,type="l",col="orange",data=daypar, xlab="", lwd=2,ylim=c(0, 65),
+     ylab=expression(PPFD[day]~~(mols~m^-2~d^-1)),axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 box()
 
 #3= VPD
 par(mar=c(2,7,0,2))
-plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.5),
-    ylab=expression(Daily~VPD[max]~~(kPa)),data=airvars, axes=FALSE)
+plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),
+    ylab=expression(VPD[max]~~(kPa)),data=airvars, axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT)
 box()
