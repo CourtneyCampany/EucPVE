@@ -1,3 +1,15 @@
+
+###function for scaling data
+
+scaletofree_func <- function(dfr){
+  #Gcday and mass relative to largest value
+  dfr$C_adj <- with(dfr, gCday/max(gCday))
+  dfr$mass_adj <- with(dfr, biomass/max(biomass))
+  return(dfr)
+}
+
+
+
 #plot objects----------------------------------------------------------------------------------------------------
 numdays <- as.numeric(as.Date("2013-05-21") - as.Date("2013-01-21"))
 
@@ -22,11 +34,11 @@ cols7 <- alpha(cols[7], 0.45)
 
 col_bl <- alpha("black", .50)
 
-col_gr1 <- alpha("forestgreen", .50)
-col_gr2 <- alpha("yellowgreen", .50)
+col_lf1 <- alpha("forestgreen", .50)
+col_lf2 <- alpha("yellowgreen", .50)
 
-col_br1 <- alpha("chocolate4", .50)
-col_br2 <- alpha("burlywood4", .50)
+col_resp1 <- alpha("darkorchid4", .50)
+col_resp2 <- alpha("mediumorchid1", .50)
 
 col_exude1 <- alpha("darkorange", .50)
 col_exude2 <- alpha("darkorange3", .50)

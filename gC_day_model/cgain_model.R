@@ -201,9 +201,10 @@ write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.na
 
 #Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
 fr_exude_max <- fr_frac_mean*1.5
+  ofrac <- (1 - fr_exude_max)/3
+
 fr_exude_min <- fr_frac_mean*.5
-ofrac <- (1 - fr_exude_max)/3
-ofrac1 <- (1 - fr_exude_min)/3
+  ofrac1 <- (1 - fr_exude_min)/3
 
 sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
                                                      frfrac=fr_exude_min, crfrac=ofrac1, stemfrac=ofrac1,         
@@ -226,11 +227,12 @@ write.csv(sim_frexude_high, "calculated data/model_runs/sim_frexudehigh.csv" , r
 #write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE) #moved the script for this below
 
 
-####Scenario #3: increases in root respiration (+-50%)-------------------------------------------------------------------
-respmax_fr <- fr_resp*1.5
-respmax_cr <- cr_resp*1.5
-respmin_fr <- fr_resp*.5
-respmin_cr <- cr_resp*.5
+####Scenario #3: increases in root respiration (+-75%)-------------------------------------------------------------------
+respmax_fr <- fr_resp*1.75
+respmax_cr <- cr_resp*1.75
+
+respmin_fr <- fr_resp*.25
+respmin_cr <- cr_resp*.25
 
 
 sim_rootresp_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
