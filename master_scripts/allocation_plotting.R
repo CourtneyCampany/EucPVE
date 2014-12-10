@@ -39,7 +39,7 @@ treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
 
-windows(14,8)
+windows(14,7)
 
 par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
 
