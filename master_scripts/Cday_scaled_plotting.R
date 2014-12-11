@@ -21,7 +21,7 @@ gCseq_sim_mean <- read.csv("calculated data/model_runs/sim_gCseq_obs.csv")
 #######scaled plotting-----------------------------------------------------------------------
 windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-with(gCseq_sim_mean, plot(C_adj,mass_adj, xlim=c(1,.5),ylim=c(0, 1), cex=1, 
+with(gCseq_sim_mean, plot(C_adj,mass_adj, xlim=c(1,.65),ylim=c(0, 1.1), cex=1, type='l', lwd=4,
                           ylab=expression(Biomass~Scaled[free]), 
                           xlab=expression(Daily~Carbon~Assimilation~Scaled[free]),
                           pch=16, col=col_bl))

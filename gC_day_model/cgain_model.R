@@ -227,12 +227,12 @@ write.csv(sim_frexude_high, "calculated data/model_runs/sim_frexudehigh.csv" , r
 #write.csv(sim_exudate, "calculated data/model_runs/sim_exudate.csv" , row.names=FALSE) #moved the script for this below
 
 
-####Scenario #3: increases in root respiration (+-75%)-------------------------------------------------------------------
-respmax_fr <- fr_resp*1.75
-respmax_cr <- cr_resp*1.75
+####Scenario #3: increases in root respiration (+-50%)-------------------------------------------------------------------
+respmax_fr <- fr_resp*1.5
+respmax_cr <- cr_resp*1.5
 
-respmin_fr <- fr_resp*.25
-respmin_cr <- cr_resp*.25
+respmin_fr <- fr_resp*.5
+respmin_cr <- cr_resp*.5
 
 
 sim_rootresp_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 

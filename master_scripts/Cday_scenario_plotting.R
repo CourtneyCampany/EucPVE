@@ -39,37 +39,7 @@ frexude_high <- read.csv("calculated data/model_runs/sim_frexudehigh.csv")
   frexude_high <- scaletofree_func(frexude_high)
 
 
-#plotting---------------------------------------------------------------------------------------
 
-#scenario with leaf allocation +-50%
-par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=leafturn_low, 
-                        ylab= expression(Biomass~Scaled[free]), 
-                        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-                        cex=1, pch=16, col=col_lf2)
-  points(mass_adj~C_adj, data=leafturn_high, cex=1, pch=16, col=col_lf1)
-  points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-  points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
-
-#scenario with root respiration +-75%
-par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=rootresp_low,
-                        ylab= expression(Biomass~Scaled[free]), 
-                        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-                        cex=1, pch=16, col=col_resp2)
-  points(mass_adj~C_adj, data=rootresp_high, cex=1, pch=16, col=col_resp1)
-  points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-  points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
-
-#scenario with increase C allocation to fine roots +-50%
-par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=frexude_low,
-                        ylab= expression(Biomass~Scaled[free]), 
-                        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-                        cex=1, pch=16, col=col_exude2)
-  points(mass_adj~C_adj, data=frexude_high, cex=1, pch=16, col=col_exude1)
-  points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-  points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
 
 #------------------------------------------------------------------------------------------------------------
 
@@ -90,6 +60,7 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=leafturn_low, ylab= "", 
 
 legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Leaf Allocation", 
        cex=1.51, col=modcol1, bty='n')
+  text(.65, .05, "(a)", cex=2)
 
 #Second Panel
 par(mar=c(0,7,0,2))
@@ -105,8 +76,9 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=rootresp_low, xlab="",
   box()
   legend("bottomleft", leglab, pch=c(rep(16,6),17),text.font=1.51, inset=0.025, title=vollab, 
       cex=1.51, col=palette(), bty='n')
-  legend("topright", modlab2, pch=16,text.font=1.51, inset=0.025, title="Root Respiration", 
+  legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Root Respiration", 
        cex=1.51, col=modcol2, bty='n')
+  text(.65, .05, "(b)", cex=2)
 
 #Third Panel
 par(mar=c(5,7,0,2))
@@ -122,6 +94,7 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=frexude_low,
   axis(1,labels=TRUE) 
   legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Fine Root Allcation", 
        cex=1.51, col=modcol3, bty='n')
+  text(.65, .05, "(c)", cex=2)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/gc_Day_scenario.pdf")
 dev.off()
@@ -156,3 +129,38 @@ dev.off()
 # points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1)
 # legend("topright", leglab, pch=pchs,text.font=1, inset=0.01, 
 #        title=vollab, col=palette(), bty='n',cex=1.0,)
+
+
+
+
+# #plotting---------------------------------------------------------------------------------------
+# 
+# #scenario with leaf allocation +-50%
+# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=leafturn_low, 
+#                         ylab= expression(Biomass~Scaled[free]), 
+#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
+#                         cex=1, pch=16, col=col_lf2)
+#   points(mass_adj~C_adj, data=leafturn_high, cex=1, pch=16, col=col_lf1)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
+# 
+# #scenario with root respiration +-75%
+# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=rootresp_low,
+#                         ylab= expression(Biomass~Scaled[free]), 
+#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
+#                         cex=1, pch=16, col=col_resp2)
+#   points(mass_adj~C_adj, data=rootresp_high, cex=1, pch=16, col=col_resp1)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
+# 
+# #scenario with increase C allocation to fine roots +-50%
+# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=frexude_low,
+#                         ylab= expression(Biomass~Scaled[free]), 
+#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
+#                         cex=1, pch=16, col=col_exude2)
+#   points(mass_adj~C_adj, data=frexude_high, cex=1, pch=16, col=col_exude1)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)

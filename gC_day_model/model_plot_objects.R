@@ -43,7 +43,6 @@ col_exude1 <- alpha("darkorange", .50)
 col_exude2 <- alpha("darkorange3", .50)
 
 modlab1 <- c("+50%", "mean", "-50%")
-modlab2 <- c("+75%", "mean", "-75%")
 
 modcol1 <-c(col_lf1, col_bl, col_lf2) 
 modcol2 <- c(col_resp1, col_bl, col_resp2) 
