@@ -31,6 +31,16 @@ cols5 <- alpha(cols[5], 0.45)
 cols6 <- alpha(cols[6], 0.45)
 cols7 <- alpha(cols[7], 0.45)
 
+lcols1 <- alpha(cols[1], 0.65)
+lcols2 <- alpha(cols[2], 0.65)
+lcols3 <- alpha(cols[3], 0.65)
+lcols4 <- alpha(cols[4], 0.65)
+lcols5 <- alpha(cols[5], 0.65)
+lcols6 <- alpha(cols[6], 0.65)
+lcols7 <- alpha(cols[7], 0.65)
+
+
+
 col_bl <- alpha("black", .50)
 
 col_lf1 <- alpha("forestgreen", .50)
