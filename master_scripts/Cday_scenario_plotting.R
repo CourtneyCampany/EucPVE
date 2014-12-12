@@ -101,66 +101,8 @@ dev.off()
 
 
 
-# #######sequence of gC with allocation and lma by treatment--------------------------------------------------------
-# alloc_sim <- read.csv("calculated data/model_runs/sim_gCseq_allocation.csv")
-# alloc_sim$C_adj <- with(alloc_sim, gCday/gCday[1])
-# 
-# ###generates mass relative to largest mass value, which = the last value of the 101 sequence
-# alloc_sim$maxmass <- c(rep(alloc_sim$biomass[1],101),rep(alloc_sim$biomass[102],101),rep(alloc_sim$biomass[203],101),
-#                        rep(alloc_sim$biomass[304],101),rep(alloc_sim$biomass[405],101),rep(alloc_sim$biomass[506],101),
-#                        rep(alloc_sim$biomass[607],101))
-# 
-# alloc_sim$mass_adj_free <- alloc_sim$biomass/alloc_sim$biomass[607]
-# 
-# windows(7,5)
-# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-# 
-# with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=cols1, xlim=c(1,.6),ylim=c(0,1),
-#                                        cex=1, pch=16,
-#                                        ylab=expression(Biomass~Scaled[free]), 
-#                                        xlab=expression(Daily~Carbon~Assimilation~Scaled[free])))
-# 
-# with(subset(alloc_sim, volume==10),points(C_adj,mass_adj_free, col=cols2, cex=1, pch=16))
-# with(subset(alloc_sim, volume==15),points(C_adj,mass_adj_free, col=cols3, cex=1, pch=16))
-# with(subset(alloc_sim, volume==20),points(C_adj,mass_adj_free, col=cols4, cex=1, pch=16))
-# with(subset(alloc_sim, volume==25),points(C_adj,mass_adj_free, col=cols5, cex=1, pch=16))
-# with(subset(alloc_sim, volume==35),points(C_adj,mass_adj_free, col=cols6, cex=1, pch=16))
-# with(subset(alloc_sim, volume==1000),points(C_adj,mass_adj_free, col=cols7, cex=1,pch=17))
-# points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1)
-# legend("topright", leglab, pch=pchs,text.font=1, inset=0.01, 
-#        title=vollab, col=palette(), bty='n',cex=1.0,)
 
 
 
 
-# #plotting---------------------------------------------------------------------------------------
-# 
-# #scenario with leaf allocation +-50%
-# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=leafturn_low, 
-#                         ylab= expression(Biomass~Scaled[free]), 
-#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-#                         cex=1, pch=16, col=col_lf2)
-#   points(mass_adj~C_adj, data=leafturn_high, cex=1, pch=16, col=col_lf1)
-#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
-# 
-# #scenario with root respiration +-75%
-# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=rootresp_low,
-#                         ylab= expression(Biomass~Scaled[free]), 
-#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-#                         cex=1, pch=16, col=col_resp2)
-#   points(mass_adj~C_adj, data=rootresp_high, cex=1, pch=16, col=col_resp1)
-#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
-# 
-# #scenario with increase C allocation to fine roots +-50%
-# par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-# plot(mass_adj~C_adj, xlim=c(1,.6),ylim=c(0, 1), data=frexude_low,
-#                         ylab= expression(Biomass~Scaled[free]), 
-#                         xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
-#                         cex=1, pch=16, col=col_exude2)
-#   points(mass_adj~C_adj, data=frexude_high, cex=1, pch=16, col=col_exude1)
-#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1, pch=16, col=col_bl)
-#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=1.6)
+
