@@ -32,7 +32,7 @@ names(daypar)[2] <- "PPFD_day"
 
 
 ##plot---------------------------------------------------------------------
-xAT <- seq.Date(as.Date("2012-1-21"), by="month", length=50)
+xAT <- seq.Date(as.Date("2013-1-21"), by="month", length=50)
 tminlab <- expression(T[min])
 tmaxlab <- expression(T[max])
 vpdlab <- expression(VPD[min]~and~VPD[max]~(kPa))
@@ -58,6 +58,7 @@ axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 legend("topright",col=c("red","blue"),lty=1,lwd=2,legend=c(tmaxlab,tminlab), inset=.01, cex=1.51, bty='n')
 box()
+text(x=15725, 39, "(a)", cex=1.51)
 
 #2=PPFD
 par(mar=c(0,7,0,2))
@@ -66,36 +67,22 @@ plot(PPFD_day~Date,type="l",col="orange",data=daypar, xlab="", lwd=2,ylim=c(0, 6
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 box()
+text(x=15725, 62, "(b)", cex=1.51)
 
 #3= VPD
 par(mar=c(2,7,0,2))
-plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),
+test <- plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),
     ylab=expression(VPD[max]~~(kPa)),data=airvars, axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT)
 box()
+text(x=15725, 4.9, "(c)", cex=1.51)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
 dev.off()
 
 
 
-
-# #vpd
-# par(mar=c(5,5,2,2), cex.axis=0.8)
-# with(airvars, {
-#   plot(Date, VPD.max, type='l', col="forestgreen",ylim=c(0,5),
-#        xlab="",axes=FALSE,ylab=expression(Daily~VPD[min]~and~VPD[max]~(kPa)),
-#        panel.first={
-#          addpoly(Date, VPD.min, VPD.max,col="darkseagreen1")
-#        })
-#   lines(Date, VPD.min, col="forestgreen")
-#   
-# })
-# axis(2)
-# 
-# axis.Date(1, at=xAT )
-# box()
 
 
 
