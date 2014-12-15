@@ -59,22 +59,22 @@ sort <- c(1,2,3,6,7,8,12,10,14,11,15,9,13,4,5)
 pve_data2 <- pve_data[, c(1,2,3,6,7,8,12,10,14,11,15,9,13,4,5)]
 
 pve_means <- pve_data2[, c(2,4,6,8,10,12,14)]
-  pve_means[,1] <- round(pve_means[,1], 1))
-  pve_means[,2] <- round(pve_means[,2], 1)
-  pve_means[,3] <- round(pve_means[,3], 4)
-  pve_means[,4] <- round(pve_means[,4], 1)
-  pve_means[,5] <- round(pve_means[,5], 1)
-  pve_means[,6] <- round(pve_means[,6], 4)
-  pve_means[,7] <- round(pve_means[,7], 4)
+  pve_means[,1] <- as.character(round(pve_means[,1], 1))
+  pve_means[,2] <- as.character(round(pve_means[,2], 1))
+  pve_means[,3] <- as.character(round(pve_means[,3], 4))
+  pve_means[,4] <- as.character(round(pve_means[,4], 1))
+  pve_means[,5] <- as.character(round(pve_means[,5], 1))
+  pve_means[,6] <- as.character(round(pve_means[,6], 4))
+  pve_means[,7] <- as.character(round(pve_means[,7], 4))
 
 pve_se <- pve_data2[, c(3,5,7,9,11,13,15)]
-  pve_se[,1] <- round(pve_se[,1], 2)
-  pve_se[,2] <- round(pve_se[,2], 2)
-  pve_se[,3] <- round(pve_se[,3], 5)
-  pve_se[,4] <- round(pve_se[,4], 2)
-  pve_se[,5] <- round(pve_se[,5], 2)
-  pve_se[,6] <- round(pve_se[,6], 5)
-  pve_se[,7] <- round(pve_se[,7], 5)
+  pve_se[,1] <- as.character(round(pve_se[,1], 2))
+  pve_se[,2] <- as.character(round(pve_se[,2], 2))
+  pve_se[,3] <- as.character(round(pve_se[,3], 5))
+  pve_se[,4] <- as.character(round(pve_se[,4], 2))
+  pve_se[,5] <- as.character(round(pve_se[,5], 2))
+  pve_se[,6] <- as.character(round(pve_se[,6], 5))
+  pve_se[,7] <- as.character(round(pve_se[,7], 5))
 
 pve_se <- apply(pve_se, 2, function(i) paste('(', i, ')', sep=''))
 
@@ -88,18 +88,16 @@ dat7 <- data.frame(paste(pve_means[,7], pve_se[,7], sep=" "))
 
 
 pve_table <- cbind(leglab, dat1)
-  #names(pve_table) <- c("Volume (L)", "Seedling mass (g)")
   pve_table <- cbind(pve_table, dat2)
-   #names(pve_table) <- maxlab
-                     
-pve_table <- cbind(pve_table, dat3)
-pve_table <- cbind(pve_table, dat4)
-pve_table <- cbind(pve_table, dat5)
-pve_table <- cbind(pve_table, dat6)
-pve_table <- cbind(pve_table, dat7)
+  pve_table <- cbind(pve_table, dat3)
+  pve_table <- cbind(pve_table, dat4)
+  pve_table <- cbind(pve_table, dat5)
+  pve_table <- cbind(pve_table, dat6)
+  pve_table <- cbind(pve_table, dat7)
 
-names(pve_table) <- c("Volume (L)", "Seedling mass (g)", expression(A[max]~~(mu*mol~m^-2~s^-1)),
-                      expression(SLA[TNC~free]~~(m^2~g^-1)),starchlab, suglab,nmasslab,rdlab)
+#names(pve_table) <- c("Volume (L)", "Seedling mass (g)", expression(A[max]~~(mu*mol~m^-2~s^-1)),
+                      #expression(SLA[TNC~free]~~(m^2~g^-1)),starchlab, suglab,nmasslab,rdlab)
 
 write.csv(pve_table, "master_scripts/pve_table1.csv", row.names=FALSE)
 
+# paste0(signif(val, 2), " (", signif(se,2),")")
