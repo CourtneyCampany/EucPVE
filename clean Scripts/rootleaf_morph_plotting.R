@@ -35,12 +35,6 @@ srl <- read.csv("raw data/SRLmass.csv")
 srl_agg <- summaryBy(SRL ~ volume, data=srl, FUN=c(mean, se))
 write.csv(srl_agg, "calculated data/srl_means.csv", row.names=FALSE)
 
-srlm <- lm(SRL ~ volume, data=srl)
-  summary(srlm)
-  anova(srlm)
-
-
-
 ##Stats for sla and srl--------------------------------------------------------------------------------------
 require(nlme)
 require(visreg)
