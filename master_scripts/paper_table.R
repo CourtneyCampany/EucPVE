@@ -62,13 +62,14 @@ pve_means <- pve_data[, c(2,4,6,8,10,12,14,16)]
 pve_se <- pve_data[, c(3,5,7,9,11,13,15,17)]
 
 ###now paste together and round
-dat1 <- data.frame(paste0(signif(pve_means[,1], 3), " (", signif(pve_se[,1],3),")"))
+dat1 <- data.frame(paste0(signif(pve_means[,1], 3), " (", signif(pve_se[,1],2),")"))
 dat2 <- data.frame(paste0(signif(pve_means[,2], 3), " (", signif(pve_se[,2],2),")"))
-dat3 <- data.frame(paste0(signif(pve_means[,3], 5), " (", signif(pve_se[,3],5),")"))
-dat4 <- data.frame(paste0(signif(pve_means[,4], 3), " (", signif(pve_se[,4],3),")"))
-dat5 <- data.frame(paste0(signif(pve_means[,5], 3), " (", signif(pve_se[,5],3),")"))
-dat6 <- data.frame(paste0(signif(pve_means[,6], 5), " (", signif(pve_se[,6],5),")"))
-dat7 <- data.frame(paste0(signif(pve_means[,7], 5), " (", signif(pve_se[,7],5),")"))
+dat3 <- data.frame(paste0(signif(pve_means[,3], 2), " (", signif(pve_se[,3],2),")"))
+dat4 <- data.frame(paste0(signif(pve_means[,4], 2), " (", signif(pve_se[,4],2),")"))
+dat5 <- data.frame(paste0(signif(pve_means[,5], 2), " (", signif(pve_se[,5],1),")"))
+dat6 <- data.frame(paste0(signif(pve_means[,6], 2), " (", signif(pve_se[,6],1),")"))
+dat7 <- data.frame(paste0(signif(pve_means[,7], 2), " (", signif(pve_se[,7],2),")"))
+dat8 <- data.frame(paste0(signif(pve_means[,8], 2), " (", signif(pve_se[,8],1),")"))
 
 pve_table <- cbind(leglab, dat1)
   pve_table <- cbind(pve_table, dat2)
@@ -77,7 +78,7 @@ pve_table <- cbind(leglab, dat1)
   pve_table <- cbind(pve_table, dat5)
   pve_table <- cbind(pve_table, dat6)
   pve_table <- cbind(pve_table, dat7)
-
+  pve_table <- cbind(pve_table, dat8)
 
 write.csv(pve_table, "master_scripts/pve_table1.csv", row.names=FALSE)
 
