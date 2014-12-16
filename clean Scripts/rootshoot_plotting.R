@@ -5,12 +5,37 @@ seedlingmass<- read.csv("calculated data/seedling mass.csv")
 ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass", "root", "shoot"))
   ratio$volume <- as.factor(ratio$volume)
   ratio_nofree <- subset(ratio, volume !="1000")
+  ratio$RS <- with(ratio, root/shoot)
+  ratio$LR <- with(ratio, fineroot/leafmass)
 
 #treatment means
 ratio_agg <- summaryBy( .~ volume , data = ratio,  FUN=c(mean,se))
 
+##root shoot for paper table-----------------------------------------------------------------------------
+rs_agg <- summaryBy( RS+LR~ volume , data = ratio,  FUN=c(mean,se))
+write.csv(rs_agg, "calculated data/rootshoot_mean.csv", row.names=FALSE)
 
-#PLOT of Froot:leaf means with SE
+require(nlme)
+require(visreg)
+library(multcomp)
+
+#rs(not different)
+rs_lm <- lme(RS~ volume, random= ~1|ID, data=ratio)
+anova(rs_lm)
+summary(rs_lm)
+
+#lr(not different)
+LR_lm <- lme(LR~ volume, random= ~1|ID, data=ratio)
+anova(LR_lm)
+summary(LR_lm)
+
+
+
+rs_mean <- with(ratio, mean(RS))
+rl_mean <- with(ratio, mean(LR))
+
+
+#PLOT of Froot:leaf means with SE-------------------------------------------------------------------------
 par(mar=c(5,5,1,1), cex.axis=1.0, cex.lab=LABcex)
 with(ratio_agg, plot(fineroot.mean, leafmass.mean, ylim=c(0,60), xlim=c(0,60),
                      pch=pchs, col=palette(), cex=PTcex,
