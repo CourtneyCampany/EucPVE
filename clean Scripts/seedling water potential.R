@@ -66,5 +66,6 @@ anova(peak_lm)
 summary(peak_lm)
 
 meanpeak <- mean(wp_peak$waterpotential)
+meanpre <- mean(wp_pre$waterpotential)
 
 
