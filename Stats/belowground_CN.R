@@ -50,6 +50,12 @@ soil_harvest <- soil[0:47,]
 harvestmean <- summaryBy(n_perc~volume, data=soil_harvest, keep.names=TRUE)
 Hmean <- round(mean(harvestmean$n_perc),4)
 
+
+##stats------------------------------------------------------------------------------
+require(nlme)
+require(visreg)
+library(multcomp)
+
 #soilN
 n_lm <- lme(n_perc ~ volume, random= ~1|ID, data=soil_harvest)
 anova(n_lm)
@@ -59,13 +65,35 @@ tukey_N<- glht(n_lm, linfct = mcp(volume = "Tukey"))
 cld(tukey_N)
 visreg(n_lm)
 
+#root N
+root_all <-root_chem[complete.cases(root_chem),]
+root_all$Ntrans <- asin(sqrt(root_all$N_perc/100))
 
+rootN_lm <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all)
+rootN_lm2<-glm(N_perc,volume,binomial,data=root_all)
+
+anova(rootN_lm)
+summary(rootN_lm)
+
+tukey_root<- glht(rootN_lm, linfct = mcp(volume = "Tukey"))
+cld(tukey_root)
+visreg(rootN_lm)
+
+mean(root_all$N_perc)
+
+
+
+
+
+
+
+
+#PLOT-----------------------------------------------------------------------------------------------
 ###these changes are after stats for plotting labels
 soil_harvest$volume <- gsub("1000", "free", soil_harvest$volume)
 soil_harvest$volume <- gsub("^5", "05", soil_harvest$volume)
 
 
-#PLOT-----------------------------------------------------------------------------------------------
 
 #froot
 windows()

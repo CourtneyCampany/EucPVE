@@ -19,6 +19,47 @@ mass_agg_nofree <- subset(mass_agg, volume != 1000)
 #volume as factor after new variable calculations
 seedlingmass$volume <- as.factor(seedlingmass$volume)
 
+### Analyze Mass increase with each fold increase from 5l to test Poorter---------------------------------------------
+
+library(scales)
+
+#new dataframe of with mass as fold increase
+mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
+  mass_fold$Fold <- c(1,2,3,4,5,7,200) #fold increase for each pot size
+
+###mass increase with fold increase
+fold_increase <- data.frame( volume = mass_fold$volume,
+                             leaf = mass_fold$leafmass/mass_fold$leafmass[1],
+                             stem = mass_fold$stemmass/mass_fold$stemmass[1], 
+                             froot = mass_fold$fineroot/mass_fold$fineroot[1],
+                             croot = mass_fold$Croot/mass_fold$Croot[1], 
+                             mass = mass_fold$totalmass/mass_fold$totalmass[1], 
+                             fold = c(1,2,3,4,5,7,200))
+
+#subset with fold and no free
+fold_pot_mod <- fold_increase[2:6,2:7]
+
+#linear, Fit through origin, so that 0,0 means smallest pot size
+mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
+fold_pot_mod$masspred <- predict(mass_mod, fold_pot_mod) + 1
+
+summary(mass_mod) 
+coef(mass_mod)
+# means a 34% increase in mass with doubling of pot size
+visreg(mass_mod)
+
+#nls
+mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
+m <- coef(mass_mod_nls) 
+
+#plot
+with(fold_pot_mod,{
+  plot(fold, mass, ylim=c(0,5), xlim=c(0,8))
+  lines(fold, masspred, lty=2, col="red")
+  curve(1 + m[[1]]*x^m[[2]], add=T,  col="blue")
+})
+
+
 
 ###Test whether leaf mass fraction is different with treatment----------------------------------------------------
   #must account for variation in plant size
@@ -89,58 +130,6 @@ barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, x
   legend("topright", inset = c(-0.225, 0), fill = treecols2, legend=treelab)
 
 
-### Analyze Mass increase with each fold increase from 5l to test Poorter---------------------------------------------
-
-#linera model may not be appropirate so use nls too
-library(scales)
-
-#new dataframe of with mass as fold increase
-mass_fold <- mass_agg[,c("volume","leafmass", "stemmass", "fineroot", "Croot", "totalmass" )]
-  mass_fold$Fold <- c(1,2,3,4,5,7,200) #fold increase for each pot size
-
-###mass increase with fold increase
-fold_increase <- data.frame( volume = mass_fold$volume,
-                            leaf = mass_fold$leafmass/mass_fold$leafmass[1],
-                            stem = mass_fold$stemmass/mass_fold$stemmass[1], 
-                            froot = mass_fold$fineroot/mass_fold$fineroot[1],
-                            croot = mass_fold$Croot/mass_fold$Croot[1], 
-                            mass = mass_fold$totalmass/mass_fold$totalmass[1], 
-                            fold = c(1,2,3,4,5,7,200))
-
-#subset with fold and no free
-fold_pot_mod <- fold_increase[2:6,2:7]
-
-#linear, Fit through origin, so that 0,0 means smallest pot size
-mass_mod <- lm(I(mass-1) ~ I(fold-1) -1, data=fold_pot_mod)
-fold_pot_mod$masspred <- predict(mass_mod, fold_pot_mod) + 1
-
-summary(mass_mod) 
-  coef(mass_mod) * 2 # percent increase in mass when doubling pot size
-  visreg(mass_mod)
-
-#nls
-mass_mod_nls <- nls(mass ~ 1 + a*fold^b, start=list(a=1,b=2), data=fold_pot_mod)
-  m <- coef(mass_mod_nls) 
-
-
-#plot
-  with(fold_pot_mod,{
-    plot(fold, mass, ylim=c(0,5), xlim=c(0,8))
-    lines(fold, masspred)
-})
-
-coef(mass_mod)
-# means a 34% increase in mass with doubling of pot size
-
-#   #add linear and nls fits
-#   curve(1 + m[[1]]*x^m[[2]], add=T)
-
-
-#plot
-with(fold_pot_mod,plot(fold, mass, ylim=c(0,5), xlim=c(0,8)))
-#add linear and nls fits
-ablinepiece(mass_mod)
-curve(1 + m[[1]]*x^m[[2]], add=T)
 
 
 

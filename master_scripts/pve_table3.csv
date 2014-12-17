@@ -1,0 +1,7 @@
+Variable,Value,Units,Source
+LAi,0.035,m2,
+"leafi, stemi and rooti","3.45, 1.51, 0.99",g,
+?c,0.65,,Zhu et al. 
+Respirtaionfine root,0.00124,gC groot,Ryan et al. 2010
+Respirtaionfine root,0.010368,gC groot,Marsden et al. 
+Respirtaionwood,0.00187,gC gwood,Drake
