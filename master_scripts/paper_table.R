@@ -63,7 +63,7 @@ dat1 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,1], 1)), " (", signi
 dat2 <- data.frame(paste0(round(tree_means[,2], 4), " (", signif(tree_se[,2],2),")"))
 dat3 <- data.frame(paste0(signif(tree_means[,3], 2), " (", sprintf("%2.1f",round(tree_se[,3],2)),")"))
 dat4 <- data.frame(paste0(signif(tree_means[,4], 2), " (",sprintf("%2.1f",round(tree_se[,4],2)),")"))
-dat5 <- data.frame(paste0(signif(tree_means[,5], 2), " (", signif(tree_se[,5],1),")"))
+dat5 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,5], 2)), " (", sprintf("%2.1f", round(tree_se[,5],1)),")"))
 dat6 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,6], 1)), " (", sprintf("%2.1f",round(tree_se[,6],1)),")"))
 dat7 <- data.frame(paste0(signif(tree_means[,7], 2), " (", round(tree_se[,7],2),")"))
 
