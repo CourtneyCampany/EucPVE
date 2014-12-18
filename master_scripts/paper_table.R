@@ -60,7 +60,7 @@ tree_se <- tree_tab[, c(3,5,7,9,11,13,15)]
 
 ###now paste together and round
 dat1 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,1], 1)), " (", signif(tree_se[,1],2),")"))
-dat2 <- data.frame(paste0(round(tree_means[,2], 4), " (", signif(tree_se[,2],2),")"))
+dat2 <- data.frame(paste0(sprintf("%4.3f",round(tree_means[,2], 4)), " (", sprintf("%5.4f",round(tree_se[,2],4)),")"))
 dat3 <- data.frame(paste0(signif(tree_means[,3], 2), " (", sprintf("%2.1f",round(tree_se[,3],2)),")"))
 dat4 <- data.frame(paste0(signif(tree_means[,4], 2), " (",sprintf("%2.1f",round(tree_se[,4],2)),")"))
 dat5 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,5], 2)), " (", sprintf("%2.1f", round(tree_se[,5],1)),")"))

@@ -1,3 +1,4 @@
+
 #this script creates the physiology  based data table for the mauscripts
 library(doBy)
 source("functions and packages/functions.R")
@@ -52,12 +53,12 @@ phys_means <- phys_tab[, c(2,4,6,8,10,12)]
 phys_se <- phys_tab[, c(3,5,7,9,11,13)]
 
 ###now paste together and round
-phys1 <- data.frame(paste0(signif(phys_means[,1], 3), " (", signif(phys_se[,1],2),")"))
-phys2 <- data.frame(paste0(signif(phys_means[,2], 2), " (", signif(phys_se[,2],2),")"))
-phys3 <- data.frame(paste0(signif(phys_means[,3], 4), " (", signif(phys_se[,3],3),")"))
-phys4 <- data.frame(paste0(signif(phys_means[,4], 3), " (", signif(phys_se[,4],3),")"))
-phys5 <- data.frame(paste0(signif(phys_means[,5], 2), " (", signif(phys_se[,5],1),")"))
-phys6 <- data.frame(paste0(signif(phys_means[,6], 2), " (", signif(phys_se[,6],2),")"))
+phys1 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,1], 1)), " (", sprintf("%2.1f", round(phys_se[,1],1)),")"))
+phys2 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,2], 1)), " (", sprintf("%2.1f", round(phys_se[,2],1)),")"))
+phys3 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,3], 1)), " (", sprintf("%2.1f", round(phys_se[,3],1)),")"))
+phys4 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,4], 1)), " (", sprintf("%2.1f", round(phys_se[,4],1)),")"))
+phys5 <- data.frame(paste0(sprintf("%3.2f",round(phys_means[,5], 2)), " (", round(phys_se[,5],2),")"))
+phys6 <- data.frame(paste0(sprintf("%2.1f",round(phys_means[,6], 1)), " (", sprintf("%2.1f",round(phys_se[,6],1)),")"))
 
 
 pve_table2 <- cbind(leglab, phys1)
