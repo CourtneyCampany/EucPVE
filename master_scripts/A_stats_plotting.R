@@ -44,14 +44,14 @@ PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_s
 
 ##Photosynthesis means for paper table---------------------------------------------------------------------------
 
-##overall means
-PSmax_mean <- summaryBy(Photo ~ volume, data= PSmax_ID, FUN=c(mean, se))
-  names(PSmax_mean)[2:3]<- c("Amax", "Amax_se")
-PSsat_mean <- summaryBy(Photo~volume, data=PSsat_ID, FUN=c(mean,se))
-  names(PSsat_mean)[2:3]<- c("Asat", "Asat_se")
-
-A_means <- merge(PSmax_mean, PSsat_mean)
-write.csv(A_means, "calculated data/A_treatment_means.csv", row.names=FALSE)
+# ##overall means
+# PSmax_mean <- summaryBy(Photo ~ volume, data= PSmax_ID, FUN=c(mean, se))
+#   names(PSmax_mean)[2:3]<- c("Amax", "Amax_se")
+# PSsat_mean <- summaryBy(Photo~volume, data=PSsat_ID, FUN=c(mean,se))
+#   names(PSsat_mean)[2:3]<- c("Asat", "Asat_se")
+# 
+# A_means <- merge(PSmax_mean, PSsat_mean)
+# write.csv(A_means, "calculated data/A_treatment_means.csv", row.names=FALSE)
 
 
 ####stats on A------------------------------------------------------------------------------------------------
@@ -61,39 +61,39 @@ library(multcomp)
 
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
-  anova(asat_lm)
-  summary(asat_lm)
+#   anova(asat_lm)
+#   summary(asat_lm)
 
   tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
-  visreg(asat_lm)
+#   visreg(asat_lm)
 
-#lets prove that asat was immediately different, then use average
-asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
-  anova(asat_lm_d1)
-  summary(asat_lm_d1)
+# #lets prove that asat was immediately different, then use average
+# asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
+#   anova(asat_lm_d1)
+#   summary(asat_lm_d1)
+# 
+#   tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
+#     cld(tukey_A1)
+#   visreg(asat_lm_d1)
 
-  tukey_A1<- glht(asat_lm_d1, linfct = mcp(volume = "Tukey"))
-    cld(tukey_A1)
-  visreg(asat_lm_d1)
+# #amax
+# amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
+#   anova(amax_lm)
+#   summary(amax_lm)
+# 
+# tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
+# cld(tukey_Amax)
+# visreg(amax_lm)
 
-#amax
-amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
-  anova(amax_lm)
-  summary(amax_lm)
-
-tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_Amax)
-visreg(amax_lm)
-
-#lets prove that asat was immediately different, then use average
-amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="2013-03-07")
-  anova(amax_lm_d1)
-  summary(amax_lm_d1)
-
-  tukey_Amax1<- glht(amax_lm_d1, linfct = mcp(volume = "Tukey"))
-  cld(tukey_Amax1)
-  visreg(amax_lm_d1)
+# #lets prove that asat was immediately different, then use average
+# amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="2013-03-07")
+#   anova(amax_lm_d1)
+#   summary(amax_lm_d1)
+# 
+#   tukey_Amax1<- glht(amax_lm_d1, linfct = mcp(volume = "Tukey"))
+#   cld(tukey_Amax1)
+#   visreg(amax_lm_d1)
 
 
 ##PLOTTING----------------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ SigLetters <- siglets$mcletters$Letters
 windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 ###barplot with asat values, drop colors for now ( col=palette(),)
-bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (L)",ylab="", ylim=c(0,25), names.arg = leglab,
+bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", ylim=c(0,25), names.arg = leglab,
     col="grey", legend=FALSE)
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
