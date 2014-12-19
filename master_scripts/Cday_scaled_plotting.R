@@ -49,7 +49,8 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=gCseq_sim_mean, xlab="",
   axis(2)     
   box()
   text(1,1.075,"(a)", cex=1.2)
-  legend("topright", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("bottomleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("topright", "Model simulations", pch=15,text.font=1, title="", col=col_bl, bty='n')
 
 par(mar=c(5,5,0,2))
 with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=lcols1, xlim=c(1,.65),ylim=c(0,1.1),

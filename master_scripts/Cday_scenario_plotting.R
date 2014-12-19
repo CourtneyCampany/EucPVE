@@ -58,7 +58,7 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=leafturn_low, ylab= "", 
   axis(2, labels=TRUE)  
   box()
 
-legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Leaf Allocation", 
+legend("topright", modlab1, pch=15,text.font=1.51, inset=0.025, title="Leaf Allocation", 
        cex=1.51, col=modcol1, bty='n')
   text(.65, .05, "(a)", cex=2)
 
@@ -76,7 +76,7 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=rootresp_low, xlab="",
   box()
   legend("bottomleft", leglab, pch=c(rep(16,6),17),text.font=1.51, inset=0.025, title=vollab, 
       cex=1.51, col=palette(), bty='n')
-  legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Root Respiration", 
+  legend("topright", modlab1, pch=15,text.font=1.51, inset=0.025, title="Root Respiration", 
        cex=1.51, col=modcol2, bty='n')
   text(.65, .05, "(b)", cex=2)
 
@@ -92,15 +92,12 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=frexude_low,
   box()
   axis(2, labels=TRUE)  
   axis(1,labels=TRUE) 
-  legend("topright", modlab1, pch=16,text.font=1.51, inset=0.025, title="Fine Root Allcation", 
+  legend("topright", modlab1, pch=15,text.font=1.51, inset=0.025, title="Fine Root Allcation", 
        cex=1.51, col=modcol3, bty='n')
   text(.65, .05, "(c)", cex=2)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/gc_Day_scenario.pdf")
 dev.off()
-
-
-
 
 
 
