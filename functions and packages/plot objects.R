@@ -14,7 +14,7 @@ PTcex <- 1.6
 LABcex <- 1.3
 #legend and axis labels for all data
 
-vollab <- expression(Soil~volume~(L))
+vollab <- expression(Soil~volume~(l))
 leglab <- c(5, 10, 15, 20, 25, 35, "Free")
 leglab2 <- as.character(c(5, 10, 15, 20, 25, 35))
 
@@ -25,7 +25,7 @@ tnclab <- expression(Total~Non-Structural~Carbohydrates~~(g~g^-1))
 slalab<- expression(SLA[TNC~free]~~(m^2~g^-1))
 lmalab <- expression(LMA[TNC~free]~~(g~cm^-2))
 maxlab <-expression(A[max]~~(mu*mol~m^-2~s^-1))
-satlab <- expression(A[sat]~~(mu*mol~m^-2~s^-1))
+satlab <- expression(italic(A)[sat]~~(mu*mol~m^-2~s^-1))
 nitro <- expression(Leaf~Nitrogen~~(g~g^-1))
 nfree <- expression(Leaf~Nitrogen[TNC~free]~~(g~g^-1))
 nmasslab<- expression(Leaf~Nitrogen[mass]~~(g~g^-1))
@@ -34,7 +34,7 @@ narealab <- expression(Leaf~Nitrogen[area]~~(g~m^-2))
 treelab<- "Seedling Mass (g)"
 leaflab <-expression(Leaf~Area~~(cm^-2))
 condlab <- expression(g[s]~~(mu*mol~m^-2~s^-1))
-Amasslab <- expression(A[mass]~~(n*mol~g^-1~s^-1))
+Amasslab <- expression(italic(A)[mass]~~(n*mol~g^-1~s^-1))
 cdaylab <- expression(Carbon~gain~~(g~d^-1))
 LAm2 <- expression(Leaf~Area~~(m^2))
 anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
