@@ -39,9 +39,7 @@ frexude_high <- read.csv("calculated data/model_runs/sim_frexudehigh.csv")
   frexude_high <- scaletofree_func(frexude_high)
 
 
-
-
-#------------------------------------------------------------------------------------------------------------
+#PLOTTING------------------------------------------------------------------------------------------------------------
 
 windows(7,10)
 par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
