@@ -187,6 +187,9 @@ gcday_seq_obs <- seq(max(Cday), min(Cday), length=101)
 #mu <- .6 #cf for gCday, not in use when scaling
 
 
+
+
+
 ####models sims use sequence of carbon day and test scenarios-----------------------------------------------------
 
 #Scenario#1: Gcday seq, allocation = mean------------------------------------------------------------------------------------
@@ -200,19 +203,30 @@ write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.na
 
 
 #Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
+
+#need to use proportions of partitioning so the model runs correctly
+
 fr_exude_max <- fr_frac_mean*1.5
-  ofrac <- (1 - fr_exude_max)/3
-
-fr_exude_min <- fr_frac_mean*.5
-  ofrac1 <- (1 - fr_exude_min)/3
-
-sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
-                                                     frfrac=fr_exude_min, crfrac=ofrac1, stemfrac=ofrac1,         
-                                                     leaffrac=ofrac1,SIMPLIFY=F)))
+  ofrac <- 1-fr_exude_max
+  exude_max_LF <- ofrac*lf
+  exude_max_CR <- ofrac*cr_frac_mean
+  exude_max_ST <- ofrac*stem_frac_mean
 
 sim_frexude_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
-                                                      frfrac=fr_exude_max, crfrac=ofrac, stemfrac=ofrac,         
-                                                      leaffrac=ofrac,SIMPLIFY=F)))
+                                                       frfrac=fr_exude_max, crfrac=exude_max_CR, stemfrac=exude_max_ST,         
+                                                       leaffrac=exude_max_LF,SIMPLIFY=F)))
+
+fr_exude_min <- fr_frac_mean*.5
+  ofrac1 <- 1-fr_exude_min
+  exude_min_LF <- ofrac1*lf
+  exude_min_CR <- ofrac1*cr_frac_mean
+  exude_min_ST <- ofrac1*stem_frac_mean
+
+
+sim_frexude_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
+                                                     frfrac=fr_exude_min, crfrac=exude_min_CR, stemfrac=exude_min_ST,         
+                                                     leaffrac=exude_min_LF,SIMPLIFY=F)))
+
 
 
   sim_frexude_low$gCday <- gcday_seq_obs
@@ -256,17 +270,28 @@ write.csv(sim_rootresp_high, "calculated data/model_runs/sim_rootresp_high.csv" 
 
 #sequence of allocation to froots reprenting +/- 50% from harvest value, respiration stays same, Cgay(min/max)
 lf_turn_max <- lf*1.5
-lf_turn_min <- lf*.5
-ofrac2 <- (1 - lf_turn_max)/3
-ofrac3 <- (1 - lf_turn_min)/3
-
-sim_lfturn_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
-                                                   frfrac=ofrac3, crfrac=ofrac3, stemfrac=ofrac3,         
-                                                   leaffrac=lf_turn_min,SIMPLIFY=F)))
+  ofrac2 <- 1-lf_turn_max
+  lf_max_FR <- ofrac2*fr_frac_mean
+  lf_max_CR <- ofrac2*cr_frac_mean
+  lf_max_ST <- ofrac2*stem_frac_mean
 
 sim_lfturn_high <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
-                                                    frfrac=ofrac2, crfrac=ofrac2, stemfrac=ofrac2,         
-                                                    leaffrac=lf_turn_max,SIMPLIFY=F)))
+                                                      frfrac=lf_max_FR, crfrac=lf_max_CR, stemfrac=lf_max_ST,         
+                                                      leaffrac=lf_turn_max,SIMPLIFY=F)))
+
+
+lf_turn_min <- lf*.5
+  ofrac3 <- 1-lf_turn_min
+  lf_min_FR <- ofrac3*fr_frac_mean
+  lf_min_CR <- ofrac3*cr_frac_mean
+  lf_min_ST <- ofrac3*stem_frac_mean
+
+
+sim_lfturn_low <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday_seq_obs, lma=lma_mean, 
+                                                   frfrac=lf_min_FR, crfrac=lf_min_CR, stemfrac=lf_min_ST,         
+                                                   leaffrac=lf_turn_min,SIMPLIFY=F)))
+
+
 
 sim_lfturn_low$lf_alloc <- lf_turn_min
 sim_lfturn_low$lf_alloc_mean <- lf
