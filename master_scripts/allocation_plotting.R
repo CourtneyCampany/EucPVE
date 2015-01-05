@@ -40,7 +40,6 @@ treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
 
 windows(14,7)
-
 par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
 
 #1. partitioning
@@ -51,14 +50,15 @@ barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, x
 title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
 title(xlab="Soil Volume  (l)", mgp=ypos)
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
+text(1.3, .95, "(a)", cex=1.2)
 
 #plot2
 par(mar=c(5,4,2,2))
 plot(Mf_mod2, xlab="" , ylab="", col=palette(), pch=pchs, cex=1.5, lwd=2)
 title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
 title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
-legend("topleft", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
+legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1.2)
-
+text(x=7.1, 63, "(b)", cex=1.2)
 dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
 dev.off()
