@@ -5,6 +5,7 @@ require(lubridate)
 require(doBy)
 library(plantecophys)
 library(scales)
+require(plotrix)
 
 eucpve_met<- read.csv("calculated data/eucpve_met.csv")
   eucpve_met$Time15<- ymd_hms(eucpve_met$DateTime15)
@@ -32,7 +33,8 @@ names(daypar)[2] <- "PPFD_day"
 
 
 ##plot---------------------------------------------------------------------
-xAT <- seq.Date(as.Date("2013-1-21"), by="month", length=50)
+startday <- as.Date(strptime("01-21-2013", format = "%m-%d-%Y", tz=""))
+xAT <- seq.Date(startday, by="month", length=6,format = "%m-%d-%Y")
 tminlab <- expression(T[min])
 tmaxlab <- expression(T[max])
 vpdlab <- expression(VPD[min]~and~VPD[max]~(kPa))
@@ -74,7 +76,9 @@ par(mar=c(2,7,0,2))
 test <- plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),
     ylab=expression(VPD[max]~~(kPa)),data=airvars, axes=FALSE)
 axis(2)
-axis.Date(1, at=xAT)
+axis.Date(1, at=xAT, label=TRUE, format="%b-%d")
+#  axis.Date(1, at=xAT, labels=FALSE)
+#  staxlab(1, at=xAT, format="%b-%d", srt=45 )
 box()
 text(x=15725, 4.9, "(c)", cex=1.51)
 

@@ -24,7 +24,8 @@ leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
 
 #PLOT
 #3 panel plot with allometry mean data (with and without "free" seedling)
-xAT <- seq.Date(from=as.Date("2013-1-1"), length=20, by="month")
+startday <- as.Date(strptime("01-21-2013", format = "%m-%d-%Y", tz=""))
+xAT <- seq.Date(startday, by="month", length=6,format = "%m-%d-%Y")
 
 
 windows(7,10)
@@ -57,7 +58,8 @@ with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angl
 points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume], cex=2,col = volume)
 box()
 text(x=as.Date("2013-05-21"), 16, "(b)", cex=2)
-
+legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
+       cex=1.51, col=palette(), bty='n')
 
 #third panel
 par(mar=c(2,7,0,2))
@@ -65,7 +67,7 @@ plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab=LAm2,
      type='n', ylim=c(0,.7))
 box()
 axis(2, labels=TRUE, at=c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))  
-axis.Date(1, at=xAT, labels=TRUE)  
+axis.Date(1, at=xAT, label=TRUE, format="%b-%d") 
 #title(ylab=LAm2, mgp=ypos)
 with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean+canopysqm.se, angle=90, 
                            col=volume,length=0.03, cex=2))
@@ -74,8 +76,6 @@ with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                    col=x$volume, pch = pchs[x$volume],cex=2))
 text(x=as.Date("2013-05-21"), .65, "(c)", cex=2)
-legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
-       cex=1.51, col=palette(), bty='n')
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
 dev.off()
