@@ -33,11 +33,15 @@ names(daypar)[2] <- "PPFD_day"
 
 
 ##plot---------------------------------------------------------------------
-startday <- as.Date(strptime("01-21-2013", format = "%m-%d-%Y", tz=""))
+startday <- as.Date(strptime("01-01-2013", format = "%m-%d-%Y", tz=""))
 xAT <- seq.Date(startday, by="month", length=6,format = "%m-%d-%Y")
 tminlab <- expression(T[min])
 tmaxlab <- expression(T[max])
 vpdlab <- expression(VPD[min]~and~VPD[max]~(kPa))
+
+xlim1 <- as.Date(strptime("01-05-2013", format = "%m-%d-%Y", tz=""))
+xlim2 <- as.Date(strptime("06-01-2013", format = "%m-%d-%Y", tz=""))
+xlimdays <- c(xlim1, xlim2)
 
 
 windows(7,7)
@@ -49,7 +53,7 @@ par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),
 par(mar=c(0,7,2,2))
 with(airvars, {
   plot(Date, Temperature.max, type='l', col="red",ylim=c(0,40),lwd=2,
-       xlab="",axes=FALSE,ylab=expression(T[min]~and~T[max]~(degree*C)),
+       xlab="",axes=FALSE,ylab=expression(T[min]~and~T[max]~(degree*C)),xlim=xlimdays,
        panel.first={
          addpoly(Date, Temperature.min, Temperature.max,col="grey95")
        })
@@ -60,27 +64,27 @@ axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 legend("topright",col=c("red","blue"),lty=1,lwd=2,legend=c(tmaxlab,tminlab), inset=.01, cex=1.51, bty='n')
 box()
-text(x=15725, 39, "(a)", cex=1.51)
+text(x=15710, 39, "(a)", cex=1.51)
 
 #2=PPFD
 par(mar=c(0,7,0,2))
-plot(PPFD_day~Date,type="l",col="orange",data=daypar, xlab="", lwd=2,ylim=c(0, 65),
+plot(PPFD_day~Date,type="l",col="orange",data=daypar, xlab="", lwd=2,ylim=c(0, 65),xlim=xlimdays,
      ylab=expression(PPFD[day]~~(mols~m^-2~d^-1)),axes=FALSE)
 axis(2)
 axis.Date(1, at=xAT, labels=FALSE)
 box()
-text(x=15725, 62, "(b)", cex=1.51)
+text(x=15710, 62, "(b)", cex=1.51)
 
 #3= VPD
 par(mar=c(2,7,0,2))
-test <- plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),
+test <- plot(VPD.max~Date, type="l",col="forestgreen",xlab="",lwd=2,ylim=c(0,5.2),xlim=xlimdays,
     ylab=expression(VPD[max]~~(kPa)),data=airvars, axes=FALSE)
 axis(2)
-axis.Date(1, at=xAT, label=TRUE, format="%b-%d")
+axis.Date(1, at=xAT, label=TRUE, format="%b")
 #  axis.Date(1, at=xAT, labels=FALSE)
 #  staxlab(1, at=xAT, format="%b-%d", srt=45 )
 box()
-text(x=15725, 4.9, "(c)", cex=1.51)
+text(x=15710, 4.9, "(c)", cex=1.51)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
 dev.off()
