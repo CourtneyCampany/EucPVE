@@ -40,6 +40,7 @@ LAm2 <- expression(Leaf~Area~~(m^2))
 anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
 cilab <- expression(C[i]~~(mu*mol~mol^-1))
 srllab <- expression(Specific~Root~Length~~(m~g^1))
+c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
 
 #labels for mtext
 raw <- "Raw Data"
