@@ -55,12 +55,18 @@ root_agg <- summaryBy(N_perc~ volume, data=root_all, FUN=c(mean, se))
 
 table1 <- merge(table1,root_agg)
 
+####d13c
+c13 <- read.csv("calculated data/c13_means.csv")
+
+table1 <- merge(table1,c13)
+
+
 ###now sort the table into correct var + se--------------------------------------------------------------------
 #tree_tab <-table1[,c(1,2,3,6,7,8,9,10,11,12,13,4,5,14,15)]
 
 #seperate dfr in two with mean and se, omit volume for now
-tree_means <- table1[, c(2,4,6,8,10,12,14)]
-tree_se <- table1[, c(3,5,7,9,11,13,15)]
+tree_means <- table1[, c(2,4,6,8,10,12,14,16)]
+tree_se <- table1[, c(3,5,7,9,11,13,15,17)]
 
 ###now paste together and round
 dat1 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,1], 1)), " (", sprintf("%3.2f", round(tree_se[,1],2)),")"))
@@ -70,7 +76,7 @@ dat4 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,4], 1)), " (", sprin
 dat5 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,5], 2)), " (", sprintf("%3.2f", round(tree_se[,5],2)),")"))
 dat6 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,6], 1)), " (", sprintf("%3.2f",round(tree_se[,6],2)),")"))
 dat7 <- data.frame(paste0(signif(tree_means[,7], 2), " (", round(tree_se[,7],2),")"))
-
+dat8 <- data.frame(paste0(sprintf("%3.1f",round(tree_means[,8], 3)), " (", round(tree_se[,8],2),")"))
 # Note:
 # in R, sprintf("%2.1f", round(25.01,1)) avoids "25", and gives "25.0" instead.
 
@@ -82,6 +88,7 @@ pve_table1 <- cbind(leglab, dat1)
   pve_table1 <- cbind(pve_table1, dat5)
   pve_table1 <- cbind(pve_table1, dat6)
   pve_table1 <- cbind(pve_table1, dat7)
+  pve_table1 <- cbind(pve_table1, dat8)
 
 #change variable order
 pve_table2 <- pve_table1[, c(1:2, 4:7, 3,8)]

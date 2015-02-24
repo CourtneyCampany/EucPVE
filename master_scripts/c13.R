@@ -1,5 +1,6 @@
 source("functions and packages/functions.R")
 source("functions and packages/plot objects.R")
+library(doBy)
 
 c13 <- read.csv("raw data/harvest_c13.csv")
 
@@ -12,6 +13,8 @@ plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 c13 <- merge(c13[,c(2,4)], plotsumm[,3:4], by ="ID")
 c13$volume <- as.factor(c13$volume)
 
+c13_agg <- summaryBy(d13c ~ volume, data=c13, FUN =c(mean, se))
+write.csv(c13_agg, "calculated data/c13_means.csv", row.names=FALSE)
 
 windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
