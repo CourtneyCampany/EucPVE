@@ -91,7 +91,7 @@ pve_table1 <- cbind(leglab, dat1)
   pve_table1 <- cbind(pve_table1, dat8)
 
 #change variable order
-pve_table2 <- pve_table1[, c(1:2, 4:7, 3,8)]
+pve_table2 <- pve_table1[, c(1:2, 4:7, 3,8,9)]
 
 write.csv(pve_table2, "master_scripts/pve_table1.csv", row.names=FALSE)
 
