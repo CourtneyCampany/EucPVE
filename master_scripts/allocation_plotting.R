@@ -62,3 +62,22 @@ legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab,
 text(x=7.1, 63, "(b)", cex=1.2)
 dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
 dev.off()
+
+
+
+###png
+png(filename = "master_scripts/manuscript_figs/png/massfrac.png", width = 11, height = 8.5, units = "in", res= 400)
+par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
+
+plot(Mf_mod2, xlab="" , ylab=expression(Leaf~Mass~~(g)), col=palette(), pch=pchs, cex=2, lwd=2)
+#title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
+title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
+
+legend("topleft", leglab, pch=c(rep(16,6),17),text.font=1.2, inset=0.025, title=vollab, 
+       cex=1.51, col=palette(), bty='n')
+
+dev.off()
+
+
+
+

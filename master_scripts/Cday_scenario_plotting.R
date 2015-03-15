@@ -98,6 +98,64 @@ dev.copy2pdf(file= "master_scripts/manuscript_figs/gc_Day_scenario.pdf")
 dev.off()
 
 
-
-
-
+####png
+#   png(filename = "master_scripts/manuscript_figs/png/leafC.png", width = 11, height = 8.5, units = "in", res= 400)
+#   par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
+# 
+#   plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=leafturn_low, 
+#        ylab= expression(Biomass~Scaled[free]), 
+#        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), 
+#        type='n',axes=FALSE)
+#   
+#   points(mass_adj~C_adj, data=leafturn_low, cex=2, pch=16, col=col_lf2, type='l', lwd=4)
+#   points(mass_adj~C_adj, data=leafturn_high, cex=2, pch=16, col=col_lf1,type='l', lwd=4)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=2, pch=16, col=col_bl,type='l', lwd=4)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=2)
+#   axis(1,  labels=TRUE) 
+#   axis(2, labels=TRUE)  
+#   box()
+#   
+#   legend("topright", modlab1, pch=15,text.font=1.2, inset=0.025, title="Leaf Allocation", 
+#          cex=1.51, col=modcol1, bty='n')
+#   
+#   dev.off()
+#   
+#   
+#   
+#   png(filename = "master_scripts/manuscript_figs/png/resp.png", width = 11, height = 8.5, units = "in", res= 400)
+#   par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
+#   
+#   plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=rootresp_low, 
+#        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]),  
+#        ylab= expression(Biomass~Scaled[free]),type='n', axes=FALSE)
+#   points(mass_adj~C_adj, data=rootresp_low, cex=2, pch=16, col=col_resp2,type='l', lwd=4)
+#   points(mass_adj~C_adj, data=rootresp_high, cex=2, pch=16, col=col_resp1,type='l', lwd=4)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=2, pch=16, col=col_bl,type='l', lwd=4)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=2)
+#   axis(1, labels=TRUE)  
+#   axis(2)     
+#   box()
+#   legend("topright", modlab1, pch=15,text.font=1.2, inset=0.025, title="Root Respiration", 
+#          cex=1.51, col=modcol2, bty='n')
+#   
+#   dev.off()
+#   
+#   
+#   png(filename = "master_scripts/manuscript_figs/png/rootC.png", width = 11, height = 8.5, units = "in", res= 400)
+#   par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
+#   
+#   plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=frexude_low,
+#        ylab= expression(Biomass~Scaled[free]),
+#        type='n',axes=FALSE,
+#        xlab=expression(Daily~Carbon~Assimilation~Scaled[free]))
+#   points(mass_adj~C_adj, data=frexude_low, cex=2, pch=16, col=col_exude2,type='l', lwd=4)
+#   points(mass_adj~C_adj, data=frexude_high, cex=2, pch=16, col=col_exude1,type='l', lwd=4)
+#   points(mass_adj~C_adj, data=gCseq_sim_mean, cex=2, pch=16, col=col_bl,type='l', lwd=4)
+#   points(mass_actual$mass_adj~Cday_means$C_stnd_free, pch=pchs, col=palette(), cex=2)
+#   box()
+#   axis(2, labels=TRUE)  
+#   axis(1,labels=TRUE) 
+#   legend("topright", modlab1, pch=15,text.font=1.2, inset=0.025, title="Fine Root Allcation", 
+#          cex=1.51, col=modcol3, bty='n')
+#   dev.off()
+#   

@@ -112,3 +112,25 @@ legend("bottomright", binlab, pch=21, text.font=1.2, inset=0.02, pt.bg=coln2,tit
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/A_leafchem.pdf")
 dev.off()
+
+
+
+
+####png of starch xaxis
+png(filename = "master_scripts/manuscript_figs/png/leafchem.png", width = 11, height = 8.5, units = "in", res= 400)
+par(mar=c(5,5,2,2),cex.axis=1.5, cex.lab=1.75,  las=1)
+plot(A_mass ~ starch_perc, data=photo_chem,type='n',ylim=c(0,800), xlim=c(0, 27.5),ylab=alab, axes=FALSE, xlab="")  
+box()
+axis(1, labels=TRUE) 
+axis(2, labels=TRUE)  
+#mtext(alab, outer=TRUE, line=2.5, side=2, cex=1.5)
+points(A_mass ~ starch_perc, pch=21, data=photo_chem, bg=coln2[nitrobin], ylab="",
+       xlab="",cex=1.2, ylab="")
+
+for(i in 1:length(unique(TNCpred$nitro_mg))){
+  m <- subset(TNCpred, nitro_mg == unique(TNCpred$nitro_mg)[i])
+  with(m, lines(starch_perc, Amass_pred, col=coln[i], lwd=2))
+}
+mtext("Leaf Starch (%)", cex=1.25, line=3.5, side=1)
+legend("topright", binlab2, pch=21, text.font=1.2, inset=0.02, pt.bg=coln2,title=nitro_noTNC , bty='n', cex=1.2) 
+dev.off()
