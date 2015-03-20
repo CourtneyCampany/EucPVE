@@ -78,7 +78,8 @@ png(filename = "master_scripts/manuscript_figs/png/Cday2.png", width = 11, heigh
 par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
 
 with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=lcols1, xlim=c(1,.65),ylim=c(0,1.1),
-                                       cex=1, type='l', lwd=4,ylab="", 
+                                       cex=1, type='l', lwd=4,
+                                       ylab=expression(Biomass~Scaled[free]), 
                                        xlab=expression(Daily~Carbon~Assimilation~Scaled[free])))
 
   with(subset(alloc_sim, volume==10),points(C_adj,mass_adj_free, col=lcols2, cex=1,type='l', lwd=4))
@@ -88,7 +89,6 @@ with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=lcols1, xlim=c(1
   with(subset(alloc_sim, volume==35),points(C_adj,mass_adj_free, col=lcols6, cex=1, type='l', lwd=4))
   with(subset(alloc_sim, volume==1000),points(C_adj,mass_adj_free, col=lcols7, cex=1,type='l', lwd=4))
   points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
-  title(ylab=expression(Biomass~Scaled[free]), mgp=ypos)   
   box()
   legend("topright", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
 dev.off()
@@ -98,13 +98,11 @@ png(filename = "master_scripts/manuscript_figs/png/Cday.png", width = 11, height
 par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
 
 plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=gCseq_sim_mean, 
-     xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), ylab= "", type='n')
+     xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), ylab= expression(Biomass~Scaled[free]), type='n')
 
 points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1.2, type='l', lwd=4,pch=16, col=col_bl)
 points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 box()
 legend("bottomleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
 legend("topright", "Model simulations", pch=15,text.font=1, title="", col=col_bl, bty='n')
-title(ylab=expression(Biomass~Scaled[free]), mgp=ypos) 
-
 dev.off()
