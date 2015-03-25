@@ -90,7 +90,7 @@ with(subset(alloc_sim, volume==5),plot(C_adj,mass_adj_free, col=lcols1, xlim=c(1
   with(subset(alloc_sim, volume==1000),points(C_adj,mass_adj_free, col=lcols7, cex=1,type='l', lwd=4))
   points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
   box()
-  legend("topright", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("bottomleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.25)
 dev.off()
 
 #a only
@@ -103,6 +103,6 @@ plot(mass_adj~C_adj, xlim=c(1,.65),ylim=c(0, 1.1), data=gCseq_sim_mean,
 points(mass_adj~C_adj, data=gCseq_sim_mean, cex=1.2, type='l', lwd=4,pch=16, col=col_bl)
 points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 box()
-legend("bottomleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
-legend("topright", "Model simulations", pch=15,text.font=1, title="", col=col_bl, bty='n')
+legend("bottomleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.25)
+legend("topright", "Model simulations", pch=15,text.font=1, title="", col=col_bl, bty='n',cex=1.5)
 dev.off()
