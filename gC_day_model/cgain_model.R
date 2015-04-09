@@ -71,11 +71,11 @@ Amodel <- read.csv("calculated data/Aleaf_pred_15min.csv")
   Amodel$volume <- as.factor(Amodel$volume)
   Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
 
-#first need sum over day and then means by treatment
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
   names(Aleaf)[3] <- "carbon_day"
+  #write.csv(Aleaf, "calculated data/model_runs/cday_120.csv", row.names=FALSE)
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
-#write.csv(Aleaf_agg, "calculated data/model_runs/gCday_means.csv", row.names=FALSE)
+  #write.csv(Aleaf_agg, "calculated data/model_runs/gCday_means.csv", row.names=FALSE)SE)
 
 
 ####MODEL---------------------------------------------------------------------------------
