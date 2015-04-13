@@ -74,4 +74,4 @@ if(returnwhat == "all")
 }
 
 
-sim_means5<- as.data.frame(do.call(rbind,mapply(testmodel, gCday=b,SIMPLIFY=F)))
+

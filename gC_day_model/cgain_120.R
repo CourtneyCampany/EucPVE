@@ -88,7 +88,7 @@ leaffrac_trt <- as.vector(leaf_frac_vol[,2])
 lf <- mean(leaffrac_trt)
 
 
-source("functions and packages/massmodel.R")
+source("gC_day_model/testmodel.R")
 library(plyr)
 
 #1 sequence over the range of mean values
@@ -97,8 +97,14 @@ gcday_seq_obs <- seq(max(Cday), min(Cday), length=101)
 Cday_120 <- dlply(Aleaf, .(volume))
 
 c120_trt<- lapply(Cday_120, "[", 3)
-test <- data.frame(c120_trt[1])
 
+test1 <- data.frame(c120_trt[1])
+test2 <- as.vector(test1[1:121,])
+
+
+
+
+sim_means5<- as.data.frame(do.call(rbind,mapply(testmodel, gCday=b,SIMPLIFY=F)))
 
 ##need a new parameter of 120 gcday per trt
 
@@ -109,7 +115,7 @@ sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday
 sim_means_obs$gCday <- gcday_seq_obs
 
 #Scenario#1b: 120days of Cday by trt, allocation=mean
-sim_means5<- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=7, lma=lma_mean, 
+sim5<- as.data.frame(do.call(rbind,mapply(testmodel, gCday=test2, lma=lma_mean, 
                                                     frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
                                                     leaffrac=lf,SIMPLIFY=F)))
 

@@ -18,6 +18,8 @@ Cday <- as.vector(Cday_means[,2])
 gCseq_sim_mean <- read.csv("calculated data/model_runs/sim_gCseq_obs.csv")
     gCseq_sim_mean <- scaletofree_func(gCseq_sim_mean)
 
+    
+    
 
 #######sequence of gC with allocation and lma by treatment--------------------------------------------------------
 alloc_sim <- read.csv("calculated data/model_runs/sim_gCseq_allocation.csv")
@@ -29,8 +31,6 @@ alloc_sim$maxmass <- c(rep(alloc_sim$biomass[1],101),rep(alloc_sim$biomass[102],
                        rep(alloc_sim$biomass[607],101))
 
 alloc_sim$mass_adj_free <- alloc_sim$biomass/alloc_sim$biomass[607]
-
-
 
 
 #######two panel scaled plotting-----------------------------------------------------------------------

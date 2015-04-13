@@ -23,10 +23,13 @@ leaf_param_agg <- summaryBy(Nmass+Narea~ volume, data=leaf_param, FUN=c(mean, se
 ###rdark
 rd <- read.csv("calculated data/Rd_leaf.csv")
 
-rd_agg <- summaryBy(resppermass ~ volume, data=rd, FUN=c(mean, se))
-rd_agg$resppermass.mean <- abs(rd_agg$resppermass.mean)
+#refit RD at 25c
+q10_crous <- 1.95
+rd$rd25 <- with(rd, -1*(Photo * q10_crous^((25-CTleaf)/10)))
+rd$rd25mass <- with(rd, rd25/mass)
+rd$rd25area <- with(rd, rd25/Area)
 
-
+rd_agg <- summaryBy(rd25mass+rd25area ~ volume, data=rd, FUN=c(mean, se))
 
 ##jmax vcmax
 
@@ -44,18 +47,20 @@ leafdat$Nmass2 <- leafdat$Nmass*1000
 
 leafdat_agg <- merge(rd_agg, phys_agg, by="volume")
 leafdat_agg <- merge(leafdat_agg, leaf_param_agg, by="volume")
+  leafdat_agg$nmass2 <- with(leafdat_agg, Nmass.mean*1000)
+
 
 
 
 #plotting
-plot(abs(resppermass) ~ Nmass2, data=leafdat, col=as.factor(volume), pch=16,ylim=c(0,8),xlim=c(0,10),
-     xlab="Leaf Nitrogen  (mg/g)", ylab= "Dark Respiration  (nmols g-1 s-1)", cex=1.3)
+plot(rd25mass ~ Nmass2, data=leafdat, col=as.factor(volume), pch=16,ylim=c(0,20),xlim=c(0,10),
+     xlab="Leaf Nitrogen  (mg g-1)", ylab= "Dark Respiration  (nmols g-1 s-1)", cex=1.3)
 
 
-plot(resppermass.mean ~ Nmass.mean, data=leafdat_agg,ylim=c(0,4), xlim=c(0, 0.01), col=as.factor(volume), pch=pchs,
-     xlab=nmasslab, cex=1.3)
+plot(rd25mass.mean ~ nmass2, data=leafdat_agg,ylim=c(0,10), xlim=c(0, 10), col=as.factor(volume), pch=pchs,
+     xlab="Leaf Nitrogen  (mg g-1)", cex=1.3)
 
 
-plot(resppermass.mean ~ Vcmax, data=leafdat_agg, col=as.factor(volume), pch=pchs,xlim=c(50, 125), ylim=c(0, 4),
+plot(rd25mass.mean ~ Vcmax, data=leafdat_agg, col=as.factor(volume), pch=pchs,xlim=c(50, 125), ylim=c(0, 10),
      xlab=nmasslab, cex=1.3)
 
