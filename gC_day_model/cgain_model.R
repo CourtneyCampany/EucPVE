@@ -69,7 +69,7 @@ leafarea_mean <- (mean(lma$area))/10000
 Amodel <- read.csv("calculated data/Aleaf_pred_15min.csv")
   Amodel$Date <- as.Date(Amodel$Date)
   Amodel$volume <- as.factor(Amodel$volume)
-  Amodel$photo15gc <- with(Amodel, Anet*15*60*10^-6*12)
+  Amodel$photo15gc <- with(Amodel, ALEAF*15*60*10^-6*12)
 
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Amodel, FUN=sum, keep.names=TRUE )
   names(Aleaf)[3] <- "carbon_day"
@@ -184,10 +184,10 @@ productionmodel <- function(leaffrac = .25,
 
 #sequence is the range of mean values (over 120 days) reperenting the mean of all days per volume
 gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) 
+
+####scaling (possible one for M, photo, or scaling)
 #mu <- .6 #cf for gCday, not in use when scaling
-
-
-
+#M <- 
 
 
 ####models sims use sequence of carbon day and test scenarios-----------------------------------------------------
