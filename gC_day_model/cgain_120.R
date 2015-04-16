@@ -238,4 +238,8 @@ for(j in 1:101){
                                 stemfrac=stem_frac_mean,leaffrac=lf)
 }
 
+library(plyr)
+outf <- llply(outfree, function(x) as.data.frame(x))
+outf1 <- rbind.fill(outf)
+
 
