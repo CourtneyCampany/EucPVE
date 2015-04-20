@@ -93,56 +93,13 @@ source("functions and packages/massmodel.R")
 
   c120_trt<- lapply(Cday_120, "[", 3)
 
-test1 <- data.frame(c120_trt[1])
-test2 <- as.vector(test1[1:121,])
 
+##model using mean allocation and Cday values over 120 days by volume treatment 
+sim120_all <- lapply(c120_trt, function(x) {data.frame(productionmodel(gCday=as.vector(x[1:121,]), lma=lma_mean, 
+                               frfrac=fr_frac_mean,crfrac=cr_frac_mean,stemfrac=stem_frac_mean, 
+                               leaffrac=lf, returnwhat="all"))
+})
 
-C5 <- data.frame(c120_trt[1])
-C5 <- as.vector(C5[1:121,])
-
-C10 <- data.frame(c120_trt[2])
-C10 <- as.vector(C10[1:121,])
-
-C15 <- data.frame(c120_trt[3])
-C15 <- as.vector(C15[1:121,])
-
-C20 <- data.frame(c120_trt[4])
-C20 <- as.vector(C20[1:121,])
-
-C25 <- data.frame(c120_trt[5])
-C25 <- as.vector(C25[1:121,])
-
-C35 <- data.frame(c120_trt[6])
-C35 <- as.vector(C35[1:121,])
-
-Cf <- data.frame(c120_trt[7])
-Cf <- as.vector(Cf[1:121,])
-
-###simple run for each treatemtn using 120 values of Cday
-mod5 <- data.frame(productionmodel(gCday=C5, lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean,
-                                   stemfrac=stem_frac_mean, leaffrac=lf, returnwhat="all"))
-
-mod10 <- data.frame(productionmodel(gCday=C10, lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                    stemfrac=stem_frac_mean,leaffrac=lf, returnwhat="all"))
-
-mod15 <- data.frame(productionmodel(gCday=C15, lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                    stemfrac=stem_frac_mean,leaffrac=lf, returnwhat="all"))
-
-mod20 <- data.frame(productionmodel(gCday=C20, lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                    stemfrac=stem_frac_mean,leaffrac=lf, returnwhat="all"))
-
-
-mod25 <- data.frame(productionmodel(gCday=C25, lma=lma_mean, 
-                                    frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,         
-                                    leaffrac=lf, returnwhat="all"))
-
-
-mod35 <- data.frame(productionmodel(gCday=C35, lma=lma_mean,  frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                    stemfrac=stem_frac_mean,leaffrac=lf, returnwhat="all"))
-
-
-modfree <- data.frame(productionmodel(gCday=Cf, lma=lma_mean,  frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                      stemfrac=stem_frac_mean,leaffrac=lf, returnwhat="all"))
 
 
 ##compare to actual
@@ -153,8 +110,7 @@ cols <- gradient(7)
 
 #####harvest mass
 mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
-mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
-mass_actual$Date <- as.Date("2013-05-21")
+  mass_actual$Date <- as.Date("2013-05-21")
 
 ###leaf area
 #leaf area interpolated--------------------------------------------------------------------------
@@ -163,15 +119,11 @@ leafarea_time <-datevol_func (leafarea_time)
 
 la_sp <- dlply(leafarea_time, .(volume))
 
+##plot sim vs interpolated leaf area
 windows(10,8)
 par(mar=c(5,5,2,2))
-plot(mod5$leafarea~Date, col=cols[1], pch=16, xlab="", ylab=LAm2, ylim=c(0, .6))
-  points(mod10$leafarea~Date, col=cols[2], pch=16)
-  points(mod15$leafarea~Date, col=cols[3], pch=16)
-  points(mod20$leafarea~Date, col=cols[4], pch=16)
-  points(mod25$leafarea~Date, col=cols[5], pch=16)
-  points(mod35$leafarea~Date, col=cols[6], pch=16)
-  points(modfree$leafarea~Date, col=cols[7], pch=17)
+l_ply(sim120_all, function(x) plot(x$leafarea~Date, xlab="", ylab=LAm2, ylim=c(0, .6), type='n'))
+l_ply(sim120_all, function(x) points(x$leafarea~Date,col=))
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                       col=x$volume, pch = pchs[x$volume],type='b', lwd=2))
 
@@ -201,45 +153,17 @@ cdayscale <- seq(1, min(Aleaf_agg$Cday_scale), length=101)
   
 out5 <- list()
 for(j in 1:101){
-  out5[[j]] <- productionmodel(gCday=C5*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                              stemfrac=stem_frac_mean,leaffrac=lf)
+  out5[[j]] <- productionmodel(gCday=as.vector(c120_trt[1:121,])*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, 
+                               crfrac=cr_frac_mean, stemfrac=stem_frac_mean,leaffrac=lf)
 }
 
-out10 <- list()
-for(j in 1:101){
-  out10[[j]] <- productionmodel(gCday=C10*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                               stemfrac=stem_frac_mean,leaffrac=lf)
-}
 
-out15 <- list()
-for(j in 1:101){
-  out15[[j]] <- productionmodel(gCday=C15*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                stemfrac=stem_frac_mean,leaffrac=lf)
-}
-out20 <- list()
-for(j in 1:101){
-  out20[[j]] <- productionmodel(gCday=C20*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                stemfrac=stem_frac_mean,leaffrac=lf)
-}
-out25 <- list()
-for(j in 1:101){
-  out25[[j]] <- productionmodel(gCday=C25*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                stemfrac=stem_frac_mean,leaffrac=lf)
-}
-out35 <- list()
-for(j in 1:101){
-  out35[[j]] <- productionmodel(gCday=C35*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                stemfrac=stem_frac_mean,leaffrac=lf)
-}
-
-outfree <- list()
-for(j in 1:101){
-  outfree[[j]] <- productionmodel(gCday=Cf*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, 
-                                stemfrac=stem_frac_mean,leaffrac=lf)
-}
 
 library(plyr)
-outf <- llply(outfree, function(x) as.data.frame(x))
+library(reshape2)
+
+
+outtest <- ldply(out5, function(x) c(as.data.frame(x), rbind.fill))
 outf1 <- rbind.fill(outf)
 
 
