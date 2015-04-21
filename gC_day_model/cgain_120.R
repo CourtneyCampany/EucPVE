@@ -122,10 +122,23 @@ la_sp <- dlply(leafarea_time, .(volume))
 ##plot sim vs interpolated leaf area
 windows(10,8)
 par(mar=c(5,5,2,2))
+plot(1, xlab="", ylab=LAm2, ylim=c(0, .6), xlim=range(Date), type='n', axes=FALSE)
+axis.Date(Date, side=1)
+axis(2)
+for(i in 1:length(sim120_all)){
+  lines(Date, sim120_all[[i]]$leafarea, col=cols[i])
+}
+
+
 l_ply(sim120_all, function(x) plot(x$leafarea~Date, xlab="", ylab=LAm2, ylim=c(0, .6), type='n'))
-l_ply(sim120_all, function(x) points(x$leafarea~Date,col=))
+l_ply(sim120_all, function(x) points(x$leafarea~Date))
+
+
+
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                       col=x$volume, pch = pchs[x$volume],type='b', lwd=2))
+
+
 
 windows(10,8)
 par(mar=c(5,5,2,2))
