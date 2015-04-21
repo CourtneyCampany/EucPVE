@@ -92,7 +92,7 @@ source("functions and packages/massmodel.R")
   Cday_120 <- dlply(Aleaf, .(volume))
 
   c120_trt<- lapply(Cday_120, "[", 3)
-
+  
 
 ##model using mean allocation and Cday values over 120 days by volume treatment 
 sim120_all <- lapply(c120_trt, function(x) {data.frame(productionmodel(gCday=as.vector(x[1:121,]), lma=lma_mean, 
@@ -150,6 +150,9 @@ cdayscale <- seq(1, min(Aleaf_agg$Cday_scale), length=101)
 #M
 
 ##### sun model for each volume with 120days of Cday
+
+C5 <- data.frame(c120_trt[1])
+C5 <- as.vector(C5[1:121,])
   
 out5 <- list()
 for(j in 1:101){
@@ -157,13 +160,28 @@ for(j in 1:101){
                                crfrac=cr_frac_mean, stemfrac=stem_frac_mean,leaffrac=lf)
 }
 
-
+test5 <- list()
+for(j in 1:101){
+test5[[j]] <- productionmodel(gCday=C5*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, 
+                              crfrac=cr_frac_mean, stemfrac=stem_frac_mean,leaffrac=lf)
+}
 
 library(plyr)
 library(reshape2)
 
+###work with test of vol 5 first
+###need to rbind this list
+outtest <- llply(test5, function(x) as.data.frame(x))  ###this creates something weird and I cant rbind.fill
+dat <- outtest[5]
+dat2 <- t(dat)
+dat3 <- melt(dat)
 
-outtest <- ldply(out5, function(x) c(as.data.frame(x), rbind.fill))
-outf1 <- rbind.fill(outf)
 
+# outtest2 <- ldply(out5, function(x) c(as.data.frame(x), rbind.fill))
+# outf1 <- rbind.fill(outf)
 
+library(data.table)
+
+dt = as.data.table(out5)
+after = as.list(data.table(t(dt)))
+v1 <- as.data.frame(after[1])####etc
