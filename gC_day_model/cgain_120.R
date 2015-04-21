@@ -169,9 +169,10 @@ C5 <- as.vector(C5[1:121,])
   
 out5 <- list()
 for(j in 1:101){
-  out5[[j]] <- productionmodel(gCday=as.vector(c120_trt[1:121,])*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, 
-                               crfrac=cr_frac_mean, stemfrac=stem_frac_mean,leaffrac=lf)
+  out5[[j]] <- productionmodel(gCday=as.vector(c120_trt[[7]][1:121,])*cdayscale[j], lma=lma_mean, frfrac=fr_frac_mean, crfrac=cr_frac_mean, stemfrac=stem_frac_mean,leaffrac=lf)
 }
+as.data.frame(do.call(rbind,out5))
+
 
 test5 <- list()
 for(j in 1:101){
