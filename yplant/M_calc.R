@@ -38,6 +38,11 @@ M_eucs <- ldply(names(eucs_list), function(x) Mcalc(dfr = eucs_list[[x]], vol = 
 #means
 M_agg <- summaryBy(M+totPARleaf~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
 
+M_agg$volume <- gsub("free", 1000, M_agg$volume)
+M_agg2 <- M_agg[c(6,1,2,3,4,5,7), ]
+
+write.csv(M_agg2[,1:2], "calculated data/M_volume.csv", row.names=FALSE)
+
 #####now regress M for each plant against leaf 
 eucs3d$plant_id <- gsub("yplant/euc_plfiles/", "", eucs3d$pfile)
 eucs3d$plant_id <- gsub(".p", "", eucs3d$plant_id)

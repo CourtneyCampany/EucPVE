@@ -1,10 +1,10 @@
 # model as a function
-productionmodel <- function(leaffrac = .25,
+modelLAlimit <- function(leaffrac = .25,
                             crfrac = .25,
                             frfrac = .25,
                             stemfrac=.25,
                             gCday = 1,
-                            leafarea = .1,
+                            LA = .1,
                             conversionEfficiency = 0.65,
                             fr_resp = .010368, #gC/gFroot day Marsden et al
                             cr_resp = .00124, #gC/gCroot day
@@ -23,9 +23,6 @@ productionmodel <- function(leaffrac = .25,
   stemfrac <- stemfrac / sumf
   
   returnwhat <- match.arg(returnwhat)
-  
-#   leafarea <- vector()
-#   leafarea[1] <- LA_start
   
   biomass <- vector()
   biomass[1] <- mass_mean
@@ -51,13 +48,12 @@ productionmodel <- function(leaffrac = .25,
   
   #run model simulation------------------------------------------------------------------
   for (i in 2:numdays) {
-    grossbiomassprod <- leafarea[i-1] * gCday[i]/conversionEfficiency  # gc day-1
+    grossbiomassprod <- LA[i-1] * gCday[i]/conversionEfficiency  # gc day-1
     
     netbiomassprod <- grossbiomassprod - fr_resp*frootmass[i-1] - cr_resp*crootmass[i-1] - wd_resp*frootmass[i-1]
     
     #fractions,stems and wood need respiration
     leafmass[i] <- leafmass[i-1] + netbiomassprod*leaffrac - turnover*leafmass[i-1]
-      # leafarea[i] <- leafmass[i] / lma
     
     stemmass[i] <- stemmass[i-1] + netbiomassprod*stemfrac  ##turnover = 0
     frootmass[i] <- frootmass[i-1] + netbiomassprod*frfrac - turnover*frootmass[i-1]
@@ -71,9 +67,10 @@ productionmodel <- function(leaffrac = .25,
   }
   
   if(returnwhat == "lastval")
-    return(c(biomass=biomass[numdays],leafarea=leafarea[numdays], leafmass = leafmass[numdays], LMF = LMF[numdays]))
+    return(c(biomass=biomass[numdays], leafmass = leafmass[numdays], LMF = LMF[numdays]))
   
   if(returnwhat == "all")
-    return(list(biomass=biomass,leafarea=leafarea, leafmass = leafmass, LMF = LMF))
+    return(list(biomass=biomass, leafmass = leafmass, LMF = LMF))
   
 }
+

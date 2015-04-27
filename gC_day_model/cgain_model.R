@@ -185,10 +185,6 @@ productionmodel <- function(leaffrac = .25,
 #sequence is the range of mean values (over 120 days) reperenting the mean of all days per volume
 gcday_seq_obs <- seq(max(Cday), min(Cday), length=101) 
 
-####scaling (possible one for M, photo, or scaling)
-#mu <- .6 #cf for gCday, not in use when scaling
-#M <- 
-
 
 ####models sims use sequence of carbon day and test scenarios-----------------------------------------------------
 
@@ -199,6 +195,7 @@ sim_means_obs <- as.data.frame(do.call(rbind,mapply(productionmodel, gCday=gcday
   sim_means_obs$gCday <- gcday_seq_obs
 #save run
 write.csv(sim_means_obs, "calculated data/model_runs/sim_gCseq_obs.csv" , row.names=FALSE)
+  
 
 #Scenario #2: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)---------------------
 

@@ -1,5 +1,6 @@
 ###interpolate leaf area and number of leaves across all experiment dates
 source("functions and packages/functions.R")
+library(doBy)
 
 #leaf area across sample dates
 leafarea <- read.csv("calculated data/leafareabypot.csv")
@@ -39,5 +40,10 @@ leafnum_pred <- do.call(rbind, leafnum_sp)
 countpred <- subset(leafnum_pred, select = c("Date", "ID", "count_pred"))
 countpred$count_pred<- round(countpred$count_pred, digits = 0)
 
+#get mean of LA by volume for each day
+lapred2 <- merge(lapred, plotsumm)
+lapred_agg <- summaryBy(canopysqm_pred~Date+volume, data=lapred2, FUN=mean, keep.names=TRUE)
+
 write.csv(lapred, "calculated data/LApred.csv", row.names=FALSE)
 write.csv(countpred, "calculated data/L#pred.csv", row.names=FALSE)
+write.csv(lapred_agg, "calculated data/LApred_volume.csv", row.names=FALSE)

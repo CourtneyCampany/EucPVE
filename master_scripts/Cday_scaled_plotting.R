@@ -32,6 +32,10 @@ alloc_sim$maxmass <- c(rep(alloc_sim$biomass[1],101),rep(alloc_sim$biomass[102],
 
 alloc_sim$mass_adj_free <- alloc_sim$biomass/alloc_sim$biomass[607]
 
+###plot of model output (non-scaled)
+
+
+
 
 #######two panel scaled plotting-----------------------------------------------------------------------
 
