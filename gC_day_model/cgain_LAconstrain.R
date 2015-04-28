@@ -80,7 +80,7 @@ for(i in 1:length(simLA_alloc)){
 box()
 points(mass~Date, data=mass_actual, pch=pchs,  col=cols,cex=2)
 
-text(x=15750, 285, "Leaf area constrained with harvest allocation", cex=1)
+text(x=15765, 285, "Cday 120, Leaf Area constrained and harvest allocation", cex=1)
 
 dev.copy2pdf(file= "gC_day_model/model_output/biomass_LA_alloc.pdf")
 dev.off()

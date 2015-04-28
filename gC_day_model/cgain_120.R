@@ -65,6 +65,7 @@ for(i in 1:length(sim120_all)){
 d_ply(leafarea_time2, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                       col=x$volume, pch = pchs[x$volume],type='b', lwd=2))
 box()
+  text(x=15740, .58, "Cday 120 leaf area", cex=1)
   
   dev.copy2pdf(file= "gC_day_model/model_output/LA_cday120.pdf")  
   dev.off() 
@@ -99,7 +100,7 @@ for(i in 1:length(sim120_alloc)){
   points(mass~Date, data=mass_actual, pch=pchs,  col=cols,cex=2)
   box()
   
-text(x=15740, 350, "Cday 120 with allocation", cex=1)
+text(x=15740, 350, "Cday 120 with mass allocation", cex=1)
   
 dev.copy2pdf(file= "gC_day_model/model_output/biomass_cday120_alloc.pdf")  
 dev.off()   

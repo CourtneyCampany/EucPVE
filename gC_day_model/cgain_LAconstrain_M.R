@@ -83,7 +83,7 @@ for(i in 1:length(simLA_M2)){
 box()
 points(mass~Date, data=mass_actual, pch=pchs,  col=cols,cex=2)
 
-text(x=15755, 290, "Leaf area constrained with self shading and harvest allocation", cex=1)
+text(x=15765, 290, "Leaf area constrained with self shading and harvest allocation", cex=1)
 
 dev.copy2pdf(file= "gC_day_model/model_output/biomass_LA_M_alloc.pdf")
 dev.off()

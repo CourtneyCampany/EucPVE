@@ -10,8 +10,12 @@ leafmass <- read.csv("raw data/seedling leaf mass area.csv")
 
 rdark <- merge(plotsumm, subset(resp_dark, select = c("Date", "plot", "pot", "Photo", "Cond", 
                                                       "Ci", "CTleaf", "Area", "Trmmol")))
+
+boxplot(Photo~ volume, data=rdark)
+
 rdark_clean <- rdark[rdark$Photo >= -.5,]
 
+boxplot(Photo~ volume, data=rdark_clean)
 
 #---------------------------------------------------------------------------------------------
 ###need to calculate a q10 function to model Rdark through time
@@ -49,7 +53,7 @@ rdark2$rd25_eucs <- with(rdark2, (1.86/(-1*Photo))^(10/(25-CTleaf)))
 rdark2$resppermass <- with(rdark2, Photo/mass)
 rdark2$resppermass25 <- with(rdark2, rd25_eucs/mass)
 
-
+boxplot(resppermass25~ volume, data=rdark2)
 
 #PLOTTING
 with(rdark2, bargraph.CI(as.factor(volume), rd25_eucs, 
