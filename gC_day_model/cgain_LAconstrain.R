@@ -109,8 +109,10 @@ free_scale_LA2$mass_scale <- with(free_scale_LA2, biomass/biomass[1])
 ##plot scaled model run to free
 col_bl <- alpha("black", .50)
 
+windows(10,8)
 plot(mass_scale ~ cdayscale, data=free_scale_LA2, type='l', lwd=4,pch=16, col=col_bl, xlim=c(1,.6), ylim=c(0, 1))
 points(mass_actual$mass_adj ~ Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
-
+dev.copy2pdf(file= "gC_day_model/model_output/cday120LA_scaled_F.pdf")  
+dev.off()   
 
 
