@@ -21,21 +21,21 @@ boxplot(Photo~ volume, data=rdark_clean)
 ###need to calculate a q10 function to model Rdark through time
 ##use rdark at 25c for upper end, average my data by volume
 
-rd25 <- 1.86
+q25_drake <- 1.86
 q10_crous <- 1.95
 
 #pot volume means
 rdark_agg <- aggregate(cbind(Photo, Cond, Ci, Trmmol, CTleaf) ~  volume, data=rdark_clean, FUN=mean)
 rdark_agg$Photo <- -1*rdark_agg$Photo
 
-rdark_eq <- cbind(subset(rdark_agg, select = c("volume", "Photo", "CTleaf")), rd25)
+rdark_eq <- cbind(subset(rdark_agg, select = c("volume", "Photo", "CTleaf")), q25_drake)
 rdark_eq <- cbind(rdark_eq, q10_crous)
 mean(rdark_eq$CTleaf)
 names(rdark_eq)[2] <- "rd12.3"
 
 #q10 equation 
-rdark_eq$rd25_euct <- with(rdark_eq, (rd25/rd12.3)^(10/(25-CTleaf)))
-rdark_eq$rd25_eucs <- with(rdark_eq, (q10_crous/rd12.3)^(10/(25-CTleaf)))
+rdark_eq$rd25_euct <- with(rdark_eq, rd12.3*(q25_drake^((abs(CTleaf-25))/10)))
+rdark_eq$rd25_eucs <- with(rdark_eq, rd12.3*(q10_crous^((abs(CTleaf-25))/10)))
 
 #--------------------------------------------------------------------------------------------
 
@@ -47,54 +47,73 @@ lma <- subset(lma, !is.na(mass))
 lma$ID <- paste(lma$plot, lma$pot, sep = "-")
 #merge
 rdark2 <- merge(lma, rdark_clean, by=c("plot", "pot", "ID"))
-rdark2$rd25_eucs <- with(rdark2, (1.86/(-1*Photo))^(10/(25-CTleaf)))
 
-#new variable
-rdark2$resppermass <- with(rdark2, Photo/mass)
-rdark2$resppermass25 <- with(rdark2, rd25_eucs/mass)
+  rdark2$rd25_eucs <- with(rdark2, abs(Photo*(q25_drake^((abs(CTleaf-25))/10))))
+  #new variable
+  rdark2$resppermass <- with(rdark2, abs(Photo/mass))
+  rdark2$resppermass25 <- with(rdark2, abs(rd25_eucs/mass))
 
-boxplot(resppermass25~ volume, data=rdark2)
+rdark3 <- summaryBy(. ~ ID, FUN=mean, na.rm=TRUE, data=rdark2, id=~volume, keep.names=TRUE)
+
+#remove outliers
+boxplot(mass~ volume, data=rdark3)
+
+rdark4 <- rdark3[rdark3$ID != c("2-4", "6-6"), ]
+rdark5 <- rdark4[rdark4$resppermass25 <= 5.1,]
+rdark5$rd <- with(rdark5, -1*Photo)
+
+boxplot(mass~ volume, data=rdark5)
+boxplot(resppermass25~ volume, data=rdark5)
+boxplot(resppermass~ volume, data=rdark5)
+
+rdark5_agg <- summaryBy(rd25_eucs+resppermass25~volume, data=rdark5, FUN=c(mean, se), keep.names=TRUE)
+
+##write clean data for manuscript
+write.csv(rdark5_agg, "calculated data/rdark_clean.csv", row.names=FALSE)
+
 
 #PLOTTING
-with(rdark2, bargraph.CI(as.factor(volume), rd25_eucs, 
+with(rdark5, bargraph.CI(as.factor(volume), rd25_eucs, 
                          border="blue",
-                         ylim = c(0,7.5), ylab = "Dark Respiration", 
+                         ylim = c(0,1), ylab = "Dark Respiration", 
                          xlab = "Pot Volume (l)"))
 box()
 
 
-with(rdark2, bargraph.CI(as.factor(volume), resppermass, 
+with(rdark5, bargraph.CI(as.factor(volume), resppermass, 
                          border="blue",
-                         ylim = c(-3.5,0), ylab = "Rdark per Leaf Mass", 
-                         xlab = "Pot Volume (l)"))
-box()
-)
-
-with(rdark2, bargraph.CI(as.factor(volume), resppermass25, 
-                         border="blue",
-                         ylim = c(0, 40), ylab = "Rdark per Leaf Mass", 
+                         ylim = c(0,2.5), ylab = "Rdark per Leaf Mass", 
                          xlab = "Pot Volume (l)"))
 box()
 
 
+with(rdark5, bargraph.CI(as.factor(volume), resppermass25, 
+                         border="blue",
+                         ylim = c(0, 5), ylab = "Rdark per Leaf Mass", 
+                         xlab = "Pot Volume (l)"))
+box()
 
 
-#area Rd
+####stats--------------------------------------------------------------------------------------------------
+
+#Rd q10 to 25 with tereticornis
 # 'Being in a pot' effect.
-rdark2$volume <- as.factor(rdark2$volume)
-rdark2$volume <- relevel(rdark2$volume, ref="1000")
+rdark5$volume <- as.factor(rdark5$volume)
+rdark5$volume <- relevel(rdark5$volume, ref="1000")
 
-rda_container <- lm(rd25_eucs ~ volume, data=rdark2)
-rda_lm <- tidy(rda_container)
-rda_stat <- extract_func(rda_container)
+rd25_container <- lm(rd25_eucs ~ volume, data=rdark5)
+rd25c_lm <- tidy(rd25_container)
+rd25c_stat <- extract_func(rd25_container)
 
-anova(rda_container)
-summary(rda_container)
+anova(rd25_container)
+summary(rd25_container)
+####no container effect (relevel to 1000 and no volumes differ)
+
 
 #volume effect
-rda_volume <- lm(Photo ~ as.factor(volume), data=rdark, subset=volume != "1000")
-rd2a_lm <- tidy(rda_volume)
-rd2a_stat <- extract_func(rda_volume)
+rd25_volume <- lm(Photo ~ volume, data=rdark5, subset=volume != "1000")
+rd25v_lm <- tidy(rd25_volume)
+rd25v_stat <- extract_func(rd25_volume)
 
-anova(rda_volume)
-summary(rda_volume)
+anova(rd25_volume)
+summary(rd25_volume)

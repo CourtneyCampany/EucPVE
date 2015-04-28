@@ -13,11 +13,10 @@ A_means <- read.csv("calculated data/A_treatment_means.csv")
 table2 <- A_means[, 1:3]
 
 #2: Rd
-rd <- read.csv("calculated data/Rd_leaf.csv")
-rd_agg <- summaryBy(resppermass ~ volume, data=rd, FUN=c(mean, se))
-  rd_agg$resppermass.mean <- abs(rd_agg$resppermass.mean)
 
-table2 <- merge(table2, rd_agg)
+rd <- read.csv("calculated data/rdark_clean.csv")
+
+table2 <- merge(table2, rd[,c(1:2,4)])
        
        
 ##2-3: jmax, vcmax
@@ -54,7 +53,7 @@ phys_se <- phys_tab[, c(3,5,7,9,11,13)]
 
 ###now paste together and round
 phys1 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,1], 1)), " (", sprintf("%2.1f", round(phys_se[,1],1)),")"))
-phys2 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,2], 1)), " (", sprintf("%2.1f", round(phys_se[,2],1)),")"))
+phys2 <- data.frame(paste0(sprintf("%3.2f", round(phys_means[,2], 2)), " (", sprintf("%3.2f", round(phys_se[,2],2)),")"))
 phys3 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,3], 1)), " (", sprintf("%2.1f", round(phys_se[,3],1)),")"))
 phys4 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,4], 1)), " (", sprintf("%2.1f", round(phys_se[,4],1)),")"))
 phys5 <- data.frame(paste0(sprintf("%3.2f",round(phys_means[,5], 2)), " (", round(phys_se[,5],2),")"))

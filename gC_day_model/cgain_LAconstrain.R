@@ -116,3 +116,30 @@ dev.copy2pdf(file= "gC_day_model/model_output/cday120LA_scaled_F.pdf")
 dev.off()   
 
 
+#####sim allocation returin last values----------------------------------------------------------------------------------
+cdaylab <- expression(Daily~Carbon~Gain~~(g~d^-1))
+
+simLA_alloc2 <- list()
+for (i in 1:7){
+  alloc120<- modelLAlimit(gCday=as.vector(c120_trt[[i]][1:121,]), LA=as.vector(LA_sp[[i]][1:121,3]),
+                                     lma=lma_trt[i],frfrac=frfrac_trt[i], crfrac=crfrac_trt[i], stemfrac=stemfrac_trt[i],
+                                     leaffrac=leaffrac_trt[i],returnwhat="lastval")
+  simLA_alloc2[[i]] <- alloc120
+}
+
+simLA_final <-as.data.frame(do.call(rbind,simLA_alloc2))
+simLA_final$mass_scale <- with(simLA_final, biomass/biomass[7])
+  
+
+pdf(file="gC_day_model/model_output/cday120_LAconstrain.pdf", onefile=TRUE)
+par(mar=c(5,5,2,2))
+plot(mass_actual$mass ~ Cday_means$carbon_day,pch=pchs,col=palette(),cex=1.6, xlim=c(4,8), ylim=c(0, 300), ylab="Biomass (g)",
+     xlab=cdaylab)
+points(simLA_final$biomass ~ Cday_means$carbon_day, cex=1.6, pch=pch2, col=palette())
+
+par(mar=c(5,5,2,2))
+plot(mass_actual$mass_adj ~ Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6,xlim=c(1,.6), ylim=c(0, 1),
+     xlab=expression(Daily~Carbon~Assimilation~Scaled[free]), ylab=expression(Biomass~Scaled[free]))
+points(simLA_final$mass_scale ~ Cday_means$C_stnd_free , cex=1.6,pch=pch2, col=palette())
+
+dev.off() 
