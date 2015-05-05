@@ -33,8 +33,16 @@ aci_stats <- rbind(aci1coef, aci2coef)
   aci_stats$ratio <- with(aci_stats, Jmax/Vcmax)
   aci_stats$volume <- as.factor(aci_stats$volume)
   aci_stats$campaign <- as.factor(aci_stats$campaign)
+  
+  #plotting
+  gradient <- colorRampPalette(c("red", "blue"))
+  palette(gradient(7))
+  
+  with(aci_stats, plot(Vcmax~Jmax, col=volume, pch=16, ylim=c(0, 125), xlim=c(0, 250)))
 
-#test if two sets are different by volume
+  
+  
+#test if two sets are different by volume-----------------------------------------------------------------------------
 vc_diff<- lme(Vcmax ~ volume+campaign, random= ~1|ID, data=aci_stats)
 summary(vc_diff)
 anova(vc_diff)
@@ -47,59 +55,40 @@ anova(j_diff)
 tukey_jdiff<- glht(j_diff, linfct = mcp(campaign = "Tukey"))
 cld(tukey_jdiff)
 
-#means
+#means, they are not different so can report means
 aci_means <- summaryBy(Vcmax+Jmax+ratio ~ volume , data = aci_stats,  FUN=c(mean,se))
-
-
-#colors
-gradient <- colorRampPalette(c("red", "blue"))
-palette(gradient(7))
-
-bar(ratio, c(volume, campaign), aci_stats, col=palette(),half.errbar=FALSE)
-bar(Jmax, c(volume, campaign), aci_stats, col=palette(),half.errbar=FALSE)
-bar(Vcmax, c(volume, campaign), aci_stats, col=palette(),half.errbar=FALSE) 
-with(aci_stats, plot(Vcmax~Jmax, col=volume))
-abline()
-
-# 'Being in a pot' effect.
-ratio_container <- lm(ratio ~ as.factor(volume), data=aci_stats)
-ratio_lm1 <- tidy(ratio_container)
-ratio1_stat <- extract_func(ratio_container)
-anova(ratio_container)
-summary(ratio_container)
-visreg(ratio_container)
-
-boxplot(Vcmax~ volume, data = aci_stats, subset=campaign=="a") 
-boxplot(Vcmax~ volume, data = aci_stats, subset=campaign=="b") 
-
 boxplot(Jmax.mean ~ volume, data = aci_means)
+boxplot(Vcmax.mean ~ volume, data = aci_means)
+
+# 'Being in a pot' effect---------------------------------------------------------------------------------------
+
+#relevel by 1000
+aci_stats$volume <- relevel(aci_stats$volume, ref="1000") 
 
 #VCmax
-vc_lm <- lme(Vcmax ~ volume, random= ~1|ID, data=aci_stats)
-anova(vc_lm)
-summary(vc_lm)
+vcmax_lm <- lme(Vcmax ~ volume, random= ~1|ID, data=aci_stats)
+anova(vcmax_lm)
+summary(vcmax_lm)
+visreg(vcmax_lm)
 
-tukey_vc<- glht(vc_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_vc)
-visreg(vc_lm)
+tukey_vc<- glht(vcmax_lm, linfct = mcp(volume = "Tukey"))
+siglets_vc <- cld(tukey_vc)
+
+siglets_vc2 <- siglets_vc$mcletters$Letters
+write.csv(siglets_vc2, "master_scripts/sigletters/sl_vcmax.csv", row.names=FALSE)
 
 #JmAX,
-J_lm <- lme(Jmax ~ volume, random= ~1|ID, data=aci_stats)
-anova(J_lm)
-summary(J_lm)
+Jmax_lm <- lme(Jmax ~ volume, random= ~1|ID, data=aci_stats)
+anova(Jmax_lm)
+summary(Jmax_lm)
+visreg(Jmax_lm)
 
-tukey_j<- glht(J_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_j)
-visreg(J_lm)
+tukey_j<- glht(Jmax_lm, linfct = mcp(volume = "Tukey"))
+siglets_j <- cld(tukey_j)
 
-#ratio
-ratio_lm <- lme(ratio ~ volume, random= ~1|ID, data=aci_stats)
-anova(ratio_lm)
-summary(ratio_lm)
+siglets_j2 <- siglets_j$mcletters$Letters
+write.csv(siglets_j2, "master_scripts/sigletters/sl_jmax.csv", row.names=FALSE)
 
-tukey_r<- glht(ratio_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_r)
-visreg(ratio_lm)
 
 #Summary, both vcmax and jmax are different by treatment, the ratio is not different
 #the fact that the ratio is not different and linear confirms that treatments are affecting both
