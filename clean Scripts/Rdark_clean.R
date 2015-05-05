@@ -101,16 +101,17 @@ box()
 rdark5$volume <- as.factor(rdark5$volume)
 rdark5$volume <- relevel(rdark5$volume, ref="1000")
 
-rd25_container <- lm(rd25_eucs ~ volume, data=rdark5)
-rd25c_lm <- tidy(rd25_container)
-rd25c_stat <- extract_func(rd25_container)
+rd25_container <- lme(rd25_eucs ~ volume, random= ~1|ID, data=rdark5)
 
 anova(rd25_container)
 summary(rd25_container)
+
 library(multcomp)
 tukey_rd25<- glht(rd25_container, linfct = mcp(volume = "Tukey"))
 rd_siglets <-cld(tukey_rd25)
+
 rd_siglets2 <- rd_siglets$mcletters$Letters
+write.csv(rd_siglets2, "master_scripts/sigletters/sl_rd.csv", row.names=FALSE)
 
 ####no container effect (relevel to 1000 and no volumes differ)
 

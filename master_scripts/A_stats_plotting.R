@@ -58,9 +58,10 @@ PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_s
 require(nlme)
 require(visreg)
 library(multcomp)
-
+require(broom)
+  
 #relevel to free to evaluate container effect  
-#PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")
+PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")
 
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
@@ -76,7 +77,10 @@ amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
 
   tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
   siglets_amax <-cld(tukey_Amax)
+  
   siglets_amax2 <- siglets_amax$mcletters$Letters
+
+  write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
 
 # #lets prove that asat was immediately different, then use average
 # asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
