@@ -59,14 +59,24 @@ require(nlme)
 require(visreg)
 library(multcomp)
 
+#relevel to free to evaluate container effect  
+#PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")
+
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
-#   anova(asat_lm)
-#   summary(asat_lm)
+amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
+  anova(asat_lm)
+  anova(amax_lm)
+
+  summary(asat_lm)
+  summary(amax_lm)
 
   tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
-#   visreg(asat_lm)
+
+  tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
+  siglets_amax <-cld(tukey_Amax)
+  siglets_amax2 <- siglets_amax$mcletters$Letters
 
 # #lets prove that asat was immediately different, then use average
 # asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")

@@ -107,6 +107,11 @@ rd25c_stat <- extract_func(rd25_container)
 
 anova(rd25_container)
 summary(rd25_container)
+library(multcomp)
+tukey_rd25<- glht(rd25_container, linfct = mcp(volume = "Tukey"))
+rd_siglets <-cld(tukey_rd25)
+rd_siglets2 <- rd_siglets$mcletters$Letters
+
 ####no container effect (relevel to 1000 and no volumes differ)
 
 
@@ -115,5 +120,21 @@ rd25_volume <- lm(Photo ~ volume, data=rdark5, subset=volume != "1000")
 rd25v_lm <- tidy(rd25_volume)
 rd25v_stat <- extract_func(rd25_volume)
 
+rd25_volume2 <- lm(Photo ~ as.numeric(volume), data=rdark5, subset=volume != "1000")
+
 anova(rd25_volume)
 summary(rd25_volume)
+summary(rd25_volume2)
+
+
+require(nlme)
+require(visreg)
+library(multcomp)
+
+#asat
+asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
+#   anova(asat_lm)
+#   summary(asat_lm)
+
+
+
