@@ -24,11 +24,11 @@ cond_agg <- summaryBy(. ~ ID + Date, data = cond_data, FUN = c(mean))
 
 ------------------------------------------------------------------------------------------------------
 #test if gs is different by volume or by time
-boxplot(gs ~ volume, data = cond_agg)
+boxplot(gs ~ volume, data = cond_agg2)
 boxplot(gs ~ Date, data = cond_agg)
   
 ###looks like a few outliers >1, remove and re-run model
-cond_agg2 <- cond_agg[cond_agg$gs <= 1.0, ]
+cond_agg2 <- cond_agg[cond_agg$gs <= .75, ]
 
 #find where date different and look at overall model
 
@@ -59,17 +59,17 @@ cond_agg2$volume <- relevel(cond_agg2$volume, ref="1000")
   write.csv(siglets_gs_clean2, "master_scripts/sigletters/sl_gs.csv", row.names=FALSE)
   
 ##overall model with date
-gs_lm2 <- lme(gs ~ volume + Date, random= ~1|ID, data = cond_agg)
-summary(gs_lm2)
-anova(gs_lm2)
-visreg(gs_lm2)
-
-tukey_gs2<- glht(gs_lm2, linfct = mcp(volume = "Tukey"))
+# gs_lm2 <- lme(gs ~ volume + Date, random= ~1|ID, data = cond_agg)
+# summary(gs_lm2)
+# anova(gs_lm2)
+# visreg(gs_lm2)
+# 
+# tukey_gs2<- glht(gs_lm2, linfct = mcp(volume = "Tukey"))
 
 #remove possible outlier in vol 15, 2013-03-07, 5-4???????????????
 
 #overall seedling gs to show that not stressed
-gs_mean <- mean(cond_agg$gs)
+gs_mean <- mean(cond_agg2$gs)
 
 ##also test ci/ca
 # cica_mean <- mean(cond_agg$cica)
@@ -107,7 +107,7 @@ g1_vol <- data.frame(coef(nlsfits))
 cond_agg3 <- merge(cond_agg2,g1_vol)
 cond_agg3$gspred_vol <- with(cond_agg3, 1.6*(1+g1_vol/sqrt(D))*(A/Ca))
 
-with(cond_agg3, plot(gspred_vol,gs))
+with(cond_agg3, plot(gspred_vol,gs, xlim=c(0,1), ylim=c(0,1)))
 abline(0,1)
 with(cond_agg3, plot(A/(sqrt(D)*Ca), gs))
 
@@ -137,42 +137,49 @@ visreg(g1_lm)
 
 tukey_g1<- glht(g1_lm, linfct = mcp(volume = "Tukey"))
 siglets_g1 <- cld(tukey_g1)
-siglets_g1_2 <- siglets_gs$mcletters$Letters
+siglets_g1_2 <- siglets_g1$mcletters$Letters
 
-write.csv(siglets_g1_2, "master_scripts/sigletters/sl_g1_2.csv", row.names=FALSE)
+write.csv(siglets_g1_2, "master_scripts/sigletters/sl_g1_vol.csv", row.names=FALSE)
 
 
 #run model by date+volume, interpolate parameters across experiment dates-----------------------------------------
 
-cond_agg$uniqueID <- paste(cond_agg$volume, cond_agg$Date, sep="-")
+cond_date <- cond_agg2
+
+cond_date$uniqueID <- paste(cond_date$volume, cond_date$Date, sep="-")
 #IDfactor <-unique(cond_agg$uniqueID)
 
 nlsfits_pve <- nlsList(gs ~  1.6*(1+g1/sqrt(D))*(A/Ca) | uniqueID,
-                   start=list(g1=8),data=cond_agg)
+                   start=list(g1=8),data=cond_date)
 g1_date <- as.data.frame(coef(nlsfits_pve))
 g1_date$uniqueID <- as.character(rownames(g1_date))
 names(g1_date)[1] <- "g1_date"
 
-cond_pred <- merge(cond_agg,g1_date)
+cond_pred <- merge(cond_date,g1_date)
 cond_pred$gspred_date <- with(cond_pred, 1.6*(1+g1_date/sqrt(D))*(A/Ca))
 
+g1_all <- merge(cond_pred[,2:12], cond_agg3)
 
-with(cond_pred, plot(gspred_vol,gs, col=volume))
-with(cond_pred, points(gspred_date, gs, pch=16, col=volume))
+
+with(g1_all, plot(gspred_date, gs, pch=pchs, col=volume, xlim=c(0,1), ylim=c(0,1)))
+with(g1_all, points(gspred_vol, gs, pch=1, col=volume))
 abline(0,1)
 
-#write.csv(cond_pred[,c(2:5, 10, 12)], "calculated data/g1_pred.csv", row.names=FALSE)
+write.csv(g1_all[, c("volume", "ID", "Date", "gs", "g1_vol", "g1_date")], "calculated data/g1_pred.csv", row.names=FALSE)
 
-##stats on g1
-g1_lm <- lme(g1_date ~ volume, random= ~1|ID, data=cond_pred)
-anova(g1_lm)
-summary(g1_lm)
+##stats on g1_date
+g1_date_lm <- lme(g1_date ~ volume, random= ~1|ID, data=cond_pred)
+anova(g1_date_lm)
+summary(g1_date_lm)
+visreg(g1_date_lm)
 
-tukey_g1<- glht(g1_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_g1)
-visreg(g1_lm)
+tukey_g1_date<- glht(g1_date_lm, linfct = mcp(volume = "Tukey"))
 
-test <- subset(cond_pred, volume == "15")
+siglets_g1_date <- cld(tukey_g1_date)
+siglets_g1_date2 <- siglets_g1_date$mcletters$Letters
+
+write.csv(siglets_g1_date2, "master_scripts/sigletters/sl_g1_date.csv", row.names=FALSE)
+
 
 #interpolate across dates (parameters g0 and g1)---------------------------------------------------
 
@@ -204,7 +211,6 @@ names(gs_param)[3]<- "volume"
 cond_fit <- merge(cond_agg, gs_param, by="volume")
 names(cond_fit)[4:7] <- c("gs", "D", "A", "Ca")
 cond_fit$gs_func <- with(cond_fit, (A/(Ca*sqrt(D))))
-
 
 
 #quick plot

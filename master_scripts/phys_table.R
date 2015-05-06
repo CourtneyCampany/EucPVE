@@ -29,8 +29,9 @@ table2 <- merge(table2, phys_agg)
        
 #4. gs
 gs <- read.csv("calculated data/conductance.csv")
+  gs2 <- gs[gs$gs <= .1,]
 
-  gs_agg <- summaryBy(gs ~ volume, data=gs, FUN=c(mean, se))
+  gs_agg <- summaryBy(gs ~ volume, data=gs2, FUN=c(mean, se))
 
 table2 <- merge(table2, gs_agg)
 
