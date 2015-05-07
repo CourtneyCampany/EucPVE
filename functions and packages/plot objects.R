@@ -3,6 +3,7 @@
 #colors
 gradient <- colorRampPalette(c("red", "blue"))
 palette(gradient(7))
+cols <- palette(gradient(7))
 
 #lines and symbols
 lwds<- 2
