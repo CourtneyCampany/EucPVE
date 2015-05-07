@@ -1,8 +1,11 @@
 source("functions and packages/load model packages.R")
 
-#install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
+install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
 
-require(YplantQMC)
+library(YplantQMC)
+library(lubridate)
+library(doBy)
+library(plyr)
 
 #First need to run the sample trees through construct plant and get summary for each to use with raw data
 #use readplantlist and summary.plant3d
@@ -18,7 +21,7 @@ test <- constructplant("yplant/euc_plfiles/Eletr5.p", "yplant/euc_plfiles/Elelf5
 summary(test)
 plot(test)
 
-#use readplant list in order to construct multiple plants, complete my species 
+#use readplant list in order to construct multiple plants, complete by species 
 euc3d <- readplantlist(pfiles=euckey$pfile, lfiles=euckey$lfile)
 #look at one random tree
 plot(euc3d[[15]])
@@ -88,12 +91,13 @@ g1 <- read.csv("calculated data/g1_pred.csv")
 g1_mean <- mean(g1$g1_date)
 g1_agg <- summaryBy(g1_vol ~ volume, data=g1, keep.names=TRUE)
 
-rd <- read.csv("calculated data/Rd_leaf.csv")
-rd_agg <- rd[,c(7,9,15)]
-rd_agg <- summaryBy(.~ volume, data=rd_agg, keep.names=TRUE)
-names(rd_agg)[2]<- "respdark"
+# rd <- read.csv("calculated data/Rd_leaf.csv")
+rd2 <- read.csv("calculated data/rdark_clean.csv")
+# rd_agg <- rd[,c(7,9,15)]
+# rd_agg <- summaryBy(.~ volume, data=rd_agg, keep.names=TRUE)
+names(rd2)[2]<- "respdark"
 
-Aparam <- merge(rd_agg[,1:2], g1_agg)
+Aparam <- merge(rd2[,1:2], g1_agg)
 Aparam <- merge(Aparam, phys_agg)
 write.csv(Aparam, "calculated data/A_parameters.csv", row.names=FALSE)
 
@@ -154,7 +158,7 @@ for(i in 1:length(eucphyList)){
   euc_list[[i]] <- YplantDay(euc3d, phy = eucphyList[[i]], met = sunnyday, PSRsuffix=names(eucphyList)[i])
 }
 
-saveRDS(euc_list, "yplant/euc_sim.rds")
+#saveRDS(euc_list, "yplant/euc_sim2.rds")
 #euc_list <- readRDS("somefilename.rds")
 eucsumm <- lapply(euc_list, summary)
 #need to add names the list by their volume
@@ -164,7 +168,7 @@ names(eucsumm) <- listnames
 #save each list as a dfr with the name (##use names of list for apply function, see use of [[x]] for func arg)
 
 #lapply(names(eucsumm), function(x) write.csv(eucsumm[[x]], file = paste(x, ".csv", sep = "")))
-l_ply(names(eucsumm), function(x) write.csv(eucsumm[[x]], file = paste("yplant/simulation_summary/", x, ".csv", sep = "")))
+l_ply(names(eucsumm), function(x) write.csv(eucsumm[[x]], file = paste("yplant/sim2_summary/", x, ".csv", sep = "")))
 
 #run on a cloudy day
 # eucs_cloud <- YplantDay(euc3d, phy=eucphy, met=cloudyday)

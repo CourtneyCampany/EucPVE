@@ -26,7 +26,7 @@ Mcalc <- function(dfr, vol){
   dfr$M <- dfr$totA/dfr$totA0
   M_dfr <- subset(dfr, select = c("plant_id", "M", "totPARleaf"))
   M_dfr$volume <- as.factor(vol)
-return(M_dfr)
+  return(M_dfr)
 }
 
 #call the names of the list into plyr, run the function on each element (eucs_list[[x]]) where vol argument = names
@@ -35,50 +35,33 @@ M_eucs <- llply(names(eucs_list), function(x) Mcalc(dfr = eucs_list[[x]], vol = 
 
 
 ####now regress M for each plant against leaf------------------------------------------------------------------------ 
-  
+
 #1: first merge M for each plant (7 volumes) with leaf# for each plant id
-  eucs3d$plant_id <- gsub("yplant/euc_plfiles/", "", eucs3d$pfile)
-  eucs3d$plant_id <- gsub(".p", "", eucs3d$plant_id)
-  eucs_allom <- eucs3d[,c("plant_id", "nleavesp")]
-  
-  M_eucs2<- lapply(M_eucs, function(x) merge(x, eucs_allom, by="plant_id", all=TRUE))
-  #write.csv(M_eucs3d, "calculated data/M_eucs3d.csv", row.names=FALSE)
+eucs3d$plant_id <- gsub("yplant/euc_plfiles/", "", eucs3d$pfile)
+eucs3d$plant_id <- gsub(".p", "", eucs3d$plant_id)
+eucs_allom <- eucs3d[,c("plant_id", "LA")]
+
+M_eucs2<- lapply(M_eucs, function(x) merge(x, eucs_allom, by="plant_id", all=TRUE))
+#write.csv(M_eucs3d, "calculated data/M_eucs3d.csv", row.names=FALSE)
 
 
 #2. for each volume trt (list) run model of M vs leafN, 
 
-  M_regress <- lapply(M_eucs2, function(x) lm(M ~ nleavesp, data=x))
+M_regress <- lapply(M_eucs2, function(x) lm(M ~ LA, data=x))
 
+test <- M_eucs2[[1]]
+test_lm <- lm(M ~ LA, data=test)
+  visreg(test_lm)
+  
 #3. extract coefs for each model by trt
 
-  M_coefs <- lapply(M_regress, function(x) extract_func(x))
-  ##make a dfr but order of list these come from was 5-free, need to reorder carefully
-  M_coefs2 <-rbind.fill(M_coefs)
-  volorder <- names(eucs_list)
-  M_coefs2$volume <- as.factor(volorder)
-  M_coefs2$volume <- gsub("free", 1000, M_coefs2$volume)
-  #reorder
-  M_coefs3 <- M_coefs2[c(6, 1:5, 7),]
-  
-  write.csv(M_regress, "stats output/M_leaf#_model.csv", row.names=FALSE)
+M_coefs <- lapply(M_regress, function(x) extract_func(x))
+##make a dfr but order of list these come from was 5-free, need to reorder carefully
+M_coefs2 <-rbind.fill(M_coefs)
+volorder <- names(eucs_list)
+M_coefs2$volume <- as.factor(volorder)
+M_coefs2$volume <- gsub("free", 1000, M_coefs2$volume)
+#reorder
+M_coefs3 <- M_coefs2[c(6, 1:5, 7),]
 
-######I could use leaf area uninstead if it is a good fit and then input into model###################
-
-  
-
-
-
-
-
-
-
-
-
-# #means
-# M_agg <- summaryBy(M+totPARleaf~ volume, data=M_eucs, FUN=mean, keep.names=TRUE)
-# 
-# M_agg$volume <- gsub("free", 1000, M_agg$volume)
-# M_agg2 <- M_agg[c(6,1,2,3,4,5,7), ]
-# 
-# write.csv(M_agg2[,1:2], "calculated data/M_volume.csv", row.names=FALSE)
-
+#write.csv(M_regress, "stats output/M_leaf#_model.csv", row.names=FALSE)
