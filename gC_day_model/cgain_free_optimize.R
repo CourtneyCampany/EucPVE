@@ -96,7 +96,7 @@ opt_free <- data.frame(productionmodel(gCday=opt_cday,lma=lma_trt[7],frfrac=opt_
 
 ##PLOTTING optimized models with volume trts of cday 120
 
-#1: use total C gain per platn, draw leaf area from model with optimized LMF
+#1: use total C gain per plant, draw leaf area from model with optimized LMF
 
 totalC_list <- list()
 for(i in 1:7){
