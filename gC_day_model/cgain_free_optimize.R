@@ -22,7 +22,7 @@ c120_trt<- lapply(Cday_120, "[", 3)
 
 #3. set up mass allocation based on LMF
 free_harvest <- harvestmass[harvestmass$volume == 1000,]
-free_agg <- summaryBY(leafmass+totalmass)
+
 ###leaf frac
 LMF_measured <- mean(free_harvest$leafmass) / mean(free_harvest$totalmass)
 
@@ -30,11 +30,10 @@ LMF_measured <- mean(free_harvest$leafmass) / mean(free_harvest$totalmass)
 ofrac <- (1-lf)/3
 
 
-#4. For optimization need to work with free plant only
+#4. Optimization of free plant sim
 free <- as.vector(c120_trt[[7]][1:121,])
-Mfree <- M_trt[7]
 
-#1. Model using mean allocation, 120 days of Cday, constrainted by LA
+#1. Base Model ex. using mean allocation, 120 days of Cday
 
 sim_free <- data.frame(productionmodel(gCday=free, lma=lma_mean, 
                          frfrac=fr_frac_mean,crfrac=cr_frac_mean,stemfrac=stem_frac_mean, 
@@ -51,5 +50,4 @@ O <- function(leaffrac, ...){
 }
 
 optimize(O, c(0,1), gCday=free, lma=lma_mean, 
-         frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac, 
-         leaffrac=lf, returnwhat="lastval")
+         frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac, returnwhat="lastval")
