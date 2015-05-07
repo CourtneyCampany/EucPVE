@@ -49,8 +49,35 @@ mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
 Date<- seq(as.Date("2013-01-22"),as.Date("2013-05-21"), by="days")
 cols <- gradient(7)
 
+#total carbon gain per plant (sum of leaf area times gCday) #### test for model vs LA constrained
+totalC_list <- list()
+for(i in 1:7){
+  totalC_calc <- LA_sp[[i]][1:120,3] * c120_trt[[i]][1:120,]
+  
+  totalC_list[[i]] <- totalC_calc
+}                 
 
-#1: plot mean treatment sim vs actual biomass
+totalC_trt <- lapply(totalC_list, function(x) sum(x))
+
+totalC_trt2 <- unlist(totalC_trt)
+
+#1: Total C gain in g vs biomass
+
+windows(8,10)
+par(mar=c(5,5,2,2))
+plot(mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0,300), 
+     ylim=c(0, 300), ylab="Biomass (g)", xlab="Total Carbon Gain (g)")
+for(i in 1:7){
+  points(simLA_alloc[[i]][120,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
+}
+text(x=55, 265, "Uses leaf area from study", cex=1)
+dev.copy2pdf(file= "gC_day_model/model_output/totalCgain_LAconstrain.pdf")  
+dev.off() 
+
+
+
+
+#2: plot mean treatment sim vs actual biomass
 windows(10,8)
 plot(1, xlab="", ylab="Biomass  (g)", ylim=c(0, 300), xlim=range(Date), type='n', axes=FALSE)
 axis.Date(Date, side=1)

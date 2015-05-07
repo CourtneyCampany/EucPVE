@@ -33,7 +33,8 @@ for (i in 1:7){
 }
 
 
-##Plotting to compare to actual mass---------------------------------------------------------------------------------------
+
+##Plotting setup-----------------------------------------------------------------------------------------------------
 
 Date<- seq(as.Date("2013-01-22"),as.Date("2013-05-21"), by="days")
 cols <- gradient(7)
@@ -52,8 +53,34 @@ la_sp2 <- dlply(leafarea_time, .(volume))
 #cday means by treatment
 Cday_means <- read.csv("calculated data/model_runs/gCday_means.csv")
   Cday_means$C_stnd_free <- with(Cday_means, carbon_day/carbon_day[7])
+  
+#total carbon gain per plant (sum of leaf area times gCday) #### test for model vs LA constrained
+  totalC_list <- list()
+  for(i in 1:7){
+  totalC_calc <- sim120_alloc[[i]][2] * c120_trt[[i]][1:120,]
+  
+  totalC_list[[i]] <- totalC_calc
+  }                 
 
-#1: plot mean treatment sim vs interpolated leaf area
+  totalC_trt <- lapply(totalC_list, function(x) sum(x))
+  
+  totalC_trt2 <- unlist(totalC_trt)
+
+#1. Total C gain in g vs biomass
+
+  windows(8,10)
+  par(mar=c(5,5,2,2))
+plot(mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0,300), 
+     ylim=c(0, 300), ylab="Biomass (g)", xlab="Total Carbon Gain (g)")
+  for(i in 1:7){
+    points(sim120_alloc[[i]][120,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
+  }
+  text(x=65, 265, "Uses leaf area from production model", cex=1)
+  dev.copy2pdf(file= "gC_day_model/model_output/totalCgain.pdf")  
+  dev.off() 
+  
+
+#2: plot mean treatment sim vs interpolated leaf area
 windows(10,8)
 par(mar=c(5,5,2,2))
 plot(1, xlab="", ylab=LAm2, ylim=c(0, .6), xlim=range(Date), type='n', axes=FALSE)
@@ -71,7 +98,7 @@ box()
   dev.off() 
   
 
-#2: plot mean trt sim vs actual mass
+#3: plot mean trt sim vs actual mass
 windows(10,8)
 par(mar=c(5,5,2,2))
 plot(1, xlab="", ylab="Biomass  (g)", ylim=c(0, 200), xlim=range(Date), type='n', axes=FALSE)
@@ -88,7 +115,7 @@ text(x=15740, 185, "Cday 120", cex=1)
 dev.copy2pdf(file= "gC_day_model/model_output/biomass_cday120.pdf")  
 dev.off() 
   
-#3: plot trt sim vs actual mass
+#4: plot trt sim vs actual mass
 windows(10,8)
 par(mar=c(5,5,2,2))
 plot(1, xlab="", ylab="Biomass  (g)", ylim=c(0, 350), xlim=range(Date), type='n', axes=FALSE)
