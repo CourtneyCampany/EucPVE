@@ -26,7 +26,9 @@ source("functions and packages/massmodel.R")
   ###observed values for parameter optimization
   LMF_measured <- mean(free_harvest$leafmass) / mean(free_harvest$totalmass)
   MASS_measured <- mean(free_harvest$totalmass)
-
+  LEAF_measured <- mean(free_harvest$leafmass)
+  
+  
   ###ofrac setup 
   ofrac <- (1-lf)/3
 
@@ -44,55 +46,53 @@ source("functions and packages/massmodel.R")
 ###RUN production model optimization-----------------------------------------------------------------------------------
 
 #1. optimise leaf mass fraction from free plant
-
-O.lmf <- function(leaffrac, ...){
+O.lmf <- function(leaffrac, ..., returnhow=c("objective","output")){
   
-  p <- productionmodel(leaffrac=leaffrac, ...)
+  returnhow <- match.arg(returnhow)
   
-  LMF <- p[4]
+  ofrac <- (1-leaffrac)/3
   
-  (LMF - LMF_measured)^2
+  p <- productionmodel(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
+                       gCday=free, lma=lma_trt[7],
+                       ...)
+  if(returnhow == "output")return(p)
+  
+  LEAF <- p[3]
+  MASS <- p[1]
+  
+  (LEAF - LEAF_measured)^2 + (MASS - MASS_measured)^2
   
 }
 
-opt_free<- optimize(O.lmf, c(0,1), gCday=free, lma=lma_mean, 
-         frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac, returnwhat="lastval")
+# useful to visualize if there is an optimum
+# lfs <- seq(0.05,0.3, length=101)
+# x <- mapply(O.lmf, leaffrac=lfs)
+# plot(lfs,x)
 
-opt_lmf <- as.numeric(opt_free[1])
+
+
+opt_free<- optimize(O.lmf, c(0,1))
+
+
+# Now rerun model to see correspondence
+O.lmf(leaffrac=opt_free$minimum, returnhow="output")
+
+
+
+opt_lmf <- opt_free$minimum
+
 
 opt_ofrac <- (1-opt_lmf)/3
 
 
 ##rerun model with all treatments using optimized leaf mass fraction
-for (i in 1:7){
-  opt120_alloc <- lapply(c120_trt, function(x) {data.frame(productionmodel(gCday=as.vector(x[1:121,]), 
+opt120_alloc <- list()
+for(i in 1:7){
+  opt120_alloc[[i]] <- data.frame(productionmodel(gCday=c120_trt[[i]][[1]], 
                   lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
                   leaffrac=opt_lmf,returnwhat="all"))
-  })
 }
 
-
-#2. optimise gCday with free plant using lmf from above ############(doesnt seem to work right)############
-
-O.cday<- function(gCday, ...){
-  
-  p <- productionmodel(gCday=gCday, ...)
-  
-  MASS <- p[1]
-  
-  (MASS - MASS_measured)^2
-  
-}
-
-opt_free2<- optimize(O.cday, c(0,20),  lma=lma_mean, leaffrac=opt_lmf,
-                    frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac, returnwhat="lastval")
-
-opt_cday <- as.numeric(opt_free2[1])
-
-##rerun free model using optimized leaf mass fraction and gcday
-
-opt_free <- data.frame(productionmodel(gCday=opt_cday,lma=lma_trt[7],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
-           leaffrac=opt_lmf,returnwhat="lastval"))
 
 ##PLOTTING optimized models with volume trts of cday 120
 
@@ -112,10 +112,10 @@ totalC_trt2 <- unlist(totalC_trt)
 #2. plot production with optmized LMF sim vs total c gain (LA from sim cday120)
 windows(8,10)
 par(mar=c(5,5,2,2))
-plot(mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 500), 
-     ylim=c(0, 500), ylab="Biomass (g)", xlab="Total Carbon Gain (g)")
+plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 500), 
+     ylim=c(0, 500), ylab="Plant carbon (g)", xlab="Total Carbon Gain (g)")
 for(i in 1:7){
-  points(opt120_alloc[[i]][120,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
+  points(0.5*opt120_alloc[[i]][120,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
 }
 abline(0,1)
 # dev.copy2pdf(file= "gC_day_model/model_output/.pdf")  
