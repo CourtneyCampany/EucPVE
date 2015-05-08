@@ -58,7 +58,8 @@ Aleaf_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
 #leaf area interpolated
 leafarea_time <- read.csv("calculated data/LApred_volume.csv")
 
-
+#read in M regression coefs for model
+Mcoef <- read.csv("gC_day_model/M_leafarea_model.csv")
 
 ####MODEL---------------------------------------------------------------------------------
 LA_sp <- dlply(leafarea_time, .(volume))
