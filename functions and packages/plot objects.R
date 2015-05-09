@@ -36,9 +36,8 @@ treelab<- "Seedling Mass (g)"
 leaflab <-expression(Leaf~Area~~(cm^-2))
 condlab <- expression(g[s]~~(mu*mol~m^-2~s^-1))
 Amasslab <- expression(italic(A)[mass]~~(n*mol~g^-1~s^-1))
-cdaylab <- expression(Carbon~gain~~(g~d^-1))
 LAm2 <- expression(Leaf~Area~~(m^2))
-anet <- expression(italic(A)[net] ~ ~(mu * mol ~ m^-2 ~ s^-1))
+anet <- expression(italic(A)[net]~~(mu*mol~m^-2~s^-1))
 cilab <- expression(C[i]~~(mu*mol~mol^-1))
 srllab <- expression(Specific~Root~Length~~(m~g^1))
 c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
@@ -47,3 +46,9 @@ c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
 raw <- "Raw Data"
 volmean <- "Volume Means"
 datemean <- "Date x Volume Means"
+
+##labels for model plotting
+simpch <- c(1, 16)
+simleg <- c("Modeled", "Observed") 
+cdaylab <- expression(Carbon~gain~~(g~m^-2~d^-1))
+

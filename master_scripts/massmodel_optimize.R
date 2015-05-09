@@ -78,12 +78,20 @@ source("functions and packages/massmodel2.R")
                          lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
                          leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],returnwhat="lastval"))
   }  
+  ##return all values
+  optmassmodel2<- list()
+  for(i in 1:7){
+    optmassmodel2[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], 
+                                                     lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
+                                                     leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
+                                                     returnwhat="all"))
+  }  
   
 #8. Calculate total C gain per plant, draw leaf area from model with optimized LMF
   
   totalC_list <- list()
   for(i in 1:7){
-    totalC_calc <- optmassmodel[[i]][2] * c120_trt[[i]][1:120,]
+    totalC_calc <- optmassmodel2[[i]][2] * c120_trt[[i]][1:120,]
     
     totalC_list[[i]] <- totalC_calc
   }                 
@@ -93,29 +101,31 @@ source("functions and packages/massmodel2.R")
   totalC_trt2 <- unlist(totalC_trt)
   
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120)
-  #windows(8,10)
-  par(mar=c(5,5,2,2))
-  plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 500), 
-       ylim=c(0, 500), ylab="Plant carbon (g)", xlab="Total Carbon Gain (g)")
+  windows(7,5)
+  par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+  plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
+       ylim=c(0, 200), ylab="Plant Carbon (g)", xlab="Total Carbon Gain (g)")
   for(i in 1:7){
     points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
   }
-  abline(0,1)
-  # dev.copy2pdf(file= "gC_day_model/model_output/.pdf")  
-  # dev.off() 
+  abline(0,1, lty=2)
+  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("bottomright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
+   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
+   dev.off() 
   
   
 #10. plot mass production with optmized LMF sim vs daily photosynthesis
-  
-  par(mar=c(5,5,2,2))
+  windows(7,5)
+  par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
   plot(mass_actual$mass ~ Cday,pch=pchs,col=palette(),cex=1.6, xlim=c(4,8), 
-       ylim=c(0, 300), ylab="Biomass (g)",xlab=cdaylab)
+       ylim=c(0, 250), ylab="Biomass (g)",xlab=cdaylab)
   for(i in 1:7){
     points(optmassmodel[[i]][1,1]~ Cday[i], pch=pch2, col=cols[i], cex=1.6)
   }
+  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("topright", simleg, pch=simpch,text.font=1,   bty='n',cex=1.0)
+   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_Cday.pdf")  
+   dev.off() 
+  
 
-  points(simLA_final$biomass ~ Cday_means$carbon_day, cex=1.6, pch=pch2, col=palette())
-  # dev.copy2pdf(file= "gC_day_model/model_output/.pdf")  
-  # dev.off() 
-  
-  
