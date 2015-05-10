@@ -81,9 +81,15 @@ pve_table2 <- cbind(leglab, phys1)
   #1. amax
   pve_table2[2] <- paste()
   
-  test <-as.vector(pve_table2[2], mode="expression")
+  
+  
+  test <-as.vector(pve_table2[2])
   test3 <- as.vector(sigletter_list[[1]])
-  test2 <- sigletter_list[[1]][1:7,1]
+  test2 <- as.vector(sigletter_list[[1]][1:7,1])
+  
+  paste(test, test2)
+  
+  
   test4 <- do.call(paste(test, test3, sep="  "))
   test5 <- paste0(test, test3)
   
