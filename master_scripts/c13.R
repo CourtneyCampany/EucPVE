@@ -23,3 +23,22 @@ title(ylab=c13lab, mgp=ypos)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/leafc13.pdf")
 dev.off()
+
+
+##Stats for c13-------------------------------------------------------------------------------------
+# require(nlme)
+# require(visreg)
+# library(multcomp)
+# 
+# c13$volume <-  relevel(c13$volume, ref="1000")
+# 
+# #srl (not different)
+# c13_container <- lme(d13c ~ volume, random= ~1|ID, data=c13)
+# anova(c13_container)
+# summary(c13_container)
+# visreg(c13_container)
+# 
+# tukey_c13<- glht(c13_container, linfct = mcp(volume = "Tukey"))
+# c13_siglets <-cld(tukey_c13)
+# c13_siglets2 <- c13_siglets$mcletters$Letters
+# write.csv(c13_siglets2, "master_scripts/sigletters/sigletts_plant/sl_c13.csv", row.names=FALSE)  

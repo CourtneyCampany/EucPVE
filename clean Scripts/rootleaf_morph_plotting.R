@@ -40,14 +40,21 @@ require(nlme)
 require(visreg)
 library(multcomp)
 
-#srl (not different)
-srl_lm <- lme(SRL ~ volume, random= ~1|ID, data=srl)
-  anova(srl_lm)
-  summary(srl_lm)
+srl$volume <-  relevel(srl$volume, ref="1000")
 
-  tukey_srl<- glht(srl_lm, linfct = mcp(volume = "Tukey"))
-  cld(tukey_srl)
-  visreg(srl_lm)
+#srl (not different)
+srl_container <- lme(SRL ~ volume, random= ~1|ID, data=srl)
+  anova(srl_container)
+  summary(srl_container)
+  visreg(srl_container)
+  
+  tukey_srl<- glht(srl_container, linfct = mcp(volume = "Tukey"))
+  srl_siglets <-cld(tukey_srl)
+  srl_siglets2 <- srl_siglets$mcletters$Letters
+  write.csv(srl_siglets2, "master_scripts/sigletters/sigletts_plant/sl_srl.csv", row.names=FALSE)  
+  
+  
+  
 
 
 #sla
