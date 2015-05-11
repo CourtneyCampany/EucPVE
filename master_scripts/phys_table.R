@@ -69,15 +69,15 @@ pve_table2 <- cbind(leglab, phys1)
   pve_table2 <- cbind(pve_table2, phys6)
   
   ###read in sigletters from sigletters folder
-  sigletter_files <- list.files(path = "master_scripts/sigletters/", pattern="*.csv", full.names = TRUE)
+  sigletter_files <- list.files(path = "master_scripts/sigletters/sigletts_phys/", pattern="*.csv", full.names = TRUE)
   ##make names of list with file names minus extension
-  sigletter_vars <- gsub("master_scripts/sigletters/", "", sigletter_files)
+  sigletter_vars <- gsub("master_scripts/sigletters/sigletts_phys/", "", sigletter_files)
   sigletter_vars <- gsub(".csv", "", sigletter_vars)
   sigletter_list <- lapply(sigletter_files, function(x) read.csv(x))
   ##add names to list
   names(sigletter_list) <- sigletter_vars
-  library(plyr)
-  siglett_dfr <- ldply(sigletter_list, cbind)
+
+
 
 ###add sigletters to table
   #1. amax
@@ -92,6 +92,12 @@ pve_table2 <- cbind(leglab, phys1)
 # lets <- sigletter_list[[1]][,1]
 # paste(nums, lets)
   
+pval <- as.vector(c("Container Effect", 0.001, 0.0396,0.001, 0.002, 0.001, 0.079))
+
+pve_table2$leglab <- as.character(pve_table2$leglab)
+
+pve_table3 <- rbind(pve_table2, pval)
+
   
 ##var order= volume, amax, rd, jmax, vcmax, gs, g1, 
 ##maybe add this as a additional hline in table in latex  

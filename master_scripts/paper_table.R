@@ -50,7 +50,7 @@ table1 <- merge(table1,leaf_param_agg[,c(1:2,6, 5, 9, 10:13)])
 #   root_all <-rootN[complete.cases(rootN),]
   rootN <- read.csv("calculated data/root_N_clean.csv")  
 
-root_agg <- summaryBy(N_perc~ volume, data=root_all, FUN=c(mean, se))
+root_agg <- summaryBy(N_perc~ volume, data=rootN, FUN=c(mean, se))
   root_agg$volume <- gsub("05", "5", root_agg$volume)
   root_agg$volume <- gsub("free", "1000", root_agg$volume)
 
@@ -93,6 +93,28 @@ pve_table1 <- cbind(leglab, dat1)
 
 #change variable order
 pve_table2 <- pve_table1[, c(1:2, 4:7, 3,8,9)]
+
+
+###read in sigletters from sigletters folder
+sigletter_files <- list.files(path = "master_scripts/sigletters/sigletts_plant/", pattern="*.csv", full.names = TRUE)
+##make names of list with file names minus extension
+sigletter_vars <- gsub("master_scripts/sigletters/sigletts_plant/", "", sigletter_files)
+sigletter_vars <- gsub(".csv", "", sigletter_vars)
+sigletter_list <- lapply(sigletter_files, function(x) read.csv(x))
+##add names to list
+names(sigletter_list) <- sigletter_vars
+
+
+###add sigletters to table
+#1. amax
+pve_table2[[2]] <- paste(pve_table2[[2]], sigletter_list[[3]][,1])
+pve_table2[[3]] <- paste(pve_table2[[3]], sigletter_list[[5]][,1])
+pve_table2[[4]] <- paste(pve_table2[[4]], sigletter_list[[2]][,1])
+pve_table2[[5]] <- paste(pve_table2[[5]], sigletter_list[[8]][,1])
+pve_table2[[6]] <- paste(pve_table2[[6]], sigletter_list[[7]][,1])
+pve_table2[[7]] <- paste(pve_table2[[7]], sigletter_list[[6]][,1])
+pve_table2[[8]] <- paste(pve_table2[[8]], sigletter_list[[4]][,1])
+pve_table2[[9]] <- paste(pve_table2[[9]], sigletter_list[[1]][,1])
 
 write.csv(pve_table2, "master_scripts/pve_table1.csv", row.names=FALSE)
 
