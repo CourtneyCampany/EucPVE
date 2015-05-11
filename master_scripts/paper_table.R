@@ -46,8 +46,9 @@ leaf_param_agg <- summaryBy(SLA +starch+sugars+ leafnperc~ volume, data=leaf_par
 table1 <- merge(table1,leaf_param_agg[,c(1:2,6, 5, 9, 10:13)])
 
 ###Root nitrogen
-rootN <- read.csv("calculated data/root_chem.csv")
-  root_all <-rootN[complete.cases(rootN),]
+# rootN <- read.csv("calculated data/root_chem.csv")
+#   root_all <-rootN[complete.cases(rootN),]
+  rootN <- read.csv("calculated data/root_N_clean.csv")  
 
 root_agg <- summaryBy(N_perc~ volume, data=root_all, FUN=c(mean, se))
   root_agg$volume <- gsub("05", "5", root_agg$volume)

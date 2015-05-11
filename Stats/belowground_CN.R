@@ -67,23 +67,33 @@ visreg(n_lm)
 
 #root N
 root_all <-root_chem[complete.cases(root_chem),]
-root_all$Ntrans <- asin(sqrt(root_all$N_perc/100))
+boxplot(Ntrans ~ volume,data=root_all2)
 
-rootN_lm <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all)
-rootN_lm2<-glm(N_perc,volume,binomial,data=root_all)
+root_all2 <- root_all[root_all$N_perc <= 1.0,]
+root_all2$Ntrans <- asin(sqrt(root_all2$N_perc/100))
+#relevel to free to evaluate container effect  
+root_all2$volume <- relevel(root_all2$volume, ref="free")
 
-anova(rootN_lm)
-summary(rootN_lm)
-
-tukey_root<- glht(rootN_lm, linfct = mcp(volume = "Tukey"))
-cld(tukey_root)
-visreg(rootN_lm)
-
-mean(root_all$N_perc)
+root_all3 <- root_all2[! root_all2$N_perc == 0.71640,]
+write.csv(root_all3, "calculated data/root_N_clean.csv", row.names=FALSE)
 
 
+mean(root_all3$N_perc)
+
+#rootN_lm <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all)
+#rootN_lm2<-glm(N_perc,volume,binomial,data=root_all)
 
 
+rootN_container <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all3)
+  anova(rootN_container)
+  summary(rootN_container)
+  visreg(rootN_container)
+
+tukey_rootN<- glht(rootN_container, linfct = mcp(volume = "Tukey"))
+rootN_siglets <-cld(tukey_rootN)
+
+rootN_siglets2 <- rootN_siglets$mcletters$Letters
+write.csv(rootN_siglets2, "master_scripts/sigletters/sigletts_plant/sl_rootN.csv", row.names=FALSE)
 
 
 
@@ -135,7 +145,7 @@ dev.off()
 #Root N %
 windows()
 par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,N_perc, data=root_chem,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+bargraph.CI(volume,N_perc, data=root_all3,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
               ylab = "Root Nitrogen (%)",ylim = c(0, 1.2))
 box() 
   

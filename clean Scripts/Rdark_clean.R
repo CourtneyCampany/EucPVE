@@ -111,7 +111,7 @@ tukey_rd25<- glht(rd25_container, linfct = mcp(volume = "Tukey"))
 rd_siglets <-cld(tukey_rd25)
 
 rd_siglets2 <- rd_siglets$mcletters$Letters
-write.csv(rd_siglets2, "master_scripts/sigletters/sl_rd.csv", row.names=FALSE)
+write.csv(rd_siglets2, "master_scripts/sigletters/sigletts_phys/sl_rd.csv", row.names=FALSE)
 
 ####no container effect (relevel to 1000 and no volumes differ)
 
