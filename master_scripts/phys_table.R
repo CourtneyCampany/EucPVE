@@ -76,36 +76,26 @@ pve_table2 <- cbind(leglab, phys1)
   sigletter_list <- lapply(sigletter_files, function(x) read.csv(x))
   ##add names to list
   names(sigletter_list) <- sigletter_vars
+  library(plyr)
+  siglett_dfr <- ldply(sigletter_list, cbind)
 
 ###add sigletters to table
   #1. amax
-  pve_table2[2] <- paste()
+  pve_table2[[2]] <- paste(pve_table2[[2]], sigletter_list[[1]][,1])
+  pve_table2[[3]] <- paste(pve_table2[[3]], sigletter_list[[6]][,1])
+  pve_table2[[4]] <- paste(pve_table2[[4]], sigletter_list[[5]][,1])
+  pve_table2[[5]] <- paste(pve_table2[[5]], sigletter_list[[7]][,1])
+  pve_table2[[6]] <- paste(pve_table2[[6]], sigletter_list[[3]][,1])
+  pve_table2[[7]] <- paste(pve_table2[[7]], sigletter_list[[4]][,1])
   
+# nums <-pve_table2[[3]]
+# lets <- sigletter_list[[1]][,1]
+# paste(nums, lets)
   
-  
-  test <-as.vector(pve_table2[2])
-  test3 <- as.vector(sigletter_list[[1]])
-  test2 <- as.vector(sigletter_list[[1]][1:7,1])
-  
-  paste(test, test2)
-  
-  
-  test4 <- do.call(paste(test, test3, sep="  "))
-  test5 <- paste0(test, test3)
-  
-  test5 <- paste(as.character(test3), test, sep="")
-  
-  test6 <- test[1,]
-  message(paste(test6, "a", sep=" "))
-  
-  for(i in 1:7){
-    test7[i] <- paste(test[i], test3[i], sep="")
-
-  }
   
 ##var order= volume, amax, rd, jmax, vcmax, gs, g1, 
 ##maybe add this as a additional hline in table in latex  
-  phys_table_P <- ('     ', 0.0001, 0.03969, 0.0012, 0.0021, 0.0001, 0.0799)
+  #phys_table_P <- ('     ', 0.0001, 0.03969, 0.0012, 0.0021, 0.0001, 0.0799)
   
 write.csv(pve_table2, "master_scripts/pve_table2.csv", row.names=FALSE)
 
