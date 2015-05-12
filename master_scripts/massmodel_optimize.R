@@ -100,32 +100,47 @@ source("functions and packages/massmodel2.R")
   
   totalC_trt2 <- unlist(totalC_trt)
   
-#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120)
-  windows(7,5)
-  par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
+#9. Scale model results to free seedling
+  
+  ##mean daily carbon gain scales
+  C_stnd <- read.csv("calculated data/model_runs/gCday_means.csv")
+  C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
+  
+  ##modelled biomass scaled
+  C_stnd$modelmass <- c(optmassmodel[[1]][1,1], optmassmodel[[2]][1,1], optmassmodel[[3]][1,1], optmassmodel[[4]][1,1], 
+                        optmassmodel[[4]][1,1],optmassmodel[[6]][1,1],optmassmodel[[7]][1,1])
+  C_stnd$model_stnd_free <- with(C_stnd, modelmass/modelmass[7])
+  
+  #harvest mass (treatment means)
+  mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
+  mass_actual$Date <- as.Date("2013-05-21")
+  mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
+  
+  
+#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
+ 
+  windows(7,8)
+  
+  par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
+  
+  par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
        ylim=c(0, 200), ylab="Plant Carbon (g)", xlab="Total Carbon Gain (g)")
   for(i in 1:7){
     points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
   }
   abline(0,1, lty=2)
-  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
-  legend("bottomright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
-   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
-   dev.off() 
-  
-  
-#10. plot mass production with optmized LMF sim vs daily photosynthesis
-  windows(7,5)
-  par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-  plot(mass_actual$mass ~ Cday,pch=pchs,col=palette(),cex=1.6, xlim=c(4,8), 
-       ylim=c(0, 250), ylab="Biomass (g)",xlab=cdaylab)
-  for(i in 1:7){
-    points(optmassmodel[[i]][1,1]~ Cday[i], pch=pch2, col=cols[i], cex=1.6)
-  }
-  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
-  legend("topright", simleg, pch=simpch,text.font=1,   bty='n',cex=1.0)
-   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_Cday.pdf")  
-   dev.off() 
-  
+  text(200,5,"(a)", cex=1.2)
 
+  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  
+  par(mar=c(4,5,1,2))
+  plot(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
+       ylab= expression(Plant~Carbon~Scaled[free]))
+  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
+  text(.6,.01,"(b)", cex=1.2)
+  legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
+  
+  dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
+  dev.off() 

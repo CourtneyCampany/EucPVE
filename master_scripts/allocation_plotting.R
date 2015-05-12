@@ -37,47 +37,67 @@ treecols <- c("darkgoldenrod4","lightgoldenrod3",  "olivedrab","forestgreen")
 treecols2 <- c("forestgreen","olivedrab", "lightgoldenrod3","darkgoldenrod4")
 treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
+
+ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass", "root", "shoot"))
+ratio$volume <- as.factor(ratio$volume)
+ratio_nofree <- subset(ratio, volume !="1000")
+ratio$RS <- with(ratio, root/shoot)
+ratio$LR <- with(ratio, fineroot/leafmass)
+
+#treatment means
+ratio_agg <- summaryBy( .~ volume , data = ratio,  FUN=c(mean,se))
+
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
 
-windows(14,7)
-par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
+# windows(14,7)
+# par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
+
+
+windows(11,16)
+####multipanel plot of 
+par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3,1,0),mfrow=c(3,1),  
+    omi=c(.5,0,0.1,0.1))
 
 #1. partitioning
-par(mar = c(5, 4, 2, 5.3), xpd = TRUE)
-barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "", 
-        ylab="", ylim=c(0, 1))
+par(mar = c(4, 7, 2, 7.3), xpd = TRUE)
+barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "Soil Volume  (l)", 
+        ylab="Seedling Mass Partitioning", ylim=c(0, 1))
 #space = c(.2,.2,.2,.2,.2,.2,.8))
-title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
-title(xlab="Soil Volume  (l)", mgp=ypos)
+#title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
+#title(xlab="Soil Volume  (l)", mgp=ypos)
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
 text(1.3, .95, "(a)", cex=1.2)
 
-#plot2
-par(mar=c(5,4,2,2))
-plot(Mf_mod2, xlab="" , ylab="", col=palette(), pch=pchs, cex=1.5, lwd=2)
-title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
-title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
+#mass allocation (plant size corrected)
+par(mar=c(4,7,2,2.3))
+plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=1.5, lwd=2)
+#title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
+#title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1.2)
 text(x=7.1, 63, "(b)", cex=1.2)
+
+#3. Fine root to leaves
+par(mar=c(4,7,1,2.3),xpd = FALSE)
+with(ratio_agg, plot(log(fineroot.mean), log(leafmass.mean), ylim=c(0,5), xlim=c(0,5),
+                     pch=pchs, col=palette(), cex=1.5,
+                     xlab = "ln(Fine Root Mass)  (g)",
+                     ylab = "ln(Leaf Mass)  (g)"))
+#title(xlab="ln(Fine Root Mass)  (g)", mgp=ypos)
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean+fineroot.se), angle=90, 
+                       length=0.05,col=palette(), lwd=1))
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean-fineroot.se), angle=90, 
+                       length=0.05,col=palette(), lwd=1))
+
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean+leafmass.se), angle=90, 
+                       length=0.05,col=palette(), lwd=1))
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean-leafmass.se), angle=90, 
+                       length=0.05,col=palette(), lwd=1))
+
+abline(0,1)
+text(x=.25, 4.9, "(c)", cex=1.2)
+
+
 dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
 dev.off()
-
-
-
-###png
-png(filename = "master_scripts/manuscript_figs/png/massfrac.png", width = 11, height = 8.5, units = "in", res= 400)
-par(mar=c(5,5,2,2), cex.axis=1.5,cex.lab=1.75 ,las=1)
-
-plot(Mf_mod2, xlab="" , ylab=expression(Leaf~Mass~~(g)), col=palette(), pch=pchs, cex=2, lwd=2)
-#title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
-title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
-
-legend("topleft", leglab, pch=c(rep(16,6),17),text.font=1.2, inset=0.025, title=vollab, 
-       cex=1.51, col=palette(), bty='n')
-
-dev.off()
-
-
-
 

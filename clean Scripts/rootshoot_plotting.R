@@ -37,19 +37,19 @@ rl_mean <- with(ratio, mean(LR))
 
 #PLOT of Froot:leaf means with SE-------------------------------------------------------------------------
 par(mar=c(5,5,1,1), cex.axis=1.0, cex.lab=LABcex)
-with(ratio_agg, plot(fineroot.mean, leafmass.mean, ylim=c(0,60), xlim=c(0,60),
+with(ratio_agg, plot(log(fineroot.mean), log(leafmass.mean), ylim=c(0,5), xlim=c(0,5),
                      pch=pchs, col=palette(), cex=PTcex,
-                     xlab = "Fine Root Mass (g)",
-                     ylab = "Leaf Mass (g)"))
+                     xlab = "ln(Fine Root Mass) (g)",
+                     ylab = "ln(Leaf Mass) (g)"))
 
-with(ratio_agg, arrows(x0=fineroot.mean, y0=leafmass.mean, x1=fineroot.mean+fineroot.se, angle=90, 
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean+fineroot.se), angle=90, 
                         length=0.05,col=palette(), lwd=2))
-with(ratio_agg, arrows(x0=fineroot.mean, y0=leafmass.mean, x1=fineroot.mean-fineroot.se, angle=90, 
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean-fineroot.se), angle=90, 
                         length=0.05,col=palette(), lwd=2))
 
-with(ratio_agg, arrows(x0=fineroot.mean, y0=leafmass.mean, y1=leafmass.mean+leafmass.se, angle=90, 
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean+leafmass.se), angle=90, 
                         length=0.05,col=palette(), lwd=2))
-with(ratio_agg, arrows(x0=fineroot.mean, y0=leafmass.mean, y1=leafmass.mean-leafmass.se, angle=90, 
+with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean-leafmass.se), angle=90, 
                         length=0.05,col=palette(), lwd=2))
 
 abline(0,1)

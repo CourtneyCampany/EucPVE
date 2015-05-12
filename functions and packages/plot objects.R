@@ -50,5 +50,5 @@ datemean <- "Date x Volume Means"
 ##labels for model plotting
 simpch <- c(1, 16)
 simleg <- c("Modeled", "Observed") 
-cdaylab <- expression(Carbon~gain~~(g~m^-2~d^-1))
+cdaylab <- expression(Mean~Daily~Carbon~Assimilation~~(g~m^-2~d^-1))
 
