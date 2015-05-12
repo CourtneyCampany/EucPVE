@@ -88,53 +88,43 @@ for(i in 1:7){
 #8. Test scenarios--------------------------------------------------------------------------------------------------------
 
 
-#S1: Increase allocation to fine roots (accounts exudation, increasesed turnover, respiration)
+#S1: alter leaf allocation (by using harvested lmf this shows how over/under estimate of model and observed still miss with C
+  
+#root respiration up
+harvest_lmf <-  list()
+for(i in 1:7){
+  harvest_lmf[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],leaffrac=leaffrac_trt[i],
+                                                  frfrac=(1-leaffrac_trt[i])/3, 
+                                                  crfrac=(1-leaffrac_trt[i])/3, 
+                                                  stemfrac=(1-leaffrac_trt[i])/3,
+                                                  M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
+                                                  returnwhat="all"))
+}   
+  
+  
+  
+#S3: increases in root respiration (+-50%) , keep free that same
 
-  ##use optimize leaf fraction,  adjust fine root C alocation (+-50%)
+  #need a vector of respiration to pass that alters root respiration for containers but not free 
+  fr_default <- fr_resp
+  cr_default <- cr_resp
+  wd_default <- wd_resp
   
-  nonleaf_frac <- 1- opt_lmf
+  fr_up <- fr_default*1.5
+  cr_up <- cr_default*1.5
+  wd_up <- wd_default*1.5
   
-  fr_frac_up <- opt_ofrac*1.5  #opt_ofrac from above
-  opt_ofrac_fr1 <- (nonleaf_frac-fr_frac_up)/2
+  fr_down <- fr_default*0.5
+  cr_down <- cr_default*0.5
+  wd_down <- wd_default*0.5
   
-  #fine root allocation up
-  fineroot_up<- list()
-  for(i in 1:7){
-    fineroot_up[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], 
-                                                    lma=lma_trt[i],frfrac=fr_frac_up, crfrac=opt_ofrac_fr1, 
-                                                    stemfrac=opt_ofrac_fr1,leaffrac=opt_lmf,M_slope=Mcoef$b[i], 
-                                                    M_intercept= Mcoef$intercept[i],
-                                                    returnwhat="lastval"))
-  }  
+  fr_resp_up <- c(rep(fr_up,6),fr_default)
+  cr_resp_up <- c(rep(cr_up,6),cr_default)
+  wd_resp_up <- c(rep(wd_up,6),wd_default)
   
-  
-  fr_frac_down <- opt_ofrac*.5
-  opt_ofrac_fr2 <- (nonleaf_frac-fr_frac_down)/2
-  
-  #fine root allocation down
-  fineroot_down<- list()
-  for(i in 1:7){
-    fineroot_down[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], 
-                                                      lma=lma_trt[i],frfrac=fr_frac_down, crfrac=opt_ofrac_fr2, 
-                                                      stemfrac=opt_ofrac_fr2,leaffrac=opt_lmf,M_slope=Mcoef$b[i], 
-                                                      M_intercept= Mcoef$intercept[i],
-                                                      returnwhat="lastval"))
-  }  
-
-
-#S2: increase to leaf allocation (includes increases in leaf turnover)
-  
-  ######only to containers????? leaves opt for free????
-  
-  
-  
-#S3: increases in root respiration (+-50%) 
-  respmax_fr <- fr_resp*1.5
-  respmax_cr <- cr_resp*1.5
-  
-  respmin_fr <- fr_resp*.5
-  respmin_cr <- cr_resp*.5
-  
+  fr_resp_down <- c(rep(fr_down,6),fr_default)
+  cr_resp_down <- c(rep(cr_down,6),cr_default)
+  wd_resp_down <- c(rep(wd_down,6),wd_default)
   
   #root respiration up
   rootresp_up<- list()
@@ -142,7 +132,8 @@ for(i in 1:7){
   rootresp_up[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],frfrac=opt_ofrac, 
                                                       crfrac=opt_ofrac, stemfrac=opt_ofrac,leaffrac=opt_lmf,
                                                       M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
-                                                      fr_resp=respmax_fr, cr_resp= respmax_cr,
+                                                      fr_resp=fr_resp_up[i], cr_resp= cr_resp_up[i],
+                                                      wd_resp=wd_resp_up[i],
                                                       returnwhat="all"))
     }   
   
@@ -152,6 +143,14 @@ for(i in 1:7){
   rootresp_down[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],frfrac=opt_ofrac, 
                                                         crfrac=opt_ofrac, stemfrac=opt_ofrac,leaffrac=opt_lmf,
                                                         M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
-                                                        fr_resp=respmin_fr, cr_resp= respmin_cr,
+                                                        fr_resp=fr_resp_down[i], cr_resp= cr_resp_down[i],
+                                                        wd_resp=wd_resp_down[i],
                                                         returnwhat="all"))
-    }  
+  }  
+  
+  
+  
+####PLOT scenarios
+  
+  
+  
