@@ -24,7 +24,7 @@ cond_agg <- summaryBy(. ~ ID + Date, data = cond_data, FUN = c(mean))
 
 ------------------------------------------------------------------------------------------------------
 #test if gs is different by volume or by time
-boxplot(gs ~ volume, data = cond_agg2)
+boxplot(gs ~ volume, data = cond_agg)
 boxplot(gs ~ Date, data = cond_agg)
   
 ###looks like a few outliers >1, remove and re-run model

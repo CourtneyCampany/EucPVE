@@ -104,17 +104,26 @@ sigletter_list <- lapply(sigletter_files, function(x) read.csv(x))
 ##add names to list
 names(sigletter_list) <- sigletter_vars
 
+##order of sig letters is free, 5, 10, 15, 20, 25, 35...need to chance so paste below is correct
+sigvol <- c(1000, 5, 10, 15, 20, 25, 35)
+siglet <- lapply(sigletter_list, function(x) cbind(x, sigvol))
+siglet2 <- lapply(siglet, function(x) as.data.frame(x))
+siglet3 <- list()
+for(i in 1:8) {
+  siglet3[[i]] <- siglet2[[i]][c(2,3,4,5,6,7,1),] 
+}
+
 
 ###add sigletters to table
 #1. amax
-pve_table2[[2]] <- paste(pve_table2[[2]], sigletter_list[[3]][,1])
-pve_table2[[3]] <- paste(pve_table2[[3]], sigletter_list[[5]][,1])
-pve_table2[[4]] <- paste(pve_table2[[4]], sigletter_list[[2]][,1])
-pve_table2[[5]] <- paste(pve_table2[[5]], sigletter_list[[8]][,1])
-pve_table2[[6]] <- paste(pve_table2[[6]], sigletter_list[[7]][,1])
-pve_table2[[7]] <- paste(pve_table2[[7]], sigletter_list[[6]][,1])
-pve_table2[[8]] <- paste(pve_table2[[8]], sigletter_list[[4]][,1])
-pve_table2[[9]] <- paste(pve_table2[[9]], sigletter_list[[1]][,1])
+pve_table2[[2]] <- paste(pve_table2[[2]], siglet3[[3]][,1])
+pve_table2[[3]] <- paste(pve_table2[[3]], siglet3[[5]][,1])
+pve_table2[[4]] <- paste(pve_table2[[4]], siglet3[[2]][,1])
+pve_table2[[5]] <- paste(pve_table2[[5]], siglet3[[8]][,1])
+pve_table2[[6]] <- paste(pve_table2[[6]], siglet3[[7]][,1])
+pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[6]][,1])
+pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[4]][,1])
+pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
 
 pval <- as.vector(c("Container Effect", 0.001, 0.001, 0.001, 0.128, 0.039, 0.662, 0.015, 0.458))
