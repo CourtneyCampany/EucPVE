@@ -161,18 +161,18 @@ for(i in 1:7){
     
     ##modelled biomass scaled
     C_stnd$modelmass <- c(optmassmodel[[1]][1,1], optmassmodel[[2]][1,1], optmassmodel[[3]][1,1], optmassmodel[[4]][1,1], 
-                          optmassmodel[[4]][1,1],optmassmodel[[6]][1,1],optmassmodel[[7]][1,1])
+                          optmassmodel[[5]][1,1],optmassmodel[[6]][1,1],optmassmodel[[7]][1,1])
     C_stnd$model_stnd_free <- with(C_stnd, modelmass/modelmass[7])
   
     ##modelled biomass scaled (scenario 1)
     C_stnd$harvest_lmf <- c(harvest_lmf[[1]][1,1], harvest_lmf[[2]][1,1], harvest_lmf[[3]][1,1], harvest_lmf[[4]][1,1], 
-                          harvest_lmf[[4]][1,1],harvest_lmf[[6]][1,1],harvest_lmf[[7]][1,1])
+                          harvest_lmf[[5]][1,1],harvest_lmf[[6]][1,1],harvest_lmf[[7]][1,1])
     C_stnd$lmf_stnd_free <- with(C_stnd, harvest_lmf/harvest_lmf[7])
     ##modelled biomass scaled (scenario 1)
     C_stnd$resp_up <- c(resp_up[[1]][1,1], resp_up[[2]][1,1], resp_up[[3]][1,1], resp_up[[4]][1,1], 
-                        resp_up[[4]][1,1],resp_up[[6]][1,1],resp_up[[7]][1,1])
+                        resp_up[[5]][1,1],resp_up[[6]][1,1],resp_up[[7]][1,1])
     C_stnd$resp_down <- c(resp_down[[1]][1,1], resp_down[[2]][1,1], resp_down[[3]][1,1], resp_down[[4]][1,1], 
-                          resp_down[[4]][1,1],resp_down[[6]][1,1],resp_down[[7]][1,1])
+                          resp_down[[5]][1,1],resp_down[[6]][1,1],resp_down[[7]][1,1])
     
     C_stnd$resp_up_stnd_free <- with(C_stnd, resp_up/resp_up[7])
     C_stnd$resp_down_stnd_free <- with(C_stnd, resp_down/resp_down[7])
@@ -195,15 +195,22 @@ for(i in 1:7){
 #   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
   
   #scenario 2 
+
+ windows(7,7)
+  par(mar=c(5,5,2,2))
   plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
        ylab= expression(Plant~Carbon~Scaled[free]))
-  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
+  plot(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  text(.65,.85, "Respiration +50%")
   
+  windows(7,7)
+  par(mar=c(5,5,2,2))
   plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
        ylab= expression(Plant~Carbon~Scaled[free]))
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  text(.65,.85, "Respiration -50%")
   

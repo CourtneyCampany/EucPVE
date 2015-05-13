@@ -19,6 +19,22 @@ acifunction <- function(x) {
   
   return(aci_means)
 }
+
+#fit aci curve function
+acifunction2 <- function(x) {
+  
+  aci_model <- fitacis(x, "ID",varnames = list(ALEAF="Photo", Tleaf = "Temp", Ci="Ci", PPFD="PPFD"), 
+                       Tcorrect=TRUE)
+  
+  aci_coef <- coef(aci_model)
+  aci_coef <- merge(aci_coef, plotsumm, by = "ID")
+  
+  return(aci_coef)
+}
+
+
+
+
 #-----------------------------------------------------------------------------------
 #format raw leaf CN data from ANU
 leafCN_format <- function(dfr){

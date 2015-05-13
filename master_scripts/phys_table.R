@@ -20,12 +20,10 @@ table2 <- merge(table2, rd[,c(1:2,4)])
        
        
 ##2-3: jmax, vcmax
-phys <- read.csv("calculated data/jmax_vcmax.csv")
+phys <- read.csv("calculated data/jmax_vcmax_clean.csv")
+  names(phys)[2:5]<- c("Jmax", "Vcmax", "Jmax_se", "Vcmax_se")
 
-  phys_agg <- summaryBy(Jmax.mean+Vcmax.mean ~ volume, data=phys, FUN=c(mean, se))
-  names(phys_agg)[2:5]<- c("Jmax", "Vcmax", "Jmax_se", "Vcmax_se")
-
-table2 <- merge(table2, phys_agg)
+table2 <- merge(table2, phys)
        
 #4. gs
 gs <- read.csv("calculated data/conductance.csv")
