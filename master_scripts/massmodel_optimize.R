@@ -103,7 +103,7 @@ source("functions and packages/massmodel2.R")
 #9. Scale model results to free seedling
   
   ##mean daily carbon gain scales
-  C_stnd <- read.csv("calculated data/model_runs/gCday_means.csv")
+  C_stnd <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
   C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
   
   ##modelled biomass scaled

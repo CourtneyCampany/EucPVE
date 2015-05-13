@@ -156,7 +156,7 @@ for(i in 1:7){
   
   ####add actual mass and Cday scaled
   ##mean daily carbon gain scales
-  C_stnd <- read.csv("calculated data/model_runs/gCday_means.csv")
+  C_stnd <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
     C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
     
     ##modelled biomass scaled
@@ -185,32 +185,41 @@ for(i in 1:7){
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
   
   
-  #scenario 1
+  
+  windows(7,10)
+  ####multipanel plot of 
+  par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
+      omi=c(.5,0,0.1,0.1))
+  
+  #scenario 1 
+  par(mar=c(0,7,2,2))
   plot(C_stnd$lmf_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
-       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Plant~Carbon~Scaled[free]))
+       xlab="",
+       ylab= "",
+       xaxt='n')
+  axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
-#   text(.6,.01,"(b)", cex=1.2)
-#   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
+  text(.64,.95, "Harvest LMF", cex=1.51)
   
   #scenario 2 
-
- windows(7,7)
-  par(mar=c(5,5,2,2))
+  par(mar=c(0,7,0,2))
   plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
-       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Plant~Carbon~Scaled[free]))
-  plot(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
-  text(.65,.85, "Respiration +50%")
-  
-  windows(7,7)
-  par(mar=c(5,5,2,2))
-  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
-       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Plant~Carbon~Scaled[free]))
+       xlab="",
+       ylab= expression(Plant~Carbon~Scaled[free]),
+       xaxt='n')
+  axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
-  text(.65,.85, "Respiration -50%")
+  text(.64,.95, "Respiration +50%", cex=1.51)
   
+  par(mar=c(5,7,0,2))
+  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
+       ylab= "")
+  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  text(.64,.95, "Respiration -50%", cex=1.51)
+  
+  dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
+  dev.off() 

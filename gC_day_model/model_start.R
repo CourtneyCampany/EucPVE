@@ -53,9 +53,14 @@ lma_vol <- summaryBy(massarea ~volume, data=lma, FUN=mean, keep.names=TRUE)
 leafarea_mean <- (mean(lma$area))/10000
 
 #read gC day for each volume-----------------------------------------
-Aleaf <- read.csv("calculated data/model_runs/cday_120.csv")
-Aleaf_agg <- read.csv("calculated data/model_runs/gCday_means.csv")
+Aleaf <- read.csv("calculated data/model_runs/cday_120_clean.csv")
+Aleaf_agg <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
 Aleaf_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
+
+test <- read.csv("calculated data/Aleaf_pred_15min.csv")
+test_agg <- read.csv("calculated data/model_runs/gCday_means.csv")
+test_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
+
 
 #leaf area interpolated
 leafarea_time <- read.csv("calculated data/LApred_volume.csv")
