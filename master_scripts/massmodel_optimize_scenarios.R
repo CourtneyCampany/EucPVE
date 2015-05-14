@@ -184,8 +184,28 @@ for(i in 1:7){
   mass_actual$Date <- as.Date("2013-05-21")
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
   
+  #####colors and symbols
+    ###use scales to get .5 col on palettee
+    volcols <- palette()
+    lmfcols <- alpha(volcols, alpha=0.5)
+    lmfcols2 <- alpha(volcols, alpha=0.25)
+    lmfcols3 <- alpha(volcols, alpha=0.75)
   
+    pch3 <- c(rep(21,6), 25)
   
+    #colors for resp plots
+    colfree <- shadepalette(n=5, volcols[7], "white")
+    
+    for (i in 1:7) {
+      colsup <- shadepalette(n=5, volcols[i], "white")
+    }
+    
+    for (i in 1:7) {
+      colsdown <- shadepalette(n=5, "white",volcols[i])
+    }
+    
+    test <- colorRampPalette(volcols[7], "white")
+    
   windows(7,10)
   ####multipanel plot of 
   par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
@@ -193,32 +213,32 @@ for(i in 1:7){
   
   #scenario 1 
   par(mar=c(0,7,2,2))
-  plot(C_stnd$lmf_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+  plot(C_stnd$lmf_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols,cex=1.6,
        xlab="",
        ylab= "",
        xaxt='n')
   axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
   text(.64,.95, "Harvest LMF", cex=1.51)
   
   #scenario 2 
   par(mar=c(0,7,0,2))
-  plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+  plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols3,cex=1.6,
        xlab="",
        ylab= expression(Plant~Carbon~Scaled[free]),
        xaxt='n')
   axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
   text(.64,.95, "Respiration +50%", cex=1.51)
   
   par(mar=c(5,7,0,2))
-  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=1.6,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
        ylab= "")
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=.8)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
   text(.64,.95, "Respiration -50%", cex=1.51)
   
   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
