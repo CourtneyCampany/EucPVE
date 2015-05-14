@@ -23,6 +23,10 @@ table1 <- merge(table1, srl[,c(1, 4:5)])
 
 #3-6: SLA, starch, sugars, Nmass
 
+sla_free <- read.csv("calculated data/sla_free_clean.csv")
+table1 <- merge(table1, sla_free)
+
+
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
   #run volume format func
   photo_chem<- vollab_func(photo_chem)
@@ -34,7 +38,7 @@ photo_chem <- read.csv("calculated data/Amax_chem.csv")
 leaf_param <- photo_chem[,c(1:3,22:23,11:12, 14:17 )]
     leaf_param$volume <- gsub("05", "5", leaf_param$volume)
 
-leaf_param_agg <- summaryBy(SLA +starch+sugars+ leafnperc~ volume, data=leaf_param, FUN=c(mean, se))
+leaf_param_agg <- summaryBy(starch+sugars+ leafnperc~ volume, data=leaf_param, FUN=c(mean, se))
   #units
 #   leaf_param_agg$leafN <- leaf_param_agg$Nmass.mean*1000
 #   leaf_param_agg$leafN.se <- leaf_param_agg$Nmass.se*1000
@@ -43,7 +47,7 @@ leaf_param_agg <- summaryBy(SLA +starch+sugars+ leafnperc~ volume, data=leaf_par
   leaf_param_agg$star <- leaf_param_agg$starch.mean*100
   leaf_param_agg$star.se <- leaf_param_agg$starch.se*100
 
-table1 <- merge(table1,leaf_param_agg[,c(1:2,6, 5, 9, 10:13)])
+table1 <- merge(table1,leaf_param_agg[,c(1, 4, 7:11)])
 
 ###Root nitrogen
 # rootN <- read.csv("calculated data/root_chem.csv")
@@ -92,7 +96,7 @@ pve_table1 <- cbind(leglab, dat1)
   pve_table1 <- cbind(pve_table1, dat8)
 
 #change variable order
-pve_table2 <- pve_table1[, c(1:2, 4:7, 3,8,9)]
+pve_table2 <- pve_table1[, c(1:2, 4, 7,6,5,8,3,9)]
 
 
 ###read in sigletters from sigletters folder
@@ -118,15 +122,14 @@ for(i in 1:8) {
 #1. amax
 pve_table2[[2]] <- paste(pve_table2[[2]], siglet3[[3]][,1])
 pve_table2[[3]] <- paste(pve_table2[[3]], siglet3[[5]][,1])
-pve_table2[[4]] <- paste(pve_table2[[4]], siglet3[[2]][,1])
+pve_table2[[4]] <- paste(pve_table2[[4]], siglet3[[7]][,1])
 pve_table2[[5]] <- paste(pve_table2[[5]], siglet3[[8]][,1])
-pve_table2[[6]] <- paste(pve_table2[[6]], siglet3[[7]][,1])
-pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[6]][,1])
-pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[4]][,1])
+pve_table2[[6]] <- paste(pve_table2[[6]], siglet3[[2]][,1])
+pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[4]][,1])
+pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[6]][,1])
 pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
-
-pval <- as.vector(c("Container Effect", 0.001, 0.001, 0.001, 0.128, 0.039, 0.662, 0.015, 0.458))
+pval <- as.vector(c("Container Effect (P)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.662, 0.458))
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 

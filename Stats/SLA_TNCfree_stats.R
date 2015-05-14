@@ -21,17 +21,21 @@ lma <- read.csv("raw data/seedling leaf mass area.csv")
 lma_noNA <- subset(lma, !is.na(area))
 
 #read in TNC data, substract mass of TNC from mass of leaves and then calculate TNC-free SLA
-#Read in spot measurements and merge plot design
-TNC <- read.csv("raw data/leaf_tnc.csv")
 
-#run function to add campaign Date
-TNC <- add_campaign_noID(TNC)
-  TNC$volume <- gsub("free", "1000", TNC$volume)
-  TNC$volume <- as.factor(TNC$volume)
-  TNC$ID <- gsub("'", "", TNC$ID)
-  TNC$tnc_mgperg <- with(TNC, starch_mgperg+sugars_mgperg)
+# #Read in spot measurements and merge plot design
+# TNC <- read.csv("raw data/leaf_tnc.csv")
+# 
+# #run function to add campaign Date
+# TNC <- add_campaign_noID(TNC)
+#   TNC$volume <- gsub("free", "1000", TNC$volume)
+#   TNC$volume <- as.factor(TNC$volume)
+#   TNC$ID <- gsub("'", "", TNC$ID)
+#   TNC$tnc_mgperg <- with(TNC, starch_mgperg+sugars_mgperg)
 
-
+##read in calculated datafor TNC that has been cleaned
+  tnc_clean <- read.csv("calculated data/tnc_leaf.csv")
+  
+  
 #merge tnc with leaf data
 SLA_TNCfree <- merge(lma[,c(1,4,6:9)], TNC,  all=TRUE)
   SLA_TNCfree$mass_noTNC <- with(SLA_TNCfree, mass-((mass*tnc_mgperg)/1000))

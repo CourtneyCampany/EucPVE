@@ -11,8 +11,8 @@ photo_chem$SLA <- with(photo_chem, (area/10000) / (mass/1000))
 #simple leaf N %
 photo_chem$leafnperc <- with(photo_chem, Nperc*100)
 
-leaf_param <- photo_chem[,c(1:3,22:23,11:12, 14:17 )]
-leaf_param$volume <- gsub("05", "5", leaf_param$volume)
+leaf_param <- photo_chem[,c(1:3,22:23,11:12, 14:17, 7:8)]
+#leaf_param$volume <- gsub("05", "5", leaf_param$volume)
 
 
 ###stats on leaf parameters for manuscript
@@ -21,11 +21,18 @@ library(multcomp)
 leaf_param$volume <- as.factor(leaf_param$volume)
 leaf_param$volume <- relevel(leaf_param$volume, ref="1000")
 
-#1: SLA
+#1: SLA (redone with mass-tnc mass)
 boxplot(SLA ~ volume, data=leaf_param)
 
+  #calculate tnc free mass
+  leaf_param$mass_notnc <- with(leaf_param, mass-(mass*(starch_mgperg+sugars_mgperg)/1000))
+  #TNC free sla
+  leaf_param$sla_free <- with(leaf_param, (area/10000)/(mass_notnc/1000))
+  
+  #get means
+  sla_agg <- summaryBy(sla_free ~ volume, data=leaf_param, FUN=c(mean, se))
 
-sla_container <- lme(SLA ~ volume, random= ~1|ID, data=leaf_param)
+sla_container <- lme(sla_free ~ volume, random= ~1|ID, data=leaf_param)
   anova(sla_container)
   summary(sla_container)
   visreg(sla_container)
@@ -35,7 +42,8 @@ sla_siglets <-cld(tukey_sla)
 sla_siglets2 <- sla_siglets$mcletters$Letters
 
 write.csv(sla_siglets2, "master_scripts/sigletters/sigletts_plant/sl_sla.csv", row.names=FALSE)
-
+##also save sla free numbers to put in paper table
+write.csv(sla_agg, "calculated data/sla_free_clean.csv", row.names = FALSE)
 #2. Starch
 boxplot(starch ~ volume, data=leaf_param)
 

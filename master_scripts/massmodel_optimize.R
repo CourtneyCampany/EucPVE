@@ -118,16 +118,16 @@ source("functions and packages/massmodel2.R")
   
   
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
- 
+  pch3 <- c(rep(1,6), 6)
   windows(7,8)
   
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
-       ylim=c(0, 200), ylab="Plant Carbon (g)", xlab="Total Carbon Gain (g)")
+       ylim=c(0, 200), ylab="Seedling Carbon (g)", xlab="Total Carbon Gain (g)")
   for(i in 1:7){
-    points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch2, col=cols[i], cex=1.6)
+    points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch3[i], col=cols[i], cex=1.6)
   }
   abline(0,1, lty=2)
   text(200,5,"(a)", cex=1.2)
@@ -135,9 +135,9 @@ source("functions and packages/massmodel2.R")
   legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
   
   par(mar=c(4,5,1,2))
-  plot(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch2,col=palette(),cex=1.6,
+  plot(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,col=palette(),cex=1.6,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Plant~Carbon~Scaled[free]))
+       ylab= expression(Seedling~Carbon~Scaled[free]))
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   text(.6,.01,"(b)", cex=1.2)
   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)

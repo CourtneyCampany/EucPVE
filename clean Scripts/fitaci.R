@@ -5,6 +5,8 @@ source("functions and packages/load packages.R")
 source("functions and packages/load model packages.R")
 source("functions and packages/functions.R")
 
+library(plantecophys)
+
 #read 2 ACi datasets (they are from two seperate dates during the experiment...deal with this later)
 source("read data scripts/physiology read data.R")
 

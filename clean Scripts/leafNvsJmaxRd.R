@@ -1,5 +1,6 @@
 source("functions and packages/functions.R")
 source("functions and packages/plot objects.R")
+library(doBy)
 
 ###Rdark vs Leaf N on an area basis
 
@@ -34,7 +35,7 @@ rd_agg <- summaryBy(rd25mass+rd25area ~ volume, data=rd, FUN=c(mean, se))
 ##jmax vcmax
 
 ##2-3: jmax, vcmax
-phys <- read.csv("calculated data/jmax_vcmax.csv")
+phys <- read.csv("calculated data/jmax_vcmax_clean.csv")
 
 phys_agg <- summaryBy(Jmax.mean+Vcmax.mean ~ volume, data=phys, FUN=c(mean, se))
 names(phys_agg)[2:5]<- c("Jmax", "Vcmax", "Jmax_se", "Vcmax_se")
@@ -64,3 +65,12 @@ plot(rd25mass.mean ~ nmass2, data=leafdat_agg,ylim=c(0,10), xlim=c(0, 10), col=a
 plot(rd25mass.mean ~ Vcmax, data=leafdat_agg, col=as.factor(volume), pch=pchs,xlim=c(50, 125), ylim=c(0, 10),
      xlab=nmasslab, cex=1.3)
 
+  windows(7,7)
+  par(mar=c(5,5,2,2))
+  plot(Vcmax~Narea.mean , data=leafdat_agg, col=as.factor(volume), pch=pchs,ylab=narealab,xlab="Vc_max", cex=1.3)
+  
+  windows(7,7)
+  par(mar=c(5,5,2,2))
+  plot(Jmax~Narea.mean, data=leafdat_agg, col=as.factor(volume), pch=pchs, xlab="Jmax", ylab=narealab,cex=1.3)
+  
+  
