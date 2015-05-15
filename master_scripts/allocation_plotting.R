@@ -66,21 +66,21 @@ barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, x
 #title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
 #title(xlab="Soil Volume  (l)", mgp=ypos)
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
-text(1.3, .95, "(a)", cex=1.2)
+text(1.3, .95, "(a)", cex=1.51)
 
 #mass allocation (plant size corrected)
-par(mar=c(4,7,2,2.3))
-plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=1.5, lwd=2)
+par(mar=c(4,7,1,.3))
+plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=2, lwd=2)
 #title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
 #title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1.2)
-text(x=7.1, 63, "(b)", cex=1.2)
+text(x=7.1, 63, "(b)", cex=1.51)
 
 #3. Fine root to leaves
-par(mar=c(4,7,1,2.3),xpd = FALSE)
+par(mar=c(4,7,1,.3),xpd = FALSE)
 with(ratio_agg, plot(log(fineroot.mean), log(leafmass.mean), ylim=c(0,5), xlim=c(0,5),
-                     pch=pchs, col=palette(), cex=1.5,
+                     pch=pchs, col=palette(), cex=2,
                      xlab = "ln(Fine Root Mass)  (g)",
                      ylab = "ln(Leaf Mass)  (g)"))
 #title(xlab="ln(Fine Root Mass)  (g)", mgp=ypos)
@@ -95,7 +95,7 @@ with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leaf
                        length=0.05,col=palette(), lwd=1))
 
 abline(0,1)
-text(x=.25, 4.9, "(c)", cex=1.2)
+text(x=.25, 4.9, "(c)", cex=1.51)
 
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")

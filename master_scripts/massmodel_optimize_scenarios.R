@@ -206,35 +206,35 @@ for(i in 1:7){
   
   #scenario 1 
   par(mar=c(0,7,2,2))
-  plot(C_stnd$lmf_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=1.6,
+  plot(C_stnd$lmf_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=2,
        xlab="",
        ylab= "",
        xaxt='n')
   axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
-  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
+  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=2)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=2)
   text(x=.65,y=.985, "(a) Harvest LMF", cex=1.51)
   legend(x=1.01, y=.7 ,legname, pch=legendpch,text.font=3,cex=1.51, pt.bg=legcol, bty='n')
   
   #scenario 2 
   par(mar=c(0,7,0,2))
-  plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=1.6,
+  plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=2,
        xlab="",
        ylab= expression(Seedling~Carbon~Scaled[free]),
        xaxt='n')
   axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
-  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
+  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=2)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=2)
   text(x=.65,y=.985, "(b) Respiration +50%", cex=1.51)
     legend(1.01, y=.7, leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
            cex=1.51, col=palette(), bty='n')
     
   par(mar=c(5,7,0,2))
-  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=1.6,
+  plot(C_stnd$resp_down_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=2,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
        ylab= "")
-  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
+  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=2)
+  points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=2)
   text(x=.65,y=.985, "(c) Respiration -50%", cex=1.51)
     
   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
