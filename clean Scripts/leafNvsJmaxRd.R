@@ -66,11 +66,13 @@ plot(rd25mass.mean ~ Vcmax, data=leafdat_agg, col=as.factor(volume), pch=pchs,xl
      xlab=nmasslab, cex=1.3)
 
   windows(7,7)
+  pdf(file= "output/leafN_aci.pdf", onefile = TRUE)
   par(mar=c(5,5,2,2))
-  plot(Vcmax~Narea.mean , data=leafdat_agg, col=as.factor(volume), pch=pchs,ylab=narealab,xlab="Vc_max", cex=1.3)
+  plot(Vcmax~Narea.mean , data=leafdat_agg, col=as.factor(volume), pch=pchs, cex=1.3,xlab=narealab)
   
-  windows(7,7)
   par(mar=c(5,5,2,2))
-  plot(Jmax~Narea.mean, data=leafdat_agg, col=as.factor(volume), pch=pchs, xlab="Jmax", ylab=narealab,cex=1.3)
+  plot(Jmax~Narea.mean, data=leafdat_agg, col=as.factor(volume), pch=pchs, xlab=narealab,cex=1.3)
   
+
+  dev.off()
   
