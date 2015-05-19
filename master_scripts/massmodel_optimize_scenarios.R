@@ -43,7 +43,7 @@ O.lmf <- function(leaffrac, ..., returnhow=c("objective","output")){
   ofrac <- (1-leaffrac)/3
   
   p <- productionmodel2(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
-                        gCday=free, lma=lma_trt[7],
+                        gCday=free, lma=lma_trt[7],M_slope=Mcoef$b[7], M_intercept= Mcoef$intercept[7],
                         ...)
   if(returnhow == "output")return(p)
   
@@ -91,8 +91,6 @@ for(i in 1:7){
 
 
 #S1: alter leaf allocation (by using harvested lmf this shows how over/under estimate of model and observed still miss with C
-  
-#root respiration up
 harvest_lmf <-  list()
 for(i in 1:7){
   harvest_lmf[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],leaffrac=leaffrac_trt[i],
@@ -168,7 +166,7 @@ for(i in 1:7){
     C_stnd$harvest_lmf <- c(harvest_lmf[[1]][1,1], harvest_lmf[[2]][1,1], harvest_lmf[[3]][1,1], harvest_lmf[[4]][1,1], 
                           harvest_lmf[[5]][1,1],harvest_lmf[[6]][1,1],harvest_lmf[[7]][1,1])
     C_stnd$lmf_stnd_free <- with(C_stnd, harvest_lmf/harvest_lmf[7])
-    ##modelled biomass scaled (scenario 1)
+    ##modelled biomass scaled (scenario 2,3)
     C_stnd$resp_up <- c(resp_up[[1]][1,1], resp_up[[2]][1,1], resp_up[[3]][1,1], resp_up[[4]][1,1], 
                         resp_up[[5]][1,1],resp_up[[6]][1,1],resp_up[[7]][1,1])
     C_stnd$resp_down <- c(resp_down[[1]][1,1], resp_down[[2]][1,1], resp_down[[3]][1,1], resp_down[[4]][1,1], 
@@ -239,3 +237,12 @@ for(i in 1:7){
     
   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
   dev.off() 
+  
+  
+#   
+#   
+#   ###what was the change in LMF from optimized to harvest
+#   harvestmass$lmf <- with(harvestmass, leafmass/totalmass)
+#   lmf_agg <- summaryBy(lmf~volume, data=harvestmass, FUN=mean, keep.names = TRUE)
+#   lmf_agg$lmgdiff <- ((lmf_agg$lmf-opt_lmf)/lmf_agg$lmf)*100
+                          

@@ -30,14 +30,14 @@ source("functions and packages/massmodel2.R")
 #3. vector of gcday 120 for free plant
   free <- as.vector(c120_trt[[7]][1:121,])
 
-#4. ex of Base Model ex. using mean allocation, 120 days of Cday for reference
-# 
-#     sim_free <- productionmodel2(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
-#                 stemfrac=stem_frac_mean, leaffrac=lf, M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
-#                 returnwhat="lastval"returnwhat="lastval")
+#4. ex of Base Model ex. using mean allocation, 120 days of Cday for reference (missing M)
+
+    sim_free <- productionmodel2(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
+                stemfrac=stem_frac_mean, leaffrac=lf, 
+                returnwhat="lastval")
 
     
-#5. optimise leaf mass fraction from free plant with harvest mass and leaf area
+#5. optimise leaf mass fraction from free plant with harvest mass and leaf mass
   O.lmf <- function(leaffrac, ..., returnhow=c("objective","output")){
     
     returnhow <- match.arg(returnhow)
@@ -45,7 +45,7 @@ source("functions and packages/massmodel2.R")
     ofrac <- (1-leaffrac)/3
     
     p <- productionmodel2(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
-                         gCday=free, lma=lma_trt[7],
+                         gCday=free, lma=lma_trt[7], M_slope=Mcoef$b[7], M_intercept= Mcoef$intercept[7],
                          ...)
     if(returnhow == "output")return(p)
     
@@ -55,6 +55,7 @@ source("functions and packages/massmodel2.R")
     (LEAF - LEAF_measured)^2 + (MASS - MASS_measured)^2
     
   }
+  
   
 #6. Visualize if there is an optimum
   lfs <- seq(0.05,0.3, length=101)
@@ -119,8 +120,8 @@ source("functions and packages/massmodel2.R")
   
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
   pch3 <- c(rep(1,6), 6)
-  windows(7,8)
   
+  windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
@@ -144,3 +145,14 @@ source("functions and packages/massmodel2.R")
   
   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
   dev.off() 
+
+  ###calculate percent diff between model and observed biomass
+  
+#   test <- 0
+#   for(i in 1:7){
+#     test[i] <- (optmassmodel[[i]][[1,1]] - mass_actual$mass[i]) / optmassmodel[[i]][[1,1]]
+#   }
+#     
+#     mean(test[1:6])
+#     se(test[1:6])
+
