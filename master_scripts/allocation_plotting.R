@@ -40,12 +40,13 @@ treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
 ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass", "root", "shoot"))
 ratio$volume <- as.factor(ratio$volume)
-ratio_nofree <- subset(ratio, volume !="1000")
-ratio$RS <- with(ratio, root/shoot)
-ratio$LR <- with(ratio, fineroot/leafmass)
+
+ratio_lm <- lm(log10(leafmass) ~ log10(fineroot), data=ratio)
 
 #treatment means
 ratio_agg <- summaryBy( .~ volume , data = ratio,  FUN=c(mean,se))
+
+library(magicaxis)
 
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
 
@@ -62,41 +63,39 @@ par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3,1,0),mfrow=c(3,1),
 par(mar = c(4, 7, 2, 7.3), xpd = TRUE)
 barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "Soil Volume  (l)", 
         ylab="Seedling Mass Partitioning", ylim=c(0, 1))
-#space = c(.2,.2,.2,.2,.2,.2,.8))
-#title(ylab="Seedling Mass Partitioning", mgp=c(2.75,1,0))
-#title(xlab="Soil Volume  (l)", mgp=ypos)
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
 text(1.3, .95, "(a)", cex=1.51)
 
-#mass allocation (plant size corrected)
+#2.mass allocation (plant size corrected)
 par(mar=c(4,7,1,.3))
 plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=2, lwd=2)
-#title(ylab=expression(Leaf~Mass~~(g)), mgp=c(2.25,1,0))
-#title(xlab=expression(Stem+Root~Mass~~(g)), mgp=ypos)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1.2)
 text(x=7.1, 63, "(b)", cex=1.51)
 
 #3. Fine root to leaves
-par(mar=c(4,7,1,.3),xpd = FALSE)
-with(ratio_agg, plot(log(fineroot.mean), log(leafmass.mean), ylim=c(0,5), xlim=c(0,5),
-                     pch=pchs, col=palette(), cex=2,
-                     xlab = "ln(Fine Root Mass)  (g)",
-                     ylab = "ln(Leaf Mass)  (g)"))
-#title(xlab="ln(Fine Root Mass)  (g)", mgp=ypos)
-with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean+fineroot.se), angle=90, 
+par(mar=c(5,7,1,.3),xpd = FALSE)
+with(ratio_agg, plot(log10(fineroot.mean), log10(leafmass.mean), ylim=c(0,2.25), xlim=c(0,2.25),
+                     xlab = "log10(Fine Root Mass)  (g)",
+                     ylab = "log10(Leaf Mass)  (g)",
+                    axes=FALSE, type='n'))
+abline(0,1, lwd=2, lty=2, col="grey35")
+text(x=.09, 2.2, "(c)", cex=1.51)
+ablineclip(ratio_lm, lwd=2, col="grey35",x1=min(log10(ratio_agg$fineroot.mean)), x2=max(log10(ratio_agg$fineroot.mean)))
+
+with(ratio_agg, points(log10(fineroot.mean), log10(leafmass.mean), pch=pchs, col=palette(), cex=2))
+
+with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), x1=log10(fineroot.mean+fineroot.se), angle=90, 
                        length=0.05,col=palette(), lwd=1))
-with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), x1=log(fineroot.mean-fineroot.se), angle=90, 
+with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), x1=log10(fineroot.mean-fineroot.se), angle=90, 
                        length=0.05,col=palette(), lwd=1))
 
-with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean+leafmass.se), angle=90, 
+with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), y1=log10(leafmass.mean+leafmass.se), angle=90, 
                        length=0.05,col=palette(), lwd=1))
-with(ratio_agg, arrows(x0=log(fineroot.mean), y0=log(leafmass.mean), y1=log(leafmass.mean-leafmass.se), angle=90, 
+with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), y1=log10(leafmass.mean-leafmass.se), angle=90, 
                        length=0.05,col=palette(), lwd=1))
 
-abline(0,1)
-text(x=.25, 4.9, "(c)", cex=1.51)
-
+magaxis(side=c(1,2), box=TRUE)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
 dev.off()

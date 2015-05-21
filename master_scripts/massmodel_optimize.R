@@ -126,11 +126,11 @@ source("functions and packages/massmodel2.R")
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
-       ylim=c(0, 200), ylab="Seedling Carbon (g)", xlab="Total Carbon Gain (g)")
+       ylim=c(0, 200), ylab="Seedling Carbon (g)", xlab="Net Total Leaf Carbon Gain (g)")
   for(i in 1:7){
     points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch3[i], col=cols[i], cex=1.6)
   }
-  abline(0,1, lty=2)
+  abline(0,1, lwd=2, lty=2, col="grey35")
   text(200,5,"(a)", cex=1.2)
 
   legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
