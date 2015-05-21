@@ -212,13 +212,14 @@ for(i in 1:7){
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
   text(x=.925,y=1, "(a) Harvest LMF", cex=1)
+  mtext(expression(Seedling~Carbon~Scaled[free]), mgp=c(3, 1, 0), side=2, padj=-3, adj=-.75,las=0, cex=1.2)
   legend("topright",legname, pch=legendpch,text.font=3,cex=1, pt.bg=legcol, bty='n')
   
   #scenario 2 
   par(mar=c(5,7,0,2))
   plot(C_stnd$resp_up_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,bg=lmfcols2,cex=1.6,
-       xlab="",
-       ylab= expression(Seedling~Carbon~Scaled[free]))
+       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
+       ylab= "")
   axis(1, at=c(1,.9,.8,.7, .6), labels=FALSE, tcl=0.5)
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=1.6)
