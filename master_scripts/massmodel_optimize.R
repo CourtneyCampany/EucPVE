@@ -156,18 +156,18 @@ source("functions and packages/massmodel2.R")
 #     mean(test[1:6])
 #     se(test[1:6])
 
-
-test <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
-test2 <- C_stnd$modelmass - mass_actual$mass
-  
-mean(test[1:6])  
-mean(test2[1:6])
-
-se(test[1:6])  
-se(test2[1:6])
-
-test3 <-  (mass_actual$mass*.5) /totalC_trt2
- mean(test3[1:6])
- 
-test4 <-  (C_stnd$modelmass*.5) /totalC_trt2 
-mean(test4[1:6])
+# 
+# test <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
+# test2 <- C_stnd$modelmass - mass_actual$mass
+#   
+# mean(test[1:6])  
+# mean(test2[1:6])
+# 
+# se(test[1:6])  
+# se(test2[1:6])
+# 
+# test3 <-  (mass_actual$mass*.5) /totalC_trt2
+#  mean(test3[1:6])
+#  
+# test4 <-  (C_stnd$modelmass*.5) /totalC_trt2 
+# mean(test4[1:6])
