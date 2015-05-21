@@ -2,6 +2,7 @@ library(doBy)
 library(scales)
 
 source("functions and packages/plot objects.R")
+source("functions and packages/functions.R")
 
 source("gC_day_model/model_start.R")
 source("functions and packages/massmodel_LAconstrain.R")
@@ -10,7 +11,6 @@ source("functions and packages/massmodel2.R")
 
 ##Build an optimization model for leaf mass fraction based on both leaf area and biomass
 ##used self shading as a function of leaf area (daily increment in model)
-
 
 #1. list of Cday over 120 days by trt
 Cday_120 <- dlply(Aleaf, .(volume))
@@ -114,17 +114,17 @@ for(i in 1:7){
   cr_up <- cr_default*1.5
   wd_up <- wd_default*1.5
   
-  fr_down <- fr_default*0.5
-  cr_down <- cr_default*0.5
-  wd_down <- wd_default*0.5
+#   fr_down <- fr_default*0.5
+#   cr_down <- cr_default*0.5
+#   wd_down <- wd_default*0.5
   
   fr_resp_up <- c(rep(fr_up,6),fr_default)
   cr_resp_up <- c(rep(cr_up,6),cr_default)
   wd_resp_up <- c(rep(wd_up,6),wd_default)
   
-  fr_resp_down <- c(rep(fr_down,6),fr_default)
-  cr_resp_down <- c(rep(cr_down,6),cr_default)
-  wd_resp_down <- c(rep(wd_down,6),wd_default)
+#   fr_resp_down <- c(rep(fr_down,6),fr_default)
+#   cr_resp_down <- c(rep(cr_down,6),cr_default)
+#   wd_resp_down <- c(rep(wd_down,6),wd_default)
   
   #root respiration up
   resp_up<- list()
@@ -137,17 +137,17 @@ for(i in 1:7){
                                                       returnwhat="lastval"))
     }   
   
-  #root respiration down
-  resp_down<- list()
-  for(i in 1:7){
-  resp_down[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],frfrac=opt_ofrac, 
-                                                        crfrac=opt_ofrac, stemfrac=opt_ofrac,leaffrac=opt_lmf,
-                                                        M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
-                                                        fr_resp=fr_resp_down[i], cr_resp= cr_resp_down[i],
-                                                        wd_resp=wd_resp_down[i],
-                                                        returnwhat="lastval"))
-  }  
-  
+#   #root respiration down
+#   resp_down<- list()
+#   for(i in 1:7){
+#   resp_down[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], lma=lma_trt[i],frfrac=opt_ofrac, 
+#                                                         crfrac=opt_ofrac, stemfrac=opt_ofrac,leaffrac=opt_lmf,
+#                                                         M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
+#                                                         fr_resp=fr_resp_down[i], cr_resp= cr_resp_down[i],
+#                                                         wd_resp=wd_resp_down[i],
+#                                                         returnwhat="lastval"))
+#   }  
+#   
   
   
 ####PLOT scenarios
@@ -169,11 +169,11 @@ for(i in 1:7){
     ##modelled biomass scaled (scenario 2,3)
     C_stnd$resp_up <- c(resp_up[[1]][1,1], resp_up[[2]][1,1], resp_up[[3]][1,1], resp_up[[4]][1,1], 
                         resp_up[[5]][1,1],resp_up[[6]][1,1],resp_up[[7]][1,1])
-    C_stnd$resp_down <- c(resp_down[[1]][1,1], resp_down[[2]][1,1], resp_down[[3]][1,1], resp_down[[4]][1,1], 
-                          resp_down[[5]][1,1],resp_down[[6]][1,1],resp_down[[7]][1,1])
+#     C_stnd$resp_down <- c(resp_down[[1]][1,1], resp_down[[2]][1,1], resp_down[[3]][1,1], resp_down[[4]][1,1], 
+#                           resp_down[[5]][1,1],resp_down[[6]][1,1],resp_down[[7]][1,1])
     
     C_stnd$resp_up_stnd_free <- with(C_stnd, resp_up/resp_up[7])
-    C_stnd$resp_down_stnd_free <- with(C_stnd, resp_down/resp_down[7])
+    # C_stnd$resp_down_stnd_free <- with(C_stnd, resp_down/resp_down[7])
     
     
   
@@ -244,4 +244,34 @@ for(i in 1:7){
 #   harvestmass$lmf <- with(harvestmass, leafmass/totalmass)
 #   lmf_agg <- summaryBy(lmf~volume, data=harvestmass, FUN=mean, keep.names = TRUE)
 #   lmf_agg$lmgdiff <- ((lmf_agg$lmf-opt_lmf)/lmf_agg$lmf)*100
+  
+  
+  
+  
+  ###calculate percent diff between model and observed biomass
+#     Rup <- 0
+#     for(i in 1:7){
+#       Rup[i] <- (resp_up[[i]][[1,1]] - mass_actual$mass[i]) / resp_up[[i]][[1,1]]
+#     }
+#       
+#       mean(Rup[1:6])
+#       se(Rup[1:6])
+#   
+#      lmf <- 0
+#       for(i in 1:7){
+#         lmf[i] <- (harvest_lmf[[i]][[1,1]] - mass_actual$mass[i]) / harvest_lmf[[i]][[1,1]]
+#       }
+#       
+#       mean(lmf[1:6])
+#       se(lmf[1:6])
+#       
+#       
+#      mean(C_stnd$resp_up_stnd_free)
+#      se(C_stnd$resp_up_stnd_free)
+#      
+#      mean(C_stnd$lmf_stnd_free)
+#      se(C_stnd$lmf_stnd_free)
+#      
+#      mean(C_stnd$model_stnd_free)
+#      se(C_stnd$model_stnd_free)
                           
