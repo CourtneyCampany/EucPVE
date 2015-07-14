@@ -1,0 +1,174 @@
+---
+title: "Effects of below-ground space limitation on performance of Eucalyptus seedlings:  Does photosynthesis really control growth?"
+author: ""
+date: ""
+output:
+  word_document:
+    reference_docx: manuscriptstyle.docx
+  pdf_document: default
+  html_document:
+    number_sections: yes
+csl: tree-physiology.csl
+bibliography: references.bib
+---
+
+\
+Courtney E. Campany^1^, Belinda Medlyn^1^, Remko A. Duursma^1^.
+
+\
+^1^ Hawkesbury Institute for the Environment, University of Western Sydney, Locked Bag 1797, Penrith, NSW, Australia
+
+\
+*Corresponding author*: 
+Courtney Campany
+E: courtneycampany@gmail.com
+
+
+```{r, results='asis', echo=FALSE, warning=FALSE}
+library(knitr)
+opts_knit$set(root.dir = '../')
+```
+
+```{r global data/sourcing, echo=FALSE, message=FALSE, warning=FALSE}
+# Two useful packages for printing numbers, accessing content of objects.
+library(broom)
+library(reporttools)
+# Set Flag to include figures in text or not.
+includeFigs <- TRUE
+
+source("functions and packages/startscripts.R")
+source("functions and packages/gamplotfunctions.R")
+
+```
+
+# Abstract {.unnumbered}
+
+Interpreting limitations to plant growth requires understanding of the balance between carbon (C) source and sink activity in order to assess C allocation and biomass partitioning. This study used manipulations of soil volume to test how growth is coupled to physiology, allocation, and sink activity in *Eucalyptus tereticornis* seedlings. We grew seedlings in a large range of container sizes and planted containers flush to the soil alongside naturally sown seedlings (free). Reduced soil volume was expected to induce rapid negative effects on growth and physiology compared to free seedlings. It was hypothesized that soil volume effect would be largest in the smallest containers, resulting in physical constraints to growth independently of photosynthesis (A). Photosynthesis would then become sink-limited, resulting in the build-up of leaf nonstructural carbohydrates eventually leading to photosynthetic down regulation. We observed a negative container effect on aboveground growth soon after the experiment started. Although growth was consistently different across soil volumes mass, partitioning to leaves, stems, roots was conserved after 120 days. Photosynthetic capacity was also significantly reduced in containers, and was related to both leaf nitrogen content and starch accumulation. We developed a seedling growth model that utilized leaf A rates to allocate daily C uptake towards mass growth of stems, leaves and roots. We then asked whether the observed reductions in A explained the observed differences in seedling biomass. We found that although belowground sink limitation resulted in the down regulation of A, these reductions were not significant enough to explain observed growth responses. Thus, as photosynthesis and growth were not coordinated an excess pool of non-biomass C resulted in seedlings with soil volume restriction. This research highlights the need to further utilize mass balance approaches when evaluating plant C allocation and confirms that A and growth are not always directly related.
+
+# Keywords {.unnumbered}
+photosynthesis, growth, sink regulation, carbon allocation, soil volume
+
+
+# Introduction
+
+
+# Materials and Methods
+
+## Experimental design
+
+## Growth and morphology metrics
+
+## Photosynthetic parameters
+
+## Leaf water potential
+
+## Leaf, root and soil chemistry
+
+## Seedling growth model
+
+
+##Data analysis
+Differences in experimental parameters with soil volume were analysed by one-way analysis of variance (ANOVA) in R [@RDevelopment] with individual containers as random effects and soil volume as a categorical fixed effect. Tukey’s post-hoc tests were performed in conjunction with ANOVA to determine which specific paired comparisons among soil volume treatments were different. Mixed model ANOVAs of A~max~ and leaf chemistry were performed using the 'nlme' package [@nlme] in R and R^2^ values of mixed models were computed as in [@nakagawa2013general]. Tests of allometric relationships between biomass components were implemented using major axis regression in the 'smatr' package in R [@warton2012smatr]. Results were considered significant at P&leq;0.05..
+
+# Results
+
+## Growth and morphology metrics
+
+
+## Leaf chemistry
+
+## Gas exchange and photosynthetic parameters
+
+## Modelling seedling biomass
+
+
+# Discussion
+
+![figure](master_scripts/manuscript_figs/png/Cday.png)
+
+# Tables {.unnumbered}
+
+```{r table1, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(ascii)
+pve_data <- read.csv("master_scripts/pve_table1.csv")
+
+colnames(pve_data) <- c("Volume (L)", 
+                        "Seedling~mass~(g)", 
+                        "SLA\\textsubscript{TNC-free}~(m\\textsuperscript{2}~kg\\textsuperscript{-1})",
+                        "Leaf~Starch~(\\%)", 
+                        "Leaf~Sugars~(\\%)", 
+                        "Leaf~Nitrogen~(\\%)",
+                        "Root~Nitrogen~(\\%)",
+                        "SRL~(cm~m\\textsuperscript{-1})",
+                        "{Leaf~\\textdelta}\\textsuperscript{13}C~(\\text{\\textperthousand})")
+print(ascii(pve_data,include.rownames=FALSE),type='pandoc')
+
+
+```
+**Table 1.** Responses of plant and leaf characterisitics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Seedling mass, SRL, root nitrogen and leaf $\delta$^13C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+
+```{r table2, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(ascii)
+phys_data <- read.csv("master_scripts/pve_table2.csv")
+colnames(phys_data) <- c("Volume~(L)", 
+                        "\\textit{A}\\textsubscript{max}", 
+                        "\\textit{R}\\textsubscript{dark}",
+                        "\\textit{J}\\textsubscript{max}",
+                        "\\textit{Vc}\\textsubscript{max}",
+                        "\\textit{g}\\textsubscript{s}",
+                        "\\textit{g}\\textsubscript{1}")
+print(ascii(phys_data,include.rownames=FALSE),type='pandoc')
+
+```
+**Table 2.** Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Units for A~max~ and R~dark~ are $\mu$mol m^-2^ s^-1^ and g~s~ are mol m^-2^ s^-1^, each at at 25&deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+
+# Figures {.unnumbered}
+
+```{r airvars, fig.width=6, fig.height=8, echo=FALSE}
+source("master_scripts/airvars_plotting.R")
+```  
+
+**Figure 1**. Daily maximum and minimum temperature (a), cumulative daily PPFD (b), and daily maximum vapour pressure deficit (c) across the experiment duration in 2013.
+
+```{r allometry, fig.width=6, fig.height=8, echo=FALSE}
+source("master_scripts/allometryplotting.R")
+```  
+
+**Figure 2**. Soil volume treatment means &pm; standard error of height growth (a), diameter growth (b), and interpolated seedling leaf area (c) measured weekly of *Eucalyptus tereticornis* seedlings across the experiment duration in 2013.
+
+```{r allocation, fig.width=6, fig.height=10, echo=FALSE, warning=FALSE, message=FALSE}
+source("master_scripts/allocation_plotting.R")
+```  
+
+**Figure 3**. Soil volume treatment means of mass partitioning to leaves, stems, and roots at harvest (a), bi-variate relationships between mass allocation to leaves and stems + roots (b) and leaf mass as a function of fine root biomass with &pm; standard error (c). For (b) lines represent standardized major axis fitting of the log transformed allometric relationships of leaf mass fraction by treatment. For (c) the dashed line is the 1:1 relationship and the solid line represents the significant linear model fit (R^2^=0.81).
+
+```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE}
+source("master_scripts/A_stats_plotting.R")
+```  
+
+**Figure 4**. Soil volume treatment means &pm; standard error, across all measurement campaigns (n=6), of light saturated rates of photosynthesis at 25&deg;C. Different letters represent significant differences between treatments.
+
+```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE}
+source("master_scripts/Amax_TNC_N_plotting2.R")
+```  
+
+**Figure 5**. Photosynthetic capacity, on a leaf mass basis, as a function of accumulation of leaf starch (a) and leaf nitrogen content without TNC (b).  Colors represent bins levels (n=5) of both leaf starch and nitrogen grouped from low to high .  Lines represents predictions, for each bin level, from the linear mixed effects model equation of A~max~ as a function of starch and nitrogen. The marginal R^2^ (fixed effects only) was 0.37 and the conditional R^2^ (fixed and random effects) was 0.48 for the complete model.
+
+```{r massmodel, fig.width=6, fig.height=8, echo=FALSE}
+source("master_scripts/massmodel_optimize.R")
+```  
+
+**Figure 6**. Total carbon mass for harvested and modeled seedlings versus predicted total carbon gain after 120 days (a) and  reductions in final seedling carbon mass, both modeled and observed, as a function of the reduction in leaf photosynthesis across treatments (b). For (a) the dashed 1:1 identifies the difference between net total leaf carbon gain and gross seedling production. For (b) both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
+
+# Supporting Information {.unnumbered}
+
+```{r model_scenarios, fig.width=6, fig.height=8, echo=FALSE}
+source("master_scripts/massmodel_optimize_scenarios.R")
+```  
+
+**Figure S1**. Sensitivity testing of seedling growth model to different carbon allocation strategies including; constraints of leaf mass fraction to treatment specific final harvest values (a) and increases in respiration of non-leaf tissue components by 50% (b).  Open and filled symbols represent default model and harvest values, while shaded symbols represent model sensitivity to each scenario by soil volume treatment. Both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
+
+**Table S1** Seedling Growth Model Default Parameters
+
+# References {.unnumbered}
+
