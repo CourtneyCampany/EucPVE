@@ -1,5 +1,5 @@
 #source functions, packages, anbd plot objects
-source("functions and packages/startscripts.R")
+#source("functions and packages/startscripts.R")
 
 #Read in spot A measurements and merge plot design
 #read in plot design and harvest data
@@ -66,11 +66,11 @@ PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
 amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
-  anova(asat_lm)
-  anova(amax_lm)
-
-  summary(asat_lm)
-  summary(amax_lm)
+#   anova(asat_lm)
+#   anova(amax_lm)
+# 
+#   summary(asat_lm)
+#   summary(amax_lm)
 
   tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
@@ -80,7 +80,7 @@ amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
   
   siglets_amax2 <- siglets_amax$mcletters$Letters
 
-  write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
+  #write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
 
 # #lets prove that asat was immediately different, then use average
 # asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
@@ -113,14 +113,14 @@ amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
 ##PLOTTING----------------------------------------------------------------------------------------------------------
 SigLetters <- siglets$mcletters$Letters
 
-windows(7,5)
+#windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", ylim=c(0,25), names.arg = leglab,
     col="grey", legend=FALSE, bg="white")
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
 #dev.copy2pdf(file= "master_scripts/manuscript_figs/Asat.pdf")
-dev.off()
+#dev.off()
 
 
 ###png

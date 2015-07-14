@@ -1,8 +1,4 @@
-library(doBy)
-library(scales)
-
-source("functions and packages/plot objects.R")
-source("functions and packages/functions.R")
+#source("functions and packages/startscripts.R")
 
 source("gC_day_model/model_start.R")
 source("functions and packages/massmodel_LAconstrain.R")
@@ -197,7 +193,7 @@ for(i in 1:7){
     legname <- c("model", "scenario", "measured")
   
     
-  windows(7,10)
+#windows(7,10)
   ####multipanel plot of 
   par(cex.axis=.96, cex.lab=1.2, las=1,mgp=c(3.5,1,0),mfrow=c(2,1),  
       omi=c(.5,0,0.1,0.1))
@@ -235,8 +231,8 @@ for(i in 1:7){
 #   points(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free, pch=pch2, col=palette(),cex=2)
 #   text(x=.65,y=.985, "(c) Respiration -50%", cex=1.51)
     
-  dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
-  dev.off() 
+#   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_resp.pdf")  
+#   dev.off() 
   
   
 #   

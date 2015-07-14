@@ -1,5 +1,5 @@
 #this script is for sourcing the allometry plots into master
-source("functions and packages/startscripts.R")
+# source("functions and packages/startscripts.R")
 
 height <- read.csv("calculated data/height.csv")
 diam <- read.csv("calculated data/diameter.csv")
@@ -30,7 +30,7 @@ xlim2 <- as.Date(strptime("06-01-2013", format = "%m-%d-%Y", tz=""))
 xAT <- seq.Date(startday, by="month", length=6,format = "%m-%d-%Y")
 xlimdays <- c(xlim1, xlim2)
 
-windows(7,10)
+# windows(7,10)
 
 par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))   
@@ -62,8 +62,6 @@ points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume], cex=2,col = volume
 box()
 text(x=15710, 16, "(b)", cex=2)
 
-
-
 #third panel
 par(mar=c(2,7,0,2))
 plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab=LAm2,
@@ -82,8 +80,8 @@ text(x=15710, .65, "(c)", cex=2)
 legend(x=15708, y=.55, leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
        cex=1.51, col=palette(), bty='n')
 
-dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
-dev.off()
+# dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
+# dev.off()
 
 
 ####png 

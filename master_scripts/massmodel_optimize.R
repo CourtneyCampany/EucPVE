@@ -1,9 +1,4 @@
-source("functions and packages/plot objects.R")
-source("functions and packages/functions.R")
-
-library(plyr)
-library(doBy)
-library(scales)
+source("functions and packages/startscripts.R")
 
 source("gC_day_model/model_start.R")
 source("functions and packages/massmodel_LAconstrain.R")
@@ -12,7 +7,6 @@ source("functions and packages/massmodel2.R")
 
 ##Build an optimization model for leaf mass fraction based on both leaf area and biomass
   ##used self shading as a function of leaf area (daily increment in model)
-
 
 #1. list of Cday over 120 days by trt
   Cday_120 <- dlply(Aleaf, .(volume))
@@ -58,9 +52,9 @@ source("functions and packages/massmodel2.R")
   
   
 #6. Visualize if there is an optimum
-  lfs <- seq(0.05,0.3, length=101)
-  test_opt <- mapply(O.lmf, leaffrac=lfs)
-  plot(lfs,test_opt)  
+#   lfs <- seq(0.05,0.3, length=101)
+#   test_opt <- mapply(O.lmf, leaffrac=lfs)
+#   plot(lfs,test_opt)  
   
 #7. Rerun model to see correspondence 
   
@@ -121,7 +115,7 @@ source("functions and packages/massmodel2.R")
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
   pch3 <- c(rep(1,6), 6)
   
-  windows(7,8)
+  # windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
@@ -143,8 +137,8 @@ source("functions and packages/massmodel2.R")
   text(.6,.01,"(b)", cex=1.2)
   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
   
-  dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
-  dev.off() 
+#   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
+#   dev.off() 
 
   ###calculate percent diff between model and observed biomass
   

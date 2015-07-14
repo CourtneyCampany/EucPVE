@@ -1,5 +1,5 @@
 #this script is for sourcing the allocation plots into master
-source("functions and packages/startscripts.R")
+ #source("functions and packages/startscripts.R")
 
 library(smatr)
 
@@ -15,8 +15,6 @@ mass_agg <- summaryBy(.~volume, data=seedlingmass, FUN=mean, keep.names=TRUE)
 # this shows that LMF is higher for free seedlings because they were bigger.
 Mf_mod2 <- sma(leafmass ~ Msr * volume, log="xy", data=seedlingmass)
 #summary(Mf_mod2)
-
-
 
 ####allocation by components
 
@@ -39,7 +37,7 @@ treelab <- c("Leaf", "Stem", expression(Root[coarse]), expression(Root[fine]))
 
 
 ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass", "root", "shoot"))
-ratio$volume <- as.factor(ratio$volume)
+  ratio$volume <- as.factor(ratio$volume)
 
 ratio_lm <- lm(log10(leafmass) ~ log10(fineroot), data=ratio)
 
@@ -50,11 +48,7 @@ library(magicaxis)
 
 #PLotting of LMF model (use as a 2panel with allocation stacked)---------------------------------------------
 
-# windows(14,7)
-# par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),oma=c(0.1,0.1,0.1,0.1), las=1)   
-
-
-windows(11,16)
+# windows(11,16)
 ####multipanel plot of 
 par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))
@@ -74,6 +68,8 @@ legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab,
 text(x=7.1, 63, "(b)", cex=1.51)
 
 #3. Fine root to leaves
+#windows(6,6)
+
 par(mar=c(5,7,1,.3),xpd = FALSE)
 with(ratio_agg, plot(log10(fineroot.mean), log10(leafmass.mean), ylim=c(0,2.25), xlim=c(0,2.25),
                      xlab = "log10(Fine Root Mass)  (g)",
@@ -94,9 +90,8 @@ with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), y1=log1
                        length=0.05,col=palette(), lwd=1))
 with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), y1=log10(leafmass.mean-leafmass.se), angle=90, 
                        length=0.05,col=palette(), lwd=1))
+magaxis(side=c(1,2), unlog=c(1,2), frame.plot=TRUE)
 
-magaxis(side=c(1,2), unlog=c(1,2), box=TRUE)
-
-dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
-dev.off()
+# dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
+# dev.off()
 

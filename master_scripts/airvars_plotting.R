@@ -1,11 +1,7 @@
-source("functions and packages/startscripts.R")
-source("functions and packages/gamplotfunctions.R")
+# source("functions and packages/startscripts.R")
+# source("functions and packages/gamplotfunctions.R")
 
-require(lubridate)
-require(doBy)
 library(plantecophys)
-library(scales)
-require(plotrix)
 
 eucpve_met<- read.csv("calculated data/eucpve_met.csv")
   eucpve_met$Time15<- ymd_hms(eucpve_met$DateTime15)
@@ -44,7 +40,7 @@ xlim2 <- as.Date(strptime("06-01-2013", format = "%m-%d-%Y", tz=""))
 xlimdays <- c(xlim1, xlim2)
 
 
-windows(7,7)
+# windows(7,7)
 ####multipanel plot of 
 par(cex.axis=1.21, cex.lab=1.51, las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
     omi=c(.5,0,0.1,0.1))
@@ -86,8 +82,8 @@ axis.Date(1, at=xAT, label=TRUE, format="%b")
 box()
 text(x=15710, 4.9, "(c)", cex=1.51)
 
-dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
-dev.off()
+# dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
+# dev.off()
 
 
 
