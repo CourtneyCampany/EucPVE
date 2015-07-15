@@ -1,5 +1,5 @@
-# source("functions and packages/startscripts.R")
-# source("functions and packages/gamplotfunctions.R")
+ source("functions and packages/startscripts.R")
+ source("functions and packages/gamplotfunctions.R")
 
 library(plantecophys)
 
@@ -23,7 +23,7 @@ ppfd<- met_120[, c(1, 4:5, 7)]
   ppfd$par15_mol <- ppfd$Par/1000000
   ppfd$par15_mol_s <- ppfd$par15_mol*15*60
 
-daypar <- summaryBy(par15_mol_s ~ Date, data=ppfd,FUN=sum, keeo.names=TRUE)
+daypar <- summaryBy(par15_mol_s ~ Date, data=ppfd,FUN=sum, keep.names=TRUE)
 names(daypar)[2] <- "PPFD_day"
 
 

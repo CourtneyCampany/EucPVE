@@ -38,7 +38,7 @@ par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),
 # First Panel
 par(mar=c(0,7,2,2))
 plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),  
-     ylim=c(0,135), axes=FALSE, xlab="", xlim=xlimdays)  
+     ylim=c(20,135), axes=FALSE, xlab="", xlim=xlimdays)  
 axis.Date(1, at=xAT, labels=FALSE) #axis needs no labels
 axis(2, labels=TRUE, at=c(0,20,40,60,80,100,120))  
 
@@ -47,7 +47,9 @@ with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90
 with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03, cex=2))
 points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=2, col = volume)      
 box()
-text(x=15710, 129, "(a)", cex=2)
+text(x=15710, 129, "(a)", cex=1.51)
+legend(x=15715, y=134, leglab, pch=c(rep(16,6),17),text.font=3,  title=vollab, 
+       cex=1.21, col=palette(), bty='n')
 
 # Second panel   
 par(mar=c(0,7,0,2))
@@ -60,7 +62,7 @@ with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean+diameter.se, angl
 with(diam_agg, arrows(Date, diameter.mean, Date, diameter.mean-diameter.se, angle=90, col=palette(),length=0.03, cex=2))
 points(diameter.mean ~ Date, data=diam_agg, pch=pchs[volume], cex=2,col = volume)
 box()
-text(x=15710, 16, "(b)", cex=2)
+text(x=15710, 16, "(b)", cex=1.51)
 
 #third panel
 par(mar=c(2,7,0,2))
@@ -76,9 +78,8 @@ with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.
                            col=volume,length=0.03, cex=2))
 d_ply(leafarea_time, .(volume), function(x) points(x$canopysqm.mean ~ x$Date,  
                                                    col=x$volume, pch = pchs[x$volume],cex=2))
-text(x=15710, .65, "(c)", cex=2)
-legend(x=15708, y=.55, leglab, pch=c(rep(16,6),17),text.font=3, inset=0.025, title=vollab, 
-       cex=1.51, col=palette(), bty='n')
+text(x=15710, .65, "(c)", cex=1.51)
+
 
 # dev.copy2pdf(file= "master_scripts/manuscript_figs/allometry.pdf")
 # dev.off()
