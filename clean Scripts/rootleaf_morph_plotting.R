@@ -26,13 +26,17 @@ srl <- read.csv("raw data/SRLmass.csv")
   srl$ID <- paste(srl$plot, srl$pot, sep = "-")
   srl <- merge(srl, plotsumm[3:4], all=TRUE)
   srl <- subset(srl, !is.na(volume))
-  srl$SRL <- with(srl, (total_length_cm/100)*(srl_fw*(ss_dw/ss_fw)))
+  #srl$SRL <- with(srl, (total_length_cm/100)*(srl_fw*(ss_dw/ss_fw)))
+  srl$SRL2 <- with(srl, (total_length_cm/100)/(srl_fw*(ss_dw/ss_fw)))
   srl$volume <- as.factor(srl$volume)
   row.names(srl) <- NULL
-#srl <- vollab_func(srl)
+  #srl <- vollab_func(srl)
+  
+srl_clean <- srl[srl$SRL2 <= 100,]  
+
 
 ##srl_agg for paper table
-srl_agg <- summaryBy(SRL ~ volume, data=srl, FUN=c(mean, se))
+srl_agg <- summaryBy(SRL2 ~ volume, data=srl_clean, FUN=c(mean, se))
 write.csv(srl_agg, "calculated data/srl_means.csv", row.names=FALSE)
 
 ##Stats for sla and srl--------------------------------------------------------------------------------------
@@ -40,10 +44,10 @@ require(nlme)
 require(visreg)
 library(multcomp)
 
-srl$volume <-  relevel(srl$volume, ref="1000")
+srl_clean$volume <-  relevel(srl_clean$volume, ref="1000")
 
 #srl (not different)
-srl_container <- lme(SRL ~ volume, random= ~1|ID, data=srl)
+srl_container <- lme(SRL2 ~ volume, random= ~1|ID, data=srl_clean)
   anova(srl_container)
   summary(srl_container)
   visreg(srl_container)
@@ -54,8 +58,6 @@ srl_container <- lme(SRL ~ volume, random= ~1|ID, data=srl)
   write.csv(srl_siglets2, "master_scripts/sigletters/sigletts_plant/sl_srl.csv", row.names=FALSE)  
   
   
-  
-
 
 #sla
 sla_lm <- lme(sla_free ~ volume, random= ~1|ID, data=sla_tnc)

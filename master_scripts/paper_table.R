@@ -15,8 +15,8 @@ table1 <- summaryBy(totalmass~volume, data=harvestmass, FUN=c(mean, se))
 
 #2:SRL
 srl <- read.csv("calculated data/srl_means.csv")
-  srl$srl <- srl$SRL.mean*100
-  srl$srl.se <- srl$SRL.se*100
+  srl$srl <- srl$SRL2.mean
+  srl$srl.se <- srl$SRL2.se
 
 table1 <- merge(table1, srl[,c(1, 4:5)])
 
@@ -129,7 +129,7 @@ pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[4]][,1])
 pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[6]][,1])
 pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
-pval <- as.vector(c("Container Effect (P)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.662, 0.458))
+pval <- as.vector(c("Container Effect (P)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458))
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 
