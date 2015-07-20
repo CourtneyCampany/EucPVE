@@ -216,6 +216,9 @@ Increasing rates of non-leaf respiration (M~3~) improved biomass predictions but
 It has long been know that conditions which affect the photosynthetic process affect growth but that there is also an interrelationship between growth and A [@sweet1966role]. Here, the fate of assimilated C available for plant growth varied between naturally sown seedlings and seedlings with belowground sink inhibition. First, this is important as manipulations of plants grown in containers are often used to draw conclusions about growth and physiological principles but how these results actually reflect field-grown plants has seldom been studied. Second, our finding add more evidence that A and growth are not always entirely synced, an important distinction often missed in studies that manipulate source/sink activity. Korner [@korner2013growth] suggests that it is the norm for sink activity to feedback onto source activity, causing growth to control A through the demand for C  Although this may be true, we argue that attempts to quantify or at least predict the fate of assimilated C into known pools of growth, storage and C loss are needed prior to addressing this debate. Our modelling results agree with conclusions from Valentine and M&#228;kel&#228; [-@valentine2005bridging] where the problem with predicting tree growth is a problem in forecasting the assimilation and allocation of C and other constituents.  A lack of knowledge regarding C allocation restricts our ability to achieve mass balance and is a major obstacle in understanding the coordination between A and growth. In any case, we should not assume that 
 
 # Tables {.unnumbered}
+![table2](harvesttable.jpg)
+![table2](phystable.jpg)
+![table3](modeltable.jpg)
 
 ```{r table1, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 library(ascii)
@@ -301,4 +304,9 @@ source("master_scripts/massmodel_optimize_scenarios.R")
 **Table S1** Seedling Growth Model Default Parameters
 
 # References {.unnumbered}
+
+
+
+
+
 
