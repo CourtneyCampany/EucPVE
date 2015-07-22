@@ -64,7 +64,7 @@ text(1.3, .95, "(a)", cex=1.51)
 par(mar=c(4,7,1,.3))
 plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=2, lwd=2)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
-       col=palette(), bty='n',cex=1.2)
+       col=palette(), bty='n',cex=1)
 text(x=7.1, 63, "(b)", cex=1.51)
 
 #3. Fine root to leaves

@@ -65,6 +65,8 @@ nitro_noTNC <- expression(Leaf~Nitrogen[TNC[free]]~~(mg~g^-1))
 
 
 #windows(10, 7)
+
+#png(filename = "manuscript/photo_chem.png", width = 8, height = 6, units = "in", res= 400)
 par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),  oma=c(0.1,0.1,0.1,0.1), las=1)
 
 # First Panel
@@ -103,7 +105,7 @@ plot(A_mass ~ nitro_mg, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0,
   legend("bottomright", binlab, pch=21, text.font=1.2, inset=0.02, pt.bg=coln2,title="Leaf Starch (%)" , bty='n', cex=1.2)
 
 # dev.copy2pdf(file= "master_scripts/manuscript_figs/A_leafchem.pdf")
-# dev.off()
+ #dev.off()
 
 
 
