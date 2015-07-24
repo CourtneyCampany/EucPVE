@@ -1,5 +1,5 @@
 #source functions, packages, anbd plot objects
-#source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 #Read in spot A measurements and merge plot design
 #read in plot design and harvest data
@@ -19,15 +19,15 @@ PS <- add_campaign_date(PS)
 
 
 #Amax_means for Data table-----------------------------------------------------------------------
-PSmax <- subset(PS, type=="Amax")
-
-#mean of 5 logs per plant
-PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
-  PSmax_spot$volume <- as.factor(PSmax_spot$volume)
-
-#mean by plant over all dates, then treatment means
-PSmax_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
-  PSmax_ID$volume <- as.factor(PSmax_ID$volume)
+# PSmax <- subset(PS, type=="Amax")
+# 
+# #mean of 5 logs per plant
+# PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
+#   PSmax_spot$volume <- as.factor(PSmax_spot$volume)
+# 
+# #mean by plant over all dates, then treatment means
+# PSmax_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
+#   PSmax_ID$volume <- as.factor(PSmax_ID$volume)
 
 
 #Asat----------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ PSsat_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
   PSsat_spot$volume <- as.factor(PSsat_spot$volume)
 
 #mean by plant over all dates, then treatment means
-PSsat_ID <- summaryBy(Photo+volume ~ ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
+PSsat_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
   PSsat_ID$volume <- as.factor(PSsat_ID$volume)
 
 
@@ -61,11 +61,11 @@ library(multcomp)
 require(broom)
   
 #relevel to free to evaluate container effect  
-PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")
+PSsat_spot$volume <- relevel(PSsat_spot$volume, ref="1000")
 
 #asat
 asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
-amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
+#amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
 #   anova(asat_lm)
 #   anova(amax_lm)
 # 
@@ -75,10 +75,10 @@ amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
   tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
 
-  tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
-  siglets_amax <-cld(tukey_Amax)
-  
-  siglets_amax2 <- siglets_amax$mcletters$Letters
+#   tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
+#   siglets_amax <-cld(tukey_Amax)
+#   
+#   siglets_amax2 <- siglets_amax$mcletters$Letters
 
   #write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
 

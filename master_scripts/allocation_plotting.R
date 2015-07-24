@@ -40,6 +40,7 @@ ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass",
   ratio$volume <- as.factor(ratio$volume)
 
 ratio_lm <- lm(log10(leafmass) ~ log10(fineroot), data=ratio)
+#confint(ratio_lm)
 
 #treatment means
 ratio_agg <- summaryBy( .~ volume , data = ratio,  FUN=c(mean,se))

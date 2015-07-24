@@ -244,16 +244,6 @@ title = {{How reliable are results of pot experiments?}},
 volume = {11},
 year = {1980}
 }
-@article{de2014does,
-author = {{De Kauwe}, Martin G and Medlyn, Belinda E and Zaehle, S\"{o}nke and Walker, Anthony P and Dietze, Michael C and Wang, Ying-Ping and Luo, Yiqi and Jain, Atul K and El-Masri, Bassil and Hickler, Thomas and Others},
-journal = {New Phytologist},
-number = {3},
-pages = {883--899},
-publisher = {Wiley Online Library},
-title = {{Where does the carbon go? A model--data intercomparison of vegetation carbon allocation and turnover processes at two temperate forest free-air CO2 enrichment sites}},
-volume = {203},
-year = {2014}
-}
 @article{delucia2007forest,
 author = {DeLucia, Evan and Drake, John E and Thomas, Richard B and Gonzalez-Meler, Miquel},
 journal = {Global Change Biology},
@@ -708,16 +698,6 @@ title = {{End-product inhibition of photosynthesis in Prunus cerasus L. in respo
 volume = {120},
 year = {1995}
 }
-@article{le2001carbon,
-author = {{Le Roux}, Xavier and Lacointe, Andr\'{e} and Escobar-Guti\'{e}rrez, Abraham and {Le Diz\`{e}s}, S\'{e}verine},
-journal = {Annals of Forest Science},
-number = {5},
-pages = {469--506},
-publisher = {EDP Sciences},
-title = {{Carbon-based models of individual tree growth: a critical appraisal}},
-volume = {58},
-year = {2001}
-}
 @article{li2002source,
 author = {Li, Mai and Hoch, G\"{u}nter and K\"{o}rner, Christian},
 file = {:C$\backslash$:/Users/90919620/Google Drive/EucPVE/pve\_papers/li\_2002.pdf:pdf},
@@ -1130,16 +1110,6 @@ title = {{The role of biomass allocation in the growth response of plants to dif
 volume = {27},
 year = {2000}
 }
-@article{poorter2003plant,
-author = {Poorter, Hendrik and Navas, Marie-Laure},
-journal = {New Phytologist},
-number = {2},
-pages = {175--198},
-publisher = {Wiley Online Library},
-title = {{Plant growth and competition at elevated CO_2: on winners, losers and functional groups}},
-volume = {157},
-year = {2003}
-}
 @article{poorter2009causes,
 author = {Poorter, Hendrik and Niinemets, \"{U}lo and Poorter, Lourens and Wright, Ian J and Villar, Rafael},
 file = {:C$\backslash$:/Users/90919620/Google Drive/EucPVE/pve\_papers/poorter\_2009.pdf:pdf},
@@ -1520,13 +1490,6 @@ publisher = {American Society for Horticultural Science},
 title = {{Photosynthetic responses to sink--source manipulation in five peach cultivars varying in maturity date}},
 volume = {133},
 year = {2008}
-}
-@Manual{YplantQMC,
-title = {YplantQMC: Plant Architectural Analysis with Yplant and QuasiMC},
-author = {Remko Duursma. QuasiMC by Mik Cieslak. Uses code by Robert Pearcy and Belinda Medlyn},
-note = {R package version 0.6-5},
-url = {http://www.remkoduursma.com/yplantqmc,
-https://www.bitbucket.org/remkoduursma/yplantqmc/},
 }
 @article{young1997mechanical,
 author = {Young, I M and Montagu, K and Conroy, J and Bengough, A G},
