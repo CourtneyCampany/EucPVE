@@ -1,10 +1,12 @@
 
 #read data
-source("calculated data/seedling mass.csv")
+seedlingmass<- read.csv("calculated data/seedling mass.csv") 
 
 
 #subset with data for root:shoot comparisons
 ratio <- subset(seedlingmass, select = c("ID", "volume", "fineroot", "leafmass", "root", "shoot"))
+
+ratio_lm <- lm(log10(leafmass) ~ log10(fineroot), data=ratio)
 
 #PLOTTING
 pchs <- c(rep(16,6),17)
@@ -31,6 +33,9 @@ ratio_agg$leafmassSE <- with(ratio_agg, leafmass.sd/sqrt(leafmass.length))
 ratio_agg$rootSE <- with(ratio_agg, root.sd/sqrt(root.length))
 ratio_agg$shootSE <- with(ratio_agg, shoot.sd/sqrt(shoot.length))
 
+##RS and leaf froot leaf means
+rs_mean <- with(ratio_agg, mean(root.mean) / mean(shoot.mean))
+fl_mean <- with(ratio_agg, mean(fineroot.mean) / mean(leafmass.mean))
 
 
 #quick plot of means, root:shoot $ leaf:froot
