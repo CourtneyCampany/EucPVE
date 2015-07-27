@@ -58,7 +58,6 @@ PSsat_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSsat
 require(nlme)
 require(visreg)
 library(multcomp)
-require(broom)
   
 #relevel to free to evaluate container effect  
 PSsat_spot$volume <- relevel(PSsat_spot$volume, ref="1000")
@@ -112,13 +111,15 @@ asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
 
 ##PLOTTING----------------------------------------------------------------------------------------------------------
 SigLetters <- siglets$mcletters$Letters
+##need to reorder sigletters for order of bars on figure
+sl2 <- SigLetters[c(2:7, 1)]
 
 #windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", ylim=c(0,25), names.arg = leglab,
     col="grey", legend=FALSE, bg="white")
 title(ylab=satlab, mgp=ypos)
-text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
+text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, sl2, cex=1.3)
 #dev.copy2pdf(file= "master_scripts/manuscript_figs/Asat.pdf")
 #dev.off()
 
