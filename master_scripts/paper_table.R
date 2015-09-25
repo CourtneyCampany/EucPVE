@@ -129,11 +129,11 @@ pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[4]][,1])
 pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[6]][,1])
 pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
-pval <- as.vector(c("Container Effect (P)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458))
+pval_row <- c("P value","Container Effect", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458)
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 
-pve_table3 <- rbind(pve_table2, pval)
+pve_table3 <- rbind(pve_table2, pval_row)
 
 write.csv(pve_table3, "master_scripts/pve_table1.csv", row.names=FALSE)
 

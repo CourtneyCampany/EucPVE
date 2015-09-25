@@ -39,6 +39,11 @@ includeFigs <- TRUE
 source("functions and packages/startscripts.R")
 source("functions and packages/gamplotfunctions.R")
 
+#table data
+library(pixiedust)
+table1 <- read.csv("master_scripts/pve_table1.csv")
+table2 <- read.csv("master_scripts/pve_table2.csv")
+
 ```
 
 ```{r, echo=FALSE}
@@ -252,53 +257,41 @@ The debate over how rates of photosynthesis affect plant growth or to what degre
 **Figure S1**. Sensitivity testing of seedling growth model to different carbon allocation strategies including; constraints of leaf mass fraction to treatment specific final harvest values (a) and increases in respiration of non-leaf tissue components by 50 % (b).  Open and filled symbols represent default model and harvest values, while shaded symbols represent model sensitivity to each scenario by soil volume treatment. Both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
 
 # Tables {.unnumbered}
-**Table 1**.
+**Table 1**.Responses of plant and leaf characterisitics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Seedling mass, SRL, root nitrogen and leaf $\delta$^13^C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+
+```{r, echo=FALSE, warning=FALSE}
+greeks=c(alpha='\u03b1', Delta='\u0394', Sigma='\u03A3', mu='\u03bc',delta = '\u03b4')
+
+dust(table1)+
+  sprinkle_colnames("Volume (L)", 
+                        "Seedling~mass (g)", 
+                        "SLA TNC-free (m^2^ kg^-1^)",
+                        "Leaf Starch (%)", 
+                        "Leaf Sugars (%)", 
+                        "Leaf Nitrogen (%)",
+                        "Root Nitrogen (%)",
+                        "SRL (cm m^-1^)",
+                        paste0("Leaf ", greeks['delta'],"^13^C"," (\u2030)")) +
+  sprinkle(rows= 1, part="head",bold=TRUE)+
+  sprinkle_print_method("markdown")
+```
 
 \
-**Table 2**.
-<!---
-![table2](harvesttable.jpg)
-![table2](phystable.jpg)
-![table3](modeltable.jpg)
--->
-
-
-
-<!---
-```{r table1, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-library(ascii)
-pve_data <- read.csv("master_scripts/pve_table1.csv")
-
-colnames(pve_data) <- c("Volume (L)", 
-                        "Seedling~mass~(g)", 
-                        "SLA\\textsubscript{TNC-free}~(m\\textsuperscript{2}~kg\\textsuperscript{-1})",
-                        "Leaf~Starch~(\\%)", 
-                        "Leaf~Sugars~(\\%)", 
-                        "Leaf~Nitrogen~(\\%)",
-                        "Root~Nitrogen~(\\%)",
-                        "SRL~(cm~m\\textsuperscript{-1})",
-                        "{Leaf~\\textdelta}\\textsuperscript{13}C~(\\text{\\textperthousand})")
-print(ascii(pve_data,include.rownames=FALSE),type='pandoc')
-
-
-```
-**Table 1.** Responses of plant and leaf characterisitics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Seedling mass, SRL, root nitrogen and leaf $\delta$^13C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
-
-```{r table2, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-library(ascii)
-phys_data <- read.csv("master_scripts/pve_table2.csv")
-colnames(phys_data) <- c("Volume (L)", 
-                        "\\textit{A}\\textsubscript{max}", 
-                        "\\textit{R}\\textsubscript{dark}",
-                        "\\textit{J}\\textsubscript{max}",
-                        "\\textit{Vc}\\textsubscript{max}",
-                        "\\textit{g}\\textsubscript{s}",
-                        "\\textit{g}\\textsubscript{1}")
-print(ascii(phys_data,include.rownames=FALSE),type='pandoc')
-
-```
 **Table 2.** Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Units for A~max~ and R~dark~ are $\mu$mol m^-2^ s^-1^ and g~s~ are mol m^-2^ s^-1^, each at at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
--->
+
+```{r table2, echo=FALSE, warning=FALSE}
+dust(table2)+
+  sprinkle_colnames("Volume (L)", 
+                        "A~max~", 
+                        "R~dark~",
+                        "J~max~",
+                        "Vc~max~",
+                        "g~s~",
+                        "g~1~") +
+  sprinkle(rows= 1, part="head",bold=TRUE)+
+  sprinkle_print_method("markdown")
+```
+
 
 # Figures {.unnumbered}
 ```{r allometry, fig.width=6, fig.height=8, echo=FALSE,  dev="png", dpi=400, dev.args=list(type="cairo")}

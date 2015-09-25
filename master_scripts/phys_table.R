@@ -97,16 +97,12 @@ pve_table2 <- cbind(leglab, phys1)
 # lets <- sigletter_list[[1]][,1]
 # paste(nums, lets)
   
-pval <- as.vector(c("Container Effect (P)", 0.001, 0.039,0.001, 0.002, 0.001, 0.079))
+pval <- as.vector(c("P value","Container Effect", 0.001, 0.039,0.001, 0.002, 0.001, 0.079))
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 
 pve_table3 <- rbind(pve_table2, pval)
 
-  
-##var order= volume, amax, rd, jmax, vcmax, gs, g1, 
-##maybe add this as a additional hline in table in latex  
-  #phys_table_P <- ('     ', 0.0001, 0.03969, 0.0012, 0.0021, 0.0001, 0.0799)
   
 write.csv(pve_table3, "master_scripts/pve_table2.csv", row.names=FALSE)
 
