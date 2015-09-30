@@ -43,6 +43,7 @@ source("functions and packages/gamplotfunctions.R")
 library(pixiedust)
 table1 <- read.csv("master_scripts/pve_table1.csv")
 table2 <- read.csv("master_scripts/pve_table2.csv")
+modeltable <- read.csv("master_scripts/modeltable.csv")
 
 ```
 
@@ -116,7 +117,7 @@ Leaf gas exchange measurements were performed fortnightly at saturating light (A
 Photosynthetic CO~2~ response (AC~i~) curves were measured at 25 &deg;C on a random subset of each container size (n=3) after new leaves were first produced (March 13-14^th^, 2013) and prior to the final harvest (May 14-15~th~, 2013). Each AC~i~ curve was started at the reference [CO~2~] of 400 $\mu$l l^-1^ and then consisted of 12 additional steps from [CO~2~] of 50 to 1800 $\mu$l^-1^ at 25 &deg;C at saturating light (above). From these curves the photosynthetic parameters, J~max~ and Vc~max~, were quantified using the biochemical model of [@farquhar1980biochemical] and fit with the 'plantecophys' package [@Duursma2014] in R [@RDevelopmentCoreTeam2011].
 
 \
-Leaf dark respiration rates (R~d~) was measured on each seedling during the same dates as AC~i~ curves. Freshly detached leaves were collected at least 1 hour after sundown and placed inside a conifer chamber attached to the Licor 6400. Measurements were taken at a reference [CO~2~] of 400 $\mu$l l^-1^ while leaf temperature was maintained at current ambient conditions. Reported values of R~d~ are standardized rates at 25 &deg;C using a Q10 value (1.86) developed for these seedlings in a separate experiment (Drake et al. unpublished). Leaf area and dry mass were recorded for each leaf during gas exchange campaigns.
+Leaf dark respiration rates (R) was measured on each seedling during the same dates as AC~i~ curves. Freshly detached leaves were collected at least 1 hour after sundown and placed inside a conifer chamber attached to the Licor 6400. Measurements were taken at a reference [CO~2~] of 400 $\mu$l l^-1^ while leaf temperature was maintained at current ambient conditions. Reported values of R are standardized rates at 25 &deg;C using a Q10 value (1.86) developed for these seedlings in a separate experiment (Drake et al. unpublished). Leaf area and dry mass were recorded for each leaf during gas exchange campaigns.
 
 
 ## Leaf water potential
@@ -134,12 +135,12 @@ We developed a simple seedling growth model that utilized leaf A rates to alloca
 \
 (1)
 $$P_i = L\left(\frac{C_{day'i}~\sigma_s}{\epsilon_c}\right) - R$$
-where L is total plant leaf area (m^2^), C~day,i~ is the predicted daily carbon assimilation (g C d^-1^), $\sigma$~s~ is a self shading parameter, $\epsilon$~c~ is a biomass conversion efficiency parameter and R is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
+where L is total plant leaf area (m^2^), C~day,i~ is the predicted daily carbon assimilation (g C g mass^-1^ d^-1^), $\sigma$~s~ is a self shading parameter, $\epsilon$~c~ is a biomass conversion efficiency parameter and R is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
 
 \
 (2)
 $$R = \Sigma(R_c~M_c)$$
-where R~c~ is tissue respiration of fine roots, coarse roots or stems (g C d^-1^) and M~c~ is the standing biomass of each component (g). R~leaf~ is represented in the calculation of C~day~ (described below). The change in individual component biomass (M~c~), here solved on a daily time step, is given by
+where R~c~ is publsihed or local tissue respiration rates of fine roots, coarse roots or stems (Table S1, g C g mass ^-1^ d^-1^) and M~c~ is the standing biomass of each component (g). R~leaf~ is represented in the calculation of C~day~ (described below). The change in individual component biomass (M~c~), here solved on a daily time step, is given by
 
 \
 (3)
@@ -153,10 +154,10 @@ C~day~ was predicted by using a coupled photosynthesis - stomatal conductance mo
 It was further necessary to calculate a self-shading parameter ($\sigma$~s~) when scaling leaf A with total plant leaf area. This was accomplished by utilizing 61 previously digitized Eucalyptus seedlings, covering 5 total species which include *E. tereticornis*, from Duursma et al. [-@duursma2012light] to run in 'YplantQMC' package [@YplantQMC] in R to build a 3D plant structure based on digitized metrics of plant allometry and crown structure. Inputting the same treatment specific physiological parameters listed above, 'YplantQMC' outputs total A, using total leaf area, for seedlings assuming self-shading as well as for a full sun large horizontal leaf.  The ratio of total A with self-shading to horizontal leaf was then used to calculate $\sigma$~s~ for each of the 61 digitized seedlings, independently for each of the seven soil volume treatments. Next, the linear relationship between $\sigma$~s~ and total leaf area was for determined across digitized seedlings, within each treatment. For the growth model, $\sigma$~s~ was then predicted for each daily time step using the previous days cumulative leaf area and this value  was then applied to C~day,i~. All default parameters used in model simulations are reported in Table S1.
 
 \
-We then utilized this model to test the hypothesis that the effects of belowground sink limitation on rates of leaf A where sufficient to accurately predict overall seedling biomass production after 120 days. Each model run utilized changes in A and leaf mass fraction (LMF), with published or local values of stem and root respiration rates, to generate total seedling mass and leaf area after 120 days.  Cumulative net leaf C gain for each treatment was equal to the sum of each value of C~day,i~ over 120 days and final seedling C was assumed to equal half of the final mass for both modeled and observed seedlings. First, a default model was optimized to produce a final LMF that correctly predicted both the final leaf mass and total biomass of the harvested free seedling controls (M~0~). This optimized LMF was then applied to model runs with treatment specific C~day~ to determine if changes in leaf A alone could accurately predict biomass (M~1~). Next, model sensitivity to different C allocation scenarios, including non-optimized treatment specific LMF and up regulation of non-leaf tissue respiration by 50 % of default values (M~2,3~, respectively), was used to improve predictions of initial model simulations from measured harvest biomass. For all cases, seedling biomass production was compared between model output and harvested seedlings with treatment specific mean daily C assimilation by first scaling values to the free seedling control.
+We then utilized this model to test the hypothesis that the effects of belowground sink limitation on rates of leaf A where sufficient to accurately predict overall seedling biomass production after 120 days. Each model run utilized changes in A and leaf mass fraction (LMF), with values of stem and root respiration rates, to generate total seedling mass and leaf area after 120 days.  Cumulative net leaf C gain for each treatment was equal to the sum of each value of C~day,i~ over 120 days and final seedling C was assumed to equal half of the final mass for both modeled and observed seedlings. First, a default model was optimized to produce a final LMF that correctly predicted both the final leaf mass and total biomass of the harvested free seedling controls (M~0~). This optimized LMF was then applied to model runs with treatment specific C~day~ to determine if changes in leaf A alone could accurately predict biomass (M~1~). Next, model sensitivity to different C allocation scenarios, including non-optimized treatment specific LMF and up regulation of non-leaf tissue respiration by 50 % of default values (M~2,3~, respectively), was used to improve predictions of initial model simulations from measured harvest biomass. For all cases, seedling biomass production was compared between model output and harvested seedlings with treatment specific mean daily C assimilation by first scaling values to the free seedling control.
 
 ##Data analysis
-Differences in experimental parameters with soil volume were analysed by mixed-effects models in R with individual containers as random effects and soil volume treatment as a categorical fixed effect iwth seven levels. Tukey's post-hoc tests were performed in conjunction with ANOVA to determine which specific paired comparisons among soil volume treatments were different. A linear mixed effect model of A~max~ and leaf chemistry was performed using the 'nlme' package [@nlme] in R. Explained variance (R^2^) of mixed models were computed as in  [@nakagawa2013general]. Tests of allometric relationships between log-transformed biomass components were implemented using major axis regression in the 'smatr' package in R [@warton2012smatr]. Results were considered significant at P < 0.05.
+Differences in experimental parameters with soil volume were analysed by mixed-effects models in R with individual containers as random effects and soil volume treatment as a categorical fixed effect iwth seven levels. Tukey's post-hoc tests were performed in conjunction with ANOVA to determine which specific paired comparisons among soil volume treatments were different. A linear mixed effect model of A~max~ and leaf chemistry was performed using the 'nlme' package [@nlme] in R. Explained variance (R^2^) of mixed models were computed as in  [@nakagawa2013general]. Tests of allometric relationships between log-transformed biomass components were implemented using standardized major axis regression in the 'smatr' package in R [@warton2012smatr]. Results were considered significant at P < 0.05.
 
 # Results
 
@@ -208,10 +209,10 @@ Although the soil N % declined evenly across all treatments, leaf N was lowest i
 As both rooting space and resources were finite in containers, the inability of seedlings to maintain the capacity of the belowground C sink resulted in the buildup of C assimilate in leaves. The feedback inhibition of A from starch accumulation has been proposed, yet it is still not known whether there is a starch threshold that triggers the down-regulation process (Nebauer et al. 2011).  Here, declines in A~max~ were correlated with higher starch content throughout the experiment. This agrees with a study on a deciduous conifer by Equiza et al. (2006) where photosynthetic downregulation from reduced sink strength was correlated with starch content. As starch content in leaves of plants grown in the smallest containers was nearly double that of free seedlings in our study, this suggests the response of A to sink inhibition was regulated by this accumulation, as hypothesized.
 
 ## Biomass partitioning under sink limitation
-As biomass partitioning is likely controlled by the source and sink strength of all organs [@poorter2012biomass], it was important to determine which tissue components were most affected by the container size treatments. It was necessary to distinguish if growth was affected beyond ontogenetic constraints, by correcting for size, as biomass distribution is strongly size-dependent [@gould1966allometry; @lleonart2000removing]. In this study, there was no significant difference in root, leaf, or stem biomass partitioning with reduced soil volume compared to free seedlings, outside of ontogenetic drift. This is a surprising result as shifts in allocation have been noted specifically for nutrient limitation  [@mcconnaughay1999biomass, and references therein]. Surprisingly, fine root to leaf mass ratio was conserved across all treatments suggesting a functional partitioning response to optimize resource gain did not occur.
+As biomass partitioning is likely controlled by the source and sink strength of all organs [@poorter2012biomass], it was important to determine which tissue components were most affected by the container size treatments. It was necessary to distinguish if growth was affected beyond ontogenetic constraints, by correcting for size, as biomass distribution is strongly size-dependent [@gould1966allometry; @lleonart2000removing]. In this study, there was no significant difference in root, leaf, or stem biomass partitioning with reduced soil volume compared to free seedlings, outside of ontogenetic drift. This is a surprising result as shifts in allocation have been noted specifically for nutrient limitation  [@mcconnaughay1999biomass, and references therein]. Surprisingly, a constant ratio of fine root mass to leaf mass was observed across all treatments suggesting a functional partitioning response to optimize resource gain did not occur.
 
 \
-As partitioning to fine roots did not change this provides evidence against an optimal foraging strategy for seedlings in containers. This could be because lateral root development is affected by inanimate obstacles and avoiding growth towards container walls could improve the efficiency of resource allocation [@falik2005root]. Also, the sensitivity of roots to their own exudates near obstructions may be used to adjust growth before stressful conditions occur [@semchenko2008foraging]. Alternatively, physical restriction of root proliferation could have impacted root development and morphology prior to shifts in mass partitioning. Here, increases in root length where detected in several of the soil volume treatments. This is not surprising as plants in containers have been shown to have different root morphology to field grown plants as roots essentially compete among themselves for nutrients  [@nesmith1998effect]. The poor soil quality used in our experiment and root restriction, however, likely decreased the capacity of this morphological response to increase N uptake. 
+As partitioning to fine roots did not change this provides evidence against an optimal foraging strategy for seedlings in containers. This could be because lateral root development is affected by inanimate obstacles and avoiding growth towards container walls could improve the efficiency of resource allocation [@falik2005root]. Also, the sensitivity of roots to their own exudates near obstructions may be used to adjust growth before stressful conditions occur [@semchenko2008foraging]. Alternatively, physical restriction of root proliferation could have impacted root development and morphology prior to shifts in mass partitioning. Here, increases in root length where detected in several of the soil volume treatments. This is not surprising as plants in containers have been shown to have different root morphology to field grown plants [@nesmith1998effect]. The poor soil quality used in our experiment and root restriction, however, likely decreased the capacity of this morphological response to increase N uptake. 
 
 ## Do reductions in photosynthesis explain reductions in seedling growth?
 Our growth model used a simple but conventional approach to drive seedling growth with fluctuations in A while treating C use efficiency, respiration and C allocation as fixed processes. Contrary to expectation, the model consistently overestimated seedling growth in containers when parameterized with an optimized LMF for free seedlings. Although reductions in A~max~ and biomass were strongly correlated among treatments, as hypothesized by Poorter et al. [-@poorter2012pot], we provide evidence that links between sink limitation and A do not necessarily imply the same coordination between reduced A and growth. These findings are important as this model reflects classical approaches in tree growth and production modelling that are driven by inputs of C assimilation and processes such as respiration are considered proportional to biomass [@le2001carbon]. Our results indicate a need to evaluate the use of fixed processes in models which distinguish the fate of assimilate C within a plant. Doing so will provide valuable input to future models as assimilate allocation is a key component in carbon-balance driven  plant growth models, yet C partitioning remains a key weakness  [@lacointe2000carbon]. To address this issue we utilized the flexibility of this model to test plausible fates of the extra pool of non-biomass C unaccounted for with mass balance. Similar to Lohier et al. [-@lohier2014explaining] we manipulated processes contributing to seedling C mass balance, including changes to leaf C allocation or non-leaf tissue respiration, to quantitatively test their respective influences on model predictions. 
@@ -231,7 +232,7 @@ The debate over how rates of photosynthesis affect plant growth or to what degre
 **Table 1**. Responses of plant and leaf characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. Seedling mass, SRL, root nitrogen and leaf $\delta$^13^C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the free seedling treatment.
 
 \
-**Table 2**. Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. Units for A~max~ and R~dark~ are $\mu$mol m^-2^ s^-1^ and g~s~ are mol m^-2^ s^-1^, each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n = 6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the free seedling treatment.
+**Table 2.** Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. A~max~, R~dark~ and g~s~ are each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
 
 **Table S1**. Seedling growth model default parameters.
 
@@ -264,8 +265,8 @@ greeks=c(alpha='\u03b1', Delta='\u0394', Sigma='\u03A3', mu='\u03bc',delta = '\u
 
 dust(table1)+
   sprinkle_colnames("Volume (L)", 
-                        "Seedling~mass (g)", 
-                        "SLA TNC-free (m^2^ kg^-1^)",
+                        "Seedling mass (g)", 
+                        "SLA~TNC-free~ (m^2^ kg^-1^)",
                         "Leaf Starch (%)", 
                         "Leaf Sugars (%)", 
                         "Leaf Nitrogen (%)",
@@ -277,16 +278,16 @@ dust(table1)+
 ```
 
 \
-**Table 2.** Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Units for A~max~ and R~dark~ are $\mu$mol m^-2^ s^-1^ and g~s~ are mol m^-2^ s^-1^, each at at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+**Table 2.** Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. A~max~, R~dark~ and g~s~ are each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R~dark~, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The container effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
 
 ```{r table2, echo=FALSE, warning=FALSE}
 dust(table2)+
   sprinkle_colnames("Volume (L)", 
-                        "A~max~", 
-                        "R~dark~",
+                        "A~max~ ($\\mu$mol m^-2^ s^-1^)", 
+                        "R~dark~ ($\\mu$mol m^-2^ s^-1^)",
                         "J~max~",
                         "Vc~max~",
-                        "g~s~",
+                        "g~s~ (mol m^-2^ s^-1^)",
                         "g~1~") +
   sprinkle(rows= 1, part="head",bold=TRUE)+
   sprinkle_print_method("markdown")
@@ -338,8 +339,12 @@ source("master_scripts/massmodel_optimize.R")
 source("master_scripts/massmodel_optimize_scenarios.R")
 ```  
 
-**Figure S1**. 
-
+**Figure S1**. Seedling growth model default parameters.
+```{r tabels1, echo=FALSE, warning=FALSE}
+dust(modeltable)+
+  sprinkle(rows= 1, part="head",bold=TRUE)+
+  sprinkle_print_method("markdown")
+```
 
 # References {.unnumbered}
 

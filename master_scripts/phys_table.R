@@ -55,8 +55,8 @@ phys1 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,1], 1)), " (", spr
 phys2 <- data.frame(paste0(sprintf("%3.2f", round(phys_means[,2], 2)), " (", sprintf("%3.2f", round(phys_se[,2],2)),")"))
 phys3 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,3], 1)), " (", sprintf("%2.1f", round(phys_se[,3],1)),")"))
 phys4 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,4], 1)), " (", sprintf("%2.1f", round(phys_se[,4],1)),")"))
-phys5 <- data.frame(paste0(sprintf("%3.2f",round(phys_means[,5], 2)), " (", round(phys_se[,5],2),")"))
-phys6 <- data.frame(paste0(sprintf("%2.1f",round(phys_means[,6], 1)), " (", sprintf("%2.1f",round(phys_se[,6],1)),")"))
+phys5 <- data.frame(paste0(sprintf("%3.2f", round(phys_means[,5], 2)), " (", sprintf("%2.3f", round(phys_se[,5],3)),")"))
+phys6 <- data.frame(paste0(sprintf("%2.1f", round(phys_means[,6], 1)), " (", sprintf("%2.2f", round(phys_se[,6],2)),")"))
 
 
 pve_table2 <- cbind(leglab, phys1)
@@ -97,7 +97,7 @@ pve_table2 <- cbind(leglab, phys1)
 # lets <- sigletter_list[[1]][,1]
 # paste(nums, lets)
   
-pval <- as.vector(c("P value","Container Effect", 0.001, 0.039,0.001, 0.002, 0.001, 0.079))
+pval <- as.vector(c("Container Effect (P value)", 0.001, 0.039,0.001, 0.002, 0.001, 0.079))
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 

@@ -79,8 +79,8 @@ dat2 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,2], 1)), " (", sprin
 dat3 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,3], 1)), " (", sprintf("%3.2f", round(tree_se[,3],2)),")"))
 dat4 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,4], 1)), " (", sprintf("%3.2f", round(tree_se[,4],2)),")"))
 dat5 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,5], 2)), " (", sprintf("%3.2f", round(tree_se[,5],2)),")"))
-dat6 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,6], 1)), " (", sprintf("%3.2f",round(tree_se[,6],2)),")"))
-dat7 <- data.frame(paste0(signif(tree_means[,7], 2), " (", round(tree_se[,7],2),")"))
+dat6 <- data.frame(paste0(sprintf("%2.1f",round(tree_means[,6], 1)), " (", sprintf("%3.2f", round(tree_se[,6],2)),")"))
+dat7 <- data.frame(paste0(sprintf("%1.2f",round(tree_means[,7], 2)), " (", sprintf("%1.2f", round(tree_se[,7],2)),")"))
 dat8 <- data.frame(paste0(sprintf("%3.1f",round(tree_means[,8], 3)), " (", round(tree_se[,8],2),")"))
 # Note:
 # in R, sprintf("%2.1f", round(25.01,1)) avoids "25", and gives "25.0" instead.
@@ -129,7 +129,7 @@ pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[4]][,1])
 pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[6]][,1])
 pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
-pval_row <- c("P value","Container Effect", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458)
+pval_row <- c("Container Effect (P value)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458)
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 
