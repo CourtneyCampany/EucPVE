@@ -129,7 +129,7 @@ pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[4]][,1])
 pve_table2[[8]] <- paste(pve_table2[[8]], siglet3[[6]][,1])
 pve_table2[[9]] <- paste(pve_table2[[9]], siglet3[[1]][,1])
 
-pval_row <- c("Container Effect (P value)", 0.001, 0.001, 0.039, 0.128, 0.001, 0.015, 0.001, 0.458)
+pval_row <- c("Container Effect (P value)", 0.001, 0.001, 0.029, 0.125, 0.001, 0.017, 0.009, 0.372)
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 

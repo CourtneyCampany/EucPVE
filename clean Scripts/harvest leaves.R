@@ -87,6 +87,9 @@ lmeLA2 <- lme(canopysqm ~ volume, random= ~1|ID, data=leaftime, subset=volume !=
 anova(lmeLA2)
 
 ###which date did treatment differences emerge?
+leaftime$block <- as.factor(gsub("-[1-9]", "", leaftime$ID))
+
+
 la_mod1 <- lm(canopysqm~volume, data=leaftime, subset=Date=="2013-02-11")
 summary(la_mod1)
 anova(la_mod1)
@@ -99,7 +102,8 @@ summary(la_mod2)
 anova(la_mod2)
 visreg(la_mod2)
 
-
+la_mod3 <- lme(canopysqm~volume, random= ~1|block/ID,data=leaftime, subset=Date=="2013-02-11")
+anova(la_mod3)
 
 #plot---------------------------------------------------------------------------
 

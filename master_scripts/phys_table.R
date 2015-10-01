@@ -92,12 +92,8 @@ pve_table2 <- cbind(leglab, phys1)
   pve_table2[[5]] <- paste(pve_table2[[5]], siglet3[[7]][,1])
   pve_table2[[6]] <- paste(pve_table2[[6]], siglet3[[4]][,1])
   pve_table2[[7]] <- paste(pve_table2[[7]], siglet3[[2]][,1])
-  
-# nums <-pve_table2[[3]]
-# lets <- sigletter_list[[1]][,1]
-# paste(nums, lets)
-  
-pval <- as.vector(c("Container Effect (P value)", 0.001, 0.039,0.001, 0.002, 0.001, 0.079))
+
+pval <- as.vector(c("Container Effect (P value)", 0.001, 0.269, 0.004, 0.005, 0.007, 0.001))
 
 pve_table2$leglab <- as.character(pve_table2$leglab)
 

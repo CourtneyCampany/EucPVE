@@ -13,6 +13,7 @@ height$ID <- paste(height$plot, height$pot, sep = "-")
 #merge with plot summary
 height <- merge(height, plotsumm, by = c("pot", "plot", "ID"))
 height$volume <- as.factor(height$volume)
+height$block <- as.factor(gsub("-[1-9]", "", height$ID))
 
 #write.csv(height, "calculated data/height.csv", row.names=FALSE)
 
@@ -29,7 +30,8 @@ diam <- subset(diam, !is.na(diameter))
 #merge with plot summary
 diam <- merge(diam, plotsumm, by = c("pot", "plot", "ID"))
   diam$volume <- as.factor(diam$volume)
-
+  diam$block <- as.factor(gsub("-[1-9]", "", diam$ID))
+  
 #write.csv(diam, "calculated data/diameter.csv", row.names=FALSE)
 
 #LEAF COUNT
@@ -102,7 +104,8 @@ box()
 ####find specific dates where treatment effects occurred
 library(visreg)
 library(multcomp)
-require(broom
+library(broom)
+library(nlme)
         
 ##height (treatment differences began on 3/11)
 H_mod1 <- lm(height~volume, data=height, subset=Date=="2013-03-11")
@@ -114,6 +117,10 @@ tukey_H<- glht(H_mod1, linfct = mcp(volume = "Tukey"))
 
 cld(tukey_H)
 tidy(H_mod1)
+
+H2_mod1 <- lme(height~volume, random= ~1|block/ID,data=height, subset=Date=="2013-03-11")
+anova(H2_mod1)
+
 
 H_mod2 <- lm(height~volume, data=height, subset=Date=="2013-03-04")
 summary(H_mod2)
@@ -134,7 +141,8 @@ summary(D_mod2)
 anova(D_mod2)
 visreg(D_mod2)
 
-
+D2_mod1 <- lme(diameter~volume, random= ~1|block/ID,data=diam, subset=Date=="2013-03-18")
+anova(D2_mod1)
 
 
 

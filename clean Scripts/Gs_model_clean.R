@@ -35,24 +35,28 @@ cond_agg2 <- cond_agg[cond_agg$gs <= .75, ]
 #relevel to free to evaluate container effect  
 cond_agg$volume <- relevel(cond_agg$volume, ref="1000")  
 cond_agg2$volume <- relevel(cond_agg2$volume, ref="1000") 
+cond_agg2$block <- as.factor(gsub("-[1-9]", "", cond_agg2$ID))
 
-  #raw data 
+  # #raw data 
   gs_lm <- lme(gs ~ volume, random= ~1|ID, data=cond_agg)
   anova(gs_lm)
-  summary(gs_lm)
-  visreg(gs_lm)
-  
-  tukey_gs<- glht(gs_lm, linfct = mcp(volume = "Tukey"))
-  siglets_gs <-cld(tukey_gs)
-  siglets_gs <- siglets_gs$mcletters$Letters
+  # summary(gs_lm)
+  # visreg(gs_lm)
+  # 
+  # tukey_gs<- glht(gs_lm, linfct = mcp(volume = "Tukey"))
+  # siglets_gs <-cld(tukey_gs)
+  # siglets_gs <- siglets_gs$mcletters$Letters
   
   #clean data
   gs_lm2 <- lme(gs ~ volume, random= ~1|ID, data=cond_agg2)
   anova(gs_lm2)
   summary(gs_lm2)
   visreg(gs_lm2)
+  
+  gs_lm3 <- lme(gs ~ volume, random= ~1|block/ID, data=cond_agg2)
+  anova(gs_lm3)
 
-  tukey_gs2<- glht(gs_lm2, linfct = mcp(volume = "Tukey"))
+  tukey_gs2<- glht(gs_lm3, linfct = mcp(volume = "Tukey"))
   siglets_gs_clean<-cld(tukey_gs2)
   siglets_gs_clean2 <- siglets_gs_clean$mcletters$Letters
   
@@ -128,6 +132,8 @@ plotsumm <- read.csv("raw data/plot_summary.csv")
 
 g1_vol2 <- merge(g1_vol2, plotsumm[,3:4])
   g1_vol2$volume <- as.factor(g1_vol2$volume)
+  g1_vol2$block <- as.factor(gsub("-[1-9]", "", g1_vol2$ID))
+  
 
 #stats
 g1_lm <- lme(g1_ID ~ volume, random= ~1|ID, data=g1_vol2)
@@ -135,7 +141,10 @@ anova(g1_lm)
 summary(g1_lm)
 visreg(g1_lm)
 
-tukey_g1<- glht(g1_lm, linfct = mcp(volume = "Tukey"))
+g1_lm2 <- lme(g1_ID ~ volume, random= ~1|block/ID, data=g1_vol2)
+anova(g1_lm2)
+
+tukey_g1<- glht(g1_lm2, linfct = mcp(volume = "Tukey"))
 siglets_g1 <- cld(tukey_g1)
 siglets_g1_2 <- siglets_g1$mcletters$Letters
 
@@ -157,6 +166,7 @@ names(g1_date)[1] <- "g1_date"
 
 cond_pred <- merge(cond_date,g1_date)
 cond_pred$gspred_date <- with(cond_pred, 1.6*(1+g1_date/sqrt(D))*(A/Ca))
+cond_pred$block <- as.factor(gsub("-[1-9]", "", cond_pred$ID))
 
 g1_all <- merge(cond_pred[,2:12], cond_agg3)
 
@@ -173,8 +183,10 @@ anova(g1_date_lm)
 summary(g1_date_lm)
 visreg(g1_date_lm)
 
-tukey_g1_date<- glht(g1_date_lm, linfct = mcp(volume = "Tukey"))
+g1_date_lm2 <- lme(g1_date ~ volume, random= ~1|block/ID, data=cond_pred)
+anova(g1_date_lm2)
 
+tukey_g1_date<- glht(g1_date_lm2, linfct = mcp(volume = "Tukey"))
 siglets_g1_date <- cld(tukey_g1_date)
 siglets_g1_date2 <- siglets_g1_date$mcletters$Letters
 

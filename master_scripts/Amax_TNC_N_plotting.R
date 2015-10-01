@@ -1,7 +1,5 @@
 #this script is for sourcing the Amax vs TNC and N plots into master
 source("functions and packages/startscripts.R")
-
-source("functions and packages/startscripts.R")
 require(lme4)
 require(lmerTest)
 library(effects)

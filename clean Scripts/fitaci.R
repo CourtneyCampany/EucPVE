@@ -45,6 +45,7 @@ aci1_stats <- acifunction2(aci1_clean)
 aci2_stats <- acifunction2(aci2_clean)
 
 aci_stats <- rbind(aci1_stats, aci2_stats)
+aci_stats$block <- as.factor(gsub("-[1-9]", "", aci_stats$ID))
 
 #relevel by 1000
 aci_stats$volume <- as.factor(aci_stats$volume)
@@ -56,10 +57,13 @@ anova(vcmax_lm)
 summary(vcmax_lm)
 visreg(vcmax_lm)
 
-tukey_vc<- glht(vcmax_lm, linfct = mcp(volume = "Tukey"))
-siglets_vc <- cld(tukey_vc)
+vcmax_lm2 <- lme(Vcmax ~ volume, random= ~1|block/ID, data=aci_stats)
+anova(vcmax_lm2)
 
+tukey_vc<- glht(vcmax_lm2, linfct = mcp(volume = "Tukey"))
+siglets_vc <- cld(tukey_vc)
 siglets_vc2 <- siglets_vc$mcletters$Letters
+
 write.csv(siglets_vc2, "master_scripts/sigletters/sl_vcmax.csv", row.names=FALSE)
 
 #JmAX,
@@ -68,10 +72,13 @@ anova(Jmax_lm)
 summary(Jmax_lm)
 visreg(Jmax_lm)
 
-tukey_j<- glht(Jmax_lm, linfct = mcp(volume = "Tukey"))
-siglets_j <- cld(tukey_j)
+Jmax_lm2 <- lme(Jmax ~ volume, random= ~1|block/ID, data=aci_stats)
+anova(Jmax_lm2)
 
+tukey_j<- glht(Jmax_lm2, linfct = mcp(volume = "Tukey"))
+siglets_j <- cld(tukey_j)
 siglets_j2 <- siglets_j$mcletters$Letters
+
 write.csv(siglets_j2, "master_scripts/sigletters/sl_jmax.csv", row.names=FALSE)
 
 #need to means of all ids for phys table, not by campaign

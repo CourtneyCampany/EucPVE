@@ -18,7 +18,7 @@ write.csv(c13_agg, "calculated data/c13_means.csv", row.names=FALSE)
 
 windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-bar(d13c, volume, c13,half.errbar=FALSE, ylim=c(-32,0), col="grey",, legend=FALSE, xlab=vollab, ylab="")
+bar(d13c, volume, c13,half.errbar=FALSE, ylim=c(-32,0), col="grey", legend=FALSE, xlab=vollab, ylab="")
 title(ylab=c13lab, mgp=ypos)
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/leafc13.pdf")
@@ -26,19 +26,26 @@ dev.off()
 
 
 ##Stats for c13-------------------------------------------------------------------------------------
-# require(nlme)
-# require(visreg)
-# library(multcomp)
-# 
-# c13$volume <-  relevel(c13$volume, ref="1000")
-# 
-# #srl (not different)
-# c13_container <- lme(d13c ~ volume, random= ~1|ID, data=c13)
-# anova(c13_container)
-# summary(c13_container)
-# visreg(c13_container)
-# 
-# tukey_c13<- glht(c13_container, linfct = mcp(volume = "Tukey"))
-# c13_siglets <-cld(tukey_c13)
-# c13_siglets2 <- c13_siglets$mcletters$Letters
-# write.csv(c13_siglets2, "master_scripts/sigletters/sigletts_plant/sl_c13.csv", row.names=FALSE)  
+require(nlme)
+require(visreg)
+library(multcomp)
+
+c13$volume <-  relevel(c13$volume, ref="1000")
+c13$block <- as.factor(gsub("-[1-9]", "", c13$ID))
+
+#c13 (not different)
+c13_container <- lme(d13c ~ volume, random= ~1|ID, data=c13)
+anova(c13_container)
+summary(c13_container)
+visreg(c13_container)
+
+c13_container2 <- lme(d13c ~ volume, random= ~1|block/ID, data=c13)
+  anova(c13_container2)
+  summary(c13_container2)
+
+
+tukey_c13<- glht(c13_container2, linfct = mcp(volume = "Tukey"))
+c13_siglets <-cld(tukey_c13)
+c13_siglets2 <- c13_siglets$mcletters$Letters
+
+write.csv(c13_siglets2, "master_scripts/sigletters/sigletts_plant/sl_c13.csv", row.names=FALSE)

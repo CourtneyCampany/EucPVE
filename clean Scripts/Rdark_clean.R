@@ -95,22 +95,25 @@ box()
 
 
 ####stats--------------------------------------------------------------------------------------------------
+library(multcomp)
 
 #Rd q10 to 25 with tereticornis
 # 'Being in a pot' effect.
 rdark5$volume <- as.factor(rdark5$volume)
 rdark5$volume <- relevel(rdark5$volume, ref="1000")
+rdark5$block <- as.factor(gsub("-[1-9]", "", rdark5$ID))
 
 rd25_container <- lme(rd25_eucs ~ volume, random= ~1|ID, data=rdark5)
-
 anova(rd25_container)
 summary(rd25_container)
 
-library(multcomp)
-tukey_rd25<- glht(rd25_container, linfct = mcp(volume = "Tukey"))
-rd_siglets <-cld(tukey_rd25)
+rd25_container2 <- lme(rd25_eucs ~ volume, random= ~1|block/ID, data=rdark5)
+anova(rd25_container2)
 
+tukey_rd25<- glht(rd25_container2, linfct = mcp(volume = "Tukey"))
+rd_siglets <-cld(tukey_rd25)
 rd_siglets2 <- rd_siglets$mcletters$Letters
+
 write.csv(rd_siglets2, "master_scripts/sigletters/sigletts_phys/sl_rd.csv", row.names=FALSE)
 
 ####no container effect (relevel to 1000 and no volumes differ)

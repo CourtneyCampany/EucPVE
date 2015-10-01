@@ -30,15 +30,20 @@ require(visreg)
 library(multcomp)
 
 srl_clean2$volume <-  relevel(srl_clean2$volume, ref="1000")
+
 srl$volume <-  relevel(srl$volume, ref="1000")
+srl$block <- as.factor(gsub("-[1-9]", "", srl$ID))
 
 #srl (not different)
 srl_container <- lme(SRL2 ~ volume, random= ~1|ID, data=srl)
   anova(srl_container)
   summary(srl_container)
   visreg(srl_container)
-  
-  tukey_srl<- glht(srl_container, linfct = mcp(volume = "Tukey"))
+
+srl_container2 <- lme(SRL2 ~ volume, random= ~1|block/ID, data=srl)
+  anova(srl_container2)
+
+  tukey_srl<- glht(srl_container2, linfct = mcp(volume = "Tukey"))
   srl_siglets <-cld(tukey_srl)
   srl_siglets2 <- srl_siglets$mcletters$Letters
   write.csv(srl_siglets2, "master_scripts/sigletters/sigletts_plant/sl_srl.csv", row.names=FALSE)  
@@ -52,6 +57,7 @@ sla_tnc <- read.csv("calculated data/TNC_content")
   sla_tnc$Date <- as.Date(sla_tnc$Date)
   sla_tnc$sla <- with(sla_tnc, area/mass)
   sla_tnc$lma <- with(sla_tnc, mass/area)
+  sla_tnc$block <- as.factor(gsub("-[1-9]", "", sla_tnc$ID))
   
   leaf_TNCfree <- subset(sla_tnc, select = c("ID", "volume", "sla_free", "lma_free","sla", "lma","Date"))
   volorder<-order(leaf_TNCfree$volume, by=leaf_TNCfree$Date)

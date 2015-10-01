@@ -17,14 +17,14 @@ PS <- merge(plotsumm, subset(gasexchange, select = c("campaign", "ID", "CO2", "P
 #run function to add campaign date
 PS <- add_campaign_date(PS)
 
-
 #Amax_means for Data table-----------------------------------------------------------------------
 # PSmax <- subset(PS, type=="Amax")
 # 
 # #mean of 5 logs per plant
 # PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
 #   PSmax_spot$volume <- as.factor(PSmax_spot$volume)
-# 
+#   PSmax_spot$block <- as.factor(gsub("-[1-9]", "", PSmax_spot$ID))
+  
 # #mean by plant over all dates, then treatment means
 # PSmax_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
 #   PSmax_ID$volume <- as.factor(PSmax_ID$volume)
@@ -36,7 +36,7 @@ PSsat <- subset(PS, type=="Asat")
 #mean of 5 logs per plant
 PSsat_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSsat)
   PSsat_spot$volume <- as.factor(PSsat_spot$volume)
-
+  
 #mean by plant over all dates, then treatment means
 PSsat_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSsat_spot)
   PSsat_ID$volume <- as.factor(PSsat_ID$volume)
@@ -61,28 +61,21 @@ library(multcomp)
   
 #relevel to free to evaluate container effect  
 PSsat_spot$volume <- relevel(PSsat_spot$volume, ref="1000")
+PSsat_spot$block <- as.factor(gsub("-[1-9]", "", PSsat_spot$ID))
 
 #asat
-asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
-#amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
+# asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
 #   anova(asat_lm)
-#   anova(amax_lm)
-# 
 #   summary(asat_lm)
-#   summary(amax_lm)
+asat_lm2 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSsat_spot)
+  # anova(asat_lm2)
 
-  tukey_A<- glht(asat_lm, linfct = mcp(volume = "Tukey"))
+tukey_A<- glht(asat_lm2, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
 
-#   tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
-#   siglets_amax <-cld(tukey_Amax)
-#   
-#   siglets_amax2 <- siglets_amax$mcletters$Letters
 
-  #write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
-
-# #lets prove that asat was immediately different, then use average
-# asat_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot, subset=Date=="2013-03-07")
+#lets prove that asat was immediately different, then use average
+# asat_lm_d1 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSsat_spot, subset=Date=="2013-03-07")
 #   anova(asat_lm_d1)
 #   summary(asat_lm_d1)
 # 
@@ -90,17 +83,24 @@ asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSsat_spot)
 #     cld(tukey_A1)
 #   visreg(asat_lm_d1)
 
-# #amax
+#amax
+# PSmax_spot$volume <- relevel(PSmax_spot$volume, ref="1000")  
+#   
 # amax_lm <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot)
 #   anova(amax_lm)
 #   summary(amax_lm)
 # 
-# tukey_Amax<- glht(amax_lm, linfct = mcp(volume = "Tukey"))
-# cld(tukey_Amax)
-# visreg(amax_lm)
+# amax_lm2 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSmax_spot)
+#   anova(amax_lm2)
+# 
+# tukey_Amax<- glht(amax_lm2, linfct = mcp(volume = "Tukey"))
+#   siglets_amax <-cld(tukey_Amax)
+#   siglets_amax2 <- siglets_amax$mcletters$Letters
+# 
+# write.csv(siglets_amax2, "master_scripts/sigletters/sl_amax.csv", row.names=FALSE)
 
-# #lets prove that asat was immediately different, then use average
-# amax_lm_d1 <- lme(Photo ~ volume, random= ~1|ID, data=PSmax_spot, subset=Date=="2013-03-07")
+#lets prove that amax was immediately different, then use average
+# amax_lm_d1 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSmax_spot, subset=Date=="2013-03-07")
 #   anova(amax_lm_d1)
 #   summary(amax_lm_d1)
 # 

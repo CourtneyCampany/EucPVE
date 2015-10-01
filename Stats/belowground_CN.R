@@ -75,10 +75,11 @@ root_all2$Ntrans <- asin(sqrt(root_all2$N_perc/100))
 root_all2$volume <- relevel(root_all2$volume, ref="free")
 
 root_all3 <- root_all2[! root_all2$N_perc == 0.71640,]
-write.csv(root_all3, "calculated data/root_N_clean.csv", row.names=FALSE)
+root_all3$block <- as.factor(gsub("-[1-9]", "", root_all3$ID))
 
+#write.csv(root_all3, "calculated data/root_N_clean.csv", row.names=FALSE)
 
-mean(root_all3$N_perc)
+# mean(root_all3$N_perc)
 
 #rootN_lm <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all)
 #rootN_lm2<-glm(N_perc,volume,binomial,data=root_all)
@@ -88,104 +89,110 @@ rootN_container <- lme(Ntrans ~ volume, random= ~1|ID, data=root_all3)
   anova(rootN_container)
   summary(rootN_container)
   visreg(rootN_container)
+rootN_container2 <- lme(Ntrans ~ volume, random= ~1|block/ID, data=root_all3)
+  anova(rootN_container2)
+  summary(rootN_container2)
+  visreg(rootN_container2)
 
-tukey_rootN<- glht(rootN_container, linfct = mcp(volume = "Tukey"))
+anova(rootN_container, rootN_container2)
+
+tukey_rootN<- glht(rootN_container2, linfct = mcp(volume = "Tukey"))
 rootN_siglets <-cld(tukey_rootN)
-
 rootN_siglets2 <- rootN_siglets$mcletters$Letters
+
 write.csv(rootN_siglets2, "master_scripts/sigletters/sigletts_plant/sl_rootN.csv", row.names=FALSE)
 
 
 
 
 #PLOT-----------------------------------------------------------------------------------------------
-###these changes are after stats for plotting labels
-soil_harvest$volume <- gsub("1000", "free", soil_harvest$volume)
-soil_harvest$volume <- gsub("^5", "05", soil_harvest$volume)
+# ###these changes are after stats for plotting labels
+# soil_harvest$volume <- gsub("1000", "free", soil_harvest$volume)
+# soil_harvest$volume <- gsub("^5", "05", soil_harvest$volume)
+# 
+# 
+# 
+# #froot
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,fineroot, data=root_chem,   border=palette(), col="grey98", 
+#             ylab = "Fine Root Mass (g)",ylim = c(0, 65), xlab = "Pot Volume (l)")
+# box()
+# dev.copy2pdf(file="output/roots and soil/frootmass.pdf")
+# dev.off()
+# 
+# #froot no free
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,fineroot, data=root_pot,   border=palette(), col="grey98", 
+#             ylab = "Fine Root Mass (g)",ylim = c(0, 10), xlab = "Pot Volume (l)")
+# box()
+# dev.copy2pdf(file="output/roots and soil/frootmass_nofree.pdf")
+# dev.off()
 
-
-
-#froot
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,fineroot, data=root_chem,   border=palette(), col="grey98", 
-            ylab = "Fine Root Mass (g)",ylim = c(0, 65), xlab = "Pot Volume (l)")
-box()
-dev.copy2pdf(file="output/roots and soil/frootmass.pdf")
-dev.off()
-
-#froot no free
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,fineroot, data=root_pot,   border=palette(), col="grey98", 
-            ylab = "Fine Root Mass (g)",ylim = c(0, 10), xlab = "Pot Volume (l)")
-box()
-dev.copy2pdf(file="output/roots and soil/frootmass_nofree.pdf")
-dev.off()
-
-#total root mass
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,rootmass, data=root_chem,   border=palette(), col="grey98", 
-            ylab = "Root Mass (g)",ylim = c(0, 100), xlab = "Pot Volume (l)")
-box()
-dev.copy2pdf(file="output/roots and soil/rootmass.pdf")
-dev.off()
-
-#froot no free
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,rootmass, data=root_pot,   border=palette(), col="grey98", 
-            ylab = "Root Mass (g)",ylim = c(0, 30), xlab = "Pot Volume (l)")
-box()
-dev.copy2pdf(file="output/roots and soil/rootmass_nofree.pdf")
-dev.off()
+# #total root mass
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,rootmass, data=root_chem,   border=palette(), col="grey98", 
+#             ylab = "Root Mass (g)",ylim = c(0, 100), xlab = "Pot Volume (l)")
+# box()
+# dev.copy2pdf(file="output/roots and soil/rootmass.pdf")
+# dev.off()
+# 
+# #froot no free
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,rootmass, data=root_pot,   border=palette(), col="grey98", 
+#             ylab = "Root Mass (g)",ylim = c(0, 30), xlab = "Pot Volume (l)")
+# box()
+# dev.copy2pdf(file="output/roots and soil/rootmass_nofree.pdf")
+# dev.off()
 
 #-----------------------------------------------------------------------------------------------
-#Root N %
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,N_perc, data=root_all3,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-              ylab = "Root Nitrogen (%)",ylim = c(0, 1.2))
-box() 
-  
-dev.copy2pdf(file="output/roots and soil/rootNperc.pdf")
-dev.off() 
-#-----------------------------------------------------------------------------------------------  
-#fine root N content
-  
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,Nfr, data=root_chem,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-            ylab = "Root Nitrogen (g)",ylim = c(0, .5))
-box()
-dev.copy2pdf(file="output/roots and soil/rootN.pdf")
-dev.off() 
-#no free
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,Nfr, data=root_pot,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-            ylab = "Root Nitrogen (g)",ylim = c(0, .08))
-box()
-dev.copy2pdf(file="output/roots and soil/rootN_nofree.pdf")
-dev.off() 
-
-#-----------------------------------------------------------------------------------------------  
-
-#Soil-pre
-bargraph.CI(volume,n_perc, data=soilpre,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-            ylab = "Soil Nitrogen (%)",ylim = c(0, .1))
-box()
-
-#soil harvest
-windows()
-par(lwd=1.25, mgp=c(2.5,1,0))
-bargraph.CI(volume,n_perc, data=soil_harvest,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
-            ylab = "Soil Nitrogen (%)",ylim = c(0, .06))
-box()
-title(main=paste("time 0 soil N% = ", soilN_mean), line=-1.5, font.main=1, adj=.05, cex.main=1)
-title(main=paste("mean harvest soil N% = ", Hmean), line=-3, font.main=1, adj=.05, cex.main=1)
-
-dev.copy2pdf(file="output/roots and soil/soilN.pdf")
-dev.off()
+# #Root N %
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,N_perc, data=root_all3,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+#               ylab = "Root Nitrogen (%)",ylim = c(0, 1.2))
+# box() 
+#   
+# dev.copy2pdf(file="output/roots and soil/rootNperc.pdf")
+# dev.off() 
+# #-----------------------------------------------------------------------------------------------  
+# #fine root N content
+#   
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,Nfr, data=root_chem,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+#             ylab = "Root Nitrogen (g)",ylim = c(0, .5))
+# box()
+# dev.copy2pdf(file="output/roots and soil/rootN.pdf")
+# dev.off() 
+# #no free
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,Nfr, data=root_pot,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+#             ylab = "Root Nitrogen (g)",ylim = c(0, .08))
+# box()
+# dev.copy2pdf(file="output/roots and soil/rootN_nofree.pdf")
+# dev.off() 
+# 
+# #-----------------------------------------------------------------------------------------------  
+# 
+# #Soil-pre
+# bargraph.CI(volume,n_perc, data=soilpre,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+#             ylab = "Soil Nitrogen (%)",ylim = c(0, .1))
+# box()
+# 
+# #soil harvest
+# windows()
+# par(lwd=1.25, mgp=c(2.5,1,0))
+# bargraph.CI(volume,n_perc, data=soil_harvest,  xlab = "Pot Volume (l)", border=palette(), col="grey98", 
+#             ylab = "Soil Nitrogen (%)",ylim = c(0, .06))
+# box()
+# title(main=paste("time 0 soil N% = ", soilN_mean), line=-1.5, font.main=1, adj=.05, cex.main=1)
+# title(main=paste("mean harvest soil N% = ", Hmean), line=-3, font.main=1, adj=.05, cex.main=1)
+# 
+# dev.copy2pdf(file="output/roots and soil/soilN.pdf")
+# dev.off()
 

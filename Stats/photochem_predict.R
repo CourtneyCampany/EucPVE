@@ -17,6 +17,7 @@ source("functions and packages/rsquared_glmm.R")
 photo_chem <- read.csv("calculated data/Amax_chem.csv")
 #run volume format func
 photo_chem<- vollab_func(photo_chem)
+photo_chem$block <- as.factor(gsub("-[0-9]", "", photo_chem$ID))
 
 #plot predicted and observed in bins------------------------------------------------------
 
@@ -71,7 +72,7 @@ Afit_full_lme <- lme(A_mass ~ Nmass_notnc+starch+Nmass_notnc:starch, random=~1|I
 rsquared.glmm(list(Afit_full, Afit_logA, Afit_full_lme))
 
 # remove interaction, starch very significant
-Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|ID), data=photo_chem)
+Afit_almostfull <- lmer(A_mass ~ Nmass_notnc+starch + (1|block/ID), data=photo_chem)
   #need fixed effects from almost model
   fixed.effects(Afit_almostfull)
   #need something with ci and fixed effect size to 
