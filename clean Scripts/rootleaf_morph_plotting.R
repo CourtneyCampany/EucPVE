@@ -19,6 +19,7 @@ srl <- read.csv("raw data/SRLmass.csv")
 #srl_clean <- srl[srl$SRL2 <= 100,]  
 srl_clean2 <- srl[srl$ID != "5-8" & srl$ID != "7-8",]  
 
+write.csv(srl_clean2, "calculated data/srl_clean.csv", row.names=FALSE)
 
 ##srl_agg for paper table
 srl_agg <- summaryBy(SRL2 ~ volume, data=srl, FUN=c(mean, se))
