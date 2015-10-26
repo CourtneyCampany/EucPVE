@@ -16,6 +16,9 @@ leaf_param <- photo_chem[,c(1:3,22:23,11:12, 14:17, 7:8)]
 #leaf_param$volume <- gsub("05", "5", leaf_param$volume)
 
 
+
+
+
 ###stats on leaf parameters for manuscript
 library(visreg)
 library(multcomp)
@@ -116,6 +119,50 @@ tukey_leafN<- glht(leafN_container4, linfct = mcp(volume = "Tukey"))
   leafN_siglets <-cld(tukey_leafN)
   leafN_siglets2 <- leafN_siglets$mcletters$Letters
   
-write.csv(leafN_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafN.csv", row.names=FALSE)
+#write.csv(leafN_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafN.csv", row.names=FALSE)
+
+
+#5: leaf N no tnc
+
+
+##back calculate N content on mass basis
+##subtract tnc from leaf mass
+##redo N percentage on mass-tnc
+
+nitrodat <- leaf_param[, c(1,2,3,5,6,11:13)]
+nitrodat$starchcontent <- with(leaf_param, mass * starch)
+nitrodat$sugarcontent <- with(leaf_param, mass * sugars)
+
+nitrodat$mass_notnc <- with(nitrodat, mass - (starchcontent+sugarcontent))
+
+nitrodat$Nperc_notnc <- with(nitrodat, (1-(mass_notnc-Nmass)/mass_notnc)*100)
+
+
+###save nitro_notnc for table
+write.csv(nitrodat[,c(1:3,12)],"calculated data/leafnitrogen_notnc.csv", row.names = FALSE)
+
+
+#redo stats
+nitrodat$volume <- as.factor(nitrodat$volume)
+nitrodat$volume <- relevel(nitrodat$volume, ref="1000")
+nitrodat$block <- as.factor(gsub("-[1-9]", "", nitrodat$ID))
+
+leafNadj_mod <- lme(Nperc_notnc ~ volume, random= ~1|block/ID, data=nitrodat)
+anova(leafNadj_mod)
+summary(leafNadj_mod)
+
+tukey_leafNadj<- glht(leafNadj_mod, linfct = mcp(volume = "Tukey"))
+leafNadj_siglets <-cld(tukey_leafNadj)
+leafNadj_siglets2 <- leafNadj_siglets$mcletters$Letters
   
-  
+write.csv(leafNadj_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafN_notnc.csv", row.names=FALSE)
+
+##was at first gas exchange
+
+nitrodat$Date <- as.Date(nitrodat$Date)
+
+
+leafNadj_mod2 <- lme(Nperc_notnc ~ volume, random= ~1|block/ID, data=nitrodat[nitrodat$Date == "2013-03-07",])
+anova(leafNadj_mod2)
+summary(leafNadj_mod2)
+visreg(leafNadj_mod2)
