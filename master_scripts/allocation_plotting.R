@@ -1,5 +1,5 @@
 #this script is for sourcing the allocation plots into master
-#source("functions and packages/startscripts.R")
+# source("functions and packages/startscripts.R")
 
 library(smatr)
 

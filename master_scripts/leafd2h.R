@@ -24,6 +24,25 @@ allom$d2h <- with(allom, diameter^2 * height)
 allom$volume <- as.factor(allom$volume)
 
 
-##plot leafmass * d2h
+leafd2h_mod <- lm(log10(leafmass) ~ log10(d2h), data=allom)
+anova(leafd2h_mod)
+summary(leafd2h_mod)
+library(visreg)
+visreg(leafd2h_mod)
 
-plot(leafmass ~ d2h, data=allom, pch=pchs[volume], col=volume, cex=1.5)
+
+##plot leafmass * d2h
+library(magicaxis)
+library(plotrix)
+
+windows(7,7)
+plot(log10(leafmass) ~ log10(d2h), data=allom, pch=pchs[volume], col=volume, cex=1.5, axes=FALSE)
+magaxis(side=c(1,2), unlog=c(1,2), frame.plot=TRUE)
+box()
+ablineclip(leafd2h_mod, x1=min(log10(allom$d2h)), x2=max(log10(allom$d2h)),lwd=2)
+
+dev.copy2pdf(file= "master_scripts/manuscript_figs/leafmassd2h.pdf")
+dev.off()
+
+
+

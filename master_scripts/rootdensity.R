@@ -11,33 +11,49 @@ rootlength <- read.csv("calculated data/srl_clean.csv")
 ##read final harvest leaf area
 leafarea <- read.csv("calculated data/LA_harvest.csv")
 
+##Read in final harvest data for RLD (all root length)
+harvest <- read.csv("calculated data/seedling mass.csv")
+harvestroots <- harvest[,c("ID","volume", "fineroot")] ##grams
+
+##need to merge harvest fine root mass with SRL
+
+rootlength2 <- merge(rootlength, harvestroots, all=TRUE)
+
 ##calculate root lenght density
-rootlength$rootlengthdensity <- with(rootlength, total_length_cm/volume) ##cm/l
-rootlength$rootlengthdensity2 <- with(rootlength, rootlengthdensity*.01) ##m/dm3
-rootlength$rootlengthdensity3 <- with(rootlength, rootlengthdensity*.00001) ##m/cm3
+# rootlength$rootlengthdensity <- with(rootlength, total_length_cm/volume) ##cm/l
+# rootlength$rootlengthdensity2 <- with(rootlength, rootlengthdensity*.01) ##m/dm3
+# rootlength$rootlengthdensity3 <- with(rootlength, rootlengthdensity*.00001) ##m/cm3
+
+
+rootlength2$rootlengthpot <- with(rootlength2, SRL2*fineroot) #meters
+rootlength2$frld <- with(rootlength2, rootlengthpot/volume) ##m/dm3
+
+###remove the empty IDs that were outliers from SRL
+rootlength3 <- rootlength2[complete.cases(rootlength2),]
+
 
 ##now make volume a factor and relevel
-rootlength$volume <- as.factor(rootlength$volume)
-rootlength$volume <- relevel(rootlength$volume, ref="1000")
-rootlength$block <- as.factor(gsub("-[1-9]", "", rootlength$ID))
+rootlength3$volume <- as.factor(rootlength3$volume)
+rootlength3$volume <- relevel(rootlength3$volume, ref="1000")
+rootlength3$block <- as.factor(gsub("-[1-9]", "", rootlength3$ID))
 
-write.csv(rootlength[,c(1:3,7:9,12)], "calculated data/RLD.csv", row.names=FALSE)
+###save as calculated data
+write.csv(rootlength3[,c(1:2,13:14)], "calculated data/RLD.csv", row.names=FALSE)
 
 
 ###make a means dataframe with empty spaces for free and save for table----------------------------------------------------------
 
-rld_agg <- summaryBy(rootlengthdensity2 ~ volume, data=rootlength[rootlength$volume != 1000,], FUN=c(mean,se))
-emptyfree <- data.frame(volume = 1000, rootlengthdensity2.mean = "", rootlengthdensity2.se = "")
+rld_agg <- summaryBy(frld ~ volume, data=rootlength3[rootlength3$volume != 1000,], FUN=c(mean,se))
+emptyfree <- data.frame(volume = 1000, frld.mean = "", frld.se = "")
 
 rld_agg2 <- rbind(rld_agg, emptyfree)
 write.csv(rld_agg2, "calculated data/RLD_agg.csv", row.names=FALSE)
 
 
 
-
 ##is rootlength density different by soil volume-------------------------------------------------------------------------------
 
-bargraph.CI(volume, rootlengthdensity, data=rootlength)
+bargraph.CI(volume, frld, data=rootlength3)
 
 ###this isnt that great because soil volume is unlimited for free
 # rootdensity_mod <- lme(rootlengthdensity ~ volume, random= ~1|block/ID, data=rootlength)
@@ -53,10 +69,10 @@ bargraph.CI(volume, rootlengthdensity, data=rootlength)
 
 
 ###test this within plots, report this value
-rootlength_pot <- rootlength[rootlength$volume != 1000,]
+rootlength_pot <- rootlength3[rootlength3$volume != 1000,]
 rootlength_pot <- droplevels(rootlength_pot)
 
-rootdensity_mod2 <- lme(rootlengthdensity ~ volume, random= ~1|block/ID, data=rootlength_pot)
+rootdensity_mod2 <- lme(frld ~ volume, random= ~1|block/ID, data=rootlength_pot)
 anova(rootdensity_mod2)
 visreg(rootdensity_mod2)
 tukey_density<- glht(rootdensity_mod2, linfct = mcp(volume = "Tukey"))
@@ -100,30 +116,52 @@ write.csv(siglets_density3, "master_scripts/sigletters/sl_rld.csv", row.names=FA
 
 ###-root length vs leaf area----------------------------------------------------------------------------------------------
 
-rootleaf <- merge(rootlength[, c(1, 7)], leafarea)
+rootleaf <- merge(rootlength3[, c(1, 13)], leafarea)
   rootleaf$volume <- as.factor(rootleaf$volume)
   rootleaf$block <- as.factor(gsub("-[1-9]", "", rootleaf$ID))
 
 
-rootleaf_mod <- lm(total_length_cm ~ totalarea, data=rootleaf)
+rootleaf_mod <- lm(log10(rootlengthpot) ~ log10(totalarea), data=rootleaf)
 anova(rootleaf_mod)
 summary(rootleaf_mod)
 library(visreg)
 visreg(rootleaf_mod)
-rootleaf_mod2 <- lme(total_length_cm ~ totalarea, random= ~1|block/ID, data=rootleaf)
+
+rootleaf_mod2 <- lme(log10(rootlengthpot) ~ log10(totalarea), random= ~1|block/ID, data=rootleaf)
 summary(rootleaf_mod2)
+anova(rootleaf_mod2)
 
 library(plotrix)
-plot(total_length_cm ~ totalarea, data=rootleaf, pch=pchs[volume], col=volume, cex=1, ylim=c(0, 1000), xlim=c(0, 7000) )
-ablineclip(rootleaf_mod, x1=min(rootleaf$totalarea), x2=max(rootleaf$totalarea),2)
+library(magicaxis)
+
+windows()
+plot(log10(rootlengthpot) ~ log10(totalarea), data=rootleaf, pch=pchs[volume], col=volume, cex=1, axes=FALSE )
+ablineclip(rootleaf_mod, x1=min(log10(rootleaf$totalarea)), x2=max(log10(rootleaf$totalarea)),lwd=2)
+magaxis(side=c(1,2), unlog=c(1,2), frame.plot=TRUE)
+box()
+
 
 ###is there a relationship inside plots
-rootleaf_mod3 <- lme(total_length_cm ~ totalarea, random= ~1|block/ID, data=rootleaf[rootleaf$volume !=1000,])
+rootleaf_mod3 <- lme(log10(rootlengthpot) ~ log10(totalarea), random= ~1|block/ID, data=rootleaf[rootleaf$volume !=1000,])
 summary(rootleaf_mod3)
+visreg(rootleaf_mod3)
 
-##only free?
-rootleaf_mod4 <- lme(total_length_cm ~ totalarea, random= ~1|block/ID, data=rootleaf[rootleaf$volume ==1000,])
+rootleaf_mod4 <- lm(log10(rootlengthpot) ~ log10(totalarea), data=rootleaf[rootleaf$volume !=1000,])
+anova(rootleaf_mod4)
 summary(rootleaf_mod4)
-visreg(rootleaf_mod4)
+
+rootleaf_mod5 <- lm(rootlengthpot ~ totalarea, data=rootleaf[rootleaf$volume !=1000,])
+anova(rootleaf_mod5)
+summary(rootleaf_mod5)
+visreg(rootleaf_mod5)
+
+windows()
+plot(log10(rootlengthpot) ~ log10(totalarea), data=rootleaf[rootleaf$volume !=1000,], pch=pchs[volume], col=volume, 
+     cex=1, axes=FALSE )
+ablineclip(rootleaf_mod4, x1=min(log10(rootleaf$totalarea)), x2=max(log10(rootleaf$totalarea)),lwd=2)
+magaxis(side=c(1,2), unlog=c(1,2), frame.plot=TRUE)
+box()
+
+
 
 
