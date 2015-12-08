@@ -4,7 +4,7 @@ author: ""
 date: ""
 output:
   word_document:
-    reference_docx: manuscriptstyle.docx
+    reference_docx: manuscriptstyle_thesis.docx
   pdf_document: default
   html_document:
     number_sections: yes
