@@ -175,14 +175,14 @@ Differences in experimental parameters with soil volume were analysed by mixed-e
 Plant height, diameter and leaf area diverged between container volumes soon after start of the experiment (Figure `r allomfig`). First, seedling leaf area significantly diverged between soil volumes (P < 0.029) during the 5^th^ week of the experiment. Following this period both height (8^th^) week) and then diameter (9^th^ week) significantly deviated across soil volumes (P < 0.045 & 0.035, respectively). The large reductions in height gain and total leaf area in smaller compared to larger containers continued throughout the experiment. In this field study, colder temperatures and reductions in total PPFD per day (Figure `r airvarsfig`) likely slowed the growth of seedlings in the final weeks of the experiment (Figure `r allomfig`). Seedlings maintained diameter growth throughout the experiment, although marginal with smaller soil volumes in the final month. Final seedling height significantly increased with increasing soil volume (P < 0.001). Increases in both final stem diameter (P < 0.001) and cumulative leaf area (both P < 0.001) were found with increasing soil volume and these differences were driven mainly by the largest container and the free seedling treatments.
 
 \
-```{r allometry, fig.width=6, fig.height=7.8, echo=FALSE,  dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r allometry, fig.width=6, fig.height=7.8, echo=FALSE,  dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/allometryplotting.R")
 ```  
 \
 **Figure 2.1**. Soil volume treatment means &pm; standard error of height growth (a), diameter growth (b), and interpolated seedling leaf area (c) measured weekly of *Eucalyptus tereticornis* seedlings across the experiment duration in 2013.
 
 \
-```{r airvars, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r airvars, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/airvars_plotting.R")
 ```  
 \
@@ -210,7 +210,7 @@ dust(table1)%>%
 ```
 
 \
-```{r allocation, fig.width=6, fig.height=8, echo=FALSE, warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r allocation, fig.width=6, fig.height=8, echo=FALSE, warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/allocation_plotting.R")
 ```  
 \
@@ -238,7 +238,7 @@ Leaf N~f~ was significantly higher in free seedlings and the largest container v
 At the first measurement campaign, both A~sat~ and A~max~ were significantly higher in the free seedling treatment compared to seedlings in containers (both P < 0.001). Across all measurement campaigns mean A~sat~ (Figure `r asatfig`) and A~max~ (Table `r pvetab3`) were consistently higher in free seedlings than in containers (26 % and 29 %, respectively). The relationships between photosynthetic capacity, leaf starch and leaf N on a mass basis was marginally significant (P = 0.058) but A~max~ on a mass basis was highly correlated to both leaf N content and leaf starch (both P < 0.001). We used predictions from the linear mixed effect model equation to visualize these relationship of A~max~ to either leaf N content or leaf starch at multiple bin levels (n=5) of the co-variate parameter (Figure `r achemfig`). Across all measurement campaigns and treatments A~max~ was higher when leaf N was also higher, usually associated with low levels of leaf starch (Figure `r achemfig`a). A~max~  was also lower when leaf starch was high as higher leaf N often did not coincide with high leaf starch (Figure `r achemfig`b). Overall, A~max~ was positively correlated with final harvest biomass across all seedlings (P < 0.001).
 
 \
-```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/A_stats_plotting.R")
 ```  
 
@@ -246,7 +246,7 @@ source("master_scripts/A_stats_plotting.R")
 **Figure 2.4**. Soil volume treatment means &pm; standard error, across all measurement campaigns (n = 6), of light saturated rates of photosynthesis at 25&deg;C. Different letters represent significant differences between treatments.
 
 \
-```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/Amax_TNC_N_plotting2.R")
 ```  
 \
@@ -262,7 +262,7 @@ Neither $\Psi$~pd~ nor $\Psi$~l~ were different across treatments, with mean val
 The default model M~free~, successfully optimized a LMF (21.6 %) which then allowed the model to predict mean harvest total biomass of free seedlings within 1.2 %. Using this optimized LMF, the total biomass of modeled seedlings for each soil volume treatment (M~pots~) were on average 23&pm;2.4 g C more than measured seedling biomass when compared against predicted total net leaf C gain (Figure `r massmodelfig`a). Thus, seedling C mass was overestimated by an average of 50&pm;8.7 % in modeled seedlings across the soil volume treatments (Figure `r massmodelfig`b). As a result, the observed reductions in leaf *A* with decreasing soil volume when integrated across the 120 day experiment were not large enough to explain the reduction in observed seedling biomass across the  container size treatments.  
 
 \
-```{r massmodel, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r massmodel, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/massmodel_optimize.R")
 ```  
 \
@@ -319,7 +319,7 @@ dust(modeltable)%>%
 ```
 
 
-```{r model_scenarios, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r model_scenarios, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/massmodel_optimize_scenarios.R")
 ```  
 

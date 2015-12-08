@@ -121,37 +121,37 @@ dust(table3)%>%
 
 # Figures {.unnumbered}
 
-```{r allometry, fig.width=6, fig.height=7.8, echo=FALSE,  dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r allometry, fig.width=6, fig.height=7.8, echo=FALSE,  dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/allometryplotting.R")
 ```  
 
 **Figure 1**.
 
-```{r airvars, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r airvars, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/airvars_plotting.R")
 ```  
 
 **Figure 2**. 
 
-```{r allocation, fig.width=6, fig.height=8, echo=FALSE, warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r allocation, fig.width=6, fig.height=8, echo=FALSE, warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/allocation_plotting.R")
 ```  
 
 **Figure 3**. 
 
-```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/A_stats_plotting.R")
 ```  
 
 **Figure 4**. 
 
-```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/Amax_TNC_N_plotting2.R")
 ```  
 
 **Figure 5**. 
 
-```{r massmodel, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r massmodel, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/massmodel_optimize.R")
 ```  
 
@@ -167,7 +167,7 @@ dust(modeltable)%>%
 ```
 
 
-```{r model_scenarios, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=400, dev.args=list(type="cairo")}
+```{r model_scenarios, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/massmodel_optimize_scenarios.R")
 ```  
 
