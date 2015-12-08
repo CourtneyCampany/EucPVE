@@ -8,3 +8,6 @@
 #3. Likely will need to use pdf figures anyway, but then a list of figure tables is available.
 
 #4. for RMD will use two dummy docx files for thesis and pub, thesis will need to reflect binding requirements.
+
+
+##airvars fig: height=8
