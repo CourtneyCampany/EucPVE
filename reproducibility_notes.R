@@ -10,7 +10,7 @@
 #4. for RMD will use two dummy docx files for thesis and pub, thesis will need to reflect binding requirements.
 
 
-##airvars fig: height=8
+##airvars/allometry fig: height=8
 ### Abstract {.unnumbered} (not sure what .unnub does)
 
 ##key words commented out
