@@ -1,7 +1,7 @@
 ---
 title: |
   | Chapter 2 
-  | Below-ground sink limitation alters growth and carbon balance of Eucalyptus seedlings
+  | Belowground sink limitation alters growth and carbon balance of Eucalyptus seedlings
 author: ""
 date: ""
 output:
