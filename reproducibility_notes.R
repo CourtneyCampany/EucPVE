@@ -15,3 +15,12 @@
 
 ##key words commented out
 ##author correspondence commented out
+
+
+
+###pub
+
+##currently using tree physiology abbr guidelines
+## abbr are made the same in text and in equations (remove italics from subscripts)
+
+##abstract 300 words
