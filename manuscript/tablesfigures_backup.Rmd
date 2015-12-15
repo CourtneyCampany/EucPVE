@@ -2,7 +2,9 @@
 title: "tablesfigures"
 author: "Court Campany"
 date: "December 7, 2015"
-output: word_document
+output:
+  word_document:
+    reference_docx: manuscriptstyle_thesis.docx
 ---
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
@@ -74,7 +76,7 @@ massmodelfig2 <- "2.S1"
 **Figure S1**. Sensitivity testing of seedling growth model to different carbon allocation strategies including; constraints of leaf mass fraction to treatment specific final harvest values (a) and increases in respiration of non-leaf tissue components by 50 % (b).  Open and filled symbols represent default model and harvest values, while shaded symbols represent model sensitivity to each scenario by soil volume treatment. Both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
 
 # Tables {.unnumbered}
-**Table 1**.Responses of plant and leaf characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Seedling mass and leaf $\delta$^13^C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+**Table 1**.Responses of plant and leaf characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. Seedling mass and leaf $\delta$^13^C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
 
 ```{r table1, echo=FALSE, warning=FALSE}
 greeks=c(alpha='\u03b1', Delta='\u0394', Sigma='\u03A3', mu='\u03bc',delta = '\u03b4')
@@ -91,7 +93,7 @@ dust(table1)%>%
   sprinkle_print_method("markdown")
 ```
 
-**Table 2**. Responses of root characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. All values are from the final harvest. Values for FRLD were only calculated for seedlings in containers as free seedlings had potentially unlimited soil volume to exploit. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings, except for FRLD which represents only differences between seedlings in containers.
+**Table 2**. Responses of root characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. All values are from the final harvest. Values for FRLD were only calculated for seedlings in containers as free seedlings had potentially unlimited soil volume to exploit. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings, except for FRLD which represents only differences between seedlings in containers.
 ```{r table2, echo=FALSE, warning=FALSE}
 dust(table2)%>%
   sprinkle_colnames("Volume (L)", 
@@ -103,7 +105,7 @@ dust(table2)%>%
 ```
 
 \
-**Table 3**. Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. A~max~, R and g~s~ are each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
+**Table 3**. Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. A~max~, R and g~s~ are each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
 
 ```{r table3, echo=FALSE, warning=FALSE}
 dust(table3)%>%
