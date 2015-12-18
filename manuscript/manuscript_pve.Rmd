@@ -248,7 +248,7 @@ dust(table1)%>%
                         "Leaf Starch (%)", 
                         "Leaf Sugars (%)", 
                         "Leaf Nitrogen~TNC-free~ (%)",
-                        paste0("Leaf ", greeks['delta'],"^13^C"," (\u2030)")) %>%
+                        paste0("Leaf ", "$\\delta$","^13^C"," (\u2030)")) %>%
   sprinkle(rows= 1, part="head",bold=TRUE)%>%
   sprinkle_print_method("markdown")
 ```
