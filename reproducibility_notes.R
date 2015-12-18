@@ -24,3 +24,7 @@
 ## abbr are made the same in text and in equations (remove italics from subscripts)
 
 ##abstract 300 words
+
+
+##tables
+#1. delta notation in table does not bold properly

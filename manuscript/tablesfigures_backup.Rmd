@@ -46,7 +46,7 @@ massmodelfig2 <- "2.S1"
 **Table 1**.Responses of plant and leaf characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. Seedling mass and leaf $\delta$^13^C values are from final harvest. Values of leaf starch, sugars, nitrogen and SLA represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
 
 \
-**Table 2**. Responses of root characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. All values are from the final harvest. Values for FRLD are only calculated for seedlings in containers as free seedlings have potentially unlimited soil volume to exploit. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings, except for FRLD which represents only differences between seedlings in containers.
+**Table 2**. Responses of root characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. All values are from the final harvest. Values for fine root length density (FRLD) are only calculated for seedlings in containers as free seedlings have potentially unlimited soil volume to exploit. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings, except for FRLD which represents only differences between seedlings in containers.
 
 \
 **Table 3**. Responses of leaf level gas exchange parameters of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean(standard error) for each treatment. A~max~, R and g~s~ are each measured at 25 &deg;C. Values of A~max~, g~s~ and g~1~ represent overall means across measurement campaigns (n=6). R, J~max~ and Vc~max~ values are means of two measurement campaigns at beginning and end of gas exchange measurements. Different letters represent significant differences between treatments. The volume effect P value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
@@ -55,13 +55,13 @@ massmodelfig2 <- "2.S1"
 **Table S1**. Seedling growth model default parameters.
 
 # List of Figures
-**Figure 1**. Soil volume treatment means &pm; standard error of height growth (a), diameter growth (b), and interpolated seedling leaf area (c) measured weekly of *Eucalyptus tereticornis* seedlings across the experiment duration in 2013. 
+**Figure 1**. Soil volume treatment means &pm; standard error of height growth (a), diameter growth (b), and seedling leaf area estimated from leaf counts (c) measured weekly of *Eucalyptus tereticornis* seedlings across the experiment duration in 2013.
 
 \
 **Figure 2**. Daily maximum and minimum temperature (a), total daily PPFD (b), and daily maximum vapour pressure deficit (c) across the experiment duration in 2013.
 
 \
-**Figure 3**. Soil volume treatment means of biomass partitioning to leaves, stems, and roots at harvest (a), bi-variate relationships between mass allocation to leaves and stems + roots (b) and leaf mass as a function of fine root biomass with &pm; standard error (c). For (b) lines represent standardized major axis fitting of the log-transformed allometric relationships of leaf mass fraction by treatment. For (c) the dashed line is the 1:1 relationship and the solid line represents the significant log-log model fit (R^2^ = 0.82) with equation: log(x) = 0.983(log(y)) - 0.036.
+**Figure 3**. Soil volume treatment means of biomass partitioning to leaves, stems, and roots at harvest (a), bi-variate relationships between mass allocation to leaves and stems + roots (b) and leaf mass as a function of fine root biomass with &pm; standard error (c). For (b) lines represent standardized major axis fitting of the log-transformed allometric relationships of leaf mass fraction by treatment. For (c) the dashed line is the 1:1 relationship and the solid line represents the significant log-log model fit (R^2^ = 0.82) with equation: log(x) = 0.983log(y) - 0.036.
 
 \
 **Figure 4**. Soil volume treatment means &pm; standard error, across all measurement campaigns (n = 6), of light saturated rates of photosynthesis at 25&deg;C. Different letters represent significant differences between treatments.
