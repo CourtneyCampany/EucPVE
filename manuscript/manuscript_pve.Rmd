@@ -61,7 +61,7 @@ massmodelfig2 <- "S1"
 pvetab1 <- "1"
 pvetab2 <- "2"
 pvetab3 <- "3"
-pvetabS <- "S3"
+pvetabS <- "S1"
 
 ```
 
