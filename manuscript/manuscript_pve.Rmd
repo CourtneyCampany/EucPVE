@@ -14,15 +14,22 @@ bibliography: references.bib
 ---
 
 \
-Courtney E. Campany^1^, Belinda Medlyn^1^, Remko A. Duursma^1^.
+COURTNEY E. CAMPANY^1,2^, BELINDA MEDLYN^1^ and REMKO A. DUURSMA^1^
 
 \
 ^1^ Hawkesbury Institute for the Environment, University of Western Sydney, Locked Bag 1797, Penrith, NSW, Australia
+\
+^2^ Corresponding author (courtneycampany@gmail.com)
 
 \
-*Corresponding author*:
-Courtney Campany
-E: courtneycampany@gmail.com
+Hawkesbury Institute for the Environment, Western Sydney University
+Hawkesbury Campus
+Ground Floor, Building R2
+Locked Bag 1797
+Penrith 2751 NSW Australia
+
+\
+RUNNING HEAD:
 
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
@@ -126,7 +133,6 @@ Photosynthetic CO~2~ response (AC~i~) curves were measured at 25 &deg;C on a ran
 
 \
 Leaf dark respiration rates (*R*) was measured on each seedling during the same dates as AC~i~ curves. Freshly detached leaves were collected at least 1 hour after sundown and placed inside a conifer chamber attached to the Licor 6400. Measurements were taken at a reference [CO~2~] of 400 $\mu$l l^-1^ while leaf temperature was maintained at current ambient conditions. Reported values of *R* are standardized rates at 25 &deg;C using a *Q*~10~ value (1.86) developed for these seedlings in a separate experiment (Drake et al. unpublished). Leaf area and dry mass were recorded for each leaf during gas exchange campaigns.
-
 
 ##Leaf water potential
 Predawn ($\Psi$~pd~) and midday ($\Psi$~l~) leaf water potentials were measured for each seedling using a PMS 1505D pressure chamber (PMS Instruments, Albany, OR, USA) on fully expanded leaves during the same time period as AC~i~ and *R*. Leaves were detached and immediately stored inside foil covered bags before water potential measurements were performed. $\Psi$~pd~ was measured before sunrise and $\Psi$~l~ at midday 13:00-14:30 h. These measurements were used as a measure of static water stress on the seedlings [@sellin1999does] and to ensure that the bulk soil water availability was high enough for plants to avoid water stress as they became larger and roots filled the soil volume. 
@@ -328,6 +334,9 @@ dust(modeltable)%>%
 source("master_scripts/massmodel_optimize_scenarios.R")
 ```  
 **Figure S1**. Sensitivity testing of seedling growth model to different carbon allocation strategies including; constraints of leaf mass fraction to treatment specific final harvest values (a) and increases in respiration of non-leaf tissue components by 50 % (b).  Open and filled symbols represent default model and harvest values, while shaded symbols represent model sensitivity to each scenario by soil volume treatment. Both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
+
+# Acknowledgements
+We thank Burhan Amiji for for his outstanding technical assitance. We would like to thank the many Hawkesbury Institute for the Environment staff and students who provded field work help during the experimental harvest.
 
 # References {.unnumbered}
 
