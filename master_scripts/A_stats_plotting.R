@@ -114,7 +114,7 @@ SigLetters <- siglets$mcletters$Letters
 ##need to reorder sigletters for order of bars on figure
 sl2 <- SigLetters[c(2:7, 1)]
 
-#windows(7,5)
+windows(7,5)
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
 bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", ylim=c(0,25), names.arg = leglab,
     col="grey", legend=FALSE, bg="white")
