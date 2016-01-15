@@ -4,13 +4,13 @@ author: ""
 date: ""
 output:
   word_document:
-    reference_docx: manuscriptstyle_thesis.docx
+    reference_docx: manuscriptstyle.docx
   pdf_document: default
   html_document:
     number_sections: yes
 
 csl: tree-physiology.csl
-bibliography: references.bib
+bibliography: references2.bib
 ---
 
 \
