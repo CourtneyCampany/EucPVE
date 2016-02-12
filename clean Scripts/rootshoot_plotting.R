@@ -60,27 +60,27 @@ legend("topleft", leglab, pch=pchs,text.font=3, inset=0.01,
 # ------------------------------------------------------------------------------------------------------
 #PLOT of Root:Shoot means with SE
 #mar=c(5,5,1,1)
-#windows(8,6)
-png(filename = "output/presentations/rootshoot.png", width = 12, height = 8, units = "in", res= 400)
-par(cex.axis=1.3, cex.lab=1.3)
+windows(8,6)
+png(filename = "output/rootshoot.png", width = 8, height = 6, units = "in", res= 400)
+par(cex.axis=1.25, cex.lab=1.25, mar=c(5,5,2,2))
 with(ratio_agg, plot(root.mean, shoot.mean, ylim=c(0,100), xlim=c(0,100),
-                     pch=pchs,col=palette(), cex=1.3,
+                     pch=pchs,col=palette(), cex=1.2,
                      xlab = "Root Mass (g)",
                      ylab = "Shoot Mass (g)"))
 
 with(ratio_agg, arrows(x0=root.mean, y0=shoot.mean, x1=root.mean+root.se, angle=90, 
-                        length=0.05,col=palette(), lwd=2))
+                        length=0.05,col=palette(), lwd=1.5))
 with(ratio_agg, arrows(x0=root.mean, y0=shoot.mean, x1=root.mean-root.se, angle=90, 
-                       length=0.05,col=palette(), lwd=2))
+                       length=0.05,col=palette(), lwd=1.5))
 
 with(ratio_agg, arrows(x0=root.mean, y0=shoot.mean, y1=shoot.mean+shoot.se, angle=90, 
-                       length=0.05,col=palette(), lwd=2))
+                       length=0.05,col=palette(), lwd=1.5))
 with(ratio_agg, arrows(x0=root.mean, y0=shoot.mean, y1=shoot.mean-shoot.se, angle=90, 
-                       length=0.05,col=palette(), lwd=2))
+                       length=0.05,col=palette(), lwd=1.5))
 
 abline(0,1, lty=2)
-legend("bottomright", leglab, pch=pchs,text.font=1.3, inset=0.01, 
-       title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
+legend("topleft", leglab, pch=pchs, inset=0.02, title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1)
+mtext(expression(paste(italic("Eucalpytus tereticornis"), " seedlings", sep=" ")), side=3,line=.5, cex=1.25)
 box()
 dev.off()
 #dev.copy2pdf(file= "output/Shoot_Root.pdf")
