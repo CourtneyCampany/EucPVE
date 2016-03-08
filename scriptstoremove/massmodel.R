@@ -1,3 +1,7 @@
+
+####this model has no self shading
+
+
 # model as a function
 productionmodel <- function(leaffrac = .25,
                             crfrac = .25,
