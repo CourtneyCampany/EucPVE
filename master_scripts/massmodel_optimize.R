@@ -1,9 +1,7 @@
 source("functions and packages/startscripts.R")
 
 source("gC_day_model/model_start.R")
-source("functions and packages/massmodel_LAconstrain.R")
 source("functions and packages/massmodel.R")
-source("functions and packages/massmodel2.R")
 
 ##Build an optimization model for leaf mass fraction based on both leaf area and biomass
   ##used self shading as a function of leaf area (daily increment in model)
@@ -26,7 +24,7 @@ source("functions and packages/massmodel2.R")
 
 #4. ex of Base Model ex. using mean allocation, 120 days of Cday for reference (missing M)
 
-    sim_free <- productionmodel2(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
+    sim_free <- productionmodel(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
                 stemfrac=stem_frac_mean, leaffrac=lf, 
                 returnwhat="lastval")
 
@@ -38,7 +36,7 @@ source("functions and packages/massmodel2.R")
     
     ofrac <- (1-leaffrac)/3
     
-    p <- productionmodel2(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
+    p <- productionmodel3(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
                          gCday=free, lma=lma_trt[7], M_slope=Mcoef$b[7], M_intercept= Mcoef$intercept[7],
                          ...)
     if(returnhow == "output")return(p)
@@ -69,21 +67,20 @@ source("functions and packages/massmodel2.R")
   #model now uses optimized LMF for all volume trts, includes self shadeing
   optmassmodel<- list()
   for(i in 1:7){
-    optmassmodel[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], 
+    optmassmodel[[i]] <- data.frame(productionmodel(gCday=c120_trt[[i]][[1]], 
                          lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
                          leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],returnwhat="lastval"))
   }  
   ##return all values
   optmassmodel2<- list()
   for(i in 1:7){
-    optmassmodel2[[i]] <- data.frame(productionmodel2(gCday=c120_trt[[i]][[1]], 
+    optmassmodel2[[i]] <- data.frame(productionmodel(gCday=c120_trt[[i]][[1]], 
                                                      lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
                                                      leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
                                                      returnwhat="all"))
   }  
   
 ###save dataframe of biomass over time for each trt
-# library(plyr)
 # biomass_time <- rbind.fill(optmassmodel2)
 #   potvol <- c(rep(5, 120), rep(10, 120), rep(15, 120), rep(20, 120), rep(25, 120), rep(35, 120), rep(1000, 120))
 # biomass_time$volume <- potvol
@@ -144,31 +141,31 @@ source("functions and packages/massmodel2.R")
   text(.6,.01,"(b)", cex=1.2)
   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
   
-#   dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
-#   dev.off() 
+ # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
+ # dev.off() 
 
-  ###calculate percent diff between model and observed biomass
+###calculate percent diff between model and observed biomass-------------------------------------------------------
   
-#   test <- 0
-#   for(i in 1:7){
+# test <- 0
+# for(i in 1:7){
 #     test[i] <- (optmassmodel[[i]][[1,1]] - mass_actual$mass[i]) / optmassmodel[[i]][[1,1]]
-#   }
-#     
-#     mean(test[1:6])
-#     se(test[1:6])
-
+#    }
 # 
+#      mean(test[1:6])
+#      se(test[1:6])
+
+#
 # test <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
 # test2 <- C_stnd$modelmass - mass_actual$mass
-#   
-# mean(test[1:6])  
+#
+# mean(test[1:6])
 # mean(test2[1:6])
-# 
-# se(test[1:6])  
+#
+# se(test[1:6])
 # se(test2[1:6])
-# 
+#
 # test3 <-  (mass_actual$mass*.5) /totalC_trt2
 #  mean(test3[1:6])
-#  
-# test4 <-  (C_stnd$modelmass*.5) /totalC_trt2 
+#
+# test4 <-  (C_stnd$modelmass*.5) /totalC_trt2
 # mean(test4[1:6])

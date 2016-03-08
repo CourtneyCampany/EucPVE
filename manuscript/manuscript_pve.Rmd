@@ -193,7 +193,7 @@ We developed a simple seedling growth model that utilized leaf *A*~n~ rates to a
 \
 (1)
 $$P_i = L\left(\frac{C_\mathrm{day'i}~\sigma_\mathrm{s}}{\epsilon_\mathrm{c}}\right) - R$$
-where *L* is total plant leaf area (m^2^), *C*~day,i~ is the predicted daily carbon assimilation (g C g mass^-1^ d^-1^,, explained below), $\sigma$~s~ is a self-shading parameter (explained below), $\epsilon$~c~ is a biomass conversion efficiency parameter (g C g mass^-1^) and *R* is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
+where *L* is total plant leaf area (m^2^), *C*~day,i~ is the predicted daily carbon assimilation (g C m^-2^ d^-1^, explained below), $\sigma$~s~ is a self-shading parameter (explained below), $\epsilon$~c~ is a biomass conversion efficiency parameter (g C g mass^-1^) and *R* is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
 
 \
 (2)
@@ -277,7 +277,7 @@ Both *J*~max~ and *Vc*~max~ were significantly higher in free seedlings (30 % an
 Neither $\Psi$~pd~ nor $\Psi$~l~ were different across treatments, with mean values of -0.27 and -1.2 MPa across all seedlings, respectively. Although *g*~s~ in free seedlings was generally higher than those in containers (Table `r pvetab3`, *P* < 0.001), the mean rates for all seedlings were high at 0.37 mol m^-2^ s^-1^ and did not change throughout the course of the experiment. Additionally, leaf $\delta$^13^C at final harvest was not different across treatments (Table `r pvetab1`). Combined these indices provide strong evidence that water stress was not apparent on these seedlings throughout the experiment. Soil N at harvest was not different across soil volumes ($\bar{x}$ = 4.5 %), with minimal decreases from pre-planting value ($\bar{x}$ = 4.9 %). This indicates that nutrient leaching from free seedlings or from draining of containers following natural rainfall events did not differ between treatments. 
 
 ##Modelling seedling biomass
-The default model (*M*~free~), successfully optimized a LMF (21.6 %) which then allowed the model to predict mean harvest total biomass of free seedlings within 1.2 %. Using this optimized LMF, the total biomass of modeled seedlings for each soil volume treatment (*M*~pots~) were on average 23&pm;2.4 g C more than measured seedling biomass when compared against predicted total net leaf *C* gain (Figure `r massmodelfig`a). As a result, seedling C mass was overestimated by an average of 50&pm;8.7 % in modeled seedlings across the soil volume treatments when non-photosynthetic parameters were kept constant (Figure `r massmodelfig`b). As a result, the observed reductions in leaf *A* with decreasing soil volume when integrated across the 120 day experiment were not large enough to explain the reduction in observed seedling biomass across the  container size treatments.  
+The default model (*M*~free~), successfully optimized a LMF (22.8 %) which then allowed the model to predict mean harvest total biomass of free seedlings within 1.2 %. Using this optimized LMF, the total biomass of modeled seedlings for each soil volume treatment (*M*~pots~) were on average 23&pm;2.4 g C more than measured seedling biomass when compared against predicted total net leaf *C* gain (Figure `r massmodelfig`a). As a result, seedling C mass was overestimated by an average of 50&pm;8.7 % in modeled seedlings across the soil volume treatments when non-photosynthetic parameters were kept constant (Figure `r massmodelfig`b). As a result, the observed reductions in leaf *A* with decreasing soil volume when integrated across the 120 day experiment were not large enough to explain the reduction in observed seedling biomass across the  container size treatments.  
 
 \
 <br/>
@@ -445,7 +445,7 @@ source("master_scripts/massmodel_optimize_scenarios.R")
 **Figure S1**. Sensitivity testing of the seedling growth model to different carbon allocation strategies including; constraints of leaf mass fraction to treatment specific final harvest values (a) and increases in respiration of non-leaf tissue components by 50 % (b).  Open and filled symbols represent default model and harvest values, while shaded symbols represent model sensitivity to each scenario by soil volume treatment. Both seedling carbon mass and daily carbon assimilation were first scaled to the free seedling control.
 
 # Acknowledgements
-We thank Burhan Amiji for for his outstanding technical assitance. We would like to thank the many Hawkesbury Institute for the Environment staff and students who provded field work help during the experimental harvest.
+We thank Burhan Amiji for his outstanding technical assistance. We would like to thank the many Hawkesbury Institute for the Environment staff and students who helped during the experimental harvest.
 
 # References {.unnumbered}
 
