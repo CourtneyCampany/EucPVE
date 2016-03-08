@@ -82,5 +82,4 @@ abline(0,1, lty=2)
 legend("topleft", leglab, pch=pchs, inset=0.02, title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1)
 mtext(expression(paste(italic("Eucalpytus tereticornis"), " seedlings", sep=" ")), side=3,line=.5, cex=1.25)
 box()
-dev.off()
-#dev.copy2pdf(file= "output/Shoot_Root.pdf")
+
