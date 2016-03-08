@@ -36,7 +36,7 @@ source("functions and packages/massmodel.R")
     
     ofrac <- (1-leaffrac)/3
     
-    p <- productionmodel3(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
+    p <- productionmodel(leaffrac=leaffrac, frfrac=ofrac,crfrac=ofrac,stemfrac=ofrac,
                          gCday=free, lma=lma_trt[7], M_slope=Mcoef$b[7], M_intercept= Mcoef$intercept[7],
                          ...)
     if(returnhow == "output")return(p)
