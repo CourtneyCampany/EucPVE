@@ -52,9 +52,9 @@ source("functions and packages/massmodel2.R")
   
   
 #6. Visualize if there is an optimum
-#   lfs <- seq(0.05,0.3, length=101)
-#   test_opt <- mapply(O.lmf, leaffrac=lfs)
-#   plot(lfs,test_opt)  
+  # lfs <- seq(0.05,0.3, length=101)
+  # test_opt <- mapply(O.lmf, leaffrac=lfs)
+  # plot(lfs,test_opt)
   
 #7. Rerun model to see correspondence 
   
@@ -81,6 +81,13 @@ source("functions and packages/massmodel2.R")
                                                      leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
                                                      returnwhat="all"))
   }  
+  
+###save dataframe of biomass over time for each trt
+# library(plyr)
+# biomass_time <- rbind.fill(optmassmodel2)
+#   potvol <- c(rep(5, 120), rep(10, 120), rep(15, 120), rep(20, 120), rep(25, 120), rep(35, 120), rep(1000, 120))
+# biomass_time$volume <- potvol
+# write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   
 #8. Calculate total C gain per plant, draw leaf area from model with optimized LMF
   
