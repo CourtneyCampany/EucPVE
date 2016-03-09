@@ -192,7 +192,8 @@ We developed a simple seedling growth model that utilized leaf *A*~n~ rates to a
 
 \
 (1)
-$$P_i = L\left(\frac{C_\mathrm{day'i}~\sigma_\mathrm{s}}{\epsilon_\mathrm{c}}\right) - R$$
+$$P_i = \frac{L~C_\mathrm{day'i}~\sigma_\mathrm{s} - R}{\epsilon_\mathrm{c}}$$
+
 where *L* is total plant leaf area (m^2^), *C*~day,i~ is the predicted daily carbon assimilation (g C m^-2^ d^-1^, explained below), $\sigma$~s~ is a self-shading parameter (explained below), $\epsilon$~c~ is a biomass conversion efficiency parameter (g C g mass^-1^) and *R* is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
 
 \

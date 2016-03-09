@@ -9,25 +9,37 @@ uniqueDate <- seq.Date(from=as.Date("2013/01/22"), to=as.Date("2013/05/21"), by=
 
 biomass_time$Date <- rep(uniqueDate, 7)
 
-#quick biomass plot
-plot(biomass~ Date, type='n', ylim=c(0, 200),data=biomass_time)
-points(biomass~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume])
 
-#quick LA plot
-plot(leafarea~ Date, type='n', ylim=c(0, .55),data=biomass_time)
+##model output-----------------------------------------------------------------------------------------
+
+windows(7,10)
+
+####multipanel plot of s1, s2
+par(las=1,mgp=c(3,1,0),mfrow=c(2,1), las=1, cex=1)
+
+#biomass plot
+par(mar=c(2,5,1,1))
+plot(biomass~ Date, type='n', ylim=c(0, 200),data=biomass_time, ylab="Biomass", xlab="")
+points(biomass~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume])
+legend("topleft", leglab, pch=c(rep(16,6),17),text.font=1,  title=vollab, cex=1, col=palette(), bty='n', inset=.01)
+
+#LA plot
+par(mar=c(4,5,1,1))
+plot(leafarea~ Date, type='n', ylim=c(0, .55),data=biomass_time, ylab="Leaf Area", xlab="")
 points(leafarea~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume])
 
-##need to determine relative rate of decrease to free----------------------------------------------------------------------
+dev.copy2pdf(file= "master_scripts/manuscript_figs/modeloutput.pdf")  
+dev.off() 
 
+###make 2-panel with leaf area and biomass-------------------------------------------------------------------------
+
+##need to determine relative rate of decrease to free
 biomass_ls <- split(biomass_time, biomass_time$volume)
 free_mass <- biomass_ls[[7]]$biomass
 free_la <- biomass_ls[[7]]$leafarea
 
-
 biomass_reductions <- lapply(biomass_ls, function(x) {x$reduction_scaled = x$biomass/free_mass; return(x)})
 leafarea_reductions <- lapply(biomass_ls, function(x) {x$reduction_scaled = x$leafarea/free_la; return(x)})
-
-###make 2-panel with leaf area and biomass-------------------------------------------------------------------------
 
 ###multiply biomass *.5 if C
 windows(7,10)
