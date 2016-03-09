@@ -69,3 +69,22 @@ abline(1,0, lwd=2, lty=2, col=cols[7])
 
 dev.copy2pdf(file= "master_scripts/manuscript_figs/modeltimecourse.pdf")  
 dev.off() 
+
+
+
+###leaf area plotted vs measured------------------------------------------------------------------------------------------
+
+#read leaf area
+leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
+leafarea_time <-datevol_func (leafarea_time)
+
+pchsopen <- c(rep(1, 6), 2)
+#LA plot
+windows(7,7)
+par(mar=c(4,5,1,1), cex=1)
+plot(leafarea~ Date, type='n', ylim=c(0, .55),data=biomass_time, ylab="Leaf Area", xlab="")
+points(leafarea~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume], cex=.8)
+points(canopysqm.mean~ Date, data=leafarea_time, col=cols[volume], pch=pchsopen[volume], cex=.8)
+legend("topleft", c("Observed", "Modelled"), pch=c(1,16),text.font=1, inset=0.01, bty='n',cex=1.0 )
+dev.copy2pdf(file= "master_scripts/manuscript_figs/LA.pdf")  
+dev.off() 
