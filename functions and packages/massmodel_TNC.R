@@ -66,20 +66,29 @@ productionmodel <- function(leaffrac = .25,
     #daily production
     netbiomassprod <- (leafarea[i-1] * (gCday[i]*M) - resp_loss) / conversionEfficiency
     
-    #fraction allocated to leaves if TNC goes to stroage
-    leaffrac_noTNC <- leaffrac - (tnc * leaffrac)
+    # tncpool in gC (just like leafmass and so on)
+    # tncfrac is fraction of daily photosynthesis that is allocated to TNC pool
+    # TNC pool never depletes, so allocation is NET allocation to storage
+    tncpool[i] <- tncpool[i-1] + tncfrac*netbiomassprod
+    netbiomassprod <- netbiomassprod * (1-tncfrac)  # update biomass available for allocation
     
     #fractions,stems and wood need respiration
-    leafmass[i] <- leafmass[i-1] + netbiomassprod*leaffrac_noTNC - turnover*leafmass[i-1]
+    # leafmass is now TNC-free!!
+    leafmass[i] <- leafmass[i-1] + netbiomassprod*leaffrac - turnover*leafmass[i-1]
     leafarea[i] <- leafmass[i] / lma
+    
+    # total leafmass (can calculate after simulation is done)
+    # leafmasstot <- leafmass + tncpool
+    # TNC percentage similar to how measured
+    # tncperc <- tncpool / leafmasstot   # --> "20%"
     
     ##TNC needs mass balance so split between stems and coarse roots
     
-    stemmass[i] <- stemmass[i-1] + netbiomassprod * (stemfrac + .5(tnc * leaffrac))  ##turnover = 0
+    stemmass[i] <- stemmass[i-1] + netbiomassprod * (stemfrac + .5(leaffrac))  ##turnover = 0
     
     frootmass[i] <- frootmass[i-1] + netbiomassprod*frfrac - turnover*frootmass[i-1]
     
-    crootmass[i] <- crootmass[i-1] + netbiomassprod * (crfrac + .5(tnc * leaffrac)) - turnover*crootmass[i-1]
+    crootmass[i] <- crootmass[i-1] + netbiomassprod * (crfrac + .5(leaffrac)) - turnover*crootmass[i-1]
     
     #total biomass day
     biomass[i] <- leafmass[i-1] + frootmass[i-1] + crootmass[i-1] + stemmass[i-1]
