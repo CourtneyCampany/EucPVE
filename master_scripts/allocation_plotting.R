@@ -73,8 +73,8 @@ text(x=7.1, 63, "(b)", cex=1.51)
 
 par(mar=c(5,7,1,.3),xpd = FALSE)
 with(ratio_agg, plot(log10(fineroot.mean), log10(leafmass.mean), ylim=c(0,2.25), xlim=c(0,2.25),
-                     xlab = "log10(Fine Root Mass)  (g)",
-                     ylab = "log10(Leaf Mass)  (g)",
+                     xlab = "Fine Root Mass  (g)",
+                     ylab = "Leaf Mass  (g)",
                     axes=FALSE, type='n'))
 abline(0,1, lwd=2, lty=2, col="grey35")
 text(x=.09, 2.2, "(c)", cex=1.51)

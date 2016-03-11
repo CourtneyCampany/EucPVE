@@ -8,7 +8,7 @@ productionmodel <- function(leaffrac = .25,
                             frfrac = .25,
                             stemfrac=.25,
                             gCday = 1,
-                            tnc = .2,
+                            tncfrac = .2,
                             conversionEfficiency = 0.65,
                             fr_resp = .010368, #gC/gFroot day Marsden et al
                             cr_resp = .00124, #gC/gCroot day
@@ -47,6 +47,9 @@ productionmodel <- function(leaffrac = .25,
   
   leafmass <- vector()
   leafmass[1] <- LA_start*lma
+  
+  tncpool <- vector()
+  tncpool[1] <- 0
   
   LMF <- vector()
   LMF[1] <- (LA_start*lma)/mass_mean
@@ -98,9 +101,10 @@ productionmodel <- function(leaffrac = .25,
   }
   
   if(returnwhat == "lastval")
-    return(c(biomass=biomass[numdays],leafarea=leafarea[numdays], leafmass = leafmass[numdays], LMF = LMF[numdays]))
+    return(c(biomass=biomass[numdays],leafarea=leafarea[numdays], leafmass = leafmass[numdays], 
+             LMF = LMF[numdays], tncpool[numdays]))
   
   if(returnwhat == "all")
-    return(list(biomass=biomass,leafarea=leafarea, leafmass = leafmass, LMF = LMF))
+    return(list(biomass=biomass,leafarea=leafarea, leafmass = leafmass, LMF = LMF, tncpool=tncpool))
   
 }
