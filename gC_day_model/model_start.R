@@ -54,13 +54,9 @@ leafarea_mean <- (mean(lma$area))/10000
 
 #read gC day for each volume-----------------------------------------
 Aleaf <- read.csv("calculated data/model_runs/cday_120_clean.csv")
+
 Aleaf_agg <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
-Aleaf_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
-
-test <- read.csv("calculated data/Aleaf_pred_15min.csv")
-test_agg <- read.csv("calculated data/model_runs/gCday_means.csv")
-test_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
-
+  Aleaf_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
 
 #leaf area interpolated
 leafarea_time <- read.csv("calculated data/LApred_volume.csv")
@@ -70,8 +66,12 @@ Mcoef <- read.csv("gC_day_model/M_leafarea_model.csv")
 
 ####MODEL---------------------------------------------------------------------------------
 LA_sp <- dlply(leafarea_time, .(volume))
+
 ##model start values
 lma_mean <- mean(lma$massarea)#average lma from harvest
+
+
+#################START HERE (LA at start needs to match with allometry and MODEL#########################################
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
 Cday <- as.vector(Aleaf_agg[,2]) 
