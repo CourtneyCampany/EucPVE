@@ -14,8 +14,8 @@ mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
 
 #pre seedling data for intial biomass and leaf area (use mean)--------------------------------------------------
 seedling_pre <- read.csv("raw data/seedling_initial.csv")
-seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
-seedling_pre$rootshoot <- with(seedling_pre, root_mass/(leaf_mass+wood_mass))
+  seedling_pre$seedling_mass <- with(seedling_pre, leaf_mass+root_mass+wood_mass)
+  seedling_pre$rootshoot <- with(seedling_pre, root_mass/(leaf_mass+wood_mass))
 
 leaffractions <- mean (seedling_pre$leaf_mass/seedling_pre$seedling_mass)
 #average mass of seedlings at start
@@ -26,17 +26,18 @@ pre_stem <- mean(seedling_pre$wood_mass)
 #root-shoot ratios, and froot and croot mass fractions---------------------------------------------------------
 ratio <- subset(harvestmass, select = c("ID", "volume", "fineroot", "Croot", "stemmass", "leafmass",
                                         "root", "shoot", "totalmass"))
-ratio$rootshoot <-with(ratio, root/shoot)
-ratio$froot_frac <- with(ratio, fineroot/totalmass)
-ratio$croot_frac <- with(ratio, Croot/totalmass)
-ratio$stem_frac <- with(ratio, stemmass/totalmass)
-ratio$leaf_frac <- with(ratio, leafmass/totalmass)
+  ratio$rootshoot <-with(ratio, root/shoot)
+  ratio$froot_frac <- with(ratio, fineroot/totalmass)
+  ratio$croot_frac <- with(ratio, Croot/totalmass)
+  ratio$stem_frac <- with(ratio, stemmass/totalmass)
+  ratio$leaf_frac <- with(ratio, leafmass/totalmass)
 
 #mean component fractions
 rs_mean <- mean(ratio$rootshoot)
 fr_frac_mean <- mean(ratio$froot_frac)
 cr_frac_mean <- mean(ratio$croot_frac)
 stem_frac_mean <- mean(ratio$stem_frac)
+
 #fraction volume means
 fr_frac_vol <-  summaryBy(froot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
 cr_frac_vol <- summaryBy(croot_frac ~volume, data=ratio, FUN=mean, keep.names=TRUE)
@@ -46,32 +47,32 @@ leaf_frac_vol <- summaryBy(leaf_frac ~volume, data=ratio, FUN=mean, keep.names=T
 #pre
 rootshoot_pre_mean <- mean(seedling_pre$rootshoot)
 
-#mean lma and leafarea (apply to intial leaf )------------------------------------------------------------------
+#mean lma and leafarea (apply to modeled leaf area)------------------------------------------------------------------
 lma <- read.csv("calculated data/leafmassarea.csv")
 lma_vol <- summaryBy(massarea ~volume, data=lma, FUN=mean, keep.names=TRUE)
 #lma_mean <- mean(lma$massarea)
 leafarea_mean <- (mean(lma$area))/10000
 
-#read gC day for each volume-----------------------------------------
+#read gC day for each volume----------------------------------------------------------------------------------------
 Aleaf <- read.csv("calculated data/model_runs/cday_120_clean.csv")
 
 Aleaf_agg <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
   Aleaf_agg$Cday_scale<- with(Aleaf_agg, carbon_day/carbon_day[7])
 
-#leaf area interpolated
+#leaf area interpolated----------------------------------------------------------------------------------------------
 leafarea_time <- read.csv("calculated data/LApred_volume.csv")
+  ##get mean on first day for starting leaf area
+  leafarea_dayone <- mean(leafarea_time[leafarea_time$Date == "2013-01-21","canopysqm_pred"])
 
-#read in M regression coefs for model
+#read in M regression coefs for model (calculates self shading as a linear function of leaf area)
 Mcoef <- read.csv("gC_day_model/M_leafarea_model.csv")
+
 
 ####MODEL---------------------------------------------------------------------------------
 LA_sp <- dlply(leafarea_time, .(volume))
 
 ##model start values
 lma_mean <- mean(lma$massarea)#average lma from harvest
-
-
-#################START HERE (LA at start needs to match with allometry and MODEL#########################################
 LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
 Cday <- as.vector(Aleaf_agg[,2]) 

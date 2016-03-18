@@ -1,7 +1,7 @@
 source("functions and packages/startscripts.R")
 
-source("gC_day_model/model_start.R")
-source("functions and packages/massmodel.R")
+source("master_scripts/model_start.R")
+source("master_scripts/massmodel.R")
 
 ##Build an optimization model for leaf mass fraction based on both leaf area and biomass
   ##used self shading as a function of leaf area (daily increment in model)
@@ -23,10 +23,9 @@ source("functions and packages/massmodel.R")
   free <- as.vector(c120_trt[[7]][1:121,])
 
 #4. ex of Base Model ex. using mean allocation, 120 days of Cday for reference (missing M)
-
-    sim_free <- productionmodel(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
-                stemfrac=stem_frac_mean, leaffrac=lf, 
-                returnwhat="lastval")
+    # sim_free <- productionmodel(gCday=free, lma=lma_mean,frfrac=fr_frac_mean,crfrac=cr_frac_mean,
+    #             stemfrac=stem_frac_mean, leaffrac=lf, 
+    #             returnwhat="lastval")
 
     
 #5. optimise leaf mass fraction from free plant with harvest mass and leaf mass
@@ -81,19 +80,21 @@ source("functions and packages/massmodel.R")
   }  
   
 ###save dataframe of biomass over time for each trt
-# biomass_time <- rbind.fill(optmassmodel2)
-#   potvol <- c(rep(5, 120), rep(10, 120), rep(15, 120), rep(20, 120), rep(25, 120), rep(35, 120), rep(1000, 120))
-# biomass_time$volume <- potvol
-# write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
+biomass_time <- rbind.fill(optmassmodel2)
+  potvol <- c(rep(5, 120), rep(10, 120), rep(15, 120), rep(20, 120), rep(25, 120), rep(35, 120), rep(1000, 120))
+biomass_time$volume <- potvol
+write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   
 #8. Calculate total C gain per plant, draw leaf area from model with optimized LMF
+  #add self shading
+  sigma <- read.csv("gC_day_model/M_leafarea_model.csv")
   
   totalC_list <- list()
   for(i in 1:7){
-    totalC_calc <- optmassmodel2[[i]][2] * c120_trt[[i]][1:120,]
+    totalC_calc <- optmassmodel2[[i]][2] * c120_trt[[i]][1:120,] * (sigma[i,3] * optmassmodel2[[i]][2] + sigma[i,2])
     
     totalC_list[[i]] <- totalC_calc
-  }                 
+  }                  
   
   totalC_trt <- lapply(totalC_list, function(x) sum(x))
   
@@ -119,7 +120,7 @@ source("functions and packages/massmodel.R")
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
   pch3 <- c(rep(1,6), 6)
   
-  # windows(7,8)
+  windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)

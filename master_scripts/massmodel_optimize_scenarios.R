@@ -1,7 +1,7 @@
 source("functions and packages/startscripts.R")
 
-source("gC_day_model/model_start.R")
-source("functions and packages/massmodel.R")
+source("master_scripts/model_start.R")
+source("master_scripts/massmodel.R")
 
 ##Build an optimization model for leaf mass fraction based on both leaf area and biomass
 ##used self shading as a function of leaf area (daily increment in model)
