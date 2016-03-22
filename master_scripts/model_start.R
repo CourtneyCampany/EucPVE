@@ -50,6 +50,8 @@ rootshoot_pre_mean <- mean(seedling_pre$rootshoot)
 #mean lma and leafarea (apply to modeled leaf area)------------------------------------------------------------------
 lma <- read.csv("calculated data/leafmassarea.csv")
 lma_vol <- summaryBy(massarea ~volume, data=lma, FUN=mean, keep.names=TRUE)
+lma_campaign <- summaryBy(massarea ~campaign, data=lma, FUN=mean, keep.names=TRUE)
+
 #lma_mean <- mean(lma$massarea)
 leafarea_mean <- (mean(lma$area))/10000
 
@@ -61,11 +63,13 @@ Aleaf_agg <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
 
 #leaf area interpolated----------------------------------------------------------------------------------------------
 leafarea_time <- read.csv("calculated data/LApred_volume.csv")
+###########
   ##get mean on first day for starting leaf area
-  leafarea_dayone <- mean(leafarea_time[leafarea_time$Date == "2013-01-21","canopysqm_pred"])
-
+  LA_start <- mean(leafarea_time[leafarea_time$Date == "2013-01-21","canopysqm_pred"])
+###########
+  
 #read in M regression coefs for model (calculates self shading as a linear function of leaf area)
-Mcoef <- read.csv("gC_day_model/M_leafarea_model.csv")
+Mcoef <- read.csv("calculated data/M_leafarea_model.csv")
 
 
 ####MODEL---------------------------------------------------------------------------------
@@ -73,7 +77,7 @@ LA_sp <- dlply(leafarea_time, .(volume))
 
 ##model start values
 lma_mean <- mean(lma$massarea)#average lma from harvest
-LA_start <- (mean_leafnum * leafarea_mean) #(m2)
+# LA_start <- (mean_leafnum * leafarea_mean) #(m2)
 mass_mean <- mean(seedling_pre$seedling_mass)
 Cday <- as.vector(Aleaf_agg[,2]) 
 

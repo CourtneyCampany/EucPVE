@@ -48,14 +48,14 @@ M_eucs2<- lapply(M_eucs, function(x) merge(x, eucs_allom, by="plant_id", all=TRU
 
 #2. for each volume trt (list) run model of M vs leafN, 
 
-M_regress <- lapply(M_eucs2, function(x) lm(M ~ LA, data=x))
-
- test <- M_eucs2[[7]]
- test_lm <- lm(M ~ LA, data=test)
- windows(8,10)
- visreg(test_lm)
- dev.copy2pdf(file= "gC_day_model/model_output/Mleafarea.pdf")
- dev.off()
+# M_regress <- lapply(M_eucs2, function(x) lm(M ~ LA, data=x))
+# 
+#  test <- M_eucs2[[7]]
+#  test_lm <- lm(M ~ LA, data=test)
+#  windows(8,10)
+#  visreg(test_lm)
+#  dev.copy2pdf(file= "gC_day_model/model_output/Mleafarea.pdf")
+#  dev.off()
  
   
 #3. extract coefs for each model by trt
@@ -69,4 +69,4 @@ M_coefs2$volume <- gsub("free", 1000, M_coefs2$volume)
 #reorder
 M_coefs3 <- M_coefs2[c(6, 1:5, 7),]
 
-write.csv(M_coefs3, "gC_day_model/M_leafarea_model.csv", row.names=FALSE)
+write.csv(M_coefs3, "calcualted data/M_leafarea_model.csv", row.names=FALSE)

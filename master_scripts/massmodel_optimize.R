@@ -116,11 +116,15 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   mass_actual$Date <- as.Date("2013-05-21")
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
   
+  ##look at free for optimization %
+  # percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
   
-#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled
+  
+  
+#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
   pch3 <- c(rep(1,6), 6)
   
-  windows(7,8)
+  # windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
@@ -142,31 +146,10 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   text(.6,.01,"(b)", cex=1.2)
   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
   
- # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")  
- # dev.off() 
+ # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
+ # dev.off()
 
-###calculate percent diff between model and observed biomass-------------------------------------------------------
-  
-# test <- 0
-# for(i in 1:7){
-#     test[i] <- (optmassmodel[[i]][[1,1]] - mass_actual$mass[i]) / optmassmodel[[i]][[1,1]]
-#    }
-# 
-#      mean(test[1:6])
-#      se(test[1:6])
 
-#
-# test <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
-# test2 <- C_stnd$modelmass - mass_actual$mass
-#
-# mean(test[1:6])
-# mean(test2[1:6])
-#
-# se(test[1:6])
-# se(test2[1:6])
-#
-# test3 <-  (mass_actual$mass*.5) /totalC_trt2
-#  mean(test3[1:6])
-#
-# test4 <-  (C_stnd$modelmass*.5) /totalC_trt2
-# mean(test4[1:6])
+
+
+

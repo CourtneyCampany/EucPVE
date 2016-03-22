@@ -9,7 +9,8 @@ leafarea <- read.csv("calculated data/leafareabypot.csv")
 plotsumm <- read.csv("raw data/plot_summary.csv")
 plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
 
-#need to interpolate leaf area in m2 across all dates
+
+#need to interpolate leaf area in m2 across all dates----------------------------------------------------------------------
 leafarea1 <- subset(leafarea, select = c("Date", "ID", "canopysqm"))
 #need to interpolate leaf area in m2 across all dates
 leafnum <- subset(leafarea, select = c("Date", "ID", "count"))
@@ -24,6 +25,7 @@ datemaker <- for (i in unique(plotsumm$ID)){
                             ID = i)} 
 # row-bind everything together:
 dateseq <- do.call(rbind,datels)
+
 
 #SECOND merge leaf area and count dataset with dateseq dfr and interpolate
 leafarea_alldays <- merge(dateseq, leafarea1, by = c("Date", "ID"), all=TRUE)

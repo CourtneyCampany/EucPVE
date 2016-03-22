@@ -30,40 +30,41 @@ leafharvest_agg <- aggregate(cbind(totalarea, totalcount) ~ volume , data = leaf
 
 
 ####relationship between leaf length and area-------------------------------------------------------------------
-area_length <- leafharvest[,c(1, 12, 15:16)]
-  area_length$ratio <- with(area_length, areaperleaf/leaf_length)
-
-ll_mod <- lm(areaperleaf~leaf_length, data=area_length)
-  extract_func(ll_mod)
-ll_mod_1000<- lm(areaperleaf~leaf_length, data=area_length, subset=volume==1000)
-extract_func(ll_mod_1000)
-
-ll_mod2 <- lm(ratio~volume, data=area_length)
-  anova(ll_mod2)
-  summary(ll_mod2)
-  library(visreg)
-  visreg(ll_mod2)
-
-plot(areaperleaf~leaf_length, ylim=c(0,40), xlim=c(0,15),col=volume,pch=16,data=area_length, subset=volume==1000)
-abline(ll_mod)
+# area_length <- leafharvest[,c(1, 12, 15:16)]
+#   area_length$ratio <- with(area_length, areaperleaf/leaf_length)
+# 
+# ll_mod <- lm(areaperleaf~leaf_length, data=area_length)
+#   extract_func(ll_mod)
+# ll_mod_1000<- lm(areaperleaf~leaf_length, data=area_length, subset=volume==1000)
+# extract_func(ll_mod_1000)
+# 
+# ll_mod2 <- lm(ratio~volume, data=area_length)
+#   anova(ll_mod2)
+#   summary(ll_mod2)
+#   library(visreg)
+#   visreg(ll_mod2)
+# 
+# plot(areaperleaf~leaf_length, ylim=c(0,40), xlim=c(0,15),col=volume,pch=16,data=area_length, subset=volume==1000)
+# abline(ll_mod)
 ####half the volumes have a pretty bad relationship, so continue using mean leafarea and leaf count 
 
 
-#calculate leaf area trough time------------------------------------------------------------------------------
+#calculate leaf area trough time using leaf count data-------------------------------------------------------------
 leafindex <- subset(leafharvest, select = c("ID", "areaperleaf", "volume"))
 
 #format leaf count data
-leafcount$X1.21.2013   <- as.integer(leafcount$X1.21.2013)
-  leafcount <- melt(leafcount, id=c("plot", "pot"))
-  names(leafcount)[3:4] <- c("Date", "count")
-  leafcount$Date <- gsub ("X", "", leafcount$Date)
-  leafcount$Date <- as.Date(leafcount$Date, format = "%m.%d.%Y")
-  leafcount <- subset(leafcount, !is.na(count))
-  leafcount$ID <- paste(leafcount$plot, leafcount$pot, sep = "-")
+leafcount2 <- melt(leafcount, id=c("plot", "pot"))
+names(leafcount2)[3:4] <- c("Date", "count")
+leafcount2$Date <- gsub ("X", "", leafcount2$Date)
+leafcount2$Date <- as.Date(leafcount2$Date, format = "%m.%d.%Y")
+leafcount2$ID <- paste(leafcount2$plot, leafcount2$pot, sep = "-")
 
-leaftime <- merge(leafindex, leafcount, by = "ID")
+leafcount3 <- subset(leafcount2, !is.na(count))
 
-#calculate cumulative leaf area through time
+
+leaftime <- merge(leafindex, leafcount3, by = "ID")
+
+#calculate cumulative leaf area through time-
 leaftime$canopyarea <- with(leaftime, areaperleaf * count)
 leaftime$canopysqm <- with(leaftime, areaperleaf * count/10000)
 
@@ -72,11 +73,10 @@ write.csv(leaftime, "calculated data/leafareabypot.csv", row.names=FALSE)
 #treatment means for total area and count
 leaftime_agg <- summaryBy(canopysqm ~ Date + volume , data = leaftime,  FUN=c(mean,se))
 
-write.csv(leaftime_agg, "calculated data/cumulative leaf area.csv", row.names=FALSE)
-leaf2 <- subset(leaftime_agg,volume != "1000" )
+write.csv(leaftime_agg, "calculated data/cumulative_leaf_area.csv", row.names=FALSE)
 
 #leaftime_agg$canopysqm <- leaftime_agg$canopyarea / 10000
-#----------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 #stats
 require(nlme)
 library(multcomp)

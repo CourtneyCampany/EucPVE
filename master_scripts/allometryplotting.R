@@ -1,9 +1,8 @@
 #this script is for sourcing the allometry plots into master
-# source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 height <- read.csv("calculated data/height.csv")
 diam <- read.csv("calculated data/diameter.csv")
-leafno <- read.csv("calculated data/leaf_number.csv")
 
 #height treatment means------------------------------------------------------------------------
 height_agg <- summaryBy(height ~ Date + volume , data = height, FUN = c(mean,se))
@@ -13,12 +12,9 @@ height_agg <- summaryBy(height ~ Date + volume , data = height, FUN = c(mean,se)
 diam_agg <- summaryBy(diameter ~ Date + volume , data = diam, FUN = c(mean,se))
   diam_agg<- datevol_func(diam_agg)
 
-#leafno treatment means---------------------------------------------------------------------------
-leafno_agg <- summaryBy(count ~ Date + volume , data = leafno, FUN = c(mean,se))
-  leafno_agg<- datevol_func(leafno_agg)
-
 #leaf area interpolated--------------------------------------------------------------------------
-leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
+leafarea_time <- read.csv("calculated data/cumulative_leaf_area.csv")
+  #leafarea_time <- read.csv("calculated data/LApred_volume.csv")
   leafarea_time <-datevol_func (leafarea_time)
 
 
@@ -54,7 +50,7 @@ legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3,  title=vollab, cex=1.
 # Second panel   
 par(mar=c(0,7,0,2))
 plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),ylim=c(0,17), 
-      axes = FALSE, xlab="",xlim=xlimdays)
+     axes = FALSE, xlab="",xlim=xlimdays)
 axis.Date(1, at=xAT, labels=FALSE)  
 axis(2)     
 
