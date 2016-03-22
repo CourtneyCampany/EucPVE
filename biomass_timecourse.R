@@ -10,26 +10,20 @@ uniqueDate <- seq.Date(from=as.Date("2013/01/22"), to=as.Date("2013/05/21"), by=
 biomass_time$Date <- rep(uniqueDate, 7)
 
 
-##model output-----------------------------------------------------------------------------------------
+#leaf area interpolated--------------------------------------------------------------------------
+leafarea_time <- read.csv("calculated data/LApred_volume.csv")
+  leafarea_time <-datevol_func (leafarea_time)
 
-windows(7,10)
+##LA dataframe with initial date leaf area added back (model starts day 2).  use model start valuye
+LAday1 <- mean(leafarea_time[leafarea_time$Date == "2013-01-21", 3])
 
-####multipanel plot of s1, s2
-par(las=1,mgp=c(3,1,0),mfrow=c(2,1), las=1, cex=1)
+LAmodel <- biomass_time[, c(2,5:6)]
 
-#biomass plot
-par(mar=c(2,5,1,1))
-plot(biomass~ Date, type='n', ylim=c(0, 200),data=biomass_time, ylab="Biomass", xlab="")
-points(biomass~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume])
-legend("topleft", leglab, pch=c(rep(16,6),17),text.font=1,  title=vollab, cex=1, col=palette(), bty='n', inset=.01)
+startLA <- data.frame(Date = rep(as.Date("2013/01/21"),7), volume = as.factor(c(5,10,15,20,25,35,1000)), 
+                        leafarea = rep(LAday1, 7))
 
-#LA plot
-par(mar=c(4,5,1,1))
-plot(leafarea~ Date, type='n', ylim=c(0, .55),data=biomass_time, ylab="Leaf Area", xlab="")
-points(leafarea~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume])
+LAmodel121 <- rbind(LAmodel, startLA)
 
-dev.copy2pdf(file= "master_scripts/manuscript_figs/modeloutput.pdf")  
-dev.off() 
 
 ###make 2-panel with leaf area and biomass-------------------------------------------------------------------------
 
@@ -74,17 +68,13 @@ dev.off()
 
 ###leaf area plotted vs measured------------------------------------------------------------------------------------------
 
-#read leaf area
-leafarea_time <- read.csv("calculated data/cumulative leaf area.csv")
-leafarea_time <-datevol_func (leafarea_time)
-
 pchsopen <- c(rep(1, 6), 2)
 #LA plot
 windows(7,7)
 par(mar=c(4,5,1,1), cex=1)
-plot(leafarea~ Date, type='n', ylim=c(0, .55),data=biomass_time, ylab="Leaf Area", xlab="")
-points(leafarea~ Date, data=biomass_time, col=cols[volume], pch=pchs[volume], cex=.8)
-points(canopysqm.mean~ Date, data=leafarea_time, col=cols[volume], pch=pchsopen[volume], cex=.8)
+plot(leafarea~ Date, type='n', ylim=c(0, .55),data=LAmodel121, ylab="Leaf Area", xlab="")
+points(leafarea~ Date, data=LAmodel121, col=cols[volume], pch=pchs[volume], cex=.8)
+points(canopysqm_pred~ Date, data=leafarea_time, col=cols[volume], pch=pchsopen[volume], cex=.8)
 legend("topleft", c("Observed", "Modelled"), pch=c(1,16),text.font=1, inset=0.01, bty='n',cex=1.0 )
 dev.copy2pdf(file= "master_scripts/manuscript_figs/LA.pdf")  
 dev.off() 
