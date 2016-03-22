@@ -23,24 +23,24 @@ source("functions and packages/startscripts.R")
 
   #subset by Date range of experiment
   eucpve_met1 <- subset(eucpve_met[,3:7], Date  >= "2013-01-21" & Date  <= "2013-05-21")
-
+  
   #Rdark Q10 equations by volume
   rdarkq10 <- read.csv("calculated data/rdarkq10.csv")
   rd25_clean <- read.csv("calculated data/rdark_clean.csv")
-
-#---------------------------------------------------------------------------------------------
-#A_model, use met data from site to generate parameters to enter into the model
-#enter a vector of parameters over the period of the study to model PS with volume specific vcmax and jmax
-
-#merge ps parameters to met data
-A_model <- merge(eucpve_met1, jmax_vcmax)
-
-#need to calculate Rdark through time using rdarkq10 equation by volume
-A_model <- merge(A_model, rdarkq10[,1:2], by="volume")
-A_model <- merge(A_model, rd25_clean[,1:2], by="volume")
-
+  
+  #---------------------------------------------------------------------------------------------
+  #A_model, use met data from site to generate parameters to enter into the model
+  #enter a vector of parameters over the period of the study to model PS with volume specific vcmax and jmax
+  
+  #merge ps parameters to met data
+  A_model <- merge(eucpve_met1, jmax_vcmax)
+  
+  #need to calculate Rdark through time using rdarkq10 equation by volume
+  A_model <- merge(A_model, rdarkq10[,1:2], by="volume")
+  A_model <- merge(A_model, rd25_clean[,1:2], by="volume")
+  
   #A_model$Rd_pred <- with(A_model, rd12.3 * q10^((temp-12.3)/10))
-
+  
   #with(A_model, plot(Rd_pred~temp, col=volume, ylim=c(0,10)))
   #with(A_model, plot(temp ~DateTime15))
 
@@ -90,9 +90,9 @@ Aleaf_15min$photo15gc <- with(Aleaf_15min, ALEAF*15*60*10^-6*12)
 
 Aleaf <- summaryBy(photo15gc ~ Date+volume, data=Aleaf_15min, FUN=sum, keep.names=TRUE )
 names(Aleaf)[3] <- "carbon_day"
-write.csv(Aleaf, "calculated data/model_runs/cday_120_clean.csv", row.names=FALSE)
+write.csv(Aleaf, "calculated data/Aleaf_model/cday_120_clean.csv", row.names=FALSE)
 Aleaf_agg <- summaryBy(carbon_day ~ volume, data=Aleaf, FUN=mean, keep.names=TRUE )
-write.csv(Aleaf_agg, "calculated data/model_runs/gCday_means_clean.csv", row.names=FALSE)
+write.csv(Aleaf_agg, "calculated data/Aleaf_model/gCday_means_clean.csv", row.names=FALSE)
 
 
 
