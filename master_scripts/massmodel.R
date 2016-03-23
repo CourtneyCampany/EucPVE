@@ -1,7 +1,4 @@
 
-###this model has self shading (M)
-
-
 # model as a function
 productionmodel <- function(leaffrac = .25,
                             crfrac = .25,
@@ -15,6 +12,7 @@ productionmodel <- function(leaffrac = .25,
                             turnover = 1/365, #production/standing crop
                             numdays=120,
                             lma = 97.5,
+                            lma_start = 81.1, #this is the mean of free seedlings
                             M_slope = -.02,
                             M_intercept = .9,
                             returnwhat=c("lastval","all")
@@ -45,7 +43,7 @@ productionmodel <- function(leaffrac = .25,
   stemmass[1] <- pre_stem
   
   leafmass <- vector()
-  leafmass[1] <- LA_start*lma
+  leafmass[1] <- LA_start*lma_start #use one lma here to start, set it to free
   
   LMF <- vector()
   LMF[1] <- (LA_start*lma)/mass_mean

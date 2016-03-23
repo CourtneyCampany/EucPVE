@@ -87,7 +87,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   
 #8. Calculate total C gain per plant, draw leaf area from model with optimized LMF
   #add self shading
-  sigma <- read.csv("gC_day_model/M_leafarea_model.csv")
+  sigma <- read.csv("calculated data/M_leafarea_model.csv")
   
   totalC_list <- list()
   for(i in 1:7){
@@ -103,7 +103,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
 #9. Scale model results to free seedling
   
   ##mean daily carbon gain scales
-  C_stnd <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
+  C_stnd <- read.csv("calculated data/Aleaf_model/gCday_means_clean.csv")
   C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
   
   ##modelled biomass scaled
@@ -117,14 +117,14 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
   
   ##look at free for optimization %
-  # percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
+   #percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
   
   
   
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
   pch3 <- c(rep(1,6), 6)
-  
-  # windows(7,8)
+
+  windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)

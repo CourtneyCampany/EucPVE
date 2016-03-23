@@ -69,4 +69,4 @@ M_coefs2$volume <- gsub("free", 1000, M_coefs2$volume)
 #reorder
 M_coefs3 <- M_coefs2[c(6, 1:5, 7),]
 
-write.csv(M_coefs3, "calcualted data/M_leafarea_model.csv", row.names=FALSE)
+write.csv(M_coefs3, "calculated data/M_leafarea_model.csv", row.names=FALSE)
