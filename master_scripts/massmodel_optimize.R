@@ -1,4 +1,4 @@
-source("functions and packages/startscripts.R")
+# source("functions and packages/startscripts.R")
 
 source("master_scripts/model_start.R")
 source("master_scripts/massmodel.R")
@@ -124,7 +124,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
   pch3 <- c(rep(1,6), 6)
 
-  windows(7,8)
+  # windows(7,8)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)

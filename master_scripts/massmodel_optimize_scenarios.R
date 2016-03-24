@@ -1,4 +1,4 @@
-source("functions and packages/startscripts.R")
+# source("functions and packages/startscripts.R")
 
 source("master_scripts/model_start.R")
 source("master_scripts/massmodel.R")
@@ -66,15 +66,6 @@ for(i in 1:7){
                                                    leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
                                                    returnwhat="lastval"))
 }  
-##return all values
-optmassmodel2<- list()
-for(i in 1:7){
-  optmassmodel2[[i]] <- data.frame(productionmodel(gCday=c120_trt[[i]][[1]], 
-                                                    lma=lma_trt[i],frfrac=opt_ofrac, crfrac=opt_ofrac, stemfrac=opt_ofrac,
-                                                    leaffrac=opt_lmf,M_slope=Mcoef$b[i], M_intercept= Mcoef$intercept[i],
-                                                    returnwhat="all"))
-}  
-
 
 #8. Test scenarios--------------------------------------------------------------------------------------------------------
 
@@ -123,7 +114,7 @@ for(i in 1:7){
   
   ##add actual mass and Cday scaled
   ##mean daily carbon gain scaled
-  C_stnd <- read.csv("calculated data/model_runs/gCday_means_clean.csv")
+  C_stnd <- read.csv("calculated data/Aleaf_model/gCday_means_clean.csv")
     C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
     
     ##modelled biomass scaled
