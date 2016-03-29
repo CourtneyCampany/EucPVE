@@ -14,12 +14,10 @@ bibliography: references2.bib
 ---
 
 \
-COURTNEY E. CAMPANY^1,2^, BELINDA MEDLYN^1^ and REMKO A. DUURSMA^1^
+COURTNEY E. CAMPANY^1^, BELINDA MEDLYN^1^ and REMKO A. DUURSMA^1^
 
 \
 ^1^ Hawkesbury Institute for the Environment, University of Western Sydney, Locked Bag 1797, Penrith, NSW, Australia
-\
-^2^ Corresponding author (courtneycampany@gmail.com)
 
 \
 Hawkesbury Institute for the Environment, Western Sydney University
@@ -29,7 +27,18 @@ Locked Bag 1797
 Penrith 2751 NSW Australia
 
 \
-RUNNING HEAD: SINK LIMITATION ALTERS SEEDLING CARBON BALANCE
+Corresponding author: CE Campany, email: courtneycampany@gmail.com, telephone: +61 02 4570 1421, fax: +61 02 4570 1103
+
+\
+Word counts
+Main text:
+Introduction:
+Materials and methods:
+Results:
+Discussion:
+Acknowledgements:
+7 figures (6 color), 3 tables
+Supporting information: 1 table
 
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
@@ -73,9 +82,14 @@ pvetabS <- "S1"
 ```
 
 
-#Abstract
+#Summary
+- Interpreting limitations to plant growth requires accounting of carbon (C) mass balance between uptake and allocation. This study manipulated soil volume to test how growth is coupled to physiology, C allocation, and sink activity in *Eucalyptus tereticornis* seedlings. 
 
-Interpreting limitations to plant growth requires understanding the balance between carbon (C) source and sink activity. This study used manipulations of soil volume to test how growth is coupled to physiology, C allocation, and sink activity in *Eucalyptus tereticornis* seedlings. We grew individual seedlings in a large range of container sizes and planted containers flush to the soil alongside naturally planted freely-rooted (free) seedlings. We developed a seedling growth model that utilized leaf photosynthesis rates (*A*~n~) to allocate daily C uptake towards mass growth of stems, leaves and roots. Reduced soil volume was expected to induce rapid negative effects on growth and physiology compared to free seedlings. It was hypothesized that the soil volume effect would be largest in the smallest containers, negatively impacting mass partitioning belowground. An accumulation of leaf non-structural carbohydrates, resulting from reduced belowground sink strength, was expected to correlate to reductions in photosynthetic capacity. We observed a negative effect of container volume on aboveground growth soon after the experiment started. Although growth was consistently different across soil volumes, dry mass partitioning to leaves, stems and roots was unchanged after 120 days. Photosynthetic capacity was significantly reduced in containers compared to free seedlings, and was related to both reduced leaf nitrogen content and starch accumulation. We then asked whether the observed reductions in *A*~n~ explained the observed differences in seedling biomass. Although belowground sink limitation resulted in a reduction of *A*~n~, the model concluded that these reductions were not large enough to explain observed growth responses. Thus, as *A*~n~ and growth were not tightly coordinated, an unaccounted-for pool of photosynthetic C resulted in seedlings with soil volume restriction. These results highlight the need to further utilize mass balance approaches when evaluating plant C allocation and confirm that important feedbacks exist between belowground sink strength and leaf C uptake.
+- Seedlings were grown in a range of container sizes and containers were planted flush to the soil alongside freely-rooted (free) seedlings. We developed a growth model that utilized net leaf photosynthesis rates (*A*~n~) to allocate daily C uptake towards mass growth of stems, leaves and roots.
+
+- Container volume negatively affected aboveground growth throughout the experiment, yet, mass partitioning to leaves, stems and roots was unchanged after 120 days. Photosynthetic capacity was significantly reduced in containered seedlings, and was related to both reduced leaf nitrogen content and starch accumulation. Although belowground sink limitation reduced *A*~n~, the model concluded that these reductions were not large enough to explain observed growth responses. 
+
+- As *A*~n~ and growth were not tightly coordinated, an unaccounted-for pool of photosynthetic C resulted in seedlings with soil volume restriction. These results highlight the need to further utilize mass balance approaches when evaluating plant C allocation and confirm that important feedbacks exist between belowground sink strength and leaf C uptake.
 
 ## Keywords {.unnumbered}
 photosynthesis, growth, sink regulation, carbon allocation, soil volume
@@ -143,31 +157,28 @@ We developed a simple seedling growth model that utilized leaf *A*~n~ rates to a
 
 \
 (1)
-$$P_i = \frac{L~C_\mathrm{day'i}~\sigma - R}{\epsilon}$$
+$$P_i = \frac{L_i~C_\mathrm{day'i}~\sigma - R_i}{\epsilon}$$
 
-where *L* is total plant leaf area (m^2^), *C*~day,i~ is the predicted daily carbon assimilation (g C m^-2^ d^-1^, explained below), $\sigma$ is a self-shading parameter (explained below), $\epsilon$ is a biomass conversion efficiency parameter (g C g mass^-1^) and *R* is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
+where *L*~i~ is modelled total plant leaf area (m^2^), *C*~day,i~ is the predicted daily carbon assimilation (g C m^-2^ d^-1^, explained below), $\sigma$ is a self-shading parameter (explained below), $\epsilon$ is a biomass conversion efficiency parameter (g C g mass^-1^) and *R*~i~ is the mass based total respiration of all tissue components (g C d^-1^). Total respiration was calculated as 
 
 \
 (2)
-$$R = \Sigma(R_\mathrm{c}~M_\mathrm{c})$$
-where *R*~c~ is published or local tissue respiration rates of fine roots, coarse roots or stems (Table `r pvetabS`, g C g mass^-1^ d^-1^) and *M*~c~ is the standing biomass of each component (g). Leaf respiration is represented in the calculation of *C*~day~ (described below). The change in individual component biomass (*M*~c~), here solved on a daily time step, is given by
+$$R_i = \Sigma(R_\mathrm{c}~M_\mathrm{c,i})$$
+where *R*~c~ is published or measured tissue respiration rates of each woody tissue component, including fine roots, coarse roots and stems (Table `r pvetabS`, g C g mass^-1^ d^-1^) and *M*~c,i~ is the modelled standing biomass of each component (g). Leaf respiration is included in the calculation of *C*~day~ (described below). The change in individual component biomass (*M*~c,i~), here solved on a daily time step, is given by
 
 \
 (3)
-$$\frac{dM_\mathrm{c}}{dt} = A_\mathrm{c}~P_\mathrm{i}~-~(\Lambda_\mathrm{c}~M_\mathrm{c})$$
-where *A*~c~ is the component specific biomass partitioning to whole plant biomass (%) and $\Lambda$~c~ is component specific turnover rate (yr^-1^). Because we did not observe branch turnover, $\Lambda$~stem~ was assumed to equal 0. Total seedling biomass, per time step, was then equal to the sum of all biomass components; leaves, stems, fine roots and coarse roots. 
+$$\frac{dM_\mathrm{c}}{dt} = \theta_\mathrm{c}~P_\mathrm{i}~-~(\Lambda_\mathrm{c}~M_\mathrm{c,i})$$
+where $\theta$~c~ is the component specific biomass partitioning to whole plant biomass (%) and $\Lambda$~c~ is component specific turnover rate (yr^-1^). Because we did not observe branch turnover, $\Lambda$ of stems was assumed to equal 0. Total seedling biomass, per time step, was then equal to the sum of all biomass components; leaves, stems, fine roots and coarse roots. 
 
 \
 *C*~day~ was predicted by using a coupled photosynthesis - stomatal conductance model [@farquhar1980biochemical;@medlyn2011reconciling] with the 'plantecophys' package [@duursma2015] in R with the mean photosynthetic parameters (*J*~max~, *V*~cmax~, *R* and *g*~1~) for each treatment and meteorological data from an onsite weather station. Values of *J*~max~ and *V*~cmax~ are mean estimates from AC~i~ curves over two measurement periods (explained above), *R* was empirically measured and the *g*~1~ parameter was generated by fitting the optimal stomatal conductance model from [@medlyn2011reconciling] to observed *g*~s~ values. Methods of the coupled leaf gas exchange model are also described in Duursma et al [-@duursma2014peaked]. Combined with the meteorological parameters; PPFD, air temperature, and relative humidity, at 15 min intervals, leaf *A*~n~ rates ($\mu$mol CO~2~ m^-2^ s^-1^) were then predicted for each soil volume treatment. *C*~day~ was calculated by converting predicted rates to mass C gain over 15 min time steps (g m^-2^) and then summed for 24 h. This resulted in 120 unique values of *C*~day~ for each soil volume treatment, one value for each day of the experiment. Thus, each daily time step for model runs included a value of *C*~day~ that represented both treatment specific photosynthetic parameters and meteorological constraints across the duration of the experiment. 
 
 \
-It was further necessary to calculate a self-shading parameter ($\sigma$) when scaling leaf *A*~n~ with total plant leaf area. This was accomplished by utilizing 61 previously digitized *Eucalyptus* seedlings, covering 5 total species which include *E. tereticornis*, from Duursma et al. [-@duursma2012light] to run in 'YplantQMC' package [@YplantQMC] in R to build a 3D plant structure based on digitized metrics of plant allometry and crown structure. Using the same treatment specific physiological parameters listed above, 'YplantQMC' outputs total *A*~n~, using total leaf area, for seedlings assuming self-shading as well as for a full sun large horizontal leaf. The ratio of total *A*~n~ with self-shading to horizontal leaf was then used to calculate $\sigma$ for each of the 61 digitized seedlings, independently for each of the seven soil volume treatments. Next, the linear relationship between $\sigma$ and total leaf area was determined across digitized seedlings, within each treatment. For the growth model, $\sigma$ was then predicted for each daily time step using the previous days cumulative leaf area and this value  was then applied to C~day,i~. All default parameters used in model simulations are reported in Table `r pvetabS`.
+It was further necessary to calculate a self-shading parameter ($\sigma$) when scaling leaf *A*~n~ with total plant leaf area. This was accomplished by utilizing 61 previously digitized *Eucalyptus* seedlings, covering 5 total species which include *E. tereticornis*, from Duursma et al. [-@duursma2012light] to run in 'YplantQMC' package [@YplantQMC] in R to build a 3D plant structure based on digitized metrics of plant allometry and crown structure. Using the same treatment specific physiological parameters listed above, 'YplantQMC' outputs total *A*~n~, using total leaf area, for seedlings assuming self-shading as well as for a full sun large horizontal leaf. The ratio of total *A*~n~ with self-shading to horizontal leaf was then used to calculate $\sigma$ for each of the 61 digitized seedlings, independently for each of the seven soil volume treatments. Next, the linear relationship between $\sigma$ and total leaf area was determined across digitized seedlings, within each treatment. For the growth model, $\sigma$ was then predicted for each daily time step using the previous days cumulative leaf area and this value  was then applied to *C*~day,i~. All default parameters used in model simulations are reported in Table `r pvetabS`.
 
 \
-We then used this model to test the hypothesis that the effects of belowground sink limitation on rates of leaf *A*~n~ were sufficient to accurately predict overall seedling biomass production after 120 days. Each model run used changes in *A*~n~ and leaf mass fraction (LMF), with values of stem and root respiration rates, to generate total seedling mass and leaf area after 120 days.  Cumulative net leaf C gain for each treatment was equal to the sum of each value of C~day,i~ over 120 days and final seedling C was assumed to equal half of the final dry mass for both modeled and observed seedlings.
-
-\
-To test the hypothesis, a default model with mean photosynthetic parameters from the free seedlings was optimized to estimate a LMF which correctly predicted both the leaf mass and total biomass of the harvested free seedling (*M*~free~). This optimized LMF was then used to constrain model runs with treatment-specific *C*~day~, while keeping tissue respiration and turnover parameters constant, to determine if changes in leaf *A*~n~ alone could predict biomass of seedlings in containers (*M*~pots~). Next, model sensitivity to different C allocation scenarios, including observed treatment-specific LMF and up-regulation of non-leaf tissue respiration by 50 % of default values (*M*~S1~ and *M*~S2~, respectively), was used to test for improvement of model biomass predictions compared to measured harvest biomass. For all cases, seedling biomass production was compared between model output and harvested seedlings with treatment-specific mean *C*~day~ by first scaling values to the free seedling control.
+We then used this model to test the hypothesis that the effects of belowground sink limitation on rates of leaf *A*~n~ were sufficient to accurately predict overall seedling biomass production after 120 days. First, a default model with mean photosynthetic parameters from the free seedlings was optimized to estimate a LMF which correctly predicted both the leaf mass and total biomass of the harvested free seedling (*M*~free~). This optimized LMF was then used to constrain model runs with treatment-specific *C*~day~, while keeping woody tissue respiration and tissue turnover parameters constant, to determine if changes in leaf *A*~n~ alone could predict biomass of seedlings in containers (*M*~pots~). Cumulative net leaf C gain for each treatment was equal to the sum of each value of *C*~day,i~ over 120 days and final seedling C was assumed to equal half of the final dry mass for both modeled and observed seedlings. Seedling biomass production was compared between model output and harvested seedlings with treatment-specific mean *C*~day~ by first scaling values to the free seedling control.
 
 ##Data analysis
 Differences in measured parameters with soil volume were analysed by mixed-effects models in R with individual containers and experimental blocks as random effects and soil volume treatment as a categorical fixed effect with seven levels. Tukey's post-hoc tests were performed in conjunction with ANOVA to determine which specific paired comparisons among soil volume treatments were different. A linear mixed effect model of *A*~mass~ and leaf chemistry was performed using the 'nlme' package [@Pinheiro2015] in R. Explained variance (*R*^2^) of mixed models were computed as in @nakagawa2013general, in which the marginal *R*^2^ represents variance explained by fixed factors and the conditional *R*^2^ by both fixed and random factors. Tests of allometric relationships between log-transformed biomass components were implemented using standardized major axis regression in the 'smatr' package in R [@warton2012smatr]. All tests of statistical significance were conducted at an $\alpha$ level of 0.05.
