@@ -56,7 +56,7 @@ PSsat_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSsat
 
 ####stats on A------------------------------------------------------------------------------------------------
 require(nlme)
-require(visreg)
+# require(visreg)
 library(multcomp)
   
 #relevel to free to evaluate container effect  
