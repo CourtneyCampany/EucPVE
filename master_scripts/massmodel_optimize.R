@@ -129,7 +129,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   
   par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
-       ylim=c(0, 200), ylab="Seedling Carbon (g)", xlab="Net Total Leaf Carbon Gain (g)")
+       ylim=c(0, 200), ylab="Seedling Mass (g C)", xlab="Net Total Leaf Carbon Gain (g C)")
   for(i in 1:7){
     points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch3[i], col=cols[i], cex=1.6)
   }
