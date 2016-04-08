@@ -2,16 +2,14 @@ source("functions and packages/plot objects.R")
 library(doBy)
 
 ### this replaces the model scenarios
-### calulate total net daily carbon gain (modelled)
-### combine with emprical estimates of daiil leaf area
-### compare to harvest mass, the difference represents fraction to unmeasured pools
+### calulate total net daily carbon gain (modelled using gross, net and shading)
+### compare to harvest mass, calculate CUE
 
-##read data
+##read data-----------------------------------------------------------------------------------------------------------------
 finalmass <- read.csv("calculated data/harvest_mass_means.csv")
 
 la_pred <- read.csv("Calculated data/LApred_volume.csv")
   names(la_pred)[3] <- "LA"
-  
   
 Cday_net <- read.csv("calculated data/Aleaf_model/cday_120_clean.csv")
 Cday_gross <- read.csv("calculated data/Aleaf_model/cday_120_clean_gross.csv")
@@ -21,18 +19,18 @@ sigma <- read.csv("calculated data/M_leafarea_model.csv")
 
 
 #Calculate total net daily carbon day per tree with Cday and real leaf area------------------------------------------------
-  dailyC <- merge(la_pred,Cday_net)
+  dailyCnet <- merge(la_pred,Cday_net)
   ##this needs to include self shadeing (M as a linear function of leaf area)
-  dailyC <- merge(dailyC, sigma[, c(2,3,5)], by="volume")
-    dailyC$M <- with(dailyC, b*LA+intercept)
+  dailyCnet <- merge(dailyCnet, sigma[, c(2,3,5)], by="volume")
+  dailyCnet$M <- with(dailyCnet, b*LA+intercept)
     #calculate total daily C gain with self shading
-    dailyC$tdcg <- with(dailyC, LA * carbon_day * M)
+  dailyCnet$tdcg <- with(dailyCnet, LA * carbon_day * M)
 
 #Calculate total seedling C gain over experiment (120d)
-  plantC <- summaryBy(tdcg ~ volume, FUN=sum, data=dailyC)
+  plantCnet <- summaryBy(tdcg ~ volume, FUN=sum, data=dailyCnet)
 
 #Compare estimated Daily C gain with final mass from harvest
-  harvestC <- merge(finalmass, plantC)
+  harvestC <- merge(finalmass, plantCnet)
   harvestC$massC <- harvestC$mass*.5
   
   
@@ -46,15 +44,14 @@ dailyCgross <- merge(la_pred,Cday_gross)
   dailyCgross$tdcg <- with(dailyCgross, LA * carbon_day * M)
   
   #Calculate total seedling C gain over experiment (120d)
-  plantC_gross <- summaryBy(tdcg ~ volume, FUN=sum, data=dailyC)
+  plantC_gross <- summaryBy(tdcg ~ volume, FUN=sum, data=dailyCgross)
   
   #Compare estimated Daily C gain with final mass from harvest
   harvestC_gross <- merge(finalmass, plantC_gross)
   harvestC_gross$massC <- harvestC$mass*.5
   
 
-  
-#mean Cday-------------------------------------------------------------------------------------------------------------------
+#mean Cday (net and gross)----------------------------------------------------------------------------------------------------
   anet_vol <- summaryBy(. ~ volume, data=Cday_net, FUN=mean)
   agross_vol <- summaryBy(. ~ volume, data=Cday_gross, FUN=mean)
   
@@ -63,34 +60,43 @@ dailyCgross <- merge(la_pred,Cday_gross)
   harvestC2_gross <- merge(harvestC_gross, agross_vol) 
   
 
+  
 ###PLOT------------------------------------------------------------------------------------------------------------------------
+#####manuscrupt figure (two panel of C in biomass to either Cday sum or Cdaygross sum)
+pch3 <- c(rep(1,6), 6)
+leglab3 <- c(5, 10, 15, 20, 25, 35, "Free","Gross", "Net")
+legcol <- c("red", "#D4002A","#AA0055","#7F007F","#5500AA","#2A00D4","blue" ,"black", "black")
 
-#1. how far off are TDCG and havest mass C
 windows(7,7)
-with(harvestC, plot(tdcg.sum, massC, xlim=c(0,250), ylim=c(0,250), col=as.factor(volume), pch=c(rep(16, 6), 17),
-                    ylab = "Seedling Carbon Mass (g)", xlab = "Total Seedling Carbon Assimilation (g C)", cex=1.5))
-abline(0,1, lty=2)
+
+# Fraction of net Daily Carbon gain to C mass
+with(harvestC2, plot(massC/tdcg.sum, massC,col=as.factor(volume), pch=pchs, cex=1.5,
+                     xlim=c(0.25,0.45), ylim=c(0, 100),
+                      ylab = "Seedling Carbon Mass (g)",
+                      xlab = "Carbon Use Efficiency"))
+
+with(harvestC2_gross, points(massC/tdcg.sum, massC,col=as.factor(volume), pch=pch3, cex=1.5))
+
+legend("topleft", leglab3, pch=c(rep(16, 6), 17, 1,16), text.font=3, inset=0.01, title=vollab, 
+       col=legcol, bty='n',cex=1)
+
+dev.copy2pdf(file= "master_scripts/manuscript_figs/CUE.pdf")
+dev.off()
 
 
-#2. compare total carbon gain to the fraction that ends up in biomass (35% pots, 41% free)
-windows(7,7)
+#other plots---------------------------------------------------------------------------------------------------
+  
+  
+#compare total carbon gain to the fraction that ends up in biomass (35% pots, 41% free)
 with(harvestC, plot(tdcg.sum, massC/tdcg.sum,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5,
-      xlab = "Total Seedling Carbon Assimilation (g C)", xlim=c(0, 250), ylim=c(.25,.45)))
-
-
-#3. Fraction of net Daily Carbon gain to C mass
+                      xlab = "Total Seedling Carbon Assimilation (g C)", 
+                      ylab="CUE",xlim=c(0, 250), ylim=c(.25,.45)))
+  
+  
+#Same with Cday (also make 1-CUE as leftover)
 with(harvestC2, plot(carbon_day.mean, massC/tdcg.sum,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5,
-               xlab = cdaylab, xlim=c(5, 9), ylim=c(.25,.45)))
-
-
-#4. Fraction of gross Daily Carbon gain to not mass (CUE)
-with(harvestC2_gross, plot(carbon_day.mean, massC/tdcg.sum,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5,
-                     xlab = cdaylab,xlim=c(5, 9), ylim=c(.25,.45)))
-
-
-#5. leftover (really high, how does this compare with mass model?)
+                       xlim=c(5,8.5),  ylim=c(.25,.45), xlab = cdaylab))  
+  
 with(harvestC2, plot(carbon_day.mean, 1- massC/tdcg.sum,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5,
-                    xlim=c(5,9),  ylim=c(.5,.8), xlab = cdaylab))
-
-
+                       xlim=c(5,8.5),  ylim=c(.5,.8), xlab = cdaylab))  
 
