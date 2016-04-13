@@ -1,4 +1,4 @@
-# source("functions and packages/startscripts.R")
+source("functions and packages/startscripts.R")
 
 source("master_scripts/model_start.R")
 source("master_scripts/massmodel.R")
@@ -116,11 +116,16 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   mass_actual$Date <- as.Date("2013-05-21")
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
   
-  ##look at free for optimization %
-   #percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
-  
-  
-  
+##RESULTs SECTION------------------------------------------------------------------------------------------------------
+  # ##look at free for optimization %, mean/se of container seedlings 
+  #  percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
+  #  mean(percdiff[1:6])
+  #  se(percdiff[1:6])
+  # ##mean/se difference in mass in gC for containers
+  #  massdiff <- (C_stnd$modelmass - mass_actual$mass)*.5
+  #  mean(massdiff[1:6])
+  #  se(massdiff[1:6])
+   
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
   pch3 <- c(rep(1,6), 6)
 
