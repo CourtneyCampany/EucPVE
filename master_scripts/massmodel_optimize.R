@@ -146,7 +146,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   par(mar=c(4,5,1,2))
   plot(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,col=palette(),cex=1.6,
        xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Seedling~Carbon~Scaled[free]))
+       ylab= expression(Seedling~Mass~Scaled[free]))
   points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
   text(.6,.01,"(b)", cex=1.2)
   legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)

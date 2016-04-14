@@ -19,19 +19,14 @@ COURTNEY E. CAMPANY^1^, BELINDA MEDLYN^1^ and REMKO A. DUURSMA^1^
 ^1^ Hawkesbury Institute for the Environment, University of Western Sydney, Locked Bag 1797, Penrith, NSW, Australia
 
 \
-Hawkesbury Institute for the Environment, Western Sydney University
-Hawkesbury Campus
-Ground Floor, Building R2
-Locked Bag 1797
-Penrith 2751 NSW Australia
-
-\
 Corresponding author: CE Campany, email: courtneycampany@gmail.com, telephone: +61 02 4570 1421, fax: +61 02 4570 1103
 
 \
 Word counts
 \
 Main text:
+\
+Summary: 200
 \
 Introduction:
 \
@@ -41,12 +36,11 @@ Results:
 \
 Discussion:
 \
-Acknowledgements:
+Acknowledgements: 30
 \
-6 figures (6 color), 3 tables
+6 figures (5 color), 3 tables
 \
 Supporting information: 1 table
-
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
 library(knitr)
@@ -56,7 +50,7 @@ opts_knit$set(root.dir = '../')
 ```{r install packages, echo=FALSE, message=FALSE, warning=FALSE,results="hide"}
 #install packages if not already installed
 .packages = c("RColorBrewer", "doBy", "sciplot", "plyr","nlme", "multcomp", "plantecophys", "scales","smatr",
-                           "lme4", "lmerTest", "broom", "reporttools", "visreg")
+                           "lme4", "lmerTest", "broom", "reporttools", "visreg", "pixiedust")
 
 # Install CRAN packages (if not already installed)
 .inst <- .packages %in% installed.packages()
@@ -68,9 +62,6 @@ lapply(.packages, library, character.only=TRUE)
 ```
 
 ```{r global data/sourcing, echo=FALSE, message=FALSE, warning=FALSE}
-# Two useful packages for printing numbers, accessing content of objects.
-library(broom)
-library(reporttools)
 # Set Flag to include figures in text or not.
 includeFigs <- TRUE
 
@@ -78,7 +69,6 @@ source("functions and packages/startscripts.R")
 source("functions and packages/gamplotfunctions.R")
 
 #table data
-library(pixiedust)
 table1 <- read.csv("master_scripts/pve_table1.csv")
 table2 <- read.csv("master_scripts/root_table.csv")
 table3 <- read.csv("master_scripts/pve_table2.csv")
@@ -112,10 +102,10 @@ pvetabS <- "S1"
 - As *A*~n~ and growth were not tightly coordinated, an unaccounted-for pool of photosynthetic C resulted in seedlings with soil volume restriction. These results highlight the need to utilize mass balance approaches when evaluating plant C allocation and confirm that important feedbacks exist between belowground sink strength and leaf C uptake.
 
 ## Keywords {.unnumbered}
-photosynthesis, growth, sink regulation, carbon allocation, soil volume
+photosynthesis, plant growth, sink regulation, carbon allocation, soil volume
 
 #Introduction
-Understanding plant growth and its relationship to C assimilation requires knowledge of the mass balance that must be achieved between C uptake and subsequent allocation to growth, storage, and respiration. As woody plants have highly integrated systems of competing carbohydrate sinks [@kozlowski1992carbohydrate], growth is driven by the allocation of photosynthate from source leaves among these different tissue sinks. At long enough time scales leaf photosynthesis (*A*~n~) and respiratory losses together determine net C balance and plant growth. At shorter temporal scales growth can instead be mediated by tissue C storage pools [@chapin1990ecology], which disrupts the coordination between *A*~n~ and growth. This discrepancy has led to the current debate on how strongly plant growth is controlled by either source or sink activity. As plant growth cannot be simply determined by *A*~n~, growth models must take into account several simultaneous processes affecting the C balance at any given time [@fourcaud2008plant]. Whether growth limitation in woody species is driven mostly by *A*~n~ or other components of the C balance remains largely uncertain.
+Understanding plant growth and its relationship to carbon (C) assimilation requires knowledge of the mass balance that must be achieved between C uptake and subsequent allocation to growth, storage, and respiration. As woody plants have highly integrated systems of competing carbohydrate sinks [@kozlowski1992carbohydrate], growth is driven by the allocation of photosynthate from source leaves among these different tissue sinks. At long enough time scales leaf photosynthesis (*A*~n~) and respiratory losses together determine net C balance and plant growth. At shorter temporal scales growth can instead be mediated by tissue C storage pools [@chapin1990ecology], which disrupts the coordination between *A*~n~ and growth. This discrepancy has led to the current debate on how strongly plant growth is controlled by either source or sink activity. As plant growth cannot be simply determined by *A*~n~, growth models must take into account several simultaneous processes affecting the C balance at any given time [@fourcaud2008plant]. Whether growth limitation in woody species is driven mostly by *A*~n~ or other components of the C balance remains largely uncertain.
 
 \
 One approach to examine the coordination of *A*~n~ and growth is to manipulate C source activity. Examples include elevated CO~2~ and partial defoliation experiments. Elevated CO~2~ has been shown to increase *A*~n~ [@drake1997more; @ainsworth2007response]; across four forest Free-Air CO~2~ Enrichment (FACE) experiments this increased photosynthetic uptake resulted in a stimulation of biomass production by 23 % on average [@norby2005forest]. Evidence from a wide range of elevated CO~2~ experiments, however, also reveals that even with an average photosynthetic enhancement of over 30 %, the biomass growth rate only increases by around 10 % [@kirschbaum2011does]. In partial defoliation experiments, increases in *A*~n~ of the remaining foliage are commonly shown, and are attributed to reduction in end-product inhibition [@iglesias2002regulation; @zhou2003changes; @handa2005test], enhanced biochemical activity [@ovaska1993b;@layne1995end], increased stomatal conductance [@layne1995end], enhanced leaf nutrient status [@turnbull2007increased] and regulatory sugar signaling [@eyles2013whole]. Similar to elevated CO~2~ experiments, these increases in *A*~n~ in defoliation experiments did not always produce increased growth due to reductions in meristem sink strength [@palacio2012fast], C limitation to mycorrhizal colonization [@markkola2004defoliation], or an overall decrease in whole plant C gain [@ovaska1993a]. These manipulations of C source activity demonstrate that changes in *A*~n~ do not always correspond with proportional responses of growth.
@@ -234,13 +224,13 @@ Soon after seedlings became established, both height and diameter growth were ne
 
 \
 Decreases in *A*~sat~ occurred simultaneously with reductions growth of seedlings in containers. This observation initially suggests 
-that sink limitation may be driving the down regulation of photosynthesis, and thus growth. However, there are several possible mechanisms that can explain reduced *A*~n~ in small containers including reduced nutrient content or water availability, or reduced sink strength [@poorter2012pot]. It was therefore necessary to examine each of these factors to determine if the induced belowground sink limitation actually triggered photosynthetic down regulation.
+that sink limitation may be driving the down regulation of photosynthesis, and thus growth. However, there are several possible mechanisms that can explain reduced *A*~n~ in small containers including reduced water availability or nutrient content, or reduced sink strength [@poorter2012pot]. It was therefore necessary to examine each of these factors to determine if the induced belowground sink limitation actually triggered photosynthetic down regulation.
 
 \
 With high rates of *g*~s~, non-limiting leaf water potential ($\Psi$~pd~), and consistent leaf $\delta$^13^C across soil volume treatments, there was little evidence that water stress caused the reduction in *A*~n~. This finding is consistent with other container size studies without drought treatments.  For example, reduced *A*~max~ in cotton seedlings grown at elevated CO~2~ was attributed to sink-limited feedback inhibition from inadequate rooting volume, not decreased *g*~s~ [@thomas1991root]. Similarly, severe reductions in *A*~n~ in coffee plants were not attributed to impacts of container size on leaf water potentials or *g*~s~ [@ronchi2006growth]. It is thus likely that reductions in *A*~n~ of well-watered seedlings observed in our study of *E. tereticornis* seedlings are not the result of limiting soil moisture availability.
 
 \
-With respect to nutrient availability, reductions in *A*~n~ were positively correlated with decreases in leaf N~f~ and leaf N~f~ was considerably reduced for seedlings in containers. Since reductions in leaf N~f~ were detected with TNC-free leaf mass, it is likely that nutrient uptake was affected in the smallest containers instead of TNC dilution in leaves. It it possible that either physical root restriction or decreased supply reduced seedling N uptake in small containers. Although root N was on average higher in free seedlings at the end of the experiment, it was not consistently higher than the smallest container volume treatment. Unrestricted mycorrhizal recruitment could have instead facilitated the increases in leaf N~f~ in free seedlings, but this effect is unknown. Soil N also declined evenly across all treatments, providing no clear evidence for decreased supply between free seedlings and seedlings in containers. In these already low fertility soils, it is possible that seedlings in containers simply grew into increasing N limitation which negatively affected belowground sink strength. Although no clear feedback could be determined between the available soil N pool and decreases in leaf N~f~, the effects of belowground sink limitation on *A*~n~ of seedlings in containers was evident throughout the experiment.
+With respect to nutrient availability, reductions in *A*~n~ were positively correlated with decreases in leaf N~f~ and leaf N~f~ was considerably reduced for seedlings in containers. Since reductions in leaf N~f~ were detected with TNC-free leaf mass, TNC dilution of leaf N was accounted for in all seedlings. It it possible that either physical root restriction or decreased supply reduced seedling N uptake in small containers. Although root N was on average higher in free seedlings at the end of the experiment, it was not consistently higher than the smallest container volume treatment. Unrestricted mycorrhizal recruitment could have instead facilitated the increases in leaf N~f~ in free seedlings, but this effect is unknown. Soil N also declined evenly across all treatments, providing no clear evidence for decreased supply between free seedlings and seedlings in containers. In these already low fertility soils, it is possible that seedlings in containers simply grew into increasing N limitation which negatively affected belowground sink strength. Although no clear feedback could be determined between the available soil N pool and decreases in leaf N~f~, the effects of belowground sink limitation on *A*~n~ of seedlings in containers was evident throughout the experiment.
 
 \
 As both rooting space and resources were finite in containers, the inability of seedlings to maintain the capacity of the belowground C sink resulted in the buildup of C assimilate in leaves. The feedback inhibition of *A*~n~ from starch accumulation has been proposed, yet it is still not known whether there is a starch threshold that triggers the down-regulation process [@nebauer2011photosynthesis]. Here, declines in *A*~max~ were correlated with higher starch content throughout the experiment. These results agree with a study on a deciduous conifer by Equiza et al. [-@equiza2006photosynthetic] where photosynthetic downregulation from reduced sink strength was correlated with starch content. As starch content in leaves of plants grown in the smallest containers was nearly double that of free seedlings in our study, this suggests the response of *A*~n~ to sink inhibition was regulated by this accumulation, as hypothesized.
@@ -255,14 +245,10 @@ The lack of detected shifts in partitioning to fine roots provides evidence agai
 Our model used a simple approach to drive seedling growth with measured reductions in leaf *A*~n~ , via soil volume effects, while treating C use efficiency, respiration and C allocation as fixed processes. Contrary to expectation, the model consistently overestimated seedling growth in containers when parameterized with an optimized LMF for free seedlings. Although reductions in both *A*~max~ and biomass were strongly correlated among treatments, as hypothesized by Poorter et al. [-@poorter2012pot], we provide evidence that the negative effects of sink limitation on *A*~n~ do not fully explain reduced seedling growth. These findings are important as this model reflects classical approaches in tree growth and production modelling that are driven by inputs of C assimilation and processes such as respiration are considered proportional to biomass [@le2001carbon] or growth rate [@tjoelker1999acclimation]. It is possible that the overestimation of growth was due to an initial overestimation of *A*~n~, however, the robust empirical based methods used to generate photosynthetic parameters (*J*~max~, *Vc*~max~, *R* and *g*~1~) make this unlikely. Instead, our results indicate a need to evaluate how oversimplified representations of processes other than *A*~n~ affect models which distinguish the fate of assimilate C within a plant. Doing so will provide valuable input to future models as assimilate allocation is a key component in carbon-balance driven plant growth models [@lacointe2000carbon]. 
 
 \
-Focusing only on empirical results in this study points to *A*~n~ driving reductions in seedling growth. Our modelling results reveal that other components of the C balance, beyond *A*~n~, are required to explain the observed seedling biomass response to sink manipulation. This discrepancy is noteworty as partial accounting of the different mechaninsms involved in plant carbon balance can lead to erroneous conclusions [@valentini2000respiration]. For example, the fraction of photosynthate used in respiration is known to vary depending on species and local environmental conditions [@Lambers2008], yet is often considered a static parameter in process based growth models. The use of fixed rates of respiration in our model likely underestimates seedling responses to sink limitation. Our modelling results agree with conclusions from Valentine and M&#228;kel&#228; [-@valentine2005bridging] where the problem with predicting tree growth is a problem in forecasting the assimilation and allocation of C and other constituents. Future empirical and modelling studies should focus on how feedbacks from sink activity affect both rates of *A*~n~ and the fate of C allocated to growth, respiration and C storage in leaves. However, the degree to which these mechanisms regulate the C available for growth will undoubtedly shift across different species and environmental conditions. 
+Focusing only on empirical results in this study points to *A*~n~ driving reductions in seedling growth. Our modelling results reveal that other components of the C balance, beyond *A*~n~, are required to explain the observed seedling biomass response to sink manipulation. This discrepancy is noteworty, as partial accounting of the different mechaninsms involved in plant carbon balance can lead to erroneous conclusions [@valentini2000respiration]. For example, the fraction of photosynthate used in respiration is known to vary depending on species and local environmental conditions [@Lambers2008], yet is often considered a static parameter in process based growth models. The use of fixed rates of respiration in our model likely underestimates seedling responses to sink limitation. Thus, our modelling results agree with conclusions from Valentine and M&#228;kel&#228; [-@valentine2005bridging] where the problem with predicting tree growth is a problem in forecasting the assimilation and allocation of C and other constituents. Future empirical and modelling studies should focus on how feedbacks from sink activity affect both rates of *A*~n~ and the fate of C allocated to growth, respiration and C storage in leaves. However, the degree to which these mechanisms regulate the C available for growth will undoubtedly shift across different species and environmental conditions. 
 
 ##Conclusions
-With a novel field-based design we detected a massive effect of container volume on seedling growth, when compared with naturally planted seedlings. This finding is important as manipulations of plants grown in containers are often used to draw conclusions about growth and physiological principles, but how these results actually reflect field-grown plants is seldom studied. Although biomass partitioning was conserved, our empirical and model results suggest that the amount of photosynthate allocated to non-biomass pools were likely altered by sink inhibition. The debate over how rates of photosynthesis affect plant growth or to what degree these rates are instead controlled by growth has existed for decades [@sweet1966role]. Our combined empirical and modeling approach shows that when non-photosynthetic parameters were kept constant, changes in *A*~n~ were not able to fully to predict changes in growth, an important distinction often missed in studies that manipulate source/sink activity. K&#246;rner [-@korner2013growth] suggests that it is the norm for sink activity to feedback onto source activity, causing growth to control *A*~n~ through the demand for C. Although this may be true, our results imply that quantifying the fate of assimilated C into known pools of growth, storage and C loss are needed prior to addressing this debate. 
-
-Our modelling results agree with conclusions from Valentine and M&#228;kel&#228; [-@valentine2005bridging] where the problem with predicting tree growth is a problem in forecasting the assimilation and allocation of C and other constituents. 
-
-The approach used here has the flexibility to account for multiple drivers of C allocation and provides an avenue to address future questions regarding the impact of environmental change on plant growth.
+With a novel field-based design we detected a massive effect of container volume on seedling growth, when compared with naturally planted seedlings. This finding is important as manipulations of plants grown in containers are often used to draw conclusions about growth and physiological principles, but how these results actually reflect field-grown plants is seldom studied. Although biomass partitioning was conserved, our empirical and model results suggest that the amount of photosynthate allocated to non-biomass pools were likely altered by sink inhibition. The debate over how rates of photosynthesis affect plant growth or to what degree these rates are instead controlled by growth has existed for decades [@sweet1966role]. Our combined empirical and modeling approach shows that when non-photosynthetic parameters were kept constant, changes in *A*~n~ were not able to fully to predict changes in growth, an important distinction often missed in studies that manipulate source/sink activity. It has been suggested that tissue sink activity strongly feedbacks onto source activity, causing growth to control *A*~n~ through the demand for C [@korner2013growth; @korner2015paradigm]. Although this may be true, our results imply that quantifying the fate of assimilated C into known pools of growth, storage and C loss are needed prior to addressing this debate. The approach used here has the flexibility to account for multiple drivers of C allocation and provides an avenue to address future questions regarding the impact of environmental change on plant growth.
 
 # Tables {.unnumbered}
 **Table 1**.Responses of plant and leaf characteristics of *Eucalyptus tereticornis* seedlings to soil volume treatments. Each value reflects the mean (&pm; 1 standard error) for each treatment. Seedling mass and leaf $\delta$^13^C values are from final harvest. Values of SLA~f~, leaf starch, leaf sugars and leaf N~f~ represent overall means across measurement campaigns (n=6). Different letters represent significant differences between treatments. The volume effect *P* value represents the overall difference between seedlings with soil volume restriction and the control seedlings.
@@ -287,7 +273,7 @@ dust(table1)%>%
 ```{r table2, echo=FALSE, warning=FALSE}
 dust(table2)%>%
   sprinkle_colnames("Volume (L)", 
-                        "Root Nitrogen (%)", 
+                        "Root N (%)", 
                         "SRL (m g^-1^)",
                         "FRLD (m dm^-3^)") %>%
   sprinkle(rows= 1, part="head",bold=TRUE)%>%
