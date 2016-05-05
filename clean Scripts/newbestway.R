@@ -100,3 +100,18 @@ with(harvestC2, plot(carbon_day.mean, massC/tdcg.sum,col=as.factor(volume), pch=
 with(harvestC2, plot(carbon_day.mean, 1- massC/tdcg.sum,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5,
                        xlim=c(5,8.5),  ylim=c(.5,.8), xlab = cdaylab))  
 
+
+windows(7,7)
+
+#----------------------------------------------------------------------------------------------------------------------------
+dat3 <- harvestC2
+  # dat3$volume <- gsub(1000, "free", dat3$volume)
+  # dat3$volume <- gsub("^5", "05", dat3$volume)
+  # dat3$volume <- as.factor(dat3$volume)
+  dat3$cue <- with(dat3,massC/tdcg.sum )
+
+# Fraction of net Daily Carbon gain to C mass
+plot(cue~volume, data=dat3,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5)
+
+
+

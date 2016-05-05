@@ -79,57 +79,12 @@ with(subset(alloc_sim, volume==35),points(C_adj,mass_adj_free, col=cols6, cex=1,
 with(subset(alloc_sim, volume==1000),points(C_adj,mass_adj_free, col=cols7, cex=1,pch=17))
 points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1)
 legend("topright", leglab, pch=pchs,text.font=1, inset=0.01, 
-       title=vollab, col=palette(), bty='n',cex=1.0,)
+       title=vollab, col=palette(), bty='n',cex=1.0)
 
 # ###simple version
 # with(gCseq_sim_obs, plot(C_adj,mass_adj, xlim=c(1,.5),ylim=c(0, 1), ylab= "", xlab="", cex=1.6, pch=16, col=col_bl))
 # points( mass_actual$mass_adj~Cday_means$C_stnd_free,pch=pchs,col=palette(),cex=1.6)
 
-
-
-#####PLOT Scenarios--------------------------------------------------------------------------------------------
-
-# ####Scenario 2 (fine root allocation adjusted +/- 50% from mean)
-# sim_exudate <- read.csv("calculated data/model_runs/sim_exudate.csv")
-# sim_exudate <- sim_exudate[c(1,2,4,3),] #correct order of variables for polygon
-# 
-# 
-# ####Scenario 3 (root respiration +50%)
-# sim_rootresp <- read.csv("calculated data/model_runs/sim_rootresp.csv")
-# #new dataframe with coordinates for poly, use max and min here with means from sim_obs
-# rootresp_coords <- sim_rootresp[c(1,101),1:5]
-# sim_obs_coords <- gCseq_sim_obs[c(1,101),1:5]
-# 
-# rootresp_poly <- rbind(rootresp_coords[,c(1,5)], sim_obs_coords[,c(1,5)])
-# rootresp_poly <- rootresp_poly[c(1,2,4,3),] #correct order of variables for polygon
-
-# windows()
-# #png(filename = "output/presentations/Cmodel_meanC_massactual.png", width = 12, height = 8, units = "in", res= 400)
-# par(cex.axis=1.3, cex.lab=1.3)
-# #scenario #1
-# with(gCseq_sim_obs, plot(biomass~gCday, ylim=c(0,250), xlim=c(4,8), ylab= "",xlab=cdaylab,pch=16,
-#                          cex=1.6, col=col_bl, type="n"))
-#   
-#   #observed mass vs mean Cday
-#   points( mass_actual$mass~Cday,pch=pchs,col=palette(),cex=1.6)
-#   #sim mass wiht Aleaf  (all days Cday with allocation)
-#   points(Aleaf_sim$biomass~ Cday, col=palette(), pch=pchs2, cex=1.6)
-#   #sim mass with sunny day Cday
-#   points(mass_sim$biomass ~ Cday, pch=pchs3, bg=palette(), cex=1.6)  
-#   
-#   #scenario #1 (means)
-#   points(biomass~gCday,pch=16,cex=1.6, col="black", data=gCseq_sim_obs, type="l", lwd=2)
-#   
-#   #sceario #2 (as poly)
-#   polygon(sim_exudate$Cday, sim_exudate$biomass, lty=2, lwd=2,border="darkorange2", col=col_exude, density= -.4)
-#   #scenario #3
-#   polygon(rootresp_poly$gCday, rootresp_poly$biomass, lty=2, lwd=2,border="forestgreen", col=col_resp, density= -.4)
-#   
-#   title(ylab=treelab, mgp=ypos)
-#   legend("topleft", leglab, pch=pchs,text.font=1, inset=0.01, 
-#         title=expression(Pot~volume~(l)), col=palette(), bty='n',cex=1.3,)
-# 
-# #dev.off()
 
 
 #other plotting---------------------------------------------------------------------------------------------
