@@ -111,7 +111,11 @@ dat3 <- harvestC2
   dat3$cue <- with(dat3,massC/tdcg.sum )
 
 # Fraction of net Daily Carbon gain to C mass
-plot(cue~volume, data=dat3,col=as.factor(volume), pch=c(rep(16, 6), 17), cex=1.5)
+plot(cue~as.factor(volume), data=dat3,col=as.factor(volume), pch=21, ylim=c(.25,.5))
+
+plot(massC/tdcg.sum~ as.factor(volume),col=as.factor(volume), data=harvestC_gross,ylim=c(.25,.5))
+
+plot(massC/tdcg.sum ~ as.factor(volume),col=as.factor(volume), pch=21,cex=1.5, data=harvestC2,ylim=c(.25,.5))
 
 
 
