@@ -23,6 +23,12 @@ table2 <- merge(table2, rd[,c(1:2,4)])
 phys <- read.csv("calculated data/jmax_vcmax_clean.csv")
   names(phys)[2:5]<- c("Jmax", "Vcmax", "Jmax_se", "Vcmax_se")
 
+# ##quick plot of jmax:vcmax for thesis reviewer comment
+# with(phys, plot(Jmax~Vcmax))
+# phys$ratio <- with(phys, Jmax/Vcmax)
+# mean(phys$ratio)
+# se(phys$ratio)
+
 table2 <- merge(table2, phys)
        
 #4. gs
