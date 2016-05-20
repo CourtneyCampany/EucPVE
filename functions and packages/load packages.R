@@ -7,16 +7,13 @@ library(nlme)
 library(plyr)
 library(visreg)
 library(multcomp)
-library(smatr)
 library(lme4)
 library(lmerTest)
-library(effects)
-
 library(plotrix)
 #library(plotBy)
-
 library(plantecophys)
 library(scales)
+library(effects)
 
 # possible markdown package installers
 # 

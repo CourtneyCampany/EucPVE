@@ -49,8 +49,9 @@ opts_knit$set(root.dir = '../')
 
 ```{r install packages, echo=FALSE, message=FALSE, warning=FALSE,results="hide"}
 #install packages if not already installed
-.packages = c("RColorBrewer", "doBy", "sciplot", "plyr","nlme", "multcomp", "plantecophys", "scales","smatr",
-                           "lme4", "lmerTest", "broom", "reporttools", "visreg", "pixiedust")
+.packages = c("RColorBrewer", "doBy", "sciplot", "plyr","nlme", "multcomp", "plantecophys", "scales","smatr","plotrix",
+                           "lme4", "lmerTest", "broom", "reporttools", "visreg", "pixiedust", "lubridate", "reshape",
+              "magicaxis", "effects")
 
 # Install CRAN packages (if not already installed)
 .inst <- .packages %in% installed.packages()
