@@ -62,6 +62,7 @@ TNCpred$Amass_pred <- predict(Afit2_full, TNCpred, re.form=NA)
 ##plot
 alab <- expression(A[mass]~~(n*mol~g^-1~s^-1))
 nitro_noTNC <- expression(Leaf~Nitrogen[TNC[free]]~~(mg~g^-1))
+nitromasslab <- expression(Leaf~N[mass]~~(mg~g^-1))
 
 
 #windows(10, 7)
@@ -85,7 +86,7 @@ plot(A_mass ~ starch_perc, data=photo_chem,type='n',ylim=c(0,800), xlim=c(0, 27.
     }
   text(0.5, 805, "(a)", cex=1.2)
   mtext("Leaf Starch (%)", cex=1.2, line=3.5, side=1)
-  legend("topright", binlab2, pch=21, text.font=1, inset=0.02, pt.bg=coln2,title=nitro_noTNC , bty='n', cex=1) 
+  legend("topright", binlab2, pch=21, text.font=1, inset=0.02, pt.bg=coln2,title=nitromasslab , bty='n', cex=1) 
  
 # Second Panel
 par(mar=c(5,0,2,2))
@@ -101,7 +102,7 @@ plot(A_mass ~ nitro_mg, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0,
     with(d, lines(nitro_mg, Amass_pred, col=cols[i], lwd=2))
     }
   text(0.75, 805, "(b)", cex=1.2)
-  mtext(nitro_noTNC, side=1, cex=1.2, line=3.5)
+  mtext(nitromasslab, side=1, cex=1.2, line=3.5)
   legend("bottomright", binlab, pch=21, text.font=1, inset=0.02, pt.bg=coln2,title="Leaf Starch (%)" , bty='n', cex=1)
 
 # dev.copy2pdf(file= "master_scripts/manuscript_figs/A_leafchem.pdf")
