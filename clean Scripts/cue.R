@@ -95,4 +95,16 @@ bar(mass_perc, volume, cue_fractions,half.errbar=FALSE, xlab="Soil Volume  (l)",
 title(ylab="Fraction of Total Modelled Photosynthesis", mgp=c(2.5,1,0))
 
 
+plot(massC/tdc_net.sum ~ volume, data=harvestC[!harvestC$volume == "1000",], ylim=c(.25, .45))
+
+#colors
+gradient <- colorRampPalette(c("red", "blue"))
+palette(gradient(7))
+cols <- palette(gradient(7))
+
+###CUE plot as points with free
+test <- harvestC
+test$volume <- gsub(1000, 40, test$volume)
+plot(massC/tdc_net.sum ~ volume, data=test, ylim=c(.25, .45), xaxt='n', cex=1.5, pch=16, col=cols, ylab="CUE", xlab="Volume (l)")
+axis(1, at=c(5,10,15,20,25,30,35,40), labels=c(5,10,15,20,25,30,35,"Free"))
 
