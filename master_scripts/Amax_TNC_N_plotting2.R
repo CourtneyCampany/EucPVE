@@ -29,6 +29,7 @@ photo_chem$nitrobin <- cut(photo_chem$nitro_mg, breaks = nitrobin)
 Afit_full <- lmer(A_mass ~ nitro_mg+starch_perc+nitro_mg:starch_perc + (1|ID), data=photo_chem)
 #####model parameters for plotting
 f <- fixef(Afit_full)
+coef(Afit_full)
 
 ###same model with fixed effects in different order for ease of plotting preductions later
 Afit2_full <- lmer(A_mass ~ starch_perc+nitro_mg+starch_perc:nitro_mg + (1|ID), data=photo_chem)
