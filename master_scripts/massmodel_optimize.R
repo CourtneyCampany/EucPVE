@@ -153,8 +153,7 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
        ylim=c(0, 200), ylab="Seedling Mass (g C)", xlab="Net Total Leaf Carbon Gain (g C)")
   segments(x0=min(plantC2$totalC_trt2), x1=max(plantC2$totalC_trt2),y0=min(plantC2$netCgain), y1=max(plantC2$netCgain), 
-           lwd=3, lty=3, col="black")
-  # lines(netCgain ~ totalC_trt2, data= plantC2,col="black", lwd=2, lty=3)
+           lwd=3, lty=3, col="darkblue")
   abline(0,1, lwd=2, lty=2, col="grey35")
   text(0,195,"(a)", cex=1.2)
 

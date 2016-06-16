@@ -335,7 +335,7 @@ source("master_scripts/Amax_TNC_N_plotting2.R")
 ```{r massmodel, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600, dev.args=list(type="cairo")}
 source("master_scripts/massmodel_optimize.R")
 ```  
-**Figure 6**. (a) Total C mass of harvested seedlings versus modelled net leaf carbon gain over 120 days. The dashed black line hows the 1:1 line and the dashed red line shows the seedling biomass that would be expected if all seedlings had the same carbon use efficiency as the freely grown seedling. (b) Carbon use efficiency (ration of final biomass to modelled net leaf C gain) of plants growth in different container sizes.
+**Figure 6**. (a) Total C mass of harvested seedlings versus modelled net leaf carbon gain over 120 days. The dashed black line shows the 1:1 line and the dotted black line shows the seedling biomass that would be expected if all seedlings had the same carbon use efficiency as the freely grown seedling. (b) Ratio of final biomass to modelled net leaf C gain of plants growth in different container sizes.
 
 # Acknowledgements
 We thank Burhan Amiji for his outstanding technical assistance. We would like to thank the many Hawkesbury Institute for the Environment staff and students who helped during the experimental harvest.
