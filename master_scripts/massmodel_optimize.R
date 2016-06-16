@@ -128,32 +128,45 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
    
 #9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
   pch3 <- c(rep(1,6), 6)
+  
+  
+  #vector of model output to make line for plot (a)
+  plantC <- lapply(optmassmodel, function(x){as.data.frame(.5 * x[1,1])})
+    library(plyr)
+    plantC <- rbind.fill(plantC)
+  plantC2 <- cbind(plantC,totalC_trt2 )
+    names(plantC2)[1] <- "netCgain"
+  
+  #data for CUE figure (b)
+  cue <- read.csv("calculated data/CUEdaily.csv") 
+  #Compare estimated Daily C gain with final mass from harvest
+  harvestC <- merge(mass_actual[,1:2], cue)
+    harvestC$massC <- harvestC$mass*.5  
+    harvestC$volume <- gsub(1000, 40, harvestC$volume)
+    
 
-  # windows(7,8)
+  windows(7,7)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
-  par(mar=c(4,5,2,2), cex.axis=0.8, las=1)
+  par(mar=c(4,5.5,2,2), cex.axis=0.8, las=1)
+  #plot(a)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
        ylim=c(0, 200), ylab="Seedling Mass (g C)", xlab="Net Total Leaf Carbon Gain (g C)")
-  for(i in 1:7){
-    points(0.5*optmassmodel[[i]][1,1]~ totalC_trt2[i], pch=pch3[i], col=cols[i], cex=1.6)
-  }
+  lines(netCgain ~ totalC_trt2, data= plantC2,col="black", lwd=2, lty=3)
   abline(0,1, lwd=2, lty=2, col="grey35")
-  text(200,5,"(a)", cex=1.2)
+  text(0,195,"(a)", cex=1.2)
 
-  legend("topleft", leglab, pch=pchs,text.font=1, inset=0.025, title=vollab, col=palette(), bty='n',cex=1.0)
+  legend("bottomright", leglab, pch=pchs,text.font=1, title=vollab, col=palette(), bty='n',cex=1.0)
+  #plot(b)
+  par(mar=c(4,5.5,1,2))
+  plot(massC/tdc_net.sum ~ volume, data=harvestC, ylim=c(.25, .45), xaxt='n', cex=1.5, pch=pchs, col=cols, 
+       ylab="Seedling Mass / \nModelled Total Net C Gain", 
+       xlab="Soil Volume (l)")
+  axis(1, at=c(5,10,15,20,25,35,40), labels=c(5,10,15,20,25,35,"Free"))
+  text(5,.445,"(b)", cex=1.2)
   
-  par(mar=c(4,5,1,2))
-  plot(C_stnd$model_stnd_free ~ C_stnd$C_stnd_free , xlim=c(1,.6), ylim=c(0, 1),pch=pch3,col=palette(),cex=1.6,
-       xlab=expression(Mean~Daily~Carbon~Assimilation~Scaled[free]),
-       ylab= expression(Seedling~Mass~Scaled[free]))
-  points(mass_actual$mass_adj ~ C_stnd$C_stnd_free , pch=pchs,col=palette(),cex=1.6)
-  text(.6,.01,"(b)", cex=1.2)
-  legend("topright", simleg, pch=simpch,text.font=1,   inset=0.025,bty='n',cex=1.0)
-  
- # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
- # dev.off()
-
+ dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
+ dev.off()
 
 
 
