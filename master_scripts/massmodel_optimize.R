@@ -145,14 +145,16 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
     harvestC$volume <- gsub(1000, 40, harvestC$volume)
     
 
-  windows(7,7)
+  # windows(7,7)
   par(cex.axis=.96, cex.lab=1.2,mfrow=c(2,1),oma=c(0.1,0.1,0.1,0.1), las=1)   
   
   par(mar=c(4,5.5,2,2), cex.axis=0.8, las=1)
   #plot(a)
   plot(0.5*mass_actual$mass ~ totalC_trt2,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 200),
        ylim=c(0, 200), ylab="Seedling Mass (g C)", xlab="Net Total Leaf Carbon Gain (g C)")
-  lines(netCgain ~ totalC_trt2, data= plantC2,col="black", lwd=2, lty=3)
+  segments(x0=min(plantC2$totalC_trt2), x1=max(plantC2$totalC_trt2),y0=min(plantC2$netCgain), y1=max(plantC2$netCgain), 
+           lwd=3, lty=3, col="black")
+  # lines(netCgain ~ totalC_trt2, data= plantC2,col="black", lwd=2, lty=3)
   abline(0,1, lwd=2, lty=2, col="grey35")
   text(0,195,"(a)", cex=1.2)
 
@@ -160,14 +162,12 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   #plot(b)
   par(mar=c(4,5.5,1,2))
   plot(massC/tdc_net.sum ~ volume, data=harvestC, ylim=c(.25, .45), xaxt='n', cex=1.5, pch=pchs, col=cols, 
-       ylab="Seedling Mass / \nModelled Total Net C Gain", 
+       ylab="Seedling Mass (g C) / \nModelled Total Net C Gain (g C)", 
        xlab="Soil Volume (l)")
   axis(1, at=c(5,10,15,20,25,35,40), labels=c(5,10,15,20,25,35,"Free"))
   text(5,.445,"(b)", cex=1.2)
-  
- dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
- dev.off()
 
-
+ # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
+ # dev.off()
 
 
