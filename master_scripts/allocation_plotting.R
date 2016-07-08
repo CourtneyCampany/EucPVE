@@ -93,6 +93,4 @@ with(ratio_agg, arrows(x0=log10(fineroot.mean), y0=log10(leafmass.mean), y1=log1
                        length=0.05,col=palette(), lwd=1))
 magaxis(side=c(1,2), unlog=c(1,2), frame.plot=TRUE)
 
-# dev.copy2pdf(file= "master_scripts/manuscript_figs/massfractions.pdf")
-# dev.off()
 

@@ -82,9 +82,6 @@ axis.Date(1, at=xAT, label=TRUE, format="%b")
 box()
 text(x=15710, 4.9, "(c)", cex=1.51)
 
-# dev.copy2pdf(file= "master_scripts/manuscript_figs/airvars.pdf")
-# dev.off()
-
 
 
 

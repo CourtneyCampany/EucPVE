@@ -9,11 +9,14 @@ pacman::p_load(RColorBrewer, doBy, sciplot, plyr,nlme, multcomp, plantecophys, s
                magicaxis, effects)
 
 
-source("functions and packages/startscripts.R")
+source("functions and packages/load packages.R")
+source("functions and packages/functions.R")
+source("functions and packages/plot objects.R")
+
 source("functions and packages/gamplotfunctions.R")
 
 #table data
 table1 <- read.csv("master_scripts/pve_table1.csv")
 table2 <- read.csv("master_scripts/root_table.csv")
 table3 <- read.csv("master_scripts/pve_table2.csv")
-modeltable <- read.csv("master_scripts/modeltable.csv")
+

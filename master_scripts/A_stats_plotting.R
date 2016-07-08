@@ -120,15 +120,4 @@ bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", 
     col="grey", legend=FALSE, bg="white")
 title(ylab=satlab, mgp=ypos)
 text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, sl2, cex=1.3)
-#dev.copy2pdf(file= "master_scripts/manuscript_figs/Asat.pdf")
-#dev.off()
 
-
-###png
-# png(filename = "master_scripts/manuscript_figs/png/asat.png", width = 11, height = 8.5, units = "in", res= 400)
-# par(cex.axis=1.5,cex.lab=1.5 ,las=1)
-# bar(Photo, volume, PSsat_ID,half.errbar=FALSE, xlab="Soil Volume  (l)",ylab="", ylim=c(0,25), names.arg = leglab,
-#     col="grey", legend=FALSE, xpd=TRUE,mar=c(5,5,2,2))
-# title(ylab=satlab, mgp=ypos)
-# text(c(.7,1.9,3.1,4.3,5.5,6.75,7.9), 10, SigLetters, cex=1.3)
-#  dev.off()

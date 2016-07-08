@@ -106,5 +106,3 @@ plot(A_mass ~ nitro_mg, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0,
   mtext(nitromasslab, side=1, cex=1.2, line=3.5)
   legend("bottomright", binlab, pch=21, text.font=1, inset=0.02, pt.bg=coln2,title="Leaf Starch (%)" , bty='n', cex=1)
 
-# dev.copy2pdf(file= "master_scripts/manuscript_figs/A_leafchem.pdf")
-#dev.off()
