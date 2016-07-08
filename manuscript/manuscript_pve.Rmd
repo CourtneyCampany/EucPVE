@@ -39,43 +39,26 @@ Discussion:
 Acknowledgements: 30
 \
 6 figures (5 color), 3 tables
-\
-Supporting information: 1 table
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
 library(knitr)
 opts_knit$set(root.dir = '../')
 ```
 
-```{r install packages, echo=FALSE, message=FALSE, warning=FALSE,results="hide"}
-#install packages if not already installed
-.packages = c("RColorBrewer", "doBy", "sciplot", "plyr","nlme", "multcomp", "plantecophys", "scales","smatr","plotrix",
-                           "lme4", "lmerTest", "broom", "reporttools", "visreg", "pixiedust", "lubridate", "reshape",
-              "magicaxis", "effects")
-
-# Install CRAN packages (if not already installed)
-.inst <- .packages %in% installed.packages()
-if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst], repos = "http://cran.at.r-project.org")
-
-# Load packages into session
-lapply(.packages, library, character.only=TRUE)
-
-```
-
 ```{r global data/sourcing, echo=FALSE, message=FALSE, warning=FALSE}
 # Set Flag to include figures in text or not.
 includeFigs <- TRUE
+```
 
-source("functions and packages/startscripts.R")
-source("functions and packages/gamplotfunctions.R")
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
 
-#table data
-table1 <- read.csv("master_scripts/pve_table1.csv")
-table2 <- read.csv("master_scripts/root_table.csv")
-table3 <- read.csv("master_scripts/pve_table2.csv")
-modeltable <- read.csv("master_scripts/modeltable.csv")
+source("manuscri[t/manuscript_preload.R")
+
+# Make figure PDFs.
+source("manuscript/make_figures.R")
 
 ```
+
 
 ```{r, echo=FALSE}
 allomfig <- "1"
@@ -178,7 +161,7 @@ where *L* is modelled total plant leaf area (m^2^), *P* is the daily carbon assi
 \
 It was further necessary to calculate a self-shading parameter ($\sigma$) when scaling leaf *A*~n~ with total plant leaf area. This was accomplished by utilizing 61 previously digitized *Eucalyptus* seedlings, covering 5 total species which include *E. tereticornis*, from Duursma et al. [-@duursma2012light] to run in 'YplantQMC' package [@YplantQMC] in R to build a 3D plant structure based on digitized metrics of plant allometry and crown structure. Using the same treatment specific physiological parameters listed above, 'YplantQMC' outputs total *A*~n~, using total leaf area, for seedlings assuming self-shading as well as for a full sun large horizontal leaf. The ratio of total *A*~n~ with self-shading to horizontal leaf was then used to calculate $\sigma$ for each of the 61 digitized seedlings, independently for each of the seven soil volume treatments. Next, the linear relationship between $\sigma$ and total leaf area was determined across digitized seedlings, within each treatment. For the growth model, $\sigma$ was then predicted for each daily time step using the previous days cumulative leaf area and this value was then applied to *P*. All default parameters used in model simulations are reported in Table `r pvetabS`.
 
-*make sure this is correct, add CUE bit *
+*make sure this is correct, add CUE bit*
 We then used this model to test the hypothesis that the effects of belowground sink limitation on rates of leaf *A*~n~ were sufficient to accurately predict overall seedling biomass production after 120 days.  Cumulative net leaf C gain for each treatment was equal to the sum of each value of *P* over 120 days and final seedling C was assumed to equal half of the final dry mass for observed seedlings. 
 
 ##Data analysis
