@@ -14,7 +14,6 @@ harvestC <- merge(mass_actual[,1:2], cue)
   harvestC$massC <- harvestC$mass*.5  
   harvestC$volume <- gsub(1000, 40, harvestC$volume)
 
-
 #plot-----------------------------------------------------------------------------------------
 pch3 <- c(rep(1,6), 6)
   
