@@ -47,7 +47,6 @@ source("master_scripts/massmodel.R")
     
   }
   
-  
 #6. Visualize if there is an optimum
   # lfs <- seq(0.05,0.3, length=101)
   # test_opt <- mapply(O.lmf, leaffrac=lfs)
@@ -97,37 +96,16 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   }                  
   
   totalC_trt <- lapply(totalC_list, function(x) sum(x))
-  
   totalC_trt2 <- unlist(totalC_trt)
   
-#9. Scale model results to free seedling
-  
-  ##mean daily carbon gain scales
-  C_stnd <- read.csv("calculated data/Aleaf_model/gCday_means_clean.csv")
-  C_stnd$C_stnd_free <- with(C_stnd, carbon_day/carbon_day[7])
-  
-  ##modelled biomass scaled
-  C_stnd$modelmass <- c(optmassmodel[[1]][1,1], optmassmodel[[2]][1,1], optmassmodel[[3]][1,1], optmassmodel[[4]][1,1], 
-                        optmassmodel[[4]][1,1],optmassmodel[[6]][1,1],optmassmodel[[7]][1,1])
-  C_stnd$model_stnd_free <- with(C_stnd, modelmass/modelmass[7])
+
+#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
+  pch3 <- c(rep(1,6), 6)
   
   #harvest mass (treatment means)
   mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
   mass_actual$Date <- as.Date("2013-05-21")
   mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
-  
-##RESULTs SECTION------------------------------------------------------------------------------------------------------
-  # ##look at free for optimization %, mean/se of container seedlings 
-  #  percdiff <- (C_stnd$modelmass - mass_actual$mass)/C_stnd$modelmass
-  #  mean(percdiff[1:6])
-  #  se(percdiff[1:6])
-  # ##mean/se difference in mass in gC for containers
-  #  massdiff <- (C_stnd$modelmass - mass_actual$mass)*.5
-  #  mean(massdiff[1:6])
-  #  se(massdiff[1:6])
-   
-#9. plot plant carbon with optmized LMF sim vs total c gain (LA from sim cday120) and scaled------------------------------
-  pch3 <- c(rep(1,6), 6)
   
   
   #vector of model output to make line for plot (a)
@@ -166,7 +144,11 @@ write.csv(biomass_time, "calculated data/biomass_time.csv", row.names=FALSE)
   axis(1, at=c(5,10,15,20,25,35,40), labels=c(5,10,15,20,25,35,"Free"))
   text(5,.445,"(b)", cex=1.2)
 
- # dev.copy2pdf(file= "master_scripts/manuscript_figs/massmodel_totalC.pdf")
- # dev.off()
+##results section-----------------------------------------------------------------------------------------------------------
+mean(totalC_trt2[1:6])
+se(totalC_trt2[1:6])
+
+leftoverC <- (totalC_trt2-cmass)/totalC_trt2
+
 
 
