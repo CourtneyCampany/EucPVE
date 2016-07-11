@@ -26,7 +26,7 @@ par(mar=c(4,5.5,2,2), cex.axis=0.8, las=1)
 #plot(a)
 plot(massC ~ tdc_net.sum, data=harvestC,pch=pchs,col=palette(),cex=1.6, xlim=c(0, 225),
        ylim=c(0, 225), ylab="Seedling Mass (g C)", xlab="Net Total Leaf Carbon Gain (g C)")
-  segments(x0=min(free_cue$cday_net), x1=max(free_cue$cday_net),y0=min(plantC2$netCgain), y1=max(plantC2$netCgain), 
+  segments(x0=0, x1=max(harvestC$tdc_net.sum),y0=0, y1=max(harvestC$massC), 
             lwd=3, lty=3, col="darkblue")
   abline(0,1, lwd=2, lty=2, col="grey35")
   text(225,210,"(a)", cex=1.2)
