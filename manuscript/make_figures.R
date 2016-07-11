@@ -19,5 +19,5 @@ to_pdf(source("master_scripts/airvars_plotting.R"), fn("Figure2.pdf"), width=6, 
 to_pdf(source("master_scripts/allocation_plotting.R"), fn("Figure3.pdf"), width=6, height=8)
 to_pdf(source("master_scripts/A_stats_plotting.R"), fn("Figure4.pdf"), width=6, height=6)
 to_pdf(source("master_scripts/Amax_TNC_N_plotting2.R"), fn("Figure5.pdf"), width=8, height=6)
-to_pdf(source("master_scripts/massmodel_optimize.R"), fn("Figure6.pdf"), width=6, height=8)
+to_pdf(source("master_scripts/cuefig.R"), fn("Figure6.pdf"), width=6, height=6)
 
