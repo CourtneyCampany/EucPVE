@@ -282,31 +282,31 @@ dust(table3)%>%
 source("master_scripts/allometryplotting.R")
 ```  
 **Figure 1**. Soil volume treatment means &pm; standard error of height growth (a), diameter growth (b), and seedling leaf area estimated from leaf counts (c) measured weekly of *Eucalyptus tereticornis* seedlings across the experiment duration in 2013.
-
+\
 ```{r airvars, fig.width=6, fig.height=8, echo=FALSE, dev="png", dpi=600,eval=includeFigs}
 source("master_scripts/airvars_plotting.R")
 ```  
 **Figure 2**. Daily maximum and minimum temperature (a), total daily PPFD (b), and daily maximum vapour pressure deficit (c) across the experiment duration in 2013. 
-
+\
 ```{r allocation, fig.width=6, fig.height=8, echo=FALSE, warning=FALSE, message=FALSE, dev="png", dpi=600,eval=includeFigs}
 source("master_scripts/allocation_plotting.R")
 ```  
 **Figure 3**. Soil volume treatment means of biomass partitioning to leaves, stems, and roots at harvest (a), bi-variate relationships between mass allocation to leaves and stems + roots (b) and leaf mass as a function of fine root biomass with &pm; standard error (c). For (b) lines represent standardized major axis fitting of the log-transformed allometric relationships of leaf mass fraction by treatment. For (c) the dashed line is the 1:1 relationship and the solid line represents the significant log-log model fit (*R*^2^ = 0.82) with equation: log(x) = 0.983log(y) - 0.036.
-
+\
 ```{r asat, fig.width=6, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600,eval=includeFigs}
 source("master_scripts/A_stats_plotting.R")
 ```  
 **Figure 4**. Soil volume treatment means &pm; standard error, across all measurement campaigns (n = 6), of light saturated rates of photosynthesis at 25 &deg;C. Different letters represent significant differences between treatments.
-
+\
 ```{r A_tncnitro, fig.width=8, fig.height=6, echo=FALSE,warning=FALSE, message=FALSE, dev="png", dpi=600, eval=includeFigs}
 source("master_scripts/Amax_TNC_N_plotting2.R")
 ```  
 **Figure 5**. Photosynthetic capacity, on a leaf mass basis, as a function of accumulation of leaf starch (a) and leaf nitrogen content without TNC (b). Colors represent bins levels (n = 5) of both leaf starch and nitrogen grouped from low to high. Lines represents predictions, for each bin level, from the linear mixed effects model equation of A~mass~ as a function of starch and nitrogen. The marginal *R*^2^ (fixed effects only) was 0.37 and the conditional *R*^2^ (fixed and random effects) was 0.48 for the complete model. The equation for the full model is y = 28.58(N) - 3.31(Starch) - 0.87(N*Starch) - 221.96.
-
+\
 ```{r cuefig, fig.width=6, fig.height=6, echo=FALSE, dev="png", dpi=600, eval=includeFigs}
 source("master_scripts/cuefig.R")
 ```  
-**Figure 6**. Ratio of final biomass to modelled net leaf C gain of plants growth in different container sizes.
+**Figure 6**. Ratio of final biomass to modelled net leaf C gain of seedlings growth in different container sizes and freely-rooted seedlings.
 
 # References {.unnumbered}
 
