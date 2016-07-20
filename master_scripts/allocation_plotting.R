@@ -59,19 +59,18 @@ par(mar = c(4, 7, 2, 7.3), xpd = TRUE)
 barplot(t(as.matrix(mass_perc2))[i,], names.arg=leglab, col=treecols, width=2, xlab= "Soil Volume  (l)", 
         ylab="Seedling Mass Partitioning", ylim=c(0, 1))
 legend("topright", inset = c(-0.205, 0), fill = treecols2, legend=treelab, cex=1)
-text(1.3, .95, "(a)", cex=1.51)
+text(1.3, .94, "(a)", cex=1.51)
 
 #2.mass allocation (plant size corrected)
-par(mar=c(4,7,1,.3))
+par(mar=c(4.3,7,1,.3))
 plot(Mf_mod2, xlab="Stem+Root Mass  (g)" , ylab="Leaf Mass  (g)", col=palette(), pch=pchs, cex=2, lwd=2)
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, 
        col=palette(), bty='n',cex=1)
-text(x=7.1, 63, "(b)", cex=1.51)
+text(x=7.1, 62.5, "(b)", cex=1.51)
 
 #3. Fine root to leaves
 #windows(6,6)
-
-par(mar=c(5,7,1,.3),xpd = FALSE)
+par(mar=c(4.3,7,1,.3),xpd = FALSE)
 with(ratio_agg, plot(log10(fineroot.mean), log10(leafmass.mean), ylim=c(0,2.25), xlim=c(0,2.25),
                      xlab = "Fine Root Mass  (g)",
                      ylab = "Leaf Mass  (g)",

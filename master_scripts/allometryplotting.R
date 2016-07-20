@@ -43,7 +43,7 @@ with(height_agg, arrows(Date, height.mean, Date, height.mean+height.se, angle=90
 with(height_agg, arrows(Date, height.mean, Date, height.mean-height.se, angle=90, col=palette(),length=0.03, cex=2))
 points(height.mean ~ Date, data=height_agg,pch=pchs[volume], cex=2, col = volume)      
 box()
-# text(x=15710, 129, "(a)", cex=1.51)
+
 text(x=15855, 129, "(a)", cex=1.51)
 legend("topleft", leglab, pch=c(rep(16,6),17),text.font=3,  title=vollab, cex=1.21, col=palette(), bty='n', inset=.01)
 
@@ -67,7 +67,7 @@ plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab=LAm2,
 box()
 axis(2, labels=TRUE, at=c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))  
 axis.Date(1, at=xAT, label=TRUE, format="%b") 
-#title(ylab=LAm2, mgp=ypos)
+
 with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean+canopysqm.se, angle=90, 
                            col=volume,length=0.03, cex=2))
 with(leafarea_time, arrows(Date, canopysqm.mean, Date, canopysqm.mean-canopysqm.se, angle=90, 
