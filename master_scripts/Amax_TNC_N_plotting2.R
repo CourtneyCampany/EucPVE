@@ -37,10 +37,9 @@ f2 <- fixef(Afit2_full)
 
 #plot and predict (2 graphs)---------------------------------------------------------------------
 cols <- c("green3", "cyan4", "#0081FFFF", "darkviolet", "red")
-#cols <- c("forestgreen", "#80FE1AFF","#ECFD08FF","#FF7500FF","#FF3300FF")
-#coln <- c("#FF3300FF", "#FF7500FF","#ECFD08FF",  "#80FE1AFF", "forestgreen" )
 coln <- c("red", "darkviolet", "#0081FFFF", "cyan4", "green3")
-binlab <- c("0-4", "4-8", "8-12", "12-16", ">16")
+# binlab <- c("0-4", "4-8", "8-12", "12-16", ">16")
+binlab <- c(">16", "12-16", "8-12", "4-8", "0-4")
 binlab2 <- c("0-1", "1-3", "3-6", "6-8", ">8")
 
 pchbin <- c(1,2,3,4,5)
