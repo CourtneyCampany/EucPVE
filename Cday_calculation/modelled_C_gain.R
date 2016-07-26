@@ -44,12 +44,11 @@ dailyCgross <- modelledC_func(la_pred, sigma, Cday_gross)
     
 dailyC <- merge(dailyCgross[, c(1:2, 4, 8)], dailyCnet[,c(1:2,4,8)], by=c("Date", "volume"))
   dailyC$Rleaf <- with(dailyC, tdc_gross-tdc_net)
+  
+write.csv(dailyC, "calculated data/modelleddailycarbon.csv", row.names = FALSE) 
 
 #Calculate total seedling C gain over experiment (120d) and compare to final harevst mass C----------------------------------
 plantCnet <- doBy::summaryBy(tdc_net+Rleaf+tdc_gross ~ volume, FUN=sum, data=dailyC)
 
 write.csv(plantCnet, "calculated data/CUEdaily.csv", row.names = FALSE) 
 
-#also need vector of c gain for free to make line of Figure 6
-freeC <- dailyC[dailyC$volume == 1000,]
-write.csv(freeC, "calculated data/free_CUE.csv", row.names = FALSE)  
