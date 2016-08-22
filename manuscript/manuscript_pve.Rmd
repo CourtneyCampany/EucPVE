@@ -8,7 +8,7 @@ output:
   pdf_document: default
   html_document:
     number_sections: yes
-csl: new-phytologist.csl
+csl: tree-physiology.csl
 bibliography: references2.bib
 ---
 
@@ -20,25 +20,6 @@ Courtney E. Campany^1^, Belinda Medlyn^1^ and Remko A. Duursma^1^
 
 \
 Corresponding author: C.E. Campany, email: courtneycampany@gmail.com, telephone: +61 02 4570 1421, fax: +61 02 4570 1103
-
-\
-Word counts
-\
-Main text: 6304
-\
-Summary: 174
-\
-Introduction: 1206
-\
-Materials and methods: 2171
-\
-Results: 1138
-\
-Discussion: 1759
-\
-Acknowledgements: 30
-\
-6 figures (5 color), 3 tables
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
 library(knitr)
@@ -76,13 +57,8 @@ pvetab3 <- "3"
 
 #Summary
 
-- Sink limitation is known to reduce plant growth, but it is not known how plant carbon (C) balance is affected, limiting our ability to predict growth under sink-limited conditions. 
-
-- We manipulated soil volume to impose sink limitation of growth in *Eucalyptus tereticornis* seedlings. Seedlings were grown in the field in containers of different sizes and planted flush to the soil alongside freely-rooted seedlings. 
-
-- Container volume negatively affected aboveground growth throughout the experiment, but after 120 days, biomass distribution in  leaves, stems and roots was not different. Photosynthetic capacity was significantly reduced in containerized seedlings, and was related to both reduced leaf nitrogen content and starch accumulation. However, the reduction in net leaf photosynthesis over the growth period was insufficient to explain the reduction in growth, so that we also observed a reduction in whole-plant C use efficiency (CUE) with container size. 
-
-- Our results show that sink limitation affects plant growth through feedbacks to both photosynthesis and CUE. Mass balance approaches to predicting plant growth under sink-limited conditions need to incorporate both of these feedbacks. 
+Sink limitation is known to reduce plant growth, but it is not known how plant carbon (C) balance is affected, limiting our ability to predict growth under sink-limited conditions. We manipulated soil volume to impose sink limitation of growth in *Eucalyptus tereticornis* seedlings. Seedlings were grown in the field in containers of different sizes and planted flush to the soil alongside freely-rooted seedlings. Container volume negatively affected aboveground growth throughout the experiment, but after 120 days, biomass distribution in  leaves, stems and roots was not different. Photosynthetic capacity was significantly reduced in containerized seedlings, and was related to both reduced leaf nitrogen content and starch accumulation. However, the reduction in net leaf photosynthesis over the growth period was insufficient to explain the reduction in growth, so that we also observed a reduction in whole-plant C use efficiency (CUE) with container size. Our results show that sink limitation affects plant growth through feedbacks to both photosynthesis and CUE. Mass balance approaches to predicting plant growth under sink-limited conditions need to incorporate both of these feedbacks.
+*quantitative results and refer to figure*
 
 ## Keywords {.unnumbered}
 photosynthesis, plant growth, sink regulation, carbon allocation, soil volume
