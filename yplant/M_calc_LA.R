@@ -46,10 +46,10 @@ M_eucs2<- lapply(M_eucs, function(x) merge(x, eucs_allom, by="plant_id", all=TRU
 #write.csv(M_eucs3d, "calculated data/M_eucs3d.csv", row.names=FALSE)
 
 
-#2. for each volume trt (list) run model of M vs leafN, 
+#2. for each volume trt (list) run model of M vs leafarea, 
 
-# M_regress <- lapply(M_eucs2, function(x) lm(M ~ LA, data=x))
-# 
+ M_regress <- lapply(M_eucs2, function(x) lm(M ~ LA, data=x))
+
 #  test <- M_eucs2[[7]]
 #  test_lm <- lm(M ~ LA, data=test)
 #  windows(8,10)

@@ -1,6 +1,7 @@
-source("functions and packages/load model packages.R")
+#source("functions and packages/load model packages.R")
+# library(devtools)
 
-install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
+#install_bitbucket("yplantqmc","remkoduursma", quick=FALSE)
 
 library(YplantQMC)
 library(lubridate)
@@ -12,9 +13,9 @@ library(plyr)
 
 #use the csv file to create the correct list of files and add the path so that readplant can use them
 euckey <- read.csv("yplant/euc_plfiles/euc_key.csv")
-euckey <- as.data.frame(euckey)
-euckey$pfile <- paste("yplant/euc_plfiles/", euckey$pfile, sep = "")
-euckey$lfile <- paste("yplant/euc_plfiles/", euckey$lfile, sep = "")
+  euckey <- as.data.frame(euckey)
+  euckey$pfile <- paste("yplant/euc_plfiles/", euckey$pfile, sep = "")
+  euckey$lfile <- paste("yplant/euc_plfiles/", euckey$lfile, sep = "")
 
 #test
 test <- constructplant("yplant/euc_plfiles/Eletr5.p", "yplant/euc_plfiles/Elelf5.l")
@@ -40,14 +41,14 @@ richmond <- setLocation(lat=-33.6, long=150.75, tzlong=150)
 #2. get one met day 
 #met data on 15 minute average from jan to june from HIEV (ros shelters)
 weather <- read.csv("calculated data/eucpve_met.csv")
-weather$DateTime15 <- ymd_hms(weather$DateTime15)
-weather$Date <- as.Date(weather$DateTime15)
-weather$time <- format(weather$DateTime15, format='%H:%M')
+  weather$DateTime15 <- ymd_hms(weather$DateTime15)
+  weather$Date <- as.Date(weather$DateTime15)
+  weather$time <- format(weather$DateTime15, format='%H:%M')
 
 #search for some sunny days
 sunmax <- subset(weather, PPFD_Avg.mean >= 1800)
-unique(sunmax$Date)
-#search for some cloudy days
+  unique(sunmax$Date)
+  #search for some cloudy days
 sunmin <- subset(weather,  weather$time== "12:00:00" & weather$PPFD_Avg.mean <= 1000)
 
 #subset one sunny day
@@ -132,7 +133,6 @@ testdata<-psrdata(testday)
 # 
 # with(psrdata(run2), plot(timeofday, A/A0, type='l'))
 # with(psrdata(run3), points(timeofday, A/A0, type='l', col="red"))
-
 
 
 ####diurnal simulation of all euc plants---------------------------------------------------------

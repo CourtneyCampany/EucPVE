@@ -4,8 +4,8 @@ source("functions and packages/startscripts.R")
 
 #harvest mass (treatment means)
 mass_actual <- read.csv("calculated data/harvest_mass_means.csv")
-mass_actual$Date <- as.Date("2013-05-21")
-mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
+  mass_actual$Date <- as.Date("2013-05-21")
+  mass_actual$mass_adj <- with(mass_actual, mass/mass[7])
 
 #modelled C gain
 cue <- read.csv("calculated data/CUEdaily.csv") 
