@@ -13,7 +13,7 @@ bibliography: references2.bib
 ---
 
 \
-Courtney E. Campany^1^, Belinda Medlyn^1^ and Remko A. Duursma^1^
+Courtney E. Campany^1^, Belinda E. Medlyn^1^ and Remko A. Duursma^1^
 
 \
 ^1^ Hawkesbury Institute for the Environment, Western Sydney University, Locked Bag 1797, Penrith, NSW, Australia
@@ -21,7 +21,7 @@ Courtney E. Campany^1^, Belinda Medlyn^1^ and Remko A. Duursma^1^
 \
 Corresponding author: C.E. Campany, email: courtneycampany@gmail.com, telephone: +61 02 4570 1421, fax: +61 02 4570 1103
 
-Runnging Head: Sink limitation and reduced seedling growth
+Running Head: Sink limitation and reduced seedling growth
 
 ```{r, results="asis", echo=FALSE, warning=FALSE}
 library(knitr)
