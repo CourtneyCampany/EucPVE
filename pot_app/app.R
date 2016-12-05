@@ -52,7 +52,7 @@ ui <- fluidPage(
    
    # Sidebar with a slider input for number of bins 
    sidebarLayout(position="right",
-                 sidebarPanel(
+                 sidebarPanel(width=3,
                    style = "border-color: #cc2904; background-color: white; border-style:dotted;border-width:thick",
                    checkboxGroupInput("whichsize", "Pick a Volume:",c("5" = "5", 
                     "10" = "10", "15" = "15", "20"="20", "25"="25","35"="35", "Free"="1000")
@@ -60,8 +60,8 @@ ui <- fluidPage(
                  ),
       
       # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("plot1")
+      mainPanel(width=9,
+         plotOutput("plot1", height="800px")
       )
    )
 )
@@ -77,51 +77,51 @@ server <- function(input, output) {
   
   la_ss<- reactive({subset(leafarea_time, volume %in% input$whichsize)
   })
-  
+
    
    output$plot1 <- renderPlot({
      
      
-     par(cex.axis=1.21, cex.lab=1.51,las=1,mgp=c(3.5,1,0),mfrow=c(3,1),  
+     par(cex.axis=2, cex.lab=2.5,las=1,mgp=c(4,1,0),mfrow=c(3,1),  
          omi=c(.5,0,0.1,0.1)) 
      
      par(mar=c(0,7,2,2))
-     plot(height.mean ~ Date, data=height_agg,type='n',ylab=expression(Height~~(cm)),  
+     plot(height.mean ~ Date, data=height_agg,type='n',ylab="Height  (cm)",  
           ylim=c(20,135), axes=FALSE, xlab="", xlim=xlimdays)  
      axis.Date(1, at=xAT, labels=FALSE) 
      axis(2, labels=TRUE, at=c(0,20,40,60,80,100,120))  
      
      arrows(height_ss()[[1]], height_ss()[[3]], height_ss()[[1]], 
             height_ss()[[3]]+height_ss()[[4]], 
-            angle=90,col = height_ss()[[2]],length=0.03, cex=2)
+            angle=90,col = height_ss()[[2]],length=0.03, cex=2.5)
    
      arrows(height_ss()[[1]], height_ss()[[3]], height_ss()[[1]],
             height_ss()[[3]]-height_ss()[[4]], 
-            angle=90, col = height_ss()[[2]],length=0.03, cex=2)
+            angle=90, col = height_ss()[[2]],length=0.03, cex=2.5)
 
-     points(height_ss()[[3]] ~ height_ss()[[1]],pch=pchs[height_ss()[[2]]], cex=2, 
+     points(height_ss()[[3]] ~ height_ss()[[1]],pch=pchs[height_ss()[[2]]], cex=2.5, 
             col = height_ss()[[2]])      
      box()
      #diameter
      par(mar=c(0,7,0,2))
-     plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab=expression(Diameter~~(mm)),
+     plot(diameter.mean ~ Date, data=diam_agg, type='n',ylab="Diameter  (mm)",
           ylim=c(0,17), axes = FALSE, xlab="",xlim=xlimdays)
      axis.Date(1, at=xAT, labels=FALSE)  
      axis(2)     
      
      arrows(diam_ss()[[1]], diam_ss()[[3]], diam_ss()[[1]],
             diam_ss()[[3]]+diam_ss()[[4]], angle=90, col = diam_ss()[[2]],
-            length=0.03, cex=2)
+            length=0.03, cex=2.5)
      arrows(diam_ss()[[1]], diam_ss()[[3]], diam_ss()[[1]],
             diam_ss()[[3]]-diam_ss()[[4]], angle=90, col = diam_ss()[[2]],
-            length=0.03, cex=2)
+            length=0.03, cex=2.5)
      
-     points(diam_ss()[[3]] ~ diam_ss()[[1]],pch=pchs[diam_ss()[[2]]], cex=2, 
+     points(diam_ss()[[3]] ~ diam_ss()[[1]],pch=pchs[diam_ss()[[2]]], cex=2.5, 
             col = diam_ss()[[2]])
      box()
      
      par(mar=c(2,7,0,2))
-     plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab=LAm2,
+     plot(canopysqm.mean ~ Date, data=leafarea_time, axes=FALSE,xlab="", ylab=expression(Leaf~Area~~(m^2)),
           type='n', ylim=c(0,.7),xlim=xlimdays)
      box()
      axis(2, labels=TRUE, at=c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))  
@@ -129,13 +129,13 @@ server <- function(input, output) {
      
      arrows(la_ss()[[1]], la_ss()[[3]], la_ss()[[1]],
             la_ss()[[3]]+la_ss()[[4]], angle=90, col = la_ss()[[2]],
-            length=0.03, cex=2)
+            length=0.03, cex=2.5)
    
      arrows(la_ss()[[1]], la_ss()[[3]], la_ss()[[1]],
             la_ss()[[3]]-la_ss()[[4]], angle=90, col = la_ss()[[2]],
-            length=0.03, cex=2)
+            length=0.03, cex=2.5)
      
-     points(la_ss()[[3]] ~ la_ss()[[1]],pch=pchs[la_ss()[[2]]], cex=2, 
+     points(la_ss()[[3]] ~ la_ss()[[1]],pch=pchs[la_ss()[[2]]], cex=2.5, 
             col = la_ss()[[2]])
      
    })
