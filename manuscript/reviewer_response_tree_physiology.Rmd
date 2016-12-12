@@ -1,0 +1,181 @@
+---
+output:
+  word_document:
+    reference_docx: manuscriptstyle_pce2.docx
+  pdf_document: default
+  html_document:
+    number_sections: yes
+---
+
+```{r, results='asis', echo=FALSE, warning=FALSE}
+library(knitr)
+opts_knit$set(root.dir = '../')
+```
+
+Dr Ram Oren
+\
+Editor-in-Chief
+\
+Tree Physiology
+
+\
+Dear Professor Mott,
+
+We are grateful for the opportunity to resubmit our manuscript. We thank the reviewers for providing insightful comments to improve our manuscript. We have responded in detail to each comment, which has improved the overall quality of the manuscript. Below, we have itemized our response to each comment from the Editor and both referees. 
+
+
+### **Referee #1**
+
+\
+*Reviewer: 1. pp35: "to utilize in growth and storage”*
+
+\
+*Response*: editorial change made
+
+\
+*Reviewer: 2. pp 40-45: Should be improved. Carbon losses are due to respiration and photorespiration.*
+
+\
+*Response*: **Change to net photosynthesis** instead of reviwer suggestion???
+
+\
+*Reviewer: 3. pp 63: “…the sink limitation of growth has been explored by manipulations of C source and sink activity…. Examples of …that manipulate C source activity include… and partial defoliation..” (partial defoliation should impose a sink limitation to growth?) Compensatory increases of An are commonly found, but not allowing a higher C net gain leading to sink limitation.*
+
+\
+*Response*: 
+
+\
+*Reviewer: 4. pp 365: No changes in stomatal conductance during the experiment in the described field conditions (Figure 2)?*
+
+\
+*Response*: Soil moisture for each seedling were maitained at field capacity, throughout the duration of the experiment, in order to minimize affects of reduced water availability on photosynthesis and growth. The consistent lack of water stress on theses seedlings (see Discussion "Changes in growth and physiology under sink limitation") was an implement of the experimental design. 
+
+\
+*Reviewer: 5. pp 373: Modelled cumulative net leaf gain could be displayed in a table? (e.g. Table 1)*
+
+\
+*Response*: 
+
+\
+*Reviewer: 5. Table 1 and 2: Reorganize. Biomass, SLA, SRL and FRLD in one table, and chemistry parameters in a second table.*
+
+\
+*Response*
+
+*Reviewer: 6. Figure 4: Significant differences between 5 and 15 L soil volumes? Are SE or SD displayed?*
+
+\
+*Response*: Bar plots of Figure 4 are means and standard errors which are described in figure caption. Yes, the 5 l containers had smaller rates of A~sat~ than either 15 or 20 L containers. The 5 l containers also had the lowest measured rates overall, indicative of a strong impact of a small container size on sink strength.  For simplicity, we report the large overall difference in Free seedlings and seedlings in containers in terms of rates of photosynthesis.
+
+
+
+### **Referee #2**
+
+\
+*Reviewer: 1.  It is not clear whether trees used in this experiment come from a nursery or if they were lifted from the field*
+
+\
+*Response*: We have clarifed in "Experimental design" that seedlings were nursery seed grown in 40cm tall tubestock.
+
+\
+*Reviewer: 2. For Free saplings, it is not clear if roots could have expanded beyond the limits of the subplot or not.*
+
+\
+*Response*: We have clarified in "Experimental design" that roots were able to grow unrestricted below border material.
+
+\
+*Reviewer: 3 In relation to the “Photosynthetic parameters”, please, define Jmax and Vcmax.*
+
+\
+*Response*: We have defined both *V*~cmax~ and *J*~max~ in the section "Photosynthetic parameters"
+
+\
+*Reviewer: 4. In “Leaf, root and soil chemistry” indicate how plant samples were dried (temperature, drying time), how they were milled (type of mill used, model, etc.) and how soils were sieved (pore size) and milled (type of mill used, model, etc.)*
+
+\
+*Response*: We have clairified in “Leaf, root and soil chemistry” that samples were over dried at 60&degC to a constant mass and ball milled for analysis.We have also added the pore size, drying time and mill type to explanation of soil processing.
+
+\
+*Reviewer: 5.  Clairify how did soil volume treatments relate to the 61 digitalized seedlings, which include different *Eucalyptus* species? Were the 61 digitized seedlings grown in different soil volumes*
+
+\
+*Response*: The digitized seedlings used here are a collection of digitized plants from differing environments including understorey, glasshouse and plantation (see Duursma et al. 2012).  We selected 5 *Eucalpytus* species from this collection, which represent canopy structures of similar seedling types and sizes. Although the digitized plants are from seperate experiments, they allow us to estimate self shading of the *Eucalyptus* seedlings in this experiment.  As this experiment had an ~4 month duration, leaf counts and total leaf area of seedlings were generally small.  This resulted in only a modest adjsutment of the self-shading factor to total canopy carbon uptake.
+
+\
+*Reviewer: 6. Instead of using C concentration data (which they had), the authors assumed that C accounted for half of the final dry mass of seedlings. I think this is quite a strong assumption to make; differences in C concentration above 5% could be in place*
+
+\
+*Response*: **insert, I can implement the 48% from dryad wood C database, will change things very little but has citations**
+
+\
+*Reviewer: 7.  I would strongly recommend adopting a whole-plant approach and the consideration of all possible sources and sinks in mass-balance models. For example, root exudation can account for an important proportion of the total C budget of a plant, but yet this was not considered in the C budget calculations (nor even suggested as an important component to include in future models, see line 501)*
+
+\
+*Response*: The reviewer makes a very good point relating to how mass balance attempts should account for all possible fates of net C uptake. In this study, as in many, it is difficult to accurately measure every facet of C allocation throughout the plant and into the soil. It is entirely possible that aspects of belowground sink limitation could have impacted patterns of root exudation in these seedlings.  As we were not able many the possible fates of net C uptake, such as root exudation or woody tissue respiration, we utilized the mass balance approach to esimate the residual difference in C mass between the modelled seedling C uptake and harvested biomass. It is for this reason that we report differences in CUE, as a far more conservative approach in testing the coordiantion between photosynthesis and growth. For example, modelling the impacts of root exudation would require a priori knowledge of the effects of sink limitation/root restriction/container volume on this process. Consequently, we report the more conservative appraoch but give recommendations for future studies and models *here..here..here*
+
+\
+*Reviewer: 8.  I think future empirical and C models should evaluate the inter-relationship between the different sinks and sources AT THE WHOLE PLANT level, and not just the leaf level as indicated in lines 499-501.*
+
+\
+*Response*: We absolutely agree with the reviewer. We have made the editorial change to include the fate of C allocation at whole plant level, which includes the addition of root exudation from the previous comment.
+
+\
+*Reviewer: 9.  Lines 56-59. Yes, but beware the suggested approach also ignores part of the C budget of plants, because you are not accounting for root exudates.*
+
+\
+*Response*:
+
+\
+*Reviewer: 10.  Lines 71-72. Yes, indeed, C allocation belowground (both to roots and exudates) is enhanced under high CO2 supply.*
+
+\
+*Response*:  **add phillips/iversen sentence**??
+
+\
+*Reviewer: 11. Line 90. “Remove” or “removal”?*
+
+\
+*Response*: editorial change made
+
+\
+*Reviewer: 13.  Line 300. Use of prepositions. Replace “during” by “from”?*
+
+\
+*Response*: editorial change made
+
+\
+*Reviewer: 14.  Line 301. Remove “significantly” before “among”?*
+
+\
+*Response*: editorial change made
+
+\
+*Reviewer: 15.  Line 318. “…after variation in seedling biomass across treatments was factored in the analysis”, what do you mean by “factored”?*
+
+\
+*Response*: Replaced "factored" to "accounted for"
+
+\
+*Reviewer: 16.  Line 319. Remove “and” before “was”.*
+
+\
+*Response*: editorial change made
+
+\
+*Reviewer: 17.  Line 386. Or root exudates…*
+
+\
+*Response*: 
+
+\
+*Reviewer: 18.  Line 461-462. Yes, and this could also explain the observed lower CUE in trees grown in small containers.*
+
+\
+*Response*:  **add exudation somewhere to CUE??**
+
+\
+*Reviewer: 19.  Line 513. Remove “to” before “predict”.*
+
+\
+*Response*: editorial change made
+
