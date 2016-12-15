@@ -97,9 +97,8 @@ sigletter_files <- list.files(path = "master_scripts/sigletters/siglets_table2/"
   pve_table2[[5]] <- paste(pve_table2[[5]], siglet3[[1]][,1])
   pve_table2[[6]] <- paste(pve_table2[[6]], siglet3[[3]][,1])
 
-  pval_row <- c("Volume Effect (P value)", 0.029, 0.125, 0.001, 0.373, 0.017)  
-  # pval_row <- c("Volume Effect (P value)", 0.001, 0.001, 0.029, 0.125, 0.001, 0.372)
-  
+  pval_row <- c("Volume Effect (P value)", 0.029, 0.125, 0.001, 0.372, 0.017)  
+
   pve_table2$leglab <- as.character(pve_table2$leglab)
   
   pve_table3 <- rbind(pve_table2, pval_row)

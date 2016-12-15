@@ -27,61 +27,61 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 ### **Referee #1**
 
 \
-*Reviewer: 1. The role of nutrient defiency may have been underestimated...The relative contribution should be determined...*
+- *Reviewer: 1. The role of nutrient defiency may have been underestimated...The relative contribution should be determined...*
 
 \
-*Response*: Unfortunately, we do not have the ability with this data set to determine the relative contribution of nutrient deficiency on the down regulation of photosynthesis. We were able to identify not one, but two processes that likely contributed to photosynthetic inhibition.  Both of these processes, nutrient limitation and starch accumulation, are discussed at length in the discussion. We absolutely agree that determining the contribution of each of these processes will provide valuable insights on how sink limitation impacts the carbon balance of plants.  By providing convincing empirical evidence of these processes, should give a framework for future work to hopefully quantify the contributions of each.
+*Response*: Unfortunately, we do not have the ability with this data set to determine the relative contribution of nutrient deficiency on the down regulation of photosynthesis. We were able to identify not one, but two processes that likely contributed to photosynthetic inhibition.  Both of these processes, nutrient limitation and starch accumulation, are discussed at length in the discussion. We absolutely agree that determining the contribution of each of these processes will provide valuable insights on how sink limitation impacts the carbon balance of plants.  By providing convincing empirical evidence of these processes, this experimental desish should provide a framework for future work to quantify the contributions of each.
 
 \
-*Reviewer: 2. authors indicated that one of the principal question in the paper was to address which physiological process best explains the down-regulation of photosynthesis...the physiological processes involved have not been determined in the work*
+- *Reviewer: 2. Authors indicated that one of the principal question in the paper was to address which physiological process best explains the down-regulation of photosynthesis...the physiological processes involved have not been determined in the work*
 
 \
-*Response*: We agree with the reviewers point here. We have re-worded the first principle question to more accurately address what we were able to test with the presented data. 
+*Response*: We agree with the reviewers point here. We have re-worded the first principle question to say "1) can we identify the main physiological processes that best explain the down-regulation of photosynthesis?" to more accurately address what we were able to test with the presented data. 
 
 \
-*Reviewer: 3. After reading the title, aim of the work and abstract, it seems that the manuscript focused specifically on carbon source-sink relations and regulation. In this regard, too much conclusions are derived from the presented data. Nevertheless, discussion and conclusions focused more accurately on the obtained results*
+- *Reviewer: 3. After reading the title, aim of the work and abstract, it seems that the manuscript focused specifically on carbon source-sink relations and regulation. In this regard, too much conclusions are derived from the presented data. Nevertheless, discussion and conclusions focused more accurately on the obtained results*
 
 \
 *Response*: We have clarified the role of sink limitation, via nutrient limitation and starch accumulation, on photosynthetic down regulation in the abstract. In addition to the response to comment #2, the focus of the beginning of the paper should now better align with the impacts of sink manipulation that are addressed at length in the discussion.
 
 \
-*Reviewer: 4. pp35: "to utilize in growth and storage”*
+- *Reviewer: 4. pp35: "to utilize in growth and storage”*
 
 \
 *Response*: editorial change made
 
 \
-*Reviewer: 5. pp 40-45: Should be improved. Carbon losses are due to respiration and photorespiration.*
+- *Reviewer: 5. pp 40-45: Should be improved. Carbon losses are due to respiration and photorespiration.*
 
 \
 *Response*: We understand what the reviewer is suggesting but disagree with the suggested change.  Instead we have re-worded the sentence to say "C entering the planted through net photosynthesis must be balanced by C loss to respiration...".
 
 \
-*Reviewer: 6. pp 63: “…the sink limitation of growth has been explored by manipulations of C source and sink activity…. Examples of …that manipulate C source activity include… and partial defoliation..” (partial defoliation should impose a sink limitation to growth?) Compensatory increases of An are commonly found, but not allowing a higher C net gain leading to sink limitation.*
+- *Reviewer: 6. pp 63: “…the sink limitation of growth has been explored by manipulations of C source and sink activity…. Examples of …that manipulate C source activity include… and partial defoliation..” (partial defoliation should impose a sink limitation to growth?) Compensatory increases of An are commonly found, but not allowing a higher C net gain leading to sink limitation.*
 
 \
 *Response*: Regardless of the downstream effects of defoliation on growth processes, the removal of leaves is first and foremost a source manipulation. This has been repeatedly shown and is a commonly utilized manipulation in fruit trees and crops species.
 
 \
-*Reviewer: 7. pp 365: No changes in stomatal conductance during the experiment in the described field conditions (Figure 2)?*
+- *Reviewer: 7. pp 365: No changes in stomatal conductance during the experiment in the described field conditions (Figure 2)?*
 
 \
 *Response*: Soil moisture for each seedling were maintained at field capacity, throughout the duration of the experiment, in order to minimize affects of reduced water availability on photosynthesis and growth. The consistent lack of water stress on theses seedlings (see Discussion "Changes in growth and physiology under sink limitation") was an successful implement of the experimental design. 
 
 \
-*Reviewer: 8. pp 373: Modelled cumulative net leaf gain could be displayed in a table? (e.g. Table 1)*
+- *Reviewer: 8. pp 373: Modelled cumulative net leaf gain could be displayed in a table? (e.g. Table 1)*
 
 \
 *Response*: We have added modelled cumulative net leaf gain to Table 1. and refer to it in the Results section "Whole-plant C balance"
 
 \
-*Reviewer: 9. Table 1 and 2: Reorganize. Biomass, SLA, SRL and FRLD in one table, and chemistry parameters in a second table.*
+- *Reviewer: 9. Table 1 and 2: Reorganize. Biomass, SLA, SRL and FRLD in one table, and chemistry parameters in a second table.*
 
 \
-*Response*: We agree with the reviewer.  Table 1 and 2 have been reorganized, as suggested, to match how the data are presented in the Results section.
+*Response*: We agree with the reviewer. Table 1 and 2 have been reorganized, as suggested, to match how the data are presented in the Results section.
 
 \
-*Reviewer: 10. Figure 4: Significant differences between 5 and 15 L soil volumes? Are SE or SD displayed?*
+- *Reviewer: 10. Figure 4: Significant differences between 5 and 15 L soil volumes? Are SE or SD displayed?*
 
 \
 *Response*: Bar plots of Figure 4 are means and standard errors which are described in figure caption. Yes, the 5 l containers had smaller rates of A~sat~ than either 15 or 20 L containers. The 5 l containers also had the lowest measured rates overall, indicative of a strong impact of a small container size on sink strength.  For simplicity, we report the large overall difference in Free seedlings and seedlings in containers in terms of photosynthesis rates.
@@ -90,109 +90,109 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 ### **Referee #2**
 
 \
-*Reviewer: 1.  It is not clear whether trees used in this experiment come from a nursery or if they were lifted from the field*
+- *Reviewer: 1. It is not clear whether trees used in this experiment come from a nursery or if they were lifted from the field*
 
 \
 *Response*: We have clarified in "Experimental design" that seedlings were nursery seed grown in 40cm tall tube-stock.
 
 \
-*Reviewer: 2. For Free saplings, it is not clear if roots could have expanded beyond the limits of the subplot or not.*
+- *Reviewer: 2. For Free saplings, it is not clear if roots could have expanded beyond the limits of the subplot or not.*
 
 \
 *Response*: We have clarified in "Experimental design" that roots were able to grow unrestricted below border material.
 
 \
-*Reviewer: 3 In relation to the “Photosynthetic parameters”, please, define Jmax and Vcmax.*
+- *Reviewer: 3 In relation to the “Photosynthetic parameters”, please, define Jmax and Vcmax.*
 
 \
 *Response*: We have defined both *V*~cmax~ and *J*~max~ in the section "Photosynthetic parameters"
 
 \
-*Reviewer: 4. In “Leaf, root and soil chemistry” indicate how plant samples were dried (temperature, drying time), how they were milled (type of mill used, model, etc.) and how soils were sieved (pore size) and milled (type of mill used, model, etc.)*
+- *Reviewer: 4. In “Leaf, root and soil chemistry” indicate how plant samples were dried (temperature, drying time), how they were milled (type of mill used, model, etc.) and how soils were sieved (pore size) and milled (type of mill used, model, etc.)*
 
 \
-*Response*: We have clarified in “Leaf, root and soil chemistry” that samples were over dried at 60&degC to a constant mass and ball milled for analysis.We have also added the pore size, drying time and mill type to explanation of soil processing.
+*Response*: We have clarified in “Leaf, root and soil chemistry” that samples were over dried at 60&deg;C to a constant mass and ball milled for analysis. We have also added the pore size, drying time and mill type to the explanation of soil processing.
 
 \
-*Reviewer: 5.  Clairify how did soil volume treatments relate to the 61 digitalized seedlings, which include different *Eucalyptus* species? Were the 61 digitized seedlings grown in different soil volumes*
+- *Reviewer: 5. Clairify how did soil volume treatments relate to the 61 digitalized seedlings, which include different Eucalyptus species? Were the 61 digitized seedlings grown in different soil volumes*
 
 \
-*Response*: The digitized seedlings used here are a collection of digitized plants from differing environments including understory, glasshouse and plantation (see Duursma et al. 2012).  We selected 5 *Eucalpytus* species from this collection, which represent canopy structures of similar seedling types and sizes. Although the digitized plants are from separate experiments, they allow us to estimate self shading of the *Eucalyptus* seedlings in this experiment.  As this experiment had an ~4 month duration, leaf counts and total leaf area of seedlings were generally small. This resulted in only a modest adjustment of the self-shading factor to total canopy carbon uptake.
+*Response*: The digitized seedlings used here are a collection of digitized plants from differing environments including understory, glasshouse and plantation (see Duursma et al. 2012).  We selected 5 *Eucalpytus* species from this collection, which represent canopy structures of similar seedling types and sizes. Although the digitized plants are from separate experiments, they allowed us to estimate self shading of the *Eucalyptus* seedlings in this experiment. As this experiment had an ~4 month duration, leaf counts and total leaf area of seedlings were generally small. This resulted in only a modest adjustment of the self-shading factor to total canopy carbon uptake.
 
 \
-*Reviewer: 6. Instead of using C concentration data (which they had), the authors assumed that C accounted for half of the final dry mass of seedlings. I think this is quite a strong assumption to make; differences in C concentration above 5% could be in place*
+- *Reviewer: 6. Instead of using C concentration data (which they had), the authors assumed that C accounted for half of the final dry mass of seedlings. I think this is quite a strong assumption to make; differences in C concentration above 5% could be in place*
 
 \
 *Response*: Unfortunately, we do not have available C concentration data for plant tissues. Our plant chemistry data set includes leaf and root tissue nitrogen content and leaf TNC and 13C. Consequently, we have to assume a C concentration for plant tissues. Our use of a 50% C content is likely very close to any assumption of C content that we have to make. For example, an average value of C content of angiosperm woody tissues from the DRYAD wood C database is ~48%.
 
 \
-*Reviewer: 7.  I would strongly recommend adopting a whole-plant approach and the consideration of all possible sources and sinks in mass-balance models. For example, root exudation can account for an important proportion of the total C budget of a plant, but yet this was not considered in the C budget calculations (nor even suggested as an important component to include in future models, see line 501)*
+- *Reviewer: 7. I would strongly recommend adopting a whole-plant approach and the consideration of all possible sources and sinks in mass-balance models. For example, root exudation can account for an important proportion of the total C budget of a plant, but yet this was not considered in the C budget calculations (nor even suggested as an important component to include in future models, see line 501)*
 
 \
-*Response*: The reviewer makes a very good point relating to how mass balance attempts should account for all possible fates of net C uptake. In this study, as in many, it is difficult to accurately measure every facet of C allocation throughout the plant and into the soil. As the reviewer point out, it is entirely possible that aspects of belowground sink limitation could have impacted patterns of root exudation in these seedlings. However, root exudation is just one of these possible fates, which also include woody tissue respiration, herbivory or VOC's. As we were not able measure all of these possible fates of net C uptake, we utilized the mass balance approach to estimate the residual difference between the modelled seedling C uptake and harvested C mass. It is for this reason that we report differences in CUE, as a more conservative approach in testing the coordination between photosynthesis and growth. Modelling the impacts of other potential fates of C, including root exudation, would require a priori knowledge of the effects of sink limitation/root restriction/container volume on each of these process. As so many of these processes are extremely difficult to measure, we do not yet have the ability to make such predictions. Possible impacts of root exudation are addressed in "Biomass partitioning under sink limitation", but we do not include it ubiquitously in the discussion because it is just one of many potential pathways of C loss.
+*Response*: The reviewer makes a very good point relating to how mass balance attempts should account for all possible fates of net C uptake. In this study, as in many, it is difficult to accurately measure every facet of C allocation throughout the plant and into the soil. As the reviewer point out, it is entirely possible that aspects of belowground sink limitation could have impacted patterns of root exudation in these seedlings. However, root exudation is just one of these possible fates, which also include woody tissue respiration, herbivory or VOC's. As we were not able measure all of these possible fates of net C uptake, we utilized the mass balance approach to estimate the residual difference between the modelled seedling C uptake and harvested C mass. It is for this reason that we report differences in CUE, as a more conservative approach in testing the coordination between photosynthesis and growth. Modelling the impacts of other potential fates of C, including root exudation, would require a priori knowledge of the effects of sink limitation/root restriction/container volume on each of these process. As so many of these processes are extremely difficult to measure, we do not yet have the ability to make such predictions. Possible impacts of root exudation are addressed in "Biomass partitioning under sink limitation", but we do not address it ubiquitously in the discussion because it is just one of many potential pathways of C loss.
 
 \
-*Reviewer: 8.  I think future empirical and C models should evaluate the inter-relationship between the different sinks and sources AT THE WHOLE PLANT level, and not just the leaf level as indicated in lines 499-501.*
+- *Reviewer: 8. I think future empirical and C models should evaluate the inter-relationship between the different sinks and sources AT THE WHOLE PLANT level, and not just the leaf level as indicated in lines 499-501.*
 
 \
 *Response*: We absolutely agree with the reviewer. We have made the editorial change to include the fate of C allocation at whole plant level, which includes the addition of root exudation from the previous comment.
 
 \
-*Reviewer: 9.  Lines 56-59. Yes, but beware the suggested approach also ignores part of the C budget of plants, because you are not accounting for root exudates.*
+- *Reviewer: 9. Lines 56-59. Yes, but beware the suggested approach also ignores part of the C budget of plants, because you are not accounting for root exudates.*
 
 \
-*Response*: see response to comment #7.  Our approach uses the residual C from mass balance to all other potential C losses.
+*Response*: see response to comment #7.  Our approach uses the residual C from mass balance to estimate all other potential C losses.
 
 \
-*Reviewer: 10.  Lines 71-72. Yes, indeed, C allocation belowground (both to roots and exudates) is enhanced under high CO2 supply.*
+- *Reviewer: 10. Lines 71-72. Yes, indeed, C allocation belowground (both to roots and exudates) is enhanced under high CO2 supply.*
 
 \
 *Response*:  no change made
 
 \
-*Reviewer: 11. Line 90. “Remove” or “removal”?*
+- *Reviewer: 11. Line 90. “Remove” or “removal”?*
 
 \
 *Response*: editorial change made
 
 \
-*Reviewer: 13.  Line 300. Use of prepositions. Replace “during” by “from”?*
+- *Reviewer: 13. Line 300. Use of prepositions. Replace “during” by “from”?*
 
 \
 *Response*: editorial change made
 
 \
-*Reviewer: 14.  Line 301. Remove “significantly” before “among”?*
+- *Reviewer: 14. Line 301. Remove “significantly” before “among”?*
 
 \
 *Response*: editorial change made
 
 \
-*Reviewer: 15.  Line 318. “…after variation in seedling biomass across treatments was factored in the analysis”, what do you mean by “factored”?*
+- *Reviewer: 15. Line 318. “…after variation in seedling biomass across treatments was factored in the analysis”, what do you mean by “factored”?*
 
 \
 *Response*: Replaced "factored" to "accounted for"
 
 \
-*Reviewer: 16.  Line 319. Remove “and” before “was”.*
+- *Reviewer: 16. Line 319. Remove “and” before “was”.*
 
 \
 *Response*: editorial change made
 
 \
-*Reviewer: 17.  Line 386. Or root exudates…*
+- *Reviewer: 17. Line 386. Or root exudates…*
 
 \
 *Response*: No change made. See response to comment #7.
 
 \
-*Reviewer: 18.  Line 461-462. Yes, and this could also explain the observed lower CUE in trees grown in small containers.*
+- *Reviewer: 18. Line 461-462. Yes, and this could also explain the observed lower CUE in trees grown in small containers.*
 
 \
 *Response*: No change made. See response to comment #7.
 
 \
-*Reviewer: 19.  Line 513. Remove “to” before “predict”.*
+- *Reviewer: 19. Line 513. Remove “to” before “predict”.*
 
 \
 *Response*: editorial change made

@@ -16,7 +16,7 @@ source("functions and packages/plot objects.R")
 source("functions and packages/gamplotfunctions.R")
 
 #table data
-table1 <- read.csv("master_scripts/pve_table1.csv")
-table2 <- read.csv("master_scripts/root_table.csv")
-table3 <- read.csv("master_scripts/pve_table2.csv")
+table1 <- read.csv("master_scripts/pve_table1_new.csv")
+table2 <- read.csv("master_scripts/pve_table2_new.csv")
+table3 <- read.csv("master_scripts/pve_table3.csv")
 

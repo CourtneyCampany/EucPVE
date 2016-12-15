@@ -100,7 +100,7 @@ pve_table2$leglab <- as.character(pve_table2$leglab)
 pve_table3 <- rbind(pve_table2, pval)
 
   
-write.csv(pve_table3, "master_scripts/pve_table2.csv", row.names=FALSE)
+write.csv(pve_table3, "master_scripts/pve_table3.csv", row.names=FALSE)
 
 
 
