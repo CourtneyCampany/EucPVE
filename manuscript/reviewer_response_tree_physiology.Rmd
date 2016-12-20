@@ -12,14 +12,14 @@ library(knitr)
 opts_knit$set(root.dir = '../')
 ```
 
-Dr Ram Oren
+Prof Ram Oren
 \
 Editor-in-Chief
 \
 Tree Physiology
 
 \
-Dear Professor Mott,
+Dear Professor Oren,
 
 We are grateful for the opportunity to resubmit our manuscript. We thank the reviewers for providing insightful comments to improve our manuscript. We have responded in detail to each comment, which has improved the overall quality of the manuscript. Below, we have itemized our response to each comment from both referees. 
 
@@ -30,7 +30,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 - *Reviewer: 1. The role of nutrient defiency may have been underestimated...The relative contribution should be determined...*
 
 \
-*Response*: Unfortunately, we do not have the ability with this data set to determine the relative contribution of nutrient deficiency on the down regulation of photosynthesis. We were able to identify not one, but two processes that likely contributed to photosynthetic inhibition.  Both of these processes, nutrient limitation and starch accumulation, are discussed at length in the discussion. We absolutely agree that determining the contribution of each of these processes will provide valuable insights on how sink limitation impacts the carbon balance of plants.  By providing convincing empirical evidence of these processes, this experimental desish should provide a framework for future work to quantify the contributions of each.
+*Response*: Unfortunately, we do not have the ability with these data to determine the relative contribution of nutrient deficiency on the down regulation of photosynthesis. We were able to identify not one, but two processes that likely contributed to photosynthetic inhibition.  Both of these processes, nutrient limitation and starch accumulation, are discussed at length in the discussion. We absolutely agree that determining the contribution of each of these processes will provide valuable insights on how sink limitation impacts the carbon balance of plants. By providing convincing empirical evidence of these processes, this experimental design should provide a framework for future work to quantify the contributions of each.
 
 \
 - *Reviewer: 2. Authors indicated that one of the principal question in the paper was to address which physiological process best explains the down-regulation of photosynthesis...the physiological processes involved have not been determined in the work*
@@ -66,7 +66,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 - *Reviewer: 7. pp 365: No changes in stomatal conductance during the experiment in the described field conditions (Figure 2)?*
 
 \
-*Response*: Soil moisture for each seedling were maintained at field capacity, throughout the duration of the experiment, in order to minimize affects of reduced water availability on photosynthesis and growth. The consistent lack of water stress on theses seedlings (see Discussion "Changes in growth and physiology under sink limitation") was an successful implement of the experimental design. 
+*Response*: Soil moisture for each seedling was maintained at field capacity, throughout the duration of the experiment, in order to minimize affects of reduced water availability on photosynthesis and growth. The consistent lack of water stress on theses seedlings (see Discussion "Changes in growth and physiology under sink limitation") was an successful implement of the experimental design. 
 
 \
 - *Reviewer: 8. pp 373: Modelled cumulative net leaf gain could be displayed in a table? (e.g. Table 1)*
@@ -84,7 +84,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 - *Reviewer: 10. Figure 4: Significant differences between 5 and 15 L soil volumes? Are SE or SD displayed?*
 
 \
-*Response*: Bar plots of Figure 4 are means and standard errors which are described in figure caption. Yes, the 5 l containers had smaller rates of A~sat~ than either 15 or 20 L containers. The 5 l containers also had the lowest measured rates overall, indicative of a strong impact of a small container size on sink strength.  For simplicity, we report the large overall difference in Free seedlings and seedlings in containers in terms of photosynthesis rates.
+*Response*: Bar plots of Figure 4 are means and standard errors which are described in figure caption. Yes, the 5 L containers had smaller rates of A~sat~ than either 15 or 20 L containers. The 5 L containers also had the lowest measured rates overall, indicative of a strong impact of a small container size on sink strength.  For simplicity, we report the large overall difference in Free seedlings and seedlings in containers in terms of photosynthesis rates.
 
 
 ### **Referee #2**
@@ -117,13 +117,13 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the rev
 - *Reviewer: 5. Clairify how did soil volume treatments relate to the 61 digitalized seedlings, which include different Eucalyptus species? Were the 61 digitized seedlings grown in different soil volumes*
 
 \
-*Response*: The digitized seedlings used here are a collection of digitized plants from differing environments including understory, glasshouse and plantation (see Duursma et al. 2012).  We selected 5 *Eucalpytus* species from this collection, which represent canopy structures of similar seedling types and sizes. Although the digitized plants are from separate experiments, they allowed us to estimate self shading of the *Eucalyptus* seedlings in this experiment. As this experiment had an ~4 month duration, leaf counts and total leaf area of seedlings were generally small. This resulted in only a modest adjustment of the self-shading factor to total canopy carbon uptake.
+*Response*: The digitized seedlings used here are a collection of digitized plants from differing environments including understory, glasshouse and plantation (see Duursma et al. 2012).  We selected 5 *Eucalpytus* species from this collection, which represent canopy structures of similar seedling types and sizes. Although the digitized plants are from separate experiments, they allowed us to estimate self shading of the *Eucalyptus* seedlings in this experiment from regressions with total plant leaf area and canopy dimensions (cf. Duursma et al. 2012). As this experiment had a ~4 month duration, leaf counts and total leaf area of seedlings were generally small. This resulted in only a modest adjustment of the self-shading factor to total canopy carbon uptake.
 
 \
 - *Reviewer: 6. Instead of using C concentration data (which they had), the authors assumed that C accounted for half of the final dry mass of seedlings. I think this is quite a strong assumption to make; differences in C concentration above 5% could be in place*
 
 \
-*Response*: Unfortunately, we do not have available C concentration data for plant tissues. Our plant chemistry data set includes leaf and root tissue nitrogen content and leaf TNC and 13C. Consequently, we have to assume a C concentration for plant tissues. Our use of a 50% C content is likely very close to any assumption of C content that we have to make. For example, an average value of C content of angiosperm woody tissues from the DRYAD wood C database is ~48%.
+*Response*: Unfortunately, we do not have available C concentration data for plant tissues. Our plant chemistry data set includes leaf and root tissue nitrogen content and leaf TNC and 13C. Consequently, we have to assume a C concentration for plant tissues. Our use of a 50% C content is likely very close to any assumption of C content that we have to make. For example, an average value of C content of angiosperm woody tissues from the DRYAD wood C database is ~48%. These small differences have no impact on our conclusions.
 
 \
 - *Reviewer: 7. I would strongly recommend adopting a whole-plant approach and the consideration of all possible sources and sinks in mass-balance models. For example, root exudation can account for an important proportion of the total C budget of a plant, but yet this was not considered in the C budget calculations (nor even suggested as an important component to include in future models, see line 501)*
