@@ -31,7 +31,7 @@ Afit_full <- lmer(A_mass ~ nitro_mg+starch_perc+nitro_mg:starch_perc + (1|ID), d
 f <- fixef(Afit_full)
 coef(Afit_full)
 
-###same model with fixed effects in different order for ease of plotting preductions later
+###same model with fixed effects in different order for ease of plotting predictions later
 Afit2_full <- lmer(A_mass ~ starch_perc+nitro_mg+starch_perc:nitro_mg + (1|ID), data=photo_chem)
 f2 <- fixef(Afit2_full)
 
