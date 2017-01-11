@@ -23,17 +23,19 @@ anova(Afit_full)
 summary(Afit_full)
 
 
-#nitro only
-Afit_nitro <- lmer(A_mass ~ nitro_mg + (1|ID), data=photo_chem)
-coef(Afit_nitro)
-anova(Afit_nitro)
-summary(Afit_nitro)
+# drop interaction 
+Afit_noint <- lmer(A_mass ~ nitro_mg + starch_perc + (1|ID), data=photo_chem)
 
-Afit_tnc <- lmer(A_mass ~ starch_perc + (1|ID), data=photo_chem)
-coef(Afit_tnc)
-anova(Afit_tnc)
-summary(Afit_tnc)
+# only N
+Afit_N <- lmer(A_mass ~ nitro_mg + (1|ID), data=photo_chem)
 
-##compare R2 values to test contribution of each vs whole model
+# only TNC
+Afit_TNC <- lmer(A_mass ~ starch_perc + (1|ID), data=photo_chem)
 
+# Calculate R2
+library(MuMIn)
+r.squaredGLMM(Afit_full)
+r.squaredGLMM(Afit_noint)
+r.squaredGLMM(Afit_N)
+r.squaredGLMM(Afit_TNC)
 
