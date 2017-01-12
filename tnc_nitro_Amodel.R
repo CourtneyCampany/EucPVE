@@ -32,6 +32,8 @@ Afit_N <- lmer(A_mass ~ nitro_mg + (1|ID), data=photo_chem)
 # only TNC
 Afit_TNC <- lmer(A_mass ~ starch_perc + (1|ID), data=photo_chem)
 
+N_TNC <- lmer(nitro_mg ~ starch_perc + (1|ID), data=photo_chem)
+
 # Calculate R2
 library(MuMIn)
 r.squaredGLMM(Afit_full)
