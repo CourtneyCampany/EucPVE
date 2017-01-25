@@ -17,18 +17,6 @@ PS <- merge(plotsumm, subset(gasexchange, select = c("campaign", "ID", "CO2", "P
 #run function to add campaign date
 PS <- add_campaign_date(PS)
 
-#Amax_means for Data table-----------------------------------------------------------------------
-# PSmax <- subset(PS, type=="Amax")
-# 
-# #mean of 5 logs per plant
-# PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
-#   PSmax_spot$volume <- as.factor(PSmax_spot$volume)
-#   PSmax_spot$block <- as.factor(gsub("-[1-9]", "", PSmax_spot$ID))
-  
-# #mean by plant over all dates, then treatment means
-# PSmax_ID <- summaryBy(Photo ~ volume + ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
-#   PSmax_ID$volume <- as.factor(PSmax_ID$volume)
-
 
 #Asat----------------------------------------------------------------------------------------------
 PSsat <- subset(PS, type=="Asat")
@@ -72,7 +60,10 @@ asat_lm2 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSsat_spot)
 
 tukey_A<- glht(asat_lm2, linfct = mcp(volume = "Tukey"))
   siglets <-cld(tukey_A)
+  siglets_asat <- siglets$mcletters$Letters
 
+##save asat sig letters for table (no longer using this figure)  
+write.csv(siglets_asat, "master_scripts/sigletters/sigletts_phys/sl_asat.csv", row.names = FALSE)
 
 #lets prove that asat was immediately different, then use average
 # asat_lm_d1 <- lme(Photo ~ volume, random= ~1|block/ID, data=PSsat_spot, subset=Date=="2013-03-07")

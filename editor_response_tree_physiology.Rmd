@@ -1,0 +1,190 @@
+---
+output:
+  word_document:
+    reference_docx: manuscriptstyle_pce2.docx
+  pdf_document: default
+  html_document:
+    number_sections: yes
+---
+
+```{r, results='asis', echo=FALSE, warning=FALSE}
+library(knitr)
+opts_knit$set(root.dir = '../')
+```
+
+Prof Daniel Epron
+\
+Editor
+\
+Tree Physiology
+
+
+We are grateful for the opportunity to resubmit our manuscript. We thank the editor for providing insightful comments to improve our manuscript. We have responded in detail to each comment, which has improved the overall quality of the manuscript. Below, we have itemized our response to each comment from the editor.
+
+- *Comment: 1. It seems that there are two different effects: rooting volume and container/free rooting. And it seems that the latter is dominating and the clear relations with rooting volume are often missing... ignoring this later treatment may depply change your way of interpreting the results*
+
+\
+*Response*: 
+
+\
+- *Comment: 2. L42: you may have mentioned here the other C loss such as exudation, VOC...*
+
+\
+*Response*: 
+
+\
+
+- *Comment: 3. L212: you may give the temperature range during the respiration measurement*
+
+\
+*Response*: Temperature range for dark respiration measurements added to methods
+
+\
+- *Comment: 4. L226 and 229: typing errors*
+
+\
+*Response*: editorial change made
+
+\
+
+- *Comment: 5. L230: I don’t understand your response to the reviewer ‘Unfortunately, we do not have available C concentration data for plant tissues’. As soon as you get N, you may get C easily when using a Carlo Erba CE1110 elemental analyser.*
+
+\
+*Response*: The reviewer asked for C concentration data for the whole plant instead of assuming 50% for woody plant tissues.  We only have C and N data for leaves and roots.  We therefore use the 50% assumption to convert dry seedling biomass to final seedling C.
+
+\
+
+- *Comment: 6. L253-254: R, expressed in gC d-1 is not a mass based leaf respiration. And it is not clear that “leaf respiration is included in the calculation of P”. If it is included, it should not be subtracted again. To get the daily C gain of the seedling, what it is missing there is the night respiration of the foliage and the respiration of the other plant organ. So I guess G is not the daily C gain but the daily C uptake (or gross C gain versus net C gain). But it needs to be clarified.*
+
+\
+*Response*: 
+
+\
+- *Comment: 7. L264: How do simulated An values fit with measured Asat?*
+
+\
+*Response*: 
+
+\
+- *Comment: 8. L253-254: R, expressed in gC d-1 is not a mass based leaf respiration. And it is not clear that “leaf respiration is included in the calculation of P”. If it is included, it should not be subtracted again. To get the daily C gain of the seedling, what it is missing there is the night respiration of the foliage and the respiration of the other plant organ. So I guess G is not the daily C gain but the daily C uptake (or gross C gain versus net C gain). But it needs to be clarified.*
+
+\
+*Response*: 
+
+\
+- *Comment: 9. L288: CUE is the ratio of net C gain (Pn) to gross C gain (Pg): CUE = Pn/Pg. With Pn=Pg-R, with R the respiration of the seedling. In your calculation CUE is the ratio of produced biomass divided by net leaf C gain. Leaf respiration is subtracted so that daily net leaf C gain is Pg-Rleaf. It is clear at the end that CUE is in your case proportion of modelled cumulative net leaf C gain allocated to observed seedling biomass. But it might be confusing for readers so you may try to improve this part by introducing earlier this notion of net leaf C gain, give a clear definition of leaf An. And at several place, it is not clear in leaf An is on a leaf area basis or at the whole plant basis.*
+
+\
+*Response*: 
+
+\
+- *Comment: 10. L253-254: R, expressed in gC d-1 is not a mass based leaf respiration. And it is not clear that “leaf respiration is included in the calculation of P”. If it is included, it should not be subtracted again. To get the daily C gain of the seedling, what it is missing there is the night respiration of the foliage and the respiration of the other plant organ. So I guess G is not the daily C gain but the daily C uptake (or gross C gain versus net C gain). But it needs to be clarified.*
+
+\
+*Response*: 
+
+\
+- *Comment: 11. L326: two digits is enough: 𝑥 = 0.90, 95 % CI = [0.85,1.12].*
+
+\
+*Response*: editorial change made
+
+\
+- *Comment: 12. L348: Asat can be added in Table 3 and Fig 4 removed*
+
+\
+*Response*: editorial change made
+
+\
+- *Comment: 13. L349-350: These sentences are confusing: does the first sentence refer to Amax on a leaf area basis. Please clarify.*
+
+\
+*Response*: 
+
+\
+- *Comment: 14. L351: I will not say that Amass is highly correlated with both leaf Nf and leaf starch, when it only accounts for 28% and 11% of the total variations.*
+
+\
+*Response*: editorial change made (removed "highly")
+
+\
+- *Comment: 15. L359: I am not convinced that Amax was positively correlated with final harvest biomass. The correlation is driven by the free rooting values. Variation in Amax across rooting volume does not reflect those of biomass in the last point is removed. It means that the co-variation is not so much driven by soil volume. The only clear effect is between container/ free rooting. But it is no more a correlation.*
+
+\
+*Response*: 
+
+\
+- *Comment: 16. L365-366: Remove citations from the results section. Move that sentence in the discussion if it is really needed (I don’t think so).*
+
+\
+*Response*: editorial change made
+
+\
+- *Comment: 17. L394: Leaf An (an leaf area basis) or whole plant C gain? Please clarify.*
+
+\
+*Response*: 
+
+\
+- *Comment: 18. L395: not whole plant respiration loss, because leaf respiration is already accounted. So this is something that ‘non-leaf whole plant respiration’.*
+
+\
+*Response*: editorial change made
+
+\
+- *Comment: 19.L410: this is not true. There is large reduction in biomass related to container size, but not so much effect of container size on Amax.*
+
+\
+*Response*: 
+\
+- *Comment: 20. L413: what is An here? Leaf area or whole plant based?*
+
+\
+*Response*: 
+\
+- *Comment: 21. L430-431. Correlation between leaf N and An (what is it?) has not been shown in the result sections.*
+
+\
+*Response*: 
+\
+- *Comment: 22. L434: the connexion between root N and N uptake is not trivial.*
+
+\
+*Response*: 
+\
+- *Comment: 23. L441: You did not measure available soil N pool but total soil N, which is different. It would have been interesting to know if microbial N mineralization is affected by the containers or not. The key might not be at the plant level but at the microbe level. And what about other nutrients such as available P?*
+
+\
+*Response*: 
+\
+- *Comment: 24. L443: again, what is An? And please show us the evidence of a sink limitation on An of seedlings in container. There is not so much effect of container size on leaf photosynthetic parameter in Table 3*
+
+\
+*Response*: 
+
+\
+- *Comment: 25. L449: I am not convinced that the decline in Amax is correlated with higher starch content, at least not across the different container size. This is not really an effect of rooting volume but again container versus free soil.*
+
+\
+*Response*: 
+\
+- *Comment: 26. L477: It is not true that “increases in specific root length were detected in several of the soil volume treatments” It is detected in only one, and not in the smallest one.*
+
+\
+*Response*: 
+\
+- *Comment: 27. L483: There is no reduction in leaf photosynthesis due to the restricted soil volume, according to the data you reported in Table 3. Make clear what is leaf An. The reduction in whole plant assimilation may mainly be due to a reduction in plant leaf area, which in fact is only evident for the largest soil volume. Final plant leaf area can be added in table 1 with stats. It will be helpful as it is not so easy to visualize differences on figure 1.*
+
+\
+*Response*: 
+\
+- *Comment: 28. L477: L483-484: I disagree that reductions in Amax and biomass were strongly correlated. The correlation is driven by high value of the free soil. R2 will drop from 0.88 to 0.32 if you remove this last treatment.*
+
+\
+*Response*: 
+\
+- *Comment: 29. L486: Again, CUE does not really decrease with belowground limitation. There is no effect of rooting volume on CUE if you don’t include free rooting values (R2 cue~container volume = 0.003). There is an effect container/ free rooting, but this effect is not related to the volume of the container, so not clearly related to belowground sink limitation.*
+
+\
+*Response*: 
+\
