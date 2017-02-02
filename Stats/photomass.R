@@ -40,16 +40,22 @@ massphoto <- merge(harvestmass[, c(1:2,11)], PSmax_ID)
   
 ###stats with amax and growth--------------------------------------------------------------------------
 
-#asat
-
 massphoto_mod <- lme(totalmass ~ Photo, random= ~1|ID, data=massphoto)
 
 anova(massphoto_mod)
 summary(massphoto_mod)
 library(visreg)
 visreg(massphoto_mod)
+r.squaredGLMM(massphoto_mod)
 
+potmassphoto <- lme(totalmass ~ Photo, random= ~1|ID, data=massphoto[massphoto$volume != 1000,])
+anova(potmassphoto)
+summary(potmassphoto)
+library(visreg)
+visreg(potmassphoto)
 
+library(MuMIn)
+r.squaredGLMM(potmassphoto)
 
 ###effect size of jmax and vc max from free to container
 

@@ -30,7 +30,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 2. L42: you may have mentioned here the other C loss such as exudation, VOC...*
 
 \
-*Response*: 
+*Response*: Editorial change made.  We have included more examples of C losses beyond respiration.  The rest of the paragraph is also adjusted to discuss "C loss" as a more general inclusive term.
 
 \
 
@@ -83,6 +83,8 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 \
 *Response*: 
 
+We have removed the statement "Leaf respiration is included in the calculation of *P*." and added a suffice description of how dark respiration was calculated for each 15 minute interval to then caluclate *A*~n~.
+
 \
 - *Comment: 11. L326: two digits is enough: 𝑥 = 0.90, 95 % CI = [0.85,1.12].*
 
@@ -99,7 +101,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 13. L349-350: These sentences are confusing: does the first sentence refer to Amax on a leaf area basis. Please clarify.*
 
 \
-*Response*: 
+*Response*: We agree with the editor here.  We have introduced a new term *A*~mass to represent *A*max on a mass basis.  This should help easily distinguish between the two variables in the text and is now consistent with Figure 4.
 
 \
 - *Comment: 14. L351: I will not say that Amass is highly correlated with both leaf Nf and leaf starch, when it only accounts for 28% and 11% of the total variations.*
@@ -111,7 +113,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 15. L359: I am not convinced that Amax was positively correlated with final harvest biomass. The correlation is driven by the free rooting values. Variation in Amax across rooting volume does not reflect those of biomass in the last point is removed. It means that the co-variation is not so much driven by soil volume. The only clear effect is between container/ free rooting. But it is no more a correlation.*
 
 \
-*Response*: 
+*Response*: This is entirely true and was overlooked by the authors.  This statement has been removed from the results section. Perhaps this provides additionally evidence of how A and G can become decoupled under sink manipulation.
 
 \
 - *Comment: 16. L365-366: Remove citations from the results section. Move that sentence in the discussion if it is really needed (I don’t think so).*
@@ -171,7 +173,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 26. L477: It is not true that “increases in specific root length were detected in several of the soil volume treatments” It is detected in only one, and not in the smallest one.*
 
 \
-*Response*: 
+*Response*: We have corrected this statment in the discussion to more accurately reflect the observed results.
 \
 - *Comment: 27. L483: There is no reduction in leaf photosynthesis due to the restricted soil volume, according to the data you reported in Table 3. Make clear what is leaf An. The reduction in whole plant assimilation may mainly be due to a reduction in plant leaf area, which in fact is only evident for the largest soil volume. Final plant leaf area can be added in table 1 with stats. It will be helpful as it is not so easy to visualize differences on figure 1.*
 
