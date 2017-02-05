@@ -35,6 +35,20 @@ PSsat_agg <- summaryBy(Photo ~ Date + volume, data=PSsat,
 
 PSsat_agg$SE <- with(PSsat_agg, Photo.sd/sqrt(Photo.length))
   PSsat_agg$volume <- as.factor(PSsat_agg$volume)
+  
+# asat ----------------------------------------------------------------------------------- 
+  
+ windows(7,7) 
+  
+  plot(Photo.mean ~ Date, data=PSsat_agg, xlab="", ylab=satlab,
+       ylim=c(10,27))
+  with(PSsat_agg, arrows(Date, Photo.mean, Date, Photo.mean+SE, angle=90, col=palette(),length=0.05))
+  with(PSsat_agg, arrows(Date, Photo.mean, Date, Photo.mean-SE, angle=90, col=palette(),length=0.05))
+  d_ply(PSsat_agg, .(volume), function(x) points(x$Photo.mean ~ x$Date,  
+                                                 col=x$volume, type="b", pch = pchs[x$volume], cex=1.6))
+  legend("topright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
+  
+
 #----------------------------------------------------------------------------------------------------
 #two panel graph of A
 par(mfrow=c(2,1), omi=c(1,0,0.5,0.5),mar=c(0,5,0,0),mgp = c(2.5, 1, 0))
@@ -47,8 +61,9 @@ title(ylab=maxlab)
 with(PSagg, arrows(Date, Photo.mean, Date, Photo.mean+SE, angle=90, col=palette(),length=0.05))
 with(PSagg, arrows(Date, Photo.mean, Date, Photo.mean-SE, angle=90, col=palette(),length=0.05))
 d_ply(PSagg, .(volume), function(x) points(x$Photo.mean ~ x$Date,  
-                                           col=x$volume, type="b", pch = pchs[x$volume],cex=1.6,))
+                                           col=x$volume, type="b", pch = pchs[x$volume],cex=1.6))
 legend("bottomright", leglab, pch=pchs,text.font=3, inset=0.02, title=vollab, col=palette(), bty='n')
+
 
 #Asat
 plot(Photo.mean ~ Date, data=PSsat_agg, xlab="", ylab=satlab,

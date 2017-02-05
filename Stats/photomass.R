@@ -26,14 +26,6 @@ PS <- add_campaign_date(PS)
 #Amax_means for Data table-----------------------------------------------------------------------
 PSmax <- subset(PS, type=="Amax")
 
-#mean of 5 logs per plant
-PSmax_spot<- summaryBy(. ~ ID +Date, FUN=mean, keep.names=TRUE, data=PSmax)
-  PSmax_spot$volume <- as.factor(PSmax_spot$volume)
-
-#mean by plant over all dates, then treatment means
-PSmax_ID <- summaryBy(Photo~volume + ID, FUN=mean, keep.names=TRUE, data=PSmax_spot)
-  PSmax_ID$volume <- as.factor(PSmax_ID$volume)
-
 ###merge Amax with biomass
   
 massphoto <- merge(harvestmass[, c(1:2,11)], PSmax_ID)
@@ -77,3 +69,35 @@ mfree <- mean(massphoto[massphoto$volume == 1000, "totalmass"])
 mpot <-  mean(massphoto[massphoto$volume != 1000, "totalmass"])
 
 meffect <- (mfree-mpot)/mfree
+
+
+
+# harvest leaf area -------------------------------------------------------
+leaves <- read.csv("calculated data/LA_harvest.csv")
+leaves$volume <- as.factor(leaves$volume)
+library(multcomp)
+library(MuMIn)
+
+leafvol <-  lme(totalarea ~ volume, random= ~1|ID, data=leaves)
+library(car)
+Anova(leafvol)
+anova(leafvol)
+summary(leafvol)
+library(visreg)
+visreg(leafvol)
+r.squaredGLMM(leafvol)
+
+
+la_pots <- leaves[leaves$volume != 1000,]
+la_pots <- droplevels(la_pots)
+potleaf <- lme(totalarea ~ volume, random= ~1|ID, data=la_pots[la_pots$volume != 1000,])
+anova(potleaf)
+Anova(potleaf)
+summary(potleaf)
+visreg(potleaf)
+
+tukey_leaf<- glht(leafvol, linfct = mcp(volume = "Tukey"))
+leaf_siglets <-cld(tukey_leaf)
+leaf_siglets2 <- leaf_siglets$mcletters$Letters
+#write.csv(mass_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leaf.csv", row.names=FALSE)   
+
