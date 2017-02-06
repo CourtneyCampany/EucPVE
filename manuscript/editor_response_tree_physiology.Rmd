@@ -21,10 +21,11 @@ Tree Physiology
 
 We are grateful for the opportunity to resubmit our manuscript. We thank the editor for providing insightful comments to improve our manuscript. We have responded in detail to each comment, which has improved the overall quality of the manuscript. Below, we have itemized our response to each comment from the editor.
 
-- *Comment: 1. It seems that there are two different effects: rooting volume and container/free rooting. And it seems that the latter is dominating and the clear relations with rooting volume are often missing... ignoring this later treatment may depply change your way of interpreting the results*
+- *Comment: 1. It seems that there are two different effects: rooting volume and container/free rooting. And it seems that the latter is dominating and the clear relations with rooting volume are often missing... ignoring this later treatment may depply change your way of interpreting the results. Even the stats are strongly influenced by this treatment (effect on residual error for example).*
 
 \
-*Response*: 
+*Response*: We agree with the editor's comments that the effects of soil volume have not been properly accounted for in several places in the manuscript. Particularly in the discussion we have clarified the nature of the effect type, where soil volume effects have often been over-emphasized. We agree that the stats are strongly influenced by the Free seedling, but this is also representative of the observed effects of root restirction on *A*~sat~, TNC and leaf N across all containers throughout all measurement campaigns. As the impacts of root restriction and poor quality soil impacted were evident across all treatments 
+We feel that addressing individual effects of specific volume treatments, or combining soil volume treament effects, would overly complicate the paper and would not improve our intrepretation of the results.
 
 \
 - *Comment: 2. L42: you may have mentioned here the other C loss such as exudation, VOC...*
@@ -57,8 +58,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 6. L253-254: R, expressed in gC d-1 is not a mass based leaf respiration. And it is not clear that “leaf respiration is included in the calculation of P”. If it is included, it should not be subtracted again. To get the daily C gain of the seedling, what it is missing there is the night respiration of the foliage and the respiration of the other plant organ. So I guess G is not the daily C gain but the daily C uptake (or gross C gain versus net C gain). But it needs to be clarified.*
 
 \
-*Response*: 
-We have removed the statement "Leaf respiration is included in the calculation of *P*." and added a suffice description of how dark respiration was calculated for each 15 minute interval to then caluclate *A*~n~.
+*Response*: The editor makes several good points here. We have re-written the equation to better descibe the way daily total leaf net C gain (*P*~day~) was calculated. We have also removed the statement "Leaf respiration is included in the calculation of *P*." and added a accurate description of how the area based respiration component was calculated at each 15 minute interval to then model leaf level net photosynthesis rates.
 
 \
 - *Comment: 7. L264: How do simulated An values fit with measured Asat?*
@@ -71,7 +71,7 @@ We have removed the statement "Leaf respiration is included in the calculation o
 - *Comment: 8. L288: CUE is the ratio of net C gain (Pn) to gross C gain (Pg): CUE = Pn/Pg. With Pn=Pg-R, with R the respiration of the seedling. In your calculation CUE is the ratio of produced biomass divided by net leaf C gain. Leaf respiration is subtracted so that daily net leaf C gain is Pg-Rleaf. It is clear at the end that CUE is in your case proportion of modelled cumulative net leaf C gain allocated to observed seedling biomass. But it might be confusing for readers so you may try to improve this part by introducing earlier this notion of net leaf C gain, give a clear definition of leaf An. And at several place, it is not clear in leaf An is on a leaf area basis or at the whole plant basis.*
 
 \
-*Response*: 
+*Response*: We agree with each of the editors points here.  With a comment #6 we have now clearly defined the "total net leaf C gain term".  As the edigor points out there are several places where leaf *A*~n~ is discussed inappropriately, especially in the discussion.  Throughout the manuscript we have revised use of terms for C gain to accurately reflect either measured photosynthesis rates (*A*~sat~), leaf level rates of net photosynthesis (*A*~n~) or modelled cumulative total net leaf C gain (*P*~day~).
 
 \
 - *Comment: 9. L326: two digits is enough: 𝑥 = 0.90, 95 % CI = [0.85,1.12].*
@@ -83,7 +83,7 @@ We have removed the statement "Leaf respiration is included in the calculation o
 - *Comment: 10. L348: Asat can be added in Table 3 and Fig 4 removed*
 
 \
-*Response*: editorial change made
+*Response*: editorial change made.
 
 \
 - *Comment: 11. L349-350: These sentences are confusing: does the first sentence refer to Amax on a leaf area basis. Please clarify.*
@@ -101,7 +101,7 @@ We have removed the statement "Leaf respiration is included in the calculation o
 - *Comment: 13. L359: I am not convinced that Amax was positively correlated with final harvest biomass. The correlation is driven by the free rooting values. Variation in Amax across rooting volume does not reflect those of biomass in the last point is removed. It means that the co-variation is not so much driven by soil volume. The only clear effect is between container/ free rooting. But it is no more a correlation.*
 
 \
-*Response*: This is entirely true and was overlooked by the authors.  This statement has been removed from the results section. Perhaps this provides additionally evidence of how A and G can become decoupled under sink manipulation.
+*Response*: This point was overlooked by the authors. This statement has been removed from the results section.
 
 \
 - *Comment: 14. L365-366: Remove citations from the results section. Move that sentence in the discussion if it is really needed (I don’t think so).*
@@ -144,8 +144,9 @@ We have removed the statement "Leaf respiration is included in the calculation o
 \
 - *Comment: 21. L441: You did not measure available soil N pool but total soil N, which is different. It would have been interesting to know if microbial N mineralization is affected by the containers or not. The key might not be at the plant level but at the microbe level. And what about other nutrients such as available P?*
 
-\
-*Response*: 
+
+*Response*: We agree with the editor's comments.  There is convincing evidence that nutrient uptake was negatively affected in this experiment but the mechanism is yet unidentified.  Understanding the processes by which belowground sink manipulation manifests belowground will be important for future expereiments using local soils. We hope that this dataset and experimental design can aid in future experiments to further investigate belowground sink limitation.
+
 \
 - *Comment: 22. L443: again, what is An? And please show us the evidence of a sink limitation on An of seedlings in container. There is not so much effect of container size on leaf photosynthetic parameter in Table 3*
 
@@ -157,16 +158,20 @@ We have removed the statement "Leaf respiration is included in the calculation o
 
 \
 *Response*: 
+
 \
 - *Comment: 24. L477: It is not true that “increases in specific root length were detected in several of the soil volume treatments” It is detected in only one, and not in the smallest one.*
 
 \
 *Response*: We have corrected this statment in the discussion to more accurately reflect the observed results.
+
 \
+
 - *Comment: 25. L483: There is no reduction in leaf photosynthesis due to the restricted soil volume, according to the data you reported in Table 3. Make clear what is leaf An. The reduction in whole plant assimilation may mainly be due to a reduction in plant leaf area, which in fact is only evident for the largest soil volume. Final plant leaf area can be added in table 1 with stats. It will be helpful as it is not so easy to visualize differences on figure 1.*
 
 \
-*Response*: 
+*Response*: We have added both measured *A*~sat~ and harvested leaf area into Table 1 and 3, respectively.  Both of *A*~sat~ and leaf area were significantly reduced in containers from the free seedlings.
+
 \
 - *Comment: 26. L477: L483-484: I disagree that reductions in Amax and biomass were strongly correlated. The correlation is driven by high value of the free soil. R2 will drop from 0.88 to 0.32 if you remove this last treatment.*
 
