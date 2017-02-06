@@ -99,5 +99,5 @@ visreg(potleaf)
 tukey_leaf<- glht(leafvol, linfct = mcp(volume = "Tukey"))
 leaf_siglets <-cld(tukey_leaf)
 leaf_siglets2 <- leaf_siglets$mcletters$Letters
-#write.csv(mass_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leaf.csv", row.names=FALSE)   
+write.csv(leaf_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafarea.csv", row.names=FALSE)   
 

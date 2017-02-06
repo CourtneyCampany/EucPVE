@@ -34,7 +34,6 @@ We feel that addressing individual effects of specific volume treatments, or com
 *Response*: Editorial change made.  We have included more examples of C losses beyond respiration.  The rest of the paragraph is also adjusted to discuss "C loss" as a more general inclusive term.
 
 \
-
 - *Comment: 3. L212: you may give the temperature range during the respiration measurement*
 
 \
@@ -47,14 +46,12 @@ We feel that addressing individual effects of specific volume treatments, or com
 *Response*: editorial change made
 
 \
-
 - *Comment: 5. L230: I don’t understand your response to the reviewer ‘Unfortunately, we do not have available C concentration data for plant tissues’. As soon as you get N, you may get C easily when using a Carlo Erba CE1110 elemental analyser.*
 
 \
 *Response*: The reviewer asked for C concentration data for the whole plant instead of assuming 50% for woody plant tissues.  We only have C and N data for leaves and roots.  We therefore use the 50% assumption to convert dry seedling biomass to final seedling C.
 
 \
-
 - *Comment: 6. L253-254: R, expressed in gC d-1 is not a mass based leaf respiration. And it is not clear that “leaf respiration is included in the calculation of P”. If it is included, it should not be subtracted again. To get the daily C gain of the seedling, what it is missing there is the night respiration of the foliage and the respiration of the other plant organ. So I guess G is not the daily C gain but the daily C uptake (or gross C gain versus net C gain). But it needs to be clarified.*
 
 \
@@ -113,7 +110,7 @@ We feel that addressing individual effects of specific volume treatments, or com
 - *Comment: 15. L394: Leaf An (an leaf area basis) or whole plant C gain? Please clarify.*
 
 \
-*Response*: 
+*Response*: editorial change made.  Change *A*~n~ to *A*~sat (measured values)
 
 \
 - *Comment: 16. L395: not whole plant respiration loss, because leaf respiration is already accounted. So this is something that ‘non-leaf whole plant respiration’.*
@@ -130,34 +127,34 @@ We feel that addressing individual effects of specific volume treatments, or com
 - *Comment: 18. L413: what is An here? Leaf area or whole plant based?*
 
 \
-*Response*: 
+*Response*: editorial change made.  Changed *A*~n~ to *A*~sat (measured values).  
 \
 - *Comment: 19. L430-431. Correlation between leaf N and An (what is it?) has not been shown in the result sections.*
 
 \
-*Response*: 
+*Response*: We have corrected *A*~n~ to *A*~mass~, which is reported in the results section.
 \
 - *Comment: 20. L434: the connexion between root N and N uptake is not trivial.*
 
 \
-*Response*: 
+*Response*: We agree with the editor. We have changd this sentence to give a quantative description of root N content differences between roots of Free seedlings and seedlings in containers (+15 %). 
 \
 - *Comment: 21. L441: You did not measure available soil N pool but total soil N, which is different. It would have been interesting to know if microbial N mineralization is affected by the containers or not. The key might not be at the plant level but at the microbe level. And what about other nutrients such as available P?*
 
-
-*Response*: We agree with the editor's comments.  There is convincing evidence that nutrient uptake was negatively affected in this experiment but the mechanism is yet unidentified.  Understanding the processes by which belowground sink manipulation manifests belowground will be important for future expereiments using local soils. We hope that this dataset and experimental design can aid in future experiments to further investigate belowground sink limitation.
+\
+*Response*: We agree with the editor's comments. There is convincing evidence that nutrient uptake was negatively affected in this experiment but the mechanism is yet unidentified. Understanding the processes by which belowground sink manipulation manifests belowground will be important for future expereiments using local soils. We hope that this dataset and experimental design can aid in future experiments to further investigate the mecanisms underpinning belowground sink limitation.
 
 \
 - *Comment: 22. L443: again, what is An? And please show us the evidence of a sink limitation on An of seedlings in container. There is not so much effect of container size on leaf photosynthetic parameter in Table 3*
 
 \
-*Response*: 
+*Response*: editorial change made.  Changed *A*~n~ to *A*~sat (measured values). As with comment #10, *A*~sat values are added in Table 3 to show reductions in measured leaf level photosynthesis in containerized seedlings.
 
 \
 - *Comment: 23. L449: I am not convinced that the decline in Amax is correlated with higher starch content, at least not across the different container size. This is not really an effect of rooting volume but again container versus free soil.*
 
 \
-*Response*: 
+*Response*: We agree with the editor. The use of *A*~max~ was incorrectly used here.  We have edited this sentence to include the correlation with *A*~mass~ and starch, which is described in the results.
 
 \
 - *Comment: 24. L477: It is not true that “increases in specific root length were detected in several of the soil volume treatments” It is detected in only one, and not in the smallest one.*
@@ -166,20 +163,19 @@ We feel that addressing individual effects of specific volume treatments, or com
 *Response*: We have corrected this statment in the discussion to more accurately reflect the observed results.
 
 \
-
 - *Comment: 25. L483: There is no reduction in leaf photosynthesis due to the restricted soil volume, according to the data you reported in Table 3. Make clear what is leaf An. The reduction in whole plant assimilation may mainly be due to a reduction in plant leaf area, which in fact is only evident for the largest soil volume. Final plant leaf area can be added in table 1 with stats. It will be helpful as it is not so easy to visualize differences on figure 1.*
 
 \
-*Response*: We have added both measured *A*~sat~ and harvested leaf area into Table 1 and 3, respectively.  Both of *A*~sat~ and leaf area were significantly reduced in containers from the free seedlings.
+*Response*: We have added both measured harvested leaf area and *A*~sat~ into Table 1 and 3, respectively.  Both *A*~sat~ and leaf area were significantly reduced in seedings lin containers compared to the free seedlings.
 
 \
 - *Comment: 26. L477: L483-484: I disagree that reductions in Amax and biomass were strongly correlated. The correlation is driven by high value of the free soil. R2 will drop from 0.88 to 0.32 if you remove this last treatment.*
 
 \
-*Response*: 
+*Response*: editorial change made. We have removed the word "strongly"
+
 \
 - *Comment: 27. L486: Again, CUE does not really decrease with belowground limitation. There is no effect of rooting volume on CUE if you don’t include free rooting values (R2 cue~container volume = 0.003). There is an effect container/ free rooting, but this effect is not related to the volume of the container, so not clearly related to belowground sink limitation.*
 
 \
-*Response*: 
-\
+*Response*: We have changed this sentence to more accurately reflect the modelling results by removing reference to "belowground sink limitation" and stating that CUE was reduced in containerized seedlings.
