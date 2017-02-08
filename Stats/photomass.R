@@ -74,11 +74,18 @@ meffect <- (mfree-mpot)/mfree
 
 # harvest leaf area -------------------------------------------------------
 leaves <- read.csv("calculated data/LA_harvest.csv")
-leaves$volume <- as.factor(leaves$volume)
+  
+plotsumm <- read.csv("raw data/plot_summary.csv")
+  plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+  
+leafarea <- merge(plotsumm, leaves)
+  leafarea$block <- as.factor(gsub("-[1-9]", "", leafarea$ID))
+  leafarea$volume <- as.factor(leafarea$volume)
+  
 library(multcomp)
 library(MuMIn)
 
-leafvol <-  lme(totalarea ~ volume, random= ~1|ID, data=leaves)
+leafvol <-  lme(totalarea ~ volume, random= ~1|ID, data=leafarea)
 library(car)
 Anova(leafvol)
 anova(leafvol)
@@ -87,7 +94,21 @@ library(visreg)
 visreg(leafvol)
 r.squaredGLMM(leafvol)
 
+leafvol2 <- lme(totalarea ~ volume, random= ~1|block/ID, data=leafarea)
+Anova(leafvol2)
+anova(leafvol2)
+summary(leafvol2)
+visreg(leafvol2)
+r.squaredGLMM(leafvol2)
 
+tukey_leaf<- glht(leafvol2, linfct = mcp(volume = "Tukey"))
+leaf_siglets <-cld(tukey_leaf)
+leaf_siglets2 <- leaf_siglets$mcletters$Letters
+write.csv(leaf_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafarea.csv", row.names=FALSE)
+
+
+
+#no free
 la_pots <- leaves[leaves$volume != 1000,]
 la_pots <- droplevels(la_pots)
 potleaf <- lme(totalarea ~ volume, random= ~1|ID, data=la_pots[la_pots$volume != 1000,])
@@ -96,8 +117,5 @@ Anova(potleaf)
 summary(potleaf)
 visreg(potleaf)
 
-tukey_leaf<- glht(leafvol, linfct = mcp(volume = "Tukey"))
-leaf_siglets <-cld(tukey_leaf)
-leaf_siglets2 <- leaf_siglets$mcletters$Letters
-write.csv(leaf_siglets2, "master_scripts/sigletters/sigletts_plant/sl_leafarea.csv", row.names=FALSE)   
+   
 

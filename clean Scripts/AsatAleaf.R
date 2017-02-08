@@ -3,6 +3,26 @@
 
 source("functions and packages/startscripts.R")
 
+#Read in spot A measurements and merge plot design
+#read in plot design and harvest data
+plotsumm <- read.csv("raw data/plot_summary.csv")
+plotsumm$ID <- paste(plotsumm$plot, plotsumm$pot, sep = "-")
+
+#read in gas exchange master file, all dates
+gasexchange <- read.csv("raw data/AsatAmax_master.csv")
+  gasexchange$Date <- as.Date(gasexchange$Date)
+  gasexchange$ID <- paste(gasexchange$plot, gasexchange$pot, sep = "-")
+
+PS <- merge(plotsumm, subset(gasexchange, select = c("campaign", "ID", "CO2", "Photo", "RH_S")))
+  PS$type <- factor(ifelse (PS$CO2 == "400", "Asat", "Amax"))
+
+#run function to add campaign date
+PS <- add_campaign_date(PS)
+
+asat <- PS[PS$CO2 == "400",]
+##get rh values from licor master
+rh <- asat[, "RH_S"]
+
 #READ DATA, calculated data for A parameters
 
 #generated jmax and vcmax
@@ -38,10 +58,10 @@ A_model <- merge(A_model, g1_agg, by="volume")
 #now run the model (includes pred Rdark from crouseq10, and gs parameters modelled from spot measurements)
 
 #convert RH to VPD
-A_model$VPD <- RHtoVPD(A_model$RH, A_model$temp, Pa=101)
+VPD_obs <- RHtoVPD(rh, 25, Pa=101)
 
 #model, should return the aleaf for every 15 minutes. (will retrun Aleaf at 15min interval)
-A_sat_pred <- Photosyn(RH=70,Ca=400, PPFD=1800, Tleaf=25, 
+A_sat_pred <- Photosyn(VPD=1.06,Ca=400, PPFD=1800, Tleaf=25, 
                    Jmax=A_model$Jmax.mean, Vcmax=A_model$Vcmax.mean, Rd=A_model$Rd_pred2, g1=A_model$g1_date)
 
 
@@ -52,3 +72,26 @@ Asat <- A_means[, c(1, 4)]
 
 Acompare <- cbind(Asat, A_sat_pred[,2])
 names(Acompare)[3] <- "Aleaf"
+
+
+require(nlme)
+library(multcomp)
+
+#relevel to free to evaluate container effect  
+asat$volume <- as.factor(asat$volume)
+asat$volume <- relevel(asat$volume, ref="1000")
+asat$block <- as.factor(gsub("-[1-9]", "", asat$ID))
+
+#asat
+ asat_lm <- lme(Photo ~ volume, random= ~1|ID, data=asat)
+#   anova(asat_lm)
+#   summary(asat_lm)
+asat_lm2 <- lme(Photo ~ volume, random= ~1|block/ID, data=asat)
+# anova(asat_lm2)
+confint(asat_lm2)
+asat_lm3 <- lm(Photo ~ volume, data=asat)
+
+newdata <- data.frame(volume=c(5, 10, 15, 20, 25, 35, 1000))
+newdata$volume <- as.factor(newdata$volume)
+predict(asat_lm2, newdata, interval="confidence") 
+

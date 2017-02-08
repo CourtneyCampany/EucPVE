@@ -16,24 +16,24 @@ harvestC <- merge(mass_actual[,1:2], cue)
 
 #plot-----------------------------------------------------------------------------------------
 par(mar=c(5,5,2,2), cex.axis=0.8, las=1)
-plot(massC/tdc_net.sum ~ volume, data=harvestC, ylim=c(.25, .45), xaxt='n', cex=1.5, pch=pchs, col=cols, 
+plot(massC/(tdc_net.sum) ~ volume, data=harvestC, ylim=c(.25, .45), xaxt='n', cex=1.5, pch=pchs, col=cols, 
        ylab="Seedling Mass (g C) / \nModelled Total Net C Gain (g C)", 
        xlab="Soil Volume (l)")
     axis(1, at=c(5,10,15,20,25,35,40), labels=c(5,10,15,20,25,35,"Free"))
 
   
 ##results section----------------------------------------------------------------------------------------
-mean(harvestC$tdc_net.sum[1:6])
-se(harvestC$tdc_net.sum[1:6])
-
-harvestC$tdc_net.sum[7]
-  
-leftoverC <- with(harvestC, (tdc_net.sum-massC)/tdc_net.sum)
-mean(leftoverC[1:6])
-se(leftoverC[1:6])
-leftoverC[7]
-  
-cue_dat <- with(harvestC, massC/tdc_net.sum)
-mean(cue_dat[1:6])
-se(cue_dat[1:6])
-cue_dat[7]
+# mean(harvestC$tdc_net.sum[1:6])
+# se(harvestC$tdc_net.sum[1:6])
+# 
+# harvestC$tdc_net.sum[7]
+#   
+# leftoverC <- with(harvestC, (tdc_net.sum-massC)/tdc_net.sum)
+# mean(leftoverC[1:6])
+# se(leftoverC[1:6])
+# leftoverC[7]
+#   
+# cue_dat <- with(harvestC, massC/tdc_net.sum)
+# mean(cue_dat[1:6])
+# se(cue_dat[1:6])
+# cue_dat[7]
