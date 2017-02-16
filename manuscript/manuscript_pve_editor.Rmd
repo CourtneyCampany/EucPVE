@@ -30,7 +30,7 @@ opts_knit$set(root.dir = '../')
 
 ```{r global data/sourcing, echo=FALSE, message=FALSE, warning=FALSE}
 # Set Flag to include figures in text or not.
-includeFigs <- TRUE
+includeFigs <- FALSE
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
