@@ -48,7 +48,7 @@ leafno$X1.21.2013   <- as.integer(leafno$X1.21.2013)
 leafno <- merge(leafno, plotsumm, by = c("pot", "plot", "ID"))
 leafno$volume <- as.factor(leafno$volume)
 
-#write.csv(leafno, "calculated data/leaf_number.csv", row.names=FALSE)
+# write.csv(leafno, "calculated data/leaf_number.csv", row.names=FALSE)
 
 #stats----------------------------------------------------------------------------------------------
 # 'Being in a pot' effect.

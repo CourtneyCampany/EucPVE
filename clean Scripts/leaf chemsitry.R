@@ -15,6 +15,8 @@ CN_leaf <- leafCN_format(leafCN)
 CN_leaf <- add_campaign_date(CN_leaf)
 CN_leaf <- merge(CN_leaf, plotsumm[3:4], all=TRUE)
 
+# write.csv(CN_leaf, "calculated data/leafCN.csv", row.names=FALSE)
+
 lma <- add_campaign_date(lma)
 
 
