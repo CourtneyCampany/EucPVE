@@ -1,0 +1,130 @@
+---
+output:
+  word_document:
+    reference_docx: manuscriptstyle_pce2.docx
+  pdf_document: default
+  html_document:
+    number_sections: yes
+---
+
+```{r, results='asis', echo=FALSE, warning=FALSE}
+library(knitr)
+opts_knit$set(root.dir = '../')
+```
+
+Prof Daniel Epron
+\
+Editor
+\
+Tree Physiology
+
+\
+\
+We are grateful for the opportunity to resubmit our manuscript. We thank the editor for providing insightful comments to improve our manuscript. We have responded in detail to each comment, which has improved the overall quality of the manuscript. Below, we have itemized our response to each comment from the editor.
+
+\
+- *Comment: 1. The abstract should be revised according to the main document. For example, there is no reduction in whole-plant C use efficiency (CUE) with container size, just a difference between container versus Free rooting.*
+
+\
+*Response*: We have corrected the CUE findings in the abstract to reference the decrease of CUE between Free seedlings and seedlings in containers, not of container size.
+
+\
+- *Comment: 2. Increasing rather than decreasing C sink activity is another approach that you did not mentioned in your introduction.*
+I was done on rubber tree by comparing trees that are tapped for latex production with trees that are not tapped. You may have a look on the two following papers and see whether or not it can be included in your introduction.
+Silpi, U., Lacointe, A., Kasempsap, P., Thanysawanyangkura, S., Chantuma, P., Gohet, E., Musigamart, N., Clément, A., Améglio, T., Thaler, P., 2007. Carbohydrate reserves as a competing sink: evidence from tapping rubber trees. Tree Physiology 27, 881–889.
+
+\
+*Response*:
+
+Kanpanon, N., Kasemsap, P., Thaler, P., Kositsup, B., Gay, F., Lacote, R., Epron, D., 2015. Carbon isotope composition of latex does not reflect temporal variations of photosynthetic carbon isotope discrimination in rubber trees (Hevea brasiliensis). Tree Physiology 35, 1166–1175.
+
+\
+- *Comment: 3. g1 is not generated using only gs values. Provide more details please.*
+
+\
+*Response*:
+
+\
+- *Comment: 4. The Q10 relation (eqn 2) is much older than Atkin 2005. Please remove this useless reference.*
+
+\
+*Response*:
+
+\
+- *Comment: 5. L267: misusing punctuations*
+
+\
+*Response*:
+
+\
+- *Comment: 6. L275: Recall us here what "An" is.*
+
+\
+*Response*:
+
+\
+- *Comment: 7. L294: seedling C biomass (add C for clarity)*
+
+\
+*Response*: editorial change made
+
+\
+- *Comment:  8. L249-294: be consistent when using "P" or "Pday"*
+
+\
+*Response*: *P* corrected to *P*~day~ throughout this entire subsection.
+
+\
+- *Comment: 9. L300: "Amass" should be introduced before*
+
+\
+*Response*:
+
+\
+- *Comment: 10. L321-322 :"differences were driven mainly by the largest container and the Free seedling treatments". This is not what we can see on Table 1, at least for leaf area. Can final height and diameter added in this table, with their stats?*
+
+\
+*Response*: We agree that this result cannot be seen from clearly from Table 1.  However, it can be seen easily from Figure 1. Instead of increasing the size of an already large table, I have referenced Figure 1 at then end of this statement for simplicity.
+
+\
+- *Comment:11. L370-371: g1 "was lowest in the Free seedling treatment and was marginally different across soil volume treatments". This is not so clear in Table 3. it seems that larger soil volume are more similar to Free than to smaller soil volume.*
+
+\
+*Response*: Reworded the desciprtion of the findings with the g~1~ parameter. "The *g*~1~ parameter ... was highest in the smaller containers and decreased in larger containers and the Free seedling treatment"
+
+\
+- *Comment: 12. L386: replace "-" by "versus" or "vs" or anything else to avoid confusion*
+
+\
+*Response*: changed "-" to vs
+
+\
+- *Comment: 13. L430: uncorrect "Aat"*
+
+\
+*Response*: corrected to *A*~sat~
+
+\
+- *Comment: 14. L468-469: a reference is needed for "functional partitioning of ..."*
+
+\
+*Response*:
+
+\
+- *Comment: 15. L487 recall us again here what "An" is*
+
+\
+*Response*:
+
+\
+- *Comment: 17. L512: is "however" really needed?*
+
+\
+*Response*: removed "however"
+
+\
+- *Comment: 17. Fig3c: this is not plant total mass*
+
+\
+*Response*:
+
