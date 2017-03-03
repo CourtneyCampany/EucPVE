@@ -34,7 +34,6 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 \
 *Response*: Although both studies with rubber trees are extremely interesting in terms of the dymanics of storage carbohyrdate accumluation and mobilization, they lack empirical data for photosynthesis rates and only speculate about the impacts on growth. I have choosen to not mention them in the introduction, as they are mostly out of context with discusssion of the effects of sink limitation on physiological processes and growth. 
 
-
 \
 - *Comment: 3. g1 is not generated using only gs values. Provide more details please.*
 
@@ -57,7 +56,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 6. L275: Recall us here what "An" is.*
 
 \
-*Response*:
+*Response*: corrected *A*~n~ to *P*~day~
 
 \
 - *Comment: 7. L294: seedling C biomass (add C for clarity)*
@@ -105,13 +104,13 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 14. L468-469: a reference is needed for "functional partitioning of ..."*
 
 \
-*Response*:
+*Response*: We have added two citations in relation to the functional balance hypothesis of plant biomass partitioning.
 
 \
 - *Comment: 15. L487 recall us again here what "An" is*
 
 \
-*Response*:
+*Response*: We have replaced *A*~n~ with *P*~day~ as this sentence refers to total net seedling C gain.
 
 \
 - *Comment: 17. L512: is "however" really needed?*
@@ -123,5 +122,5 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 17. Fig3c: this is not plant total mass*
 
 \
-*Response*:
+*Response*: There was not an error here (caption).  However, "total plant leaf mass" was replaced with "total leaf mass" for simplicity.
 
