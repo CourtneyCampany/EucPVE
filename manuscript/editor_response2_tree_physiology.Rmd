@@ -32,19 +32,19 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 2. Increasing rather than decreasing C sink activity is another approach that you did not mentioned in your introduction. It was done on rubber tree by comparing trees that are tapped for latex production with trees that are not tapped. You may have a look on the two following papers and see whether or not it can be included in your introduction.*
 
 \
-*Response*: Although both studies with rubber trees are extremely interesting in terms of the dymanics of storage carbohyrdate accumluation and mobilization, they lack empirical data for photosynthesis rates and only speculate about the impacts on growth. I have choosen to not mention them in the introduction, as they are mostly out of context with discusssion of the effects of sink limitation on physiological processes and growth. 
+*Response*: Although both studies with rubber trees are extremely interesting in terms of the dynamics of storage carbohydrate accumulation and mobilization, they lack empirical data for photosynthesis rates and only speculate about the impacts on growth. We have chosen to not mention them in the introduction, as they are mostly out of context with discussion of the effects of sink limitation on photosynthesis and growth. 
 
 \
 - *Comment: 3. g1 is not generated using only gs values. Provide more details please.*
 
 \
-*Response*: We have corrected to this statement to include observed values of *g*~s~, *A*~sat (which includes C~a~ of 400) and vapor presssure deficit.
+*Response*: We have corrected to this statement to include observed values of *g*~s~, *A*~sat~ (which includes C~a~ of 400) and vapor pressure deficit.
 
 \
 - *Comment: 4. The Q10 relation (eqn 2) is much older than Atkin 2005. Please remove this useless reference.*
 
 \
-*Response*: Reference to Atkin has been removed.
+*Response*: Reference to Atkins has been removed.
 
 \
 - *Comment: 5. L267: misusing punctuations*
@@ -74,7 +74,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment: 9. L300: "Amass" should be introduced before*
 
 \
-*Response*: We have now introducted the term *A*~mass~ in this section as it had not been previously described.
+*Response*: We have now introduced the term *A*~mass~ in this section as it had not been previously described.
 
 \
 - *Comment: 10. L321-322 :"differences were driven mainly by the largest container and the Free seedling treatments". This is not what we can see on Table 1, at least for leaf area. Can final height and diameter added in this table, with their stats?*
@@ -86,7 +86,7 @@ We are grateful for the opportunity to resubmit our manuscript. We thank the edi
 - *Comment:11. L370-371: g1 "was lowest in the Free seedling treatment and was marginally different across soil volume treatments". This is not so clear in Table 3. it seems that larger soil volume are more similar to Free than to smaller soil volume.*
 
 \
-*Response*: We have reworded the desciprtion of the findings with the g~1~ parameter. "The *g*~1~ parameter ... was highest in the smaller containers and decreased in larger containers and the Free seedling treatment"
+*Response*: We have reworded the description of the findings with the g~1~ parameter. "The *g*~1~ parameter ... was highest in the smaller containers and decreased in larger containers and the Free seedling treatment"
 
 \
 - *Comment: 12. L386: replace "-" by "versus" or "vs" or anything else to avoid confusion*
