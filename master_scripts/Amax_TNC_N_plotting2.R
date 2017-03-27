@@ -67,7 +67,7 @@ nitromasslab <- expression(Leaf~N[mass]~~(mg~g^-1))
 
 #windows(10, 7)
 
-#png(filename = "manuscript/photo_chem.png", width = 8, height = 6, units = "in", res= 400)
+# png(filename = "photo_chem.png", width = 8, height = 6, units = "in", res= 600)
 par(cex.axis=.96, cex.lab=1.2,mfrow=c(1,2),  oma=c(0.1,0.1,0.1,0.1), las=1)
 
 # First Panel
@@ -105,3 +105,4 @@ plot(A_mass ~ nitro_mg, data=photo_chem, type='n',ylab="", axes=FALSE, xlim=c(0,
   mtext(nitromasslab, side=1, cex=1.2, line=3.5)
   legend("bottomright", binlab, pch=21, text.font=1, inset=0.02, pt.bg=coln2,title="Leaf Starch (%)" , bty='n', cex=1)
 
+# dev.off()
