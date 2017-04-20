@@ -15,6 +15,7 @@ lma <- read.csv("raw data/seedling leaf mass area.csv")
   lma$volume <- as.factor(lma$volume)
   #run function to add campaign dates, caluclate sla
   lma <- add_campaign_date(lma)
+  lma$ID <- as.factor(lma$ID)
  
 
 #remove missing values
@@ -34,11 +35,12 @@ lma_noNA <- subset(lma, !is.na(area))
 
 ##read in calculated datafor TNC that has been cleaned
   tnc_clean <- read.csv("calculated data/tnc_leaf.csv")
+  tnc_clean$ID <- gsub("'", "", tnc_clean$ID)
   
   
 #merge tnc with leaf data
-SLA_TNCfree <- merge(lma[,c(1,4,6:9)], TNC,  all=TRUE)
-  SLA_TNCfree$mass_noTNC <- with(SLA_TNCfree, mass-((mass*tnc_mgperg)/1000))
+SLA_TNCfree <- merge(lma[,c(1,4,6:9)], tnc_clean,  all=TRUE)
+  SLA_TNCfree$mass_noTNC <- with(SLA_TNCfree, mass-((mass*(starch_mgperg+sugars_mgperg))/1000))
   #TNC free sla and lma
   SLA_TNCfree$sla_free <- with(SLA_TNCfree, area/mass_noTNC)
   SLA_TNCfree$lma_free <- with(SLA_TNCfree, mass_noTNC/area)
@@ -51,6 +53,7 @@ SLA_TNCfree_noNA <- subset(SLA_TNCfree, !is.na(sla_free))
   SLA_TNCfree_noNA$leafsugar <- with(SLA_TNCfree_noNA, (mass*sugars_mgperg)/1000)
   SLA_TNCfree_noNA$percstarch <- with(SLA_TNCfree_noNA, (leafstarch/mass)*100)
   SLA_TNCfree_noNA$percsugar <- with(SLA_TNCfree_noNA, (leafsugar/mass)*100)
+  SLA_TNCfree_noNA$sla <- with(SLA_TNCfree_noNA, area/mass)
 
 #---------------------------------------------------------------------------------------------
 #new dfr creating starch and sugar content per leaf for use in other analyses
@@ -59,12 +62,12 @@ TNC_content <- SLA_TNCfree_noNA[, c(1,3:6, 9:15)]
 write.csv(TNC_content, "calculated data/TNC_content", row.names=FALSE)
 #---------------------------------------------------------------------------------------------
 
-leaf_TNCfree <- subset(SLA_TNCfree_noNA, select = c("ID", "campaign", "volume", "sla_free", "lma_free","Date"))
+leaf_TNCfree <- subset(SLA_TNCfree_noNA, select = c("ID", "campaign", "volume", "sla","sla_free", "lma_free","Date"))
 volorder<-order(leaf_TNCfree$volume, by=leaf_TNCfree$Date)
 leaf_TNCfree <- leaf_TNCfree[volorder,]
 
 #treatment means
-sla_tnc_campaign <- summaryBy(sla_free+lma_free ~ volume+Date, data=leaf_TNCfree, FUN=c(mean, se))
+sla_tnc_campaign <- doBy::summaryBy(sla+sla_free+lma_free ~ volume+Date, data=leaf_TNCfree, FUN=c(mean, se))
 
 #---------------------------------------------------------------------------------------------------
 #Visualize changes in SLA across campaigns (Date messes things up so stay with campaign# (interval=2wks))
@@ -84,15 +87,32 @@ dev.off()
 
 #Plot treatment means across campaigns
 windows()
+
+par(cex.axis=1, cex.lab=1,las=1,mgp=c(3.5,1,0),mfrow=c(2,1))
+
+par(mar=c(0,5,2,2))
 plot(sla_free.mean ~ Date, data = sla_tnc_campaign, col=volume, cex=2, pch=pchs[volume], 
-     ylim=c(50,250), ylab="", xlab="")
+     ylim=c(50,250), ylab="", xlab="", xaxt='n')
 title(ylab=slalab, mgp=ypos)
-title(main=datemean, line=-1.5, font.main=1, adj=.05, cex.main=1)
-d_ply(sla_tnc_campaign, .(volume), function(x) add_trend_line("Date", "sla_free.mean", x, ))
+
+with(sla_tnc_campaign, arrows(Date, sla_free.mean, Date, sla_free.mean+sla_free.se, angle=90, col=volume,length=0.03, cex=2))
+with(sla_tnc_campaign, arrows(Date, sla_free.mean, Date, sla_free.mean-sla_free.se, angle=90, col=volume,length=0.03, cex=2))
+# d_ply(sla_tnc_campaign, .(volume), function(x) add_trend_line("Date", "sla_free.mean", x ))
 legend("topright", leglab, pch=pchs,text.font=1, inset=0.02, title=vollab, col=palette(), bty='n')
 
-dev.copy2pdf(file="output/stats_plots/SLA_TNCfree_means.pdf")
+par(mar=c(5,5,0,2))
+plot(sla.mean ~ Date, data = sla_tnc_campaign, col=volume, cex=2, pch=pchs[volume], 
+     ylim=c(50,250), ylab="", xlab="")
+title(ylab=expression(SLA~~(m^2~g^-1)), mgp=ypos)
+with(sla_tnc_campaign, arrows(Date, sla.mean, Date, sla.mean+sla.se, angle=90, col=volume,length=0.03, cex=2))
+with(sla_tnc_campaign, arrows(Date, sla.mean, Date, sla.mean-sla.se, angle=90, col=volume,length=0.03, cex=2))
+
+dev.copy2pdf(file="SLA_TNCfree.pdf")
 dev.off()
+# d_ply(sla_tnc_campaign, .(volume), function(x) add_trend_line("Date", "sla.mean", x ))
+
+
+
 #---------------------------------------------------------------------------------------------------
 #LMA
 

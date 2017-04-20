@@ -143,7 +143,7 @@ to.pdf <- function(expr, filename, ..., verbose=TRUE) {
 add_trend_line <- function(x,y,d,col, ...){
   
   fit <- lm(d[[y]] ~ d[[x]])
-  ablineclip(fit, lwd=2, col=d$volume, lty=ltys[d$volume],
+  ablineclip(fit, lwd=1, col=d$volume, lty=ltys[d$volume],
              x1=min(d[[x]]), x2=max(d[[x]]), ...)
 }
 #------------------------------------------------------------------------
