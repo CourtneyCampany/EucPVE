@@ -214,6 +214,7 @@ greeks=c(alpha='\u03b1', Delta='\u0394', Sigma='\u03A3', mu='\u03bc',delta = '\u
 dust(table1)%>%
   sprinkle_colnames("Volume (L)", 
                     "Seedling mass (g)", 
+                    "Leaf area (m^2^)",
                     "SLA~f~ (m^2^ kg^-1^)",
                     "SRL (m g^-1^)",
                     "FRLD (m dm^-3^)",
@@ -243,6 +244,7 @@ dust(table2)%>%
 dust(table3)%>%
   sprinkle_colnames("Volume (L)", 
                         "*A*~max~ ($\\mu$mol m^-2^ s^-1^)", 
+                        "*A*~sat~ ($\\mu$mol m^-2^ s^-1^)",
                         "*R*~dark~ ($\\mu$mol m^-2^ s^-1^)",
                         "*J*~max~ ($\\mu$mol m^-2^ s^-1^)",
                         "*V*~cmax~ ($\\mu$mol m^-2^ s^-1^)",
